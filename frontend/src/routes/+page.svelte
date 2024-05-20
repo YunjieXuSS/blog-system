@@ -1,3 +1,4 @@
+// This file is our homepage. It displays sort bar and list of articles.
 <script>
   import { PUBLIC_IMAGES_URL } from "$env/static/public";
   import MessageView from "$lib/components/MessageView.svelte";

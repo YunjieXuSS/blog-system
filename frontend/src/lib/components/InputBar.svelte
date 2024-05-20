@@ -1,0 +1,2 @@
+// This component is for the input bar that is used to input the text for username, password, etc. It defines the layout of the input bar. It is used in the login page and signup page.
+// Four properties (from parent to the component): label text, input type, default value and input validation function

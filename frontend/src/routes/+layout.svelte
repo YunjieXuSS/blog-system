@@ -1,3 +1,4 @@
+// This file is our homepage layout. It wraps around the homepage and provides a navbar, a post button, etc.
 <script>
   import "$lib/css/app.css";
 
