@@ -1,0 +1,1 @@
+// This file contains the functions for processing requests to the article API and their comments and likes. The article-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
