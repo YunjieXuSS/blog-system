@@ -41,7 +41,7 @@ router.get("/", authenticateAdmin, (req, res) => {
 });
 
 // Delete user
-router.delete("/:userId", authenticateAdmin, (req, res) => {
+router.delete("/:userId", authenticateUser, (req, res) => {
   // ...
 });
 

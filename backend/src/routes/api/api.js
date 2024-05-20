@@ -3,14 +3,14 @@ import express from "express";
 const router = express.Router();
 
 // import child routes
-import routes from "./api-user.js";
-router.use("/users", routes);
+import userRoutes from "./api-user.js";
+router.use("/users", userRoutes);
 
-import routes from "./api-article.js";
-router.use("/articles", routes);
+import articleRoutes from "./api-article.js";
+router.use("/articles", articleRoutes);
 
-import routes from "./api-comment.js";
-router.use("/comments", routes);
+import commentRoutes from "./api-comment.js";
+router.use("/comments", commentRoutes);
 
 // Upload image
 router.post("/upload", (req, res) => {
