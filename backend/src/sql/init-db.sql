@@ -3,7 +3,7 @@
 -- Need to be modified later: 
 -- 1. user password should be hashed
 -- 2. user avatar should be stored in the server and the path should be stored in the database
-
+--testing 
 DROP TABLE IF EXISTS like;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS article;
