@@ -8,6 +8,10 @@ export function getUserById(id) {
   // ...
 }
 
+export function getUserByUsername(username) {
+  // ...
+}
+
 export function getUsers() {
   // ...
 }

@@ -20,6 +20,11 @@ router.post("/logout", (req, res) => {
   // ...
 });
 
+// Get user by username
+router.get("/username/:username", (req, res) => {
+  // ...
+});
+
 // Get user by id
 router.get("/:userId", authenticateUser, (req, res) => {
   // ...
