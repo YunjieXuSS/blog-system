@@ -28,7 +28,6 @@
 <style>
   .titleDiv {
     margin: 0;
-    width: 100%;
     height: 80px;
     background-color: white;
     padding: 0 20px 0 20px;
