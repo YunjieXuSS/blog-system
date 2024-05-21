@@ -3,17 +3,36 @@
   import { page } from "$app/stores";
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
+  export let data;
+
+  //The status of user
+  $:isLoggined = data.isLoggined;
 
   let userName = "userName";
+
+  function userLogout() {
+    console.log("User logout Successfully!");
+  }
 </script>
 
 <div class="titleDiv">
   <span class="websiteName"> Chars </span>
-  <div class="userNameLogoutDiv">
-    <span class="userName"> Hi! {userName}</span>
-    <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
-    <a href="/notfound">Logout</a>
-  </div>
+
+  {#if isLoggined}
+    <div class="userNameLogoutDiv">
+      <span class="userName"> Hi! </span>
+      <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+      <a href="/notfound">Login</a>
+    </div>
+  {/if}
+
+  {#if (isLoggined = true)}
+    <div class="userNameLogoutDiv">
+      <span class="userName"> Hi! {userName}</span>
+      <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+      <button on:click={userLogout}>Logout</button>
+    </div>
+  {/if}
 </div>
 <nav>
   <ul>
@@ -35,15 +54,14 @@
     justify-content: space-between;
     align-items: center;
 
-    & .websiteName{
-        font-size: 40px;
+    & .websiteName {
+      font-size: 40px;
     }
 
     & .userNameLogoutDiv {
       display: flex;
       align-items: center;
-      gap: 20px
-     
+      gap: 20px;
     }
 
     & .userIcon {
@@ -56,19 +74,17 @@
     box-shadow: 0 5px 3px lightgray;
     align-content: center;
     height: 60px;
-   
 
     & > ul {
       list-style: none;
       margin: 0;
       display: flex;
       gap: 15px;
-      
     }
 
     & li {
       padding: 10px;
-      
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
       }
