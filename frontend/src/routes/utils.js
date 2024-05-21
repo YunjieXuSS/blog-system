@@ -3,6 +3,7 @@ import {PUBLIC_API_BASE_URL} from "$env/static/public"
 
 export async function postPassword(user_password) {
     console.log(user_password);
+    //get password from argument,pass it in POST Fetch method, and get the result back
     const password = user_password;
     const result = await fetch(`http://localhost:3000/api/users/register`,{
         method:"POST",
@@ -13,4 +14,5 @@ export async function postPassword(user_password) {
 
 }
 
-postPassword();
+//test code
+// postPassword();

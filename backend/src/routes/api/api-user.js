@@ -8,14 +8,19 @@ const router = express.Router();
 
 // Register user
 router.post("/register",createPasswordHashSalt, (req, res) => {
-  // ...
-  console.log(req.body);
+  // test code
+  // console.log(req.body);
+
+  //Get the salt and hash from middleware
   const password_salt  = req.password_salt;
   const password_hash = req.password_hash;
 
-  console.log(password_salt);
-  console.log(password_hash);
-  console.log("Successfull");
+  // test code
+  // console.log(password_salt);
+  // console.log(password_hash);
+  // console.log("Successfull");
+
+  //return the salt and hash
   return res.status(200).json({password_salt,password_hash});
 });
 
