@@ -12,6 +12,11 @@ router.get("/:articleId/comments", (req, res) => {
   // ...
 });
 
+//Create a new comment on an article
+router.post("/:articleId/comments", (req, res) => {
+  // ...
+});
+
 // Like article
 router.post("/:articleId/like", authenticateUser,(req, res) => {
   // ...

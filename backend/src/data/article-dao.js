@@ -6,7 +6,7 @@ export function createArticle(articleData) {
   }
   
 // Get a list of articles with optional search and sort
-export function getArticles({ search, sort, pageSize = 10, pageNumber = 1 }){
+export function getArticles({title, content, createDate, sort, pageSize = 10, pageNumber = 1 }){
     // ...
 }
 

@@ -5,4 +5,10 @@ const router = express.Router();
 
 // Comment API
 
+//Delete a comment.
+router.delete("/commentId", (req, res) => {
+    // ...
+  })
+
+
 export default router;
