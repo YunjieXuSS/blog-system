@@ -32,6 +32,7 @@
       type="text"
       placeholder="Enter your username"
       validate={validateUserName}
+      maxlength = "20"
       bind:value={userName}
     />
 

@@ -1,12 +1,12 @@
 <script>
   /** This component is for the input bar that is used to input the text for username, password, etc.
    * It defines the layout of the input bar. It is used in the login page and signup page.
-   * Four properties (from parent to the component): label text, input type, default value and input validation function
    **/
   export let label = "";
   export let type = "text";
   export let value = "";
   export let placeholder = "";
+  export let maxlength = "100";
   export let validate = (value) => {
     return { result: true, errorMsg: "" };
   };
@@ -32,6 +32,7 @@
         id={label}
         type="password"
         {placeholder}
+        {maxlength}
         bind:value
         on:blur={checkValue}
         on:focus={clearError}
@@ -42,6 +43,7 @@
         id={label}
         type="email"
         {placeholder}
+        {maxlength}
         bind:value
         on:blur={checkValue}
         on:focus={clearError}
@@ -52,6 +54,7 @@
         id={label}
         type="date"
         {placeholder}
+        {maxlength}
         bind:value
         on:blur={checkValue}
         on:focus={clearError}
@@ -62,6 +65,7 @@
         id={label}
         type="text"
         {placeholder}
+        {maxlength}
         bind:value
         on:blur={checkValue}
         on:focus={clearError}
