@@ -1,1 +1,0 @@
-// display personal blog page: profile (if current user is the onwner of this blog, it can be edited) and its articles;
