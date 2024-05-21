@@ -6,7 +6,9 @@
   export let data;
 
   //The status of user
-  $:isLoggined = data.isLoggined;
+  // $:isLoggined = data.isLoggined;
+  //testing code
+  $:isLoggined = false;
 
   let userName = "userName";
 
@@ -18,7 +20,7 @@
 <div class="titleDiv">
   <span class="websiteName"> Chars </span>
 
-  {#if isLoggined}
+  {#if isLoggined==false}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
@@ -26,7 +28,7 @@
     </div>
   {/if}
 
-  {#if (isLoggined = true)}
+  {#if isLoggined == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! {userName}</span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
@@ -38,7 +40,7 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Homepage</a></li>
-    <li><a href="/profile" class:active={path === "/profile"}>Profile</a></li>
+    <li><a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}>Profile</a></li>
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>

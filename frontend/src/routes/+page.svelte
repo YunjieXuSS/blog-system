@@ -1,10 +1,10 @@
 <script>
-  import { postPassword } from "./utils";
+  import { getPasswordHashSalt } from "../lib/js/utils";
 
   let result = {};
   let salt, hash;
   async function clickBTN() {
-    const response = await postPassword("password");
+    const response = await getPasswordHashSalt("password");
     result = await response.json();
     console.log(response);
     console.log(result);
