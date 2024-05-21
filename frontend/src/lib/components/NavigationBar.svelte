@@ -28,7 +28,7 @@
 <style>
   .titleDiv {
     margin: 0;
-    height: 80px;
+    height: 100px;
     background-color: white;
     padding: 0 20px 0 20px;
     display: flex;
@@ -53,21 +53,22 @@
 
   nav {
     background-color: #b5c0d0;
-    /* padding-left: 20px; */
     box-shadow: 0 5px 3px lightgray;
-    width: 100%;
-    height: 50px;
+    align-content: center;
+    height: 60px;
+   
 
     & > ul {
       list-style: none;
       margin: 0;
       display: flex;
-      gap: 10px;
+      gap: 15px;
+      
     }
 
     & li {
       padding: 10px;
-
+      
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
       }
@@ -75,7 +76,7 @@
 
     & a {
       color: white;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: bold;
       text-decoration: none;
 
