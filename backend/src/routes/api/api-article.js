@@ -1,6 +1,6 @@
 import express from "express";
 //import { ... } from "../../data/article-dao.js"; ----import the functions from the DAO file to process the requests
-import {authenticateUser} from "../../middleware/auth-middleware";
+import {authenticateUser} from "../../middleware/auth-middleware.js";
 
 const router = express.Router();
 
