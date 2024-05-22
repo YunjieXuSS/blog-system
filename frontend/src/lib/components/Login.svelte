@@ -1,14 +1,25 @@
 <script>
   import { goto } from "$app/navigation";
   import InputBar from "../../lib/components/InputBar.svelte";
+  import {USER_URL} from "../../lib/js/apiUrls.js";
   let userName;
   let password;
   let isvalidation = false;
+  let loginFailed = false;
   $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
-  function processLogin() {
-    console.log("Processing login");
-    console.log(userName);
-    goto("/", { replaceState: true, invalidateAll: true });
+  async function processLogin() {
+    console.log("Processing login start");
+    const response = await fetch(`${USER_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName, password }),
+    });
+    if(response.status === 200){
+      goto("/", { replaceState: true, invalidateAll: true });
+    }
+    loginFailed = true;
   }
   function validateUserName(value) {
     if (!value) return { result: false, errorMsg: "Username cannot be empty" };
@@ -46,10 +57,9 @@
       validate={validatePassword}
       bind:value={password}
     />
-    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}
-      >LOGIN</button
-    >
+    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}>LOGIN</button>
   </div>
+  <div class="login-error" style = "display:{loginFailed?'block':'none'}">Invalid password or username. Try again.</div>
 </div>
 
 <style>
@@ -96,6 +106,11 @@
   button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+  }
+  .login-error {
+    color: red;
+    margin-top: 20px;
+    display: none;
   }
   @media (max-width: 450px) {
     .login-container {
