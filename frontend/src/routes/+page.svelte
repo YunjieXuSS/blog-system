@@ -1,8 +1,8 @@
 <script>
   import { getPasswordHashSalt } from "../lib/js/utils";
   //testcode
-  import { articleStore } from "../lib/js/test.js";
-  import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
+//   import { articleStore } from "../lib/js/test.js";
+//   import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
 
 
   //testing code for hash
@@ -18,14 +18,14 @@
     console.log(hash);
   } */
 
-  $: console.log($articleStore);
+//   $: console.log($articleStore);
 </script>
 
-<div class="articleDiv">
+<!-- <div class="articleDiv">
   {#each $articleStore as article}
     <FakeArticleCard {article} />
   {/each}
-</div>
+</div> -->
 
 //testing code for hash
 
@@ -34,8 +34,8 @@
 <button on:click={clickBTN}>test</button> -->
 
 <style>
-  .articleDiv {
+  /* .articleDiv {
     display: flex;
     flex-wrap: wrap;
-  }
+  } */
 </style>
