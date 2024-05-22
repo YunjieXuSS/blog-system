@@ -3,6 +3,10 @@
 import yup from "yup";
 import { getDatabase } from "./database.js";
 
+export function getUserWithCredentials(username, password) {
+  return users.find((u) => u.username === username && u.password === password);
+}
+
 export function createUser(user) {
   // ...
 }

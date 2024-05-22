@@ -1,6 +1,6 @@
-// ---/routes/+layout.svelte
-// This file is our homepage layout. It wraps around the homepage and provides a navbar, a post button, etc.
 <script>
+  // ---/routes/+layout.svelte
+// This file is our homepage layout. It wraps around the homepage and provides a navbar, a post button, etc.
   import "$lib/css/app.css";
 
   import { page } from "$app/stores";
