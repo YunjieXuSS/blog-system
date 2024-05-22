@@ -4,6 +4,9 @@
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
+  import { writable } from "svelte/store";
+  import { articleStore } from "../js/test.js";
+
   //The status of user
   // $:isLoggined = data.isLoggined;
   //testing code
@@ -25,14 +28,18 @@
     console.log("User logout Successfully!");
   }
 
+
   async function searchArticles(selectedCategory, searchTerm) {
     console.log("Start Searching Articles");
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ selectedCategory, searchTerm })
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`, {
+      method: "GET",
     });
-    const articles = response.json();
+    const articles = await response.json();
+     // testing code
+    // console.log(articles);
+    articleStore.set(articles);
+    // testing code
+    // console.log("store in articleStore",$articleStore);
     return articles;
   }
 </script>

@@ -12,3 +12,15 @@ import {PUBLIC_API_BASE_URL} from "$env/static/public";
 //     const isLoggedIn = !!user;
 //     return { user, isLoggedIn };
 //   }
+
+
+export async function load({ fetch }){
+    console.log("Start Searching Articles");
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`, {
+      method: "GET",
+    });
+    const articles = await response.json();
+    console.log(articles);
+   
+    return {articles};
+  }

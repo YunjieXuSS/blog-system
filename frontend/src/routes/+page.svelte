@@ -3,6 +3,7 @@
   //testcode
   import { articleStore } from "../lib/js/test.js";
   import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
+  import ArticleCard from "../lib/components/ArticleCard.svelte";
 
 
   //testing code for hash
@@ -18,12 +19,12 @@
     console.log(hash);
   } */
 
-  $: console.log($articleStore);
+  // $: console.log($articleStore);
 </script>
 
 <div class="articleDiv">
   {#each $articleStore as article}
-    <FakeArticleCard {article} />
+    <ArticleCard {article} />
   {/each}
 </div>
 

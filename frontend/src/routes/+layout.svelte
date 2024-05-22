@@ -7,7 +7,8 @@
  
   $: path = $page.url.pathname;
 
-  export let data =[];
+  export let data ;
+  $:console.log("layout",data.articles);
 
 
 </script>
