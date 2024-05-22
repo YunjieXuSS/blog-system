@@ -8,5 +8,6 @@
     }
 </script>
 
-<button onclick="buttonClickFunction()">{buttonLable}</button>
+<!-- <button onclick="buttonClickFunction()">{buttonLable}</button> -->
 
+ <a href="{buttonPath}"><button>{buttonLable}</button></a>
