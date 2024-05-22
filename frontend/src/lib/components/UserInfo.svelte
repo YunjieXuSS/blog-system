@@ -1,0 +1,1 @@
+<!-- Displays the user's information (username, name, avatar, description) on their profile. -->
