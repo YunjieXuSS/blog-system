@@ -114,4 +114,16 @@
       color: #909090;
     }
   }
+  @media (max-width: 450px) {
+    .input-bar {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+    }
+    .error{
+      bottom:-2.2em;
+    }
+  }
 </style>
