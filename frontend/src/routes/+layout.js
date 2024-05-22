@@ -1,6 +1,7 @@
 import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
 
+
 //it won't work untill the relative api is done
 // export async function load({ fetch }) {
 
@@ -23,6 +24,7 @@ export async function load({ fetch }) {
     const articles = await response.json();
     // testing code
     // console.log(articles);
+    
 
     return { articles };
 }
