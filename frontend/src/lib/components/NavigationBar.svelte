@@ -1,6 +1,9 @@
 <script>
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
+  import SearchMenu from "$lib/components/SearchMenu.svelte";
+  import SearchBox from "./SearchBox.svelte";
+
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
   export let data;
@@ -8,21 +11,31 @@
   //The status of user
   // $:isLoggined = data.isLoggined;
   //testing code
-  $:isLoggined = false;
+  $: isLoggined = false;
 
   let userName = "userName";
+  let selectedCategory = ""; //  menu selection
+
+  // For Search Input
+  let searchTerm = "";
 
   function userLogout() {
+    //..
     console.log("User logout Successfully!");
+  }
+
+  function searchArticles() {
+    console.log("Searching Articles");
   }
 </script>
 
 <div class="titleDiv">
   <span class="websiteName"> Chars </span>
 
-  {#if isLoggined==false}
+  <!-- show different content depends on the status of user -->
+  {#if isLoggined == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi! </span>
+      <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
       <a href="/notfound">Login</a>
     </div>
@@ -31,19 +44,28 @@
   {#if isLoggined == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! {userName}</span>
-      <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+      <img class="userIcon" src="userDefaultIcon.png" alt="userIcon" />
       <button on:click={userLogout}>Logout</button>
     </div>
   {/if}
 </div>
-<nav>
+<nav class="navBar">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Homepage</a></li>
-    <li><a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}>Profile</a></li>
+    <li>
+      <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
+        >Profile</a
+      >
+    </li>
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
+  <div class="searchSection">
+    <SearchMenu bind:selectedCategory />
+    <SearchBox bind:searchTerm on:input={searchArticles} />
+    <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
+  </div>
 </nav>
 
 <style>
@@ -71,10 +93,11 @@
     }
   }
 
-  nav {
+  .navBar {
+    display: flex;
+    justify-content: space-between;
     background-color: #b5c0d0;
     box-shadow: 0 5px 3px lightgray;
-    align-content: center;
     height: 60px;
 
     & > ul {
@@ -100,6 +123,19 @@
 
       &.active {
         text-decoration: underline;
+      }
+    }
+
+    & .searchSection {
+      margin: 0;
+      width: 500px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+
+      & .searchIcon {
+        height: 30px;
       }
     }
   }
