@@ -59,57 +59,69 @@ export async function getArticles() {
 // export function getArticles({ title, content, createDate, sort, pageSize = 10, pageNumber = 1 }) {
 //   // ...
 // }
-export async function getArticlesByUserId(userId){
+export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
-  console.log(articlesOfUser)
+  console.log(articlesOfUser);
   return articlesOfUser;
 }
 
-export async function getArticlesByTitle(title){
+export async function getArticlesByTitle(title) {
   const db = await getDatabase();
   const lowercaseTitle = title.toLowerCase();
-  const articles = await db.all("SELECT * FROM article WHERE LOWER(title) LIKE ?",
-  `%${lowercaseTitle}%`);
+  const articles = await db.all(
+    "SELECT * FROM article WHERE LOWER(title) LIKE ?",
+    `%${lowercaseTitle}%`
+  );
 
   return articles;
 }
 
-export async function getArticlesByContent(content){
+export async function getArticlesByContent(content) {
   const db = await getDatabase();
   const lowercaseContent = content.toLowerCase();
-  const articles = await db.all("SELECT * FROM article WHERE LOWER(content) LIKE ?",
-  `%${lowercaseContent}%`);
+  const articles = await db.all(
+    "SELECT * FROM article WHERE LOWER(content) LIKE ?",
+    `%${lowercaseContent}%`
+  );
 
   return articles;
 }
 
-export async function getArticlesByDate(createDate){
+export async function getArticlesByDate(createDate) {
   const db = await getDatabase();
   const articles = await db.all("SELECT * FROM article WHERE DATE(createDate) = ?", [createDate]);
   return articles;
-
 }
-
-
 
 /**
  * Retrieves an article with the matching id. Returns undefined if no match.
  * @param {*} id the id to match. Will be converted to a number using parseInt().
  * @returns a specific article, or undefined.
  */
-export async function getArticleById(articleId) {
+export async function getArticlesById(articleId) {
   const db = await getDatabase();
   const article = await db.get("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
   return article;
 }
 
+export async function getArticlesByUserName(userName) {
+  const db = await getDatabase();
+  // SQL query to join user and article tables and fetch articles by userName
+  const articles = await db.get(
+    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName = ?",
+    userName
+  );
+  console.log(articles);
+  return articles;
+}
+
 /**
- * This schema defines a valid "update article" request. 
+ * This schema defines a valid "update article" request.
  * We can update as many or as few of values as we like.
  */
 const updateArticleSchema = yup
-.object({
+  .object({
     title: yup.string().optional(),
     content: yup.string().optional(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
@@ -173,9 +185,9 @@ export async function updateArticle(articleId, updateData) {
  * @return true if an article was deleted, false otherwise.
  */
 export async function deleteArticle(articleId) {
-    const db = await getDatabase();
-    const dbResult = await db.run("DELETE FROM article WHERE articleId = ?", parseInt(articleId));
-    return dbResult.changes > 0;
+  const db = await getDatabase();
+  const dbResult = await db.run("DELETE FROM article WHERE articleId = ?", parseInt(articleId));
+  return dbResult.changes > 0;
 }
 
 //Like an article

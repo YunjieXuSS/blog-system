@@ -2,11 +2,12 @@ import express from "express";
 import { authenticateUser } from "../../middleware/auth-middleware.js";
 import {
   getArticles,
-  getArticleById,
+  getArticlesById,
   getArticlesByUserId,
   getArticlesByTitle,
   getArticlesByContent,
   getArticlesByDate,
+  getArticlesByUserName,
   deleteArticle
 } from "../../data/article-dao.js";
 const router = express.Router();
@@ -28,17 +29,31 @@ router.get("/search", async (req, res) => {
     } else if (req.query.createDate) {
       const articlesOfDate = await getArticlesByDate(req.query.createDate);
       return res.status(200).json(articlesOfDate);
+    }else if(req.query.userName){
+      console.log("here");
+      const articlesOfUser = await getArticlesByUserName(req.query.userName);
+      console.log("articles:",articlesOfUser);
+      return res.status(200).json(articlesOfUser);
     }
   } catch (error) {
     return res.status(404).json({ error: "Can't find articles." });
   }
 });
 
-
 //get all articles
 router.get("/", async (req, res) => {
   try {
     const articles = await getArticles();
+    return res.status(200).json(articles);
+  } catch (error) {
+    return res.status(404).json({ error: "Can't find articles." });
+  }
+});
+
+// get articles by articleId
+router.get("/:articleId", async(req,res)=>{
+  try {
+    const articles = await getArticlesById(req.params.articleId);
     return res.status(200).json(articles);
   } catch (error) {
     return res.status(404).json({ error: "Can't find articles." });
@@ -52,7 +67,7 @@ router.get("/", async (req, res) => {
 router.delete("/:articleId", async(req, res) =>{
   await deleteArticle(req.params.articleId);
   return res.sendStatus(204);
-})
+});
 
 // Get articles' comments
 router.get("/:articleId/comments", (req, res) => {

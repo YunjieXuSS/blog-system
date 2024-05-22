@@ -42,8 +42,8 @@
 <button on:click={clickBTN}>test</button> -->
 
 <style>
-  .articleDiv {
+  /* .articleDiv {
     display: flex;
     flex-wrap: wrap;
-  }
+  } */
 </style>
