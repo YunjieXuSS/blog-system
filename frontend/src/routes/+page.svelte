@@ -1,8 +1,9 @@
 <script>
   import { getPasswordHashSalt } from "../lib/js/utils";
   //testcode
-//   import { articleStore } from "../lib/js/test.js";
-//   import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
+  import { articleStore } from "../lib/js/test.js";
+  import ArticleCard from "../lib/components/ArticleCard.svelte";
+  import SortingSection from "../lib/components/SortingSection.svelte";
 
 
   //testing code for hash
@@ -18,15 +19,22 @@
     console.log(hash);
   } */
 
-//   $: console.log($articleStore);
+  // $: console.log($articleStore);
+
+  let sortingCategory = ""; 
+  // $: console.log(sortingCategory);
+  // $: console.log("+page",$articleStore);
+
 </script>
 
-<!-- <div class="articleDiv">
-  {#each $articleStore as article}
-    <FakeArticleCard {article} />
-  {/each}
-</div> -->
-
+<div class="mainBodyDiv">
+  <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
+  <div class="articleDiv">
+    {#each $articleStore as article}
+      <ArticleCard {article} />
+    {/each}
+  </div>
+</div>
 //testing code for hash
 
 <!-- <span>{result}</span>

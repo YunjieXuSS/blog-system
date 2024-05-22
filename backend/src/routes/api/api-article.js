@@ -15,6 +15,7 @@ const router = express.Router();
 // Articles' API
 
 router.get("/search", async (req, res) => {
+  console.log(req.query);
   try {
     if (req.query.userId) {
       const articlesOfUser = await getArticlesByUserId(req.query.userId);

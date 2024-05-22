@@ -1,5 +1,15 @@
 import {PUBLIC_API_BASE_URL} from "$env/static/public";
-
+import { writable } from "svelte/store";
+export const articles =[ {
+    articleId: 1,
+    title: 'Understanding Flexbox: Everything you need to know',
+    content: 'Flexbox is a powerful layout module...',
+    createDate: '2024-01-01',
+    updateDate: '2024-01-02',
+    imgUrl: 'img1.jpg',
+    userId: 1
+}];
+export const articleStore = writable(articles);
 
 export async function getPasswordHashSalt(user_password) {
 

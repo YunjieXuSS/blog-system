@@ -3,7 +3,7 @@
 </script>
 
 <article class="article-container">
-  <img src={article.imgUrl} alt="" class="article-image" />
+  <img src={`/images/${article.imgUrl}`} alt="" class="article-image" />
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
   <p class="date">{article.createDate}</p>
