@@ -2,20 +2,22 @@
   import { goto } from "$app/navigation";
   import InputBar from "../../lib/components/InputBar.svelte";
   let userName;
-  $: console.log(userName);
   let password;
-  $: console.log(password);
+  let isvalidation = false;
+  $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
   function processLogin() {
     console.log("Processing login");
     console.log(userName);
   }
   function validateUserName(value) {
+    if (!value) return {result:false, errorMsg:"Username cannot be empty"}
     if (value.length < 3) {
         return {result:false, errorMsg:"Username must be at least 3 characters long"}
     }
     return { result: true, errorMsg: "" };
   }
   function validatePassword(value) {
+    if (!value) return {result:false, errorMsg:"Password cannot be empty"}
     if (value.length < 8) {
       return {result:false, errorMsg:"Password must be at least 8 characters long"}
     }
@@ -43,8 +45,7 @@
       validate={validatePassword}
       bind:value={password}
     />
-
-    <button on:click={processLogin}>LOGIN</button>
+    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}>LOGIN</button>
   </div>
 </div>
 
@@ -78,13 +79,17 @@
   button {
     margin-top: 20px;
     padding: 10px;
-    background-color: #bbb;
+    background-color: #303030;
     color: white;
     border: none;
     cursor: pointer;
     width: 120px;
   }
   button:hover {
-    background-color: #202020;
+    background-color: #909090;
+  }
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 </style>
