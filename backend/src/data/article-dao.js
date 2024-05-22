@@ -180,7 +180,7 @@ export async function deleteArticle(articleId) {
 
 //Like an article
 export function likeArticle(articleId) {
-  //...
+  
 }
 
 //Unlike an article

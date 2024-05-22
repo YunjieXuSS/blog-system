@@ -4,6 +4,7 @@
   import { articleStore } from "../lib/js/test.js";
   import ArticleCard from "../lib/components/ArticleCard.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
 
   //testing code for hash
@@ -26,6 +27,8 @@
   // $: console.log("+page",$articleStore);
 
 </script>
+
+<PostArticleButton />
 
 <div class="mainBodyDiv">
   <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
