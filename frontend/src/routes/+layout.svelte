@@ -8,7 +8,8 @@
   $: path = $page.url.pathname;
 
   export let data ;
-  $:console.log("layout",data.articles);
+    // testing code
+  // $:console.log("layout",data.articles);
 
 
 </script>

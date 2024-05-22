@@ -2,7 +2,6 @@
   import { getPasswordHashSalt } from "../lib/js/utils";
   //testcode
   import { articleStore } from "../lib/js/test.js";
-  import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
   import ArticleCard from "../lib/components/ArticleCard.svelte";
 
 

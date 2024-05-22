@@ -7,35 +7,38 @@
   import { writable } from "svelte/store";
   import { articleStore } from "../js/test.js";
 
+  export let data;
+  $: path = $page.url.pathname;
+  $: console.log($page.url.pathname);
   //The status of user
+  $: isLoggined = false;
+
   // $:isLoggined = data.isLoggined;
   //testing code
-  $: isLoggined = false;
+
   let userName = "userName";
   let selectedCategory = ""; //  menu selection
-  $:console.log("Navi layer",selectedCategory);
+  // testing code
+  // $:console.log("Navi layer",selectedCategory);
 
   // For Search Input
   let searchTerm = "";
-
-  $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-
-  export let data;
 
   function userLogout() {
     //..
     console.log("User logout Successfully!");
   }
 
-
   async function searchArticles(selectedCategory, searchTerm) {
     console.log("Start Searching Articles");
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`,
+      {
+        method: "GET"
+      }
+    );
     const articles = await response.json();
-     // testing code
+    // testing code
     // console.log(articles);
     articleStore.set(articles);
     // testing code
@@ -76,11 +79,13 @@
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
+  {#if path === "/"}
   <div class="searchSection">
     <SearchMenu bind:selectedCategory />
     <SearchBox bind:searchTerm on:input={searchArticles(selectedCategory, searchTerm)} />
     <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
   </div>
+  {/if}
 </nav>
 
 <style>
