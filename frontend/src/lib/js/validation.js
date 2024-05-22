@@ -19,8 +19,8 @@ export function validateRegisterUserName(userName) {
       return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
     } else if (userName.includes(" ")) {
       return { result: false, errorMsg: "Username cannot contain spaces." };
-    } else if (!/^[a-zA-Z0-9]+$/.test(userName)) {
-      return { result: false, errorMsg: "Username can only contain letters and numbers." };
+    } else if (!/^[a-zA-Z0-9_]+$/.test(userName)) {
+      return { result: false, errorMsg: "Username can only contain underscore, letters and numbers." };
     } else if (!usernameUnique((userName)=>{return true;})) {
       return { result: false, errorMsg: "Username already exists." };
     }
