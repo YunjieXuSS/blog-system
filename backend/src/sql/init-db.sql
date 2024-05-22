@@ -13,14 +13,15 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user (
     userId INTEGER PRIMARY KEY,
     userName VARCHAR(64) UNIQUE NOT NULL,
-    password VARCHAR(60) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     email VARCHAR(64) NOT NULL,
     firstName VARCHAR(64) NOT NULL,
     lastName VARCHAR(64) NOT NULL,
     dateOfBirth DATE NOT NULL,
     description TEXT  DEFAULT "I know myself so well." NOT NULL,
     avatar VARCHAR(100),
-    isAdmin BOOLEAN NOT NULL
+    isAdmin BOOLEAN NOT NULL,
+    isDeleted BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 CREATE TABLE article(
@@ -55,33 +56,33 @@ CREATE TABLE like(
 );
 
 -- Insert mock data
-INSERT INTO user (userId, userName, password, email, firstName, lastName, dateOfBirth, description, avatar, isAdmin) VALUES
-(1, 'john_doe', 'hashed_password1', 'john.doe@example.com', 'John', 'Doe', '1985-06-15', 'I know myself so well.', 'avatar1.jpg', FALSE),
-(2, 'jane_smith', 'hashed_password2', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', 'I know myself so well.', 'avatar2.jpg', TRUE),
-(3, 'alice_jones', 'hashed_password3', 'alice.jones@example.com', 'Alice', 'Jones', '1978-12-05', 'I know myself so well.', 'avatar3.jpg', FALSE),
-(4, 'bob_brown', 'hashed_password4', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', 'I know myself so well.', 'avatar4.jpg', FALSE);
+INSERT INTO user (userName, password, email, firstName, lastName, dateOfBirth, avatar, isAdmin,isDeleted) VALUES
+('john_doe', '$2b$12$Yv/Cb6.FKpK6CNZRvKrCBeTNjFK1pvyHMdcaCvXQBBmp1xZSxDpei', 'john.doe@example.com', 'John', 'Doe', '1985-06-15', '/images/avatar1.jpg', FALSE, FALSE),
+('jane_smith', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', '/images/avatar2.jpg', TRUE, FALSE),
+('alice_jones', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'alice.jones@example.com', 'Alice', 'Jones', '1978-12-05', '/images/avatar3.jpg', FALSE, FALSE),
+('bob_brown', '$2b$12$9yuOvONQDqm5.YeITAd.L.FsyDhIblipXrl3vddN.BzjM1CWCsgIm', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', '/images/avatar4.jpg', FALSE, FALSE);
 
 -- Insert mock data into article table
-INSERT INTO article (articleId, title, content, createDate, updateDate, imgUrl, userId) VALUES
-(1, 'First Article', 'Content of the first article.', '2024-01-01', '2024-01-01', 'img1.jpg', 1),
-(2, 'Second Article', 'Content of the second article.', '2024-01-05', '2024-01-06', 'img2.jpg', 2),
-(3, 'Third Article', 'Content of the third article.', '2024-01-10', '2024-01-11', 'img3.jpg', 3),
-(4, 'Fourth Article', 'Content of the fourth article.', '2024-01-15', '2024-01-15', 'img4.jpg', 4);
+INSERT INTO article (title, content, createDate, updateDate, imgUrl, userId) VALUES
+('First Article', 'Content of the first article.', '2024-01-01', '2024-01-01', '/images/img1.jpg', 1),
+('Second Article', 'Content of the second article.', '2024-01-05', '2024-01-06', '/images/img2.jpg', 2),
+('Third Article', 'Content of the third article.', '2024-01-10', '2024-01-11', '/images/img3.jpg', 3),
+('Fourth Article', 'Content of the fourth article.', '2024-01-15', '2024-01-15', '/images/img4.jpg', 4);
 
 -- Insert mock data into comment table
-INSERT INTO comment (commentId, content, createDate, parentCommentId, userId, articleId) VALUES
-(1, 'First comment on first article.', '2024-01-02', NULL, 2, 1),
-(2, 'Second comment on first article.', '2024-01-03', 1, 3, 1),
-(3, 'First comment on second article.', '2024-01-06', NULL, 1, 2),
-(4, 'First comment on third article.', '2024-01-11', 2, 2, 3);
+INSERT INTO comment (content, createDate, parentCommentId, userId, articleId) VALUES
+('First comment on first article.', '2024-01-02', NULL, 2, 1),
+('Second comment on first article.', '2024-01-03', 1, 3, 1),
+('First comment on second article.', '2024-01-06', NULL, 1, 2),
+('First comment on third article.', '2024-01-11', 2, 2, 3);
 
 -- Insert mock data into like table
-INSERT INTO like (likeId, userId, articleId) VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 3, 2),
-(4, 4, 3),
-(5, 1, 4),
-(6, 2, 3),
-(7, 3, 4),
-(8, 4, 1);
+INSERT INTO like (userId, articleId) VALUES
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 3),
+(1, 4),
+(2, 3),
+(3, 4),
+(4, 1);

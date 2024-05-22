@@ -1,19 +1,19 @@
 import express from "express";
 //import { ... } from "../../data/user-dao.js"; ----import the functions from the DAO file to process the requests
-import { createUserJWT } from "../../utils/jwt-utils.js"
+import { createUserJWT } from "../../utils/jwt-utils.js";
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
-import { getUserWithCredentials } from "../../data/user-dao.js";
+import { getUserWithCredentials, getUserWithUsername } from "../../data/user-dao.js";
 import { createPasswordHashSalt } from "../../middleware/auth-middleware.js";
 
 const router = express.Router();
 
 // Register user
-router.post("/register",createPasswordHashSalt, (req, res) => {
+router.post("/register", createPasswordHashSalt, (req, res) => {
   // test code
   // console.log(req.body);
 
   //Get the salt and hash from middleware
-  const password_salt  = req.password_salt;
+  const password_salt = req.password_salt;
   const password_hash = req.password_hash;
 
   // test code
@@ -22,19 +22,24 @@ router.post("/register",createPasswordHashSalt, (req, res) => {
   // console.log("Successfull");
 
   //return the salt and hash
-  return res.status(200).json({password_salt,password_hash});
+  return res.status(200).json({ password_salt, password_hash });
 });
 
 // Login user
-router.post("/login",  (req, res) => {
-  const username = req.body.username;
+router.post("/login", async(req, res) => {
+  const userName = req.body.userName;
   const password = req.body.password;
-  const user = getUserWithCredentials(username, password);
-  if(!user) res.sendStatus(401);
-  return res.cookie("authToken",createUserJWT(username),{
-    expires: new Date(Date.now()+ 24*60*60*1000),
-    httpOnly: true,
-  }).json({username});
+  if (!userName || !password)
+    return res.status(422).json({ error: "Username and password are required." });
+  const user = await getUserWithCredentials(userName, password); 
+  if (!user) return res.status(401).json({ error: "Invalid username or password." });
+  delete user.password;
+  return res
+    .cookie("authToken", createUserJWT(userName), {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: true
+    })
+    .json({ user });
 });
 
 // User logout

@@ -2,9 +2,16 @@
 //The user-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
 import yup from "yup";
 import { getDatabase } from "./database.js";
+import bcrypt from "bcrypt";
 
-export function getUserWithCredentials(username, password) {
-  return users.find((u) => u.username === username && u.password === password);
+export async function getUserWithCredentials(username, password) {
+  const db = await getDatabase();
+  const user = await db.get("SELECT * from user WHERE username = ?", username );
+  if (!user) return;
+  console.log("user: ", user);
+  const isValid = await bcrypt.compare(password, user.password);
+  console.log("isValid: ", isValid);
+  return isValid ? user : undefined;
 }
 
 export function createUser(user) {
