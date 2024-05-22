@@ -2,13 +2,27 @@ import express from "express";
 //import { ... } from "../../data/user-dao.js"; ----import the functions from the DAO file to process the requests
 import { createUserJWT } from "../../utils/jwt-utils.js"
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
-import { getUserWithCredentials } from "../../db/user-dao.js";
+import { getUserWithCredentials } from "../../data/user-dao.js";
+import { createPasswordHashSalt } from "../../middleware/auth-middleware.js";
 
 const router = express.Router();
 
 // Register user
-router.post("/register", (req, res) => {
-  // ...
+router.post("/register",createPasswordHashSalt, (req, res) => {
+  // test code
+  // console.log(req.body);
+
+  //Get the salt and hash from middleware
+  const password_salt  = req.password_salt;
+  const password_hash = req.password_hash;
+
+  // test code
+  // console.log(password_salt);
+  // console.log(password_hash);
+  // console.log("Successfull");
+
+  //return the salt and hash
+  return res.status(200).json({password_salt,password_hash});
 });
 
 // Login user
