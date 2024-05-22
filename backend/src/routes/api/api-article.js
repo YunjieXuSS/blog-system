@@ -30,9 +30,7 @@ router.get("/search", async (req, res) => {
       const articlesOfDate = await getArticlesByDate(req.query.createDate);
       return res.status(200).json(articlesOfDate);
     }else if(req.query.userName){
-      console.log("here");
       const articlesOfUser = await getArticlesByUserName(req.query.userName);
-      console.log("articles:",articlesOfUser);
       return res.status(200).json(articlesOfUser);
     }
   } catch (error) {

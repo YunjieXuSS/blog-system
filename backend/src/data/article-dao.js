@@ -112,7 +112,6 @@ export async function getArticlesByUserName(userName) {
     "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName = ?",
     userName
   );
-  console.log(articles);
   return articles;
 }
 
