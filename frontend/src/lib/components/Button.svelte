@@ -1,13 +1,14 @@
 <!-- A button component to be altered as needed -->
 
 <script>
-    export let buttonLable;
+    export let buttonLabel;
     export let buttonPath;
-    export function buttonClickFunction(){
-        window.location={buttonPath};
-    }
 </script>
 
-<!-- <button onclick="buttonClickFunction()">{buttonLable}</button> -->
+ <a href="{buttonPath}"><button>{buttonLabel}</button></a>
 
- <a href="{buttonPath}"><button>{buttonLable}</button></a>
+ <style>
+    button {
+
+    }
+ </style>
