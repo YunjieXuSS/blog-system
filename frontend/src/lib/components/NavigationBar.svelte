@@ -10,6 +10,7 @@
   $: isLoggined = false;
   let userName = "userName";
   let selectedCategory = ""; //  menu selection
+  $:console.log("Navi layer",selectedCategory);
 
   // For Search Input
   let searchTerm = "";
@@ -29,9 +30,9 @@
     const response = await fetch(`${PUBLIC_API_BASE_URL}/articles`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ selectedCategory,searchTerm })
+      body: JSON.stringify({ selectedCategory, searchTerm })
     });
-    const articles= response.json()
+    const articles = response.json();
     return articles;
   }
 </script>

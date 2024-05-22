@@ -2,7 +2,7 @@ import express from "express";
 //import { ... } from "../../data/user-dao.js"; ----import the functions from the DAO file to process the requests
 import { createUserJWT } from "../../utils/jwt-utils.js"
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
-import { getUserWithCredentials } from "../../db/user-dao.js";
+import { getUserWithCredentials } from "../../data/user-dao.js";
 import { createPasswordHashSalt } from "../../middleware/auth-middleware.js";
 
 const router = express.Router();
