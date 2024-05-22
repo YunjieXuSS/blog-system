@@ -1,36 +1,189 @@
-// This file contains the functions for processing requests to the article API and their comments and likes. 
-//The article-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
+// This file contains the functions for processing requests to the article API and their comments and likes.
+// The article-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
 import { getDatabase } from "./database.js";
-export function createArticle(articleData) {
-    // ...
+import yup from "yup";
+
+/**
+ * This schema defines a valid "create article" request.
+ * These requests must have a title, content and createDate. Uploading image is optional.
+ */
+const createArticleSchema = yup
+  .object({
+    title: yup.string().required(),
+    content: yup.string().required(),
+    createDate: yup.date().default(() => new Date()), // Setting default value to current date
+    imgUrl: yup.string().optional()
+  })
+  .required();
+
+/**
+ * Creates a new article and returns it. Throws an error if any of the required data is undefined.
+ *
+ * @param {any} articleData Must contain a title, content, and createDate.
+ *
+ * @returns the newly created article
+ * @throws an error if the input does not contain the required data.
+ */
+export async function createArticle(articleData) {
+  const newArticle = createArticleSchema.validateSync(articleData, {
+    abortEarly: false,
+    stripUnknown: true
+  });
+
+  // Insert new article into database
+  const db = await getDatabase();
+  const dbResult = await db.run(
+    "INSERT INTO article(title, content, createDate) VALUES(?, ?, ?)",
+    newArticle.title,
+    newArticle.content,
+    newArticle.createDate
+  );
+
+  // Give the returned article an ID, which was created by the database, then return.
+  newArticle.articleId = dbResult.lastID;
+  return newArticle;
+}
+
+/**
+ * Retrieves an array of all articles.
+ *
+ * @returns an array of all articles
+ */
+export async function getArticles() {
+  const db = await getDatabase();
+  const articles = await db.all("SELECT * FROM article");
+  return articles;
+}
+
+// // Get a list of articles with optional search and sort
+// export function getArticles({ title, content, createDate, sort, pageSize = 10, pageNumber = 1 }) {
+//   // ...
+// }
+export async function getArticlesByUserId(userId){
+  const db = await getDatabase();
+  const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
+  console.log(articlesOfUser)
+  return articlesOfUser;
+}
+
+export async function getArticlesByTitle(title){
+  const db = await getDatabase();
+  const lowercaseTitle = title.toLowerCase();
+  const articles = await db.all("SELECT * FROM article WHERE LOWER(title) LIKE ?",
+  `%${lowercaseTitle}%`);
+
+  return articles;
+}
+
+export async function getArticlesByContent(content){
+  const db = await getDatabase();
+  const lowercaseContent = content.toLowerCase();
+  const articles = await db.all("SELECT * FROM article WHERE LOWER(content) LIKE ?",
+  `%${lowercaseContent}%`);
+
+  return articles;
+}
+
+export async function getArticlesByDate(createDate){
+  const db = await getDatabase();
+  const articles = await db.all("SELECT * FROM article WHERE DATE(createDate) = ?", [createDate]);
+  return articles;
+
+}
+
+
+
+/**
+ * Retrieves an article with the matching id. Returns undefined if no match.
+ * @param {*} id the id to match. Will be converted to a number using parseInt().
+ * @returns a specific article, or undefined.
+ */
+export async function getArticleById(articleId) {
+  const db = await getDatabase();
+  const article = await db.get("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
+  return article;
+}
+
+/**
+ * This schema defines a valid "update article" request. 
+ * We can update as many or as few of values as we like.
+ */
+const updateArticleSchema = yup
+.object({
+    title: yup.string().optional(),
+    content: yup.string().optional(),
+    createDate: yup.date().default(() => new Date()), // Setting default value to current date
+    imgUrl: yup.string().optional()
+  })
+  .required();
+
+/**
+ * Updates the article with the given id, if it exists and the provided update data is valid.
+ *
+ * @param {*} articleId the id to match. Will be converted to a number using parseInt().
+ * @param {*} updateData The data to update. Any included title, content, createDate and imgUrl properties
+ *            will replace those existing values for the matching article. Any other properties will be ignored.
+ *
+ * @return true if the database was updated, false otherwise.
+ * @throws an error if updateData contains invalid data.
+ */
+export async function updateArticle(articleId, updateData) {
+  //Validated update data (will throw exception if updateData is invalid).
+  const validatedUpdateData = updateArticleSchema.validateSync(updateData, {
+    abortEarly: true,
+    stripUnknown: true
+  });
+
+  // Build the update statement. title, content, and imgUrl are all optional so we can't just write one SQL query
+  // that updates all three, if all three aren't used. We must consider each one one-by-one.
+  const updateOperations = [];
+  const updateParams = [];
+  if (validatedUpdateData.title) {
+    updateOperations.push("title = ?");
+    updateParams.push(validatedUpdateData.title);
   }
-  
-// Get a list of articles with optional search and sort
-export function getArticles({title, content, createDate, sort, pageSize = 10, pageNumber = 1 }){
-    // ...
+  if (validatedUpdateData.content) {
+    updateOperations.push("content = ?");
+    updateParams.push(validatedUpdateData.content);
+  }
+  if (validatedUpdateData.imgUrl) {
+    updateOperations.push("imgUrl = ?");
+    updateParams.push(validatedUpdateData.imgUrl);
+  }
+
+  // If we aren't actually updating anything just get outta here.
+  if (updateParams.length === 0) return false;
+
+  // Build actual SQL statement
+  const sql = `UPDATE article SET ${updateOperations.join(", ")} WHERE articleId = ?`;
+  console.log(sql);
+
+  // Execute SQL
+  const db = await getDatabase();
+  const dbResult = await db.run(sql, ...updateParams, parseInt(articleId));
+
+  // Return true if changes were made, false otherwise.
+  return dbResult.changes > 0;
 }
 
-// Get details of a specific article
-export function getArticleById(articleId){
-    //...
-}
-
-// Edit/Update an existing article
-export function editArticle(articleId){
-    //...
-}
-
-//Delete an article
-export function deleteArticle(articleId){
-    //...
+/**
+ * Deletes the article with the given id, if any.
+ *
+ * @param {*} articleId the id of the article to delete. Will be converted to a number using parseInt().
+ * @return true if an article was deleted, false otherwise.
+ */
+export async function deleteArticle(articleId) {
+    const db = await getDatabase();
+    const dbResult = await db.run("DELETE FROM article WHERE articleId = ?", parseInt(articleId));
+    return dbResult.changes > 0;
 }
 
 //Like an article
-export function likeArticle(articleId){
-    //...
+export function likeArticle(articleId) {
+  //...
 }
 
 //Unlike an article
-export function unlikeArticle(articleId){
-    //...
+export function unlikeArticle(articleId) {
+  //...
 }
