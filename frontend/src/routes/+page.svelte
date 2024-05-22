@@ -1,7 +1,12 @@
 <script>
   import { getPasswordHashSalt } from "../lib/js/utils";
+  //testcode
+  import { articleStore } from "../lib/js/test.js";
+  import FakeArticleCard from "../lib/components/FakeArticleCard.svelte";
 
-  let result = {};
+
+  //testing code for hash
+  /*   let result = {};
   let salt, hash;
   async function clickBTN() {
     const response = await getPasswordHashSalt("password");
@@ -11,12 +16,26 @@
     salt = result.password_salt;
     hash = result.password_hash;
     console.log(hash);
-  }
- 
+  } */
+
+  $: console.log($articleStore);
 </script>
 
-// ---/routes/+page.svelte // This file is our homepage. It displays sort bar and list of articles.
+<div class="articleDiv">
+  {#each $articleStore as article}
+    <FakeArticleCard {article} />
+  {/each}
+</div>
 
-<span>{result}</span>
+//testing code for hash
+
+<!-- <span>{result}</span>
 <span>{salt}</span>
-<button on:click={clickBTN}>test</button>
+<button on:click={clickBTN}>test</button> -->
+
+<style>
+  .articleDiv {
+    display: flex;
+    flex-wrap: wrap;
+  }
+</style>

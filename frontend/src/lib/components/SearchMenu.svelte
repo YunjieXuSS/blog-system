@@ -1,6 +1,7 @@
 <script>
-  export let selectedCategory;
-  $:console.log(selectedCategory)
+export let selectedCategory;
+//   $: console.log(selectedCategory);
+
 </script>
 
 <!-- svelte-ignore a11y-no-onchange -->
@@ -12,7 +13,6 @@
     <option value="date">Date</option>
   </select>
 </section>
-
 
 <style>
   .menu-cont {

@@ -1,6 +1,8 @@
 <script>
+    import { createEventDispatcher } from "svelte";
   export let searchTerm;
   $:console.log(searchTerm);
+
 </script>
 
 <div id="search-input-cont">

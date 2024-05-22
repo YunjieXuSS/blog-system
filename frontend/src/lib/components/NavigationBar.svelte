@@ -1,31 +1,38 @@
 <script>
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
+  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
-
-  $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-  export let data;
-
   //The status of user
   // $:isLoggined = data.isLoggined;
   //testing code
   $: isLoggined = false;
-
   let userName = "userName";
   let selectedCategory = ""; //  menu selection
 
   // For Search Input
   let searchTerm = "";
 
+  $: path = $page.url.pathname;
+  $: console.log($page.url.pathname);
+
+  export let data;
+
   function userLogout() {
     //..
     console.log("User logout Successfully!");
   }
 
-  function searchArticles() {
-    console.log("Searching Articles");
+  async function searchArticles(selectedCategory, searchTerm) {
+    console.log("Start Searching Articles");
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ selectedCategory,searchTerm })
+    });
+    const articles= response.json()
+    return articles;
   }
 </script>
 
@@ -63,7 +70,7 @@
   </ul>
   <div class="searchSection">
     <SearchMenu bind:selectedCategory />
-    <SearchBox bind:searchTerm on:input={searchArticles} />
+    <SearchBox bind:searchTerm on:input={searchArticles(selectedCategory, searchTerm)} />
     <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
   </div>
 </nav>
