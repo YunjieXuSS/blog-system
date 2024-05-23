@@ -5,7 +5,7 @@
 </script>
 
 <div class="button-container">
-  <Button buttonLabel="✚ new article" buttonPath="/articles/create" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="4px 0 0 4px"/>
+  <Button buttonLabel="✚ New article" buttonPath="/articles/create" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="4px 0 0 4px"/>
 </div>
 
 <style>

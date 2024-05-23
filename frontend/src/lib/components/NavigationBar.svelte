@@ -45,7 +45,7 @@
 </script>
 
 <div class="titleDiv">
-  <div><img class="logo" src="/images/logo.png" alt="chars"/></div>
+  <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
   <!-- <span class="websiteName"> Chars </span> -->
 
   <!-- show different content depends on the status of user -->
@@ -53,7 +53,7 @@
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
-      <Button buttonLabel="login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0"/>
+      <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
       <!-- <a href="/login">Login</a> -->
     </div>
   {/if}
@@ -98,12 +98,12 @@
     align-items: center;
 
     /* & .websiteName { */
-      /* font-size: 40px; */
+    /* font-size: 40px; */
     /* } */
 
     & .logo {
       max-width: 140px;
-      width: 100%
+      width: 100%;
     }
 
     & .userNameLogoutDiv {
@@ -120,6 +120,7 @@
   .navBar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #b5c0d0;
     box-shadow: 0 5px 3px lightgray;
     height: 60px;
@@ -128,27 +129,45 @@
       list-style: none;
       margin: 0;
       display: flex;
-      gap: 15px;
+      gap: 50px;
     }
 
     & li {
       padding: 10px;
 
-      &:hover {
+      /* &:hover {
         background-color: rgba(255, 255, 255, 0.2);
-      }
+      } */
     }
 
     & a {
       color: white;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 600;
       text-decoration: none;
 
-      &.active {
+      /* &.active {
         text-decoration: underline;
-      }
+      } */
     }
+
+    /*  */
+    & a::before {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: #f5e8dd;
+
+      bottom: 0;
+      width: 0%;
+
+      transition: ease 200ms;
+    }
+
+    & a:hover::before {
+      width: 100%;
+    }
+    /*  */
 
     & .searchSection {
       margin: 0;
