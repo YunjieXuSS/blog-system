@@ -27,9 +27,7 @@
 
 </script>
 
-<div class="parent">
-  <PostArticleButton class="postButton"/>
-</div>
+  <PostArticleButton />
 
 <div class="mainBodyDiv">
   <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>

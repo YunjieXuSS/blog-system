@@ -3,7 +3,9 @@
 </script>
 
 <article class="article-container">
-  <img src={`/images/${article.imgUrl}`} alt="" class="article-image" />
+  {#if article.imgUrl}
+    <img src={`/images/${article.imgUrl}`} alt="" class="article-image" />
+  {/if}
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
   <p class="date">{article.createDate}</p>

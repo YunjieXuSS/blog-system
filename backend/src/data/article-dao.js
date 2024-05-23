@@ -33,10 +33,11 @@ export async function createArticle(articleData) {
   // Insert new article into database
   const db = await getDatabase();
   const dbResult = await db.run(
-    "INSERT INTO article(title, content, createDate) VALUES(?, ?, ?)",
+    "INSERT INTO article(title, content, createDate, updateDate, userId) VALUES(?, ?, ?, ?,?)",
     newArticle.title,
     newArticle.content,
-    newArticle.createDate
+    newArticle.createDate,
+    newArticle.userId
   );
 
   // Give the returned article an ID, which was created by the database, then return.
@@ -49,16 +50,13 @@ export async function createArticle(articleData) {
  *
  * @returns an array of all articles
  */
-export async function getArticles() {
+export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
-  const articles = await db.all("SELECT * FROM article");
+  const offset = (pageNumber - 1) * pageSize;
+  const articles = await db.all("SELECT * FROM article LIMIT ? OFFSET ?", pageSize, offset);
   return articles;
 }
 
-// // Get a list of articles with optional search and sort
-// export function getArticles({ title, content, createDate, sort, pageSize = 10, pageNumber = 1 }) {
-//   // ...
-// }
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
@@ -113,7 +111,6 @@ export async function getArticlesByUserName(userName) {
     "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName like ?",
     `%${userName}%`
   );
-  console.log(articles);
   return articles;
 }
 
@@ -123,8 +120,8 @@ export async function getArticlesByUserName(userName) {
  */
 const updateArticleSchema = yup
   .object({
-    title: yup.string().optional(),
-    content: yup.string().optional(),
+    title: yup.string().min(1).optional(),
+    content: yup.string().min(1).optional(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
     imgUrl: yup.string().optional()
   })
@@ -192,11 +189,16 @@ export async function deleteArticle(articleId) {
 }
 
 //Like an article
-export async function likeArticle(articleId) {
+export async function likeArticle(userId, articleId) {
   const db = await getDatabase();
+  const dbResult = await db.run("INSERT INTO like (userId, articleId) VALUES (?,?)", userId, articleId);
+  return dbResult.changes > 0;
 }
 
 //Unlike an article
-export async function unlikeArticle(articleId) {
+export async function unlikeArticle(userId, articleId) {
   const db = await getDatabase();
+  const dbResult = await db.run("DELETE FROM like WHERE userId = ? AND articleId = ?", userId, articleId);
+  console.log(dbResult);
+  return dbResult.changes > 0;
 }

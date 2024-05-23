@@ -1,40 +1,41 @@
 import express from "express";
-//import { ... } from "../../data/user-dao.js"; ----import the functions from the DAO file to process the requests
+import { createUser } from "../../data/user-dao.js";
 import { createUserJWT } from "../../utils/jwt-utils.js";
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
 import { getUserWithCredentials, getUserWithUsername } from "../../data/user-dao.js";
-import { createPasswordHashSalt } from "../../middleware/auth-middleware.js";
-
 const router = express.Router();
+import { avatarUploader } from "../../middleware/image-middleware.js";
+import { verifyUserExists } from "../../middleware/verifyExists-middleware.js";
+import fs from "fs";
+import path from "path";
 
 // Register user
-router.post("/register", createPasswordHashSalt, (req, res) => {
-  // test code
-  console.log("register",req.body);
-
-  //Get the salt and hash from middleware
-  const password_salt = req.password_salt;
-  const password_hash = req.password_hash;
-
-  // test code
-  console.log(password_salt);
-  console.log(password_hash);
-  // console.log("Successfull");
-
-  
-
-
-  //return the salt and hash
-  return res.status(200).json({ password_salt, password_hash });
+router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
+  const user = req.body;
+  if(req.file) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    user.avatar = "/images/" + req.file.fieldname + "-" + uniqueSuffix + path.extname(req.file.originalname);
+  }
+  try {
+    const newUser = await createUser(user);
+    delete newUser.password;
+    if(req.file) {
+      fs.writeFileSync("public"+ newUser.avatar, req.file.buffer);
+    }
+    return res.status(201).json(newUser);
+  } catch (err) {
+    console.log(err);
+    return res.status(422).send(err.errors);
+  }
 });
 
 // Login user
-router.post("/login", async(req, res) => {
+router.post("/login", async (req, res) => {
   const userName = req.body.userName;
   const password = req.body.password;
   if (!userName || !password)
     return res.status(422).json({ error: "Username and password are required." });
-  const user = await getUserWithCredentials(userName, password); 
+  const user = await getUserWithCredentials(userName, password);
   if (!user) return res.status(401).json({ error: "Invalid username or password." });
   delete user.password;
   return res
