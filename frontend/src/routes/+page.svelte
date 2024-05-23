@@ -28,9 +28,7 @@
 
 </script>
 
-<div class="parent">
-  <PostArticleButton class="postButton"/>
-</div>
+  <PostArticleButton />
 
 <div class="mainBodyDiv">
   <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
@@ -51,8 +49,4 @@
     display: flex;
     flex-wrap: wrap;
   } */
-
-.parent:global(.postButton) {
-    color: red;
-  }
 </style>

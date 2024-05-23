@@ -51,6 +51,7 @@ CREATE TABLE like(
     likeId INTEGER PRIMARY KEY,
     userId INTEGER NOT NULL,
     articleId INTEGER NOT NULL,
+    UNIQUE (userId, articleId),
     FOREIGN KEY (userId) REFERENCES user(userId),
     FOREIGN KEY (articleId) REFERENCES article(articleId)
 );

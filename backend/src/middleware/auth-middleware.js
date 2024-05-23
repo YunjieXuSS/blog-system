@@ -1,13 +1,14 @@
 // Middleware for authentication
 import { getUsernameFromJWT } from "../utils/jwt-utils.js";
 import bcrypt from "bcrypt";
+import { getUserWithUsername} from "../data/user-dao.js";
 
-export function authenticateUser(req, res, next) {
+export async function authenticateUser(req, res, next) {
   if (!req.cookies.authToken) return res.sendStatus(401);
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
-    const user = getUserWithUsername(userName);
-    if (!user || user.isDeleted) return res.sendStatus(401);
+    const user = await getUserWithUsername(userName);
+    if (!user) return res.sendStatus(401);
     req.user = user;
     next();
   } catch (err) {
@@ -20,7 +21,7 @@ export function authenticateAdmin(req, res, next) {
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
     const user = getUserWithUsername(userName);
-    if (!user || user.isDeleted) return res.sendStatus(401);
+    if (!user) return res.sendStatus(401);
     req.user = user;
     if (!user.isAdmin) return res.sendStatus(403);
     req.admin = user;
