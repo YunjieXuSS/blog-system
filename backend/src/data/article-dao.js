@@ -30,12 +30,6 @@ export async function createArticle(articleData) {
     stripUnknown: true
   });
 
-  // if(newArticle.imgUrl)
-  // const dbResult = await db.run(
-  //   "INSERT INTO article(imgUrl) VALUES(?)",
-  //   newArticle.imgUrl
-  
-
   // Insert new article into database
   const db = await getDatabase();
   const dbResult = await db.run(
@@ -56,16 +50,13 @@ export async function createArticle(articleData) {
  *
  * @returns an array of all articles
  */
-export async function getArticles() {
+export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
-  const articles = await db.all("SELECT * FROM article");
+  const offset = (pageNumber - 1) * pageSize;
+  const articles = await db.all("SELECT * FROM article LIMIT ? OFFSET ?", pageSize, offset);
   return articles;
 }
 
-// // Get a list of articles with optional search and sort
-// export function getArticles({ title, content, createDate, sort, pageSize = 10, pageNumber = 1 }) {
-//   // ...
-// }
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
