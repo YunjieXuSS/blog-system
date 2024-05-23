@@ -41,13 +41,13 @@
     bind:value={sortingCategory}
     on:change={sortingArticles(sortingCategory)}
   >
-    <option disabled selected value="">Sorting</option>
-    <option value="titleA-Z">Article Title A-Z</option>
-    <option value="titleZ-A">Article Title Z-A</option>
-    <option value="usernameA-Z">User Name A-Z</option>
-    <option value="usernameZ-A">User Name Z-A</option>
-    <option value="dateA-Z">Date A-Z </option>
-    <option value="dateZ-A">Date Z-A </option>
+    <option disabled selected value="">Sort by</option>
+    <option value="titleA-Z">Title a-z</option>
+    <option value="titleZ-A">Title z-a</option>
+    <option value="usernameA-Z">Author a-z</option>
+    <option value="usernameZ-A">Author z-a</option>
+    <option value="dateA-Z">Newest</option>
+    <option value="dateZ-A">Oldest</option>
   </select>
 </section>
 
@@ -60,8 +60,13 @@
   }
 
   select {
-    margin: 0;
-    font-size: 1.18rem;
+    /* REMOVE MARGIN 0 AND UNCOMMENT `margin: 50px 0 20px 0;` AFTER ARTICLE LIST IS DONE (otherwise it doesn't show) -jade */
+    margin: 0; 
+    /* margin: 50px 0 20px 0; */
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: gray;
     border: 1px solid gray;
     border-radius: 5px;
   }

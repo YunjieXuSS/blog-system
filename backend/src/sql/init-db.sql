@@ -11,21 +11,21 @@ CREATE TABLE user (
     userId INTEGER PRIMARY KEY,
     userName VARCHAR(64) UNIQUE NOT NULL,
     password VARCHAR(64) NOT NULL,
-    email VARCHAR(64) NOT NULL,
+    email VARCHAR(64) NOT NULL, 
     firstName VARCHAR(64) NOT NULL,
     lastName VARCHAR(64) NOT NULL,
     dateOfBirth DATE NOT NULL,
     description TEXT  DEFAULT "I know myself so well." NOT NULL,
     avatar VARCHAR(100),
-    isAdmin BOOLEAN NOT NULL
+    isAdmin BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 CREATE TABLE article(
     articleId INTEGER PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
     content TEXT NOT NULL,
-    createDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
+    createDate TIMESTAMP NOT NULL,
+    updateDate TIMESTAMP NOT NULL,
     imgUrl VARCHAR(100),
     userId INTEGER NOT NULL,
     FOREIGN KEY (userId) REFERENCES user(userId)
@@ -34,7 +34,7 @@ CREATE TABLE article(
 CREATE TABLE comment(
     commentId INTEGER PRIMARY KEY,
     content TEXT NOT NULL,
-    createDate DATETIME NOT NULL,
+    createDate TIMESTAMP NOT NULL,
     parentCommentId INTEGER,
     userId INTEGER NOT NULL,
     articleId INTEGER NOT NULL,

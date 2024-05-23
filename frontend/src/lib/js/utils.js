@@ -1,7 +1,6 @@
 import { PUBLIC_API_BASE_URL } from "$env/static/public";
 import { writable } from "svelte/store";
 export const articles =[];
-
 export const articleStore = writable(articles);
 
 export async function getPasswordHashSalt(user_password) {
@@ -36,6 +35,18 @@ export async function refreshPage(articleStore) {
     if (!response) return;//have to add some solution here
     const articles = await response.json();
     articleStore.set(articles);
-   
+   return articles;
 }
 
+export async function createAccount(user) {
+    //test code
+    //get password from argument,pass it in POST Fetch method, and get the result back
+    console.log("createAccount",user);
+    const result = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user) 
+    })
+    return result;
+
+}

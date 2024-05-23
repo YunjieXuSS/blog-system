@@ -8,8 +8,11 @@
   import { articleStore } from "../js/utils.js";
   import { searchArticles, refreshPage } from "../js/utils.js";
   import { onMount } from "svelte";
+  import Button from "$lib/components/Button.svelte";
 
   export let data;
+console.log("navi data",data);
+
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
   //The status of user
@@ -33,9 +36,9 @@
   }
   // Fetch articles on component mount
   // Avoid calling `fetch` eagerly during server side rendering — put your `fetch` calls inside `onMount` or a `load` function instead，
-  onMount(() => {
-    refreshPage(articleStore);
-  });
+  // onMount(() => {
+  //   refreshPage(articleStore);
+  // });
 
   async function handleSearch() {
     console.log("handleSearch");
@@ -44,20 +47,19 @@
 </script>
 
 <div class="titleDiv">
-  <span class="websiteName"> Chars </span>
+  <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
 
   <!-- show different content depends on the status of user -->
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
-      <a href="/login">Login</a>
+      <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
 
   {#if isLoggined == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi! {userName}</span>
+      <span class="userName"> Hi {userName}!</span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userIcon" />
       <button on:click={userLogout}>Logout</button>
     </div>
@@ -66,10 +68,10 @@
 <nav class="navBar">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
-    <li><a href="/" class:active={path === "/"}>Homepage</a></li>
+    <li><a href="/" class:active={path === "/"}>home</a></li>
     <li>
       <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
+        >profile</a
       >
     </li>
     <!-- browsing here to see the default Svelte 404 page. -->
@@ -79,14 +81,14 @@
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       <SearchBox bind:searchTerm on:input={handleSearch} />
-      <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
+     
     </div>
   {/if}
 </nav>
 
 <style>
   .titleDiv {
-    margin: 0;
+    margin: 0 30px 0 25px;
     height: 100px;
     background-color: white;
     padding: 0 20px 0 20px;
@@ -94,8 +96,9 @@
     justify-content: space-between;
     align-items: center;
 
-    & .websiteName {
-      font-size: 40px;
+    & .logo {
+      max-width: 140px;
+      width: 100%;
     }
 
     & .userNameLogoutDiv {
@@ -112,6 +115,7 @@
   .navBar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #b5c0d0;
     box-shadow: 0 5px 3px lightgray;
     height: 60px;
@@ -120,38 +124,56 @@
       list-style: none;
       margin: 0;
       display: flex;
-      gap: 15px;
+      gap: 50px;
     }
 
     & li {
       padding: 10px;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
     }
 
     & a {
       color: white;
-      font-size: 1.4rem;
-      font-weight: bold;
+      font-size: 1.3rem;
+      font-weight: 600;
       text-decoration: none;
 
-      &.active {
-        text-decoration: underline;
+      &.active::before {
+        content: "";
+        display: block;
+        height: 5px;
+        background-color: #f5e8dd;
+
+        bottom: 0;
+        width: 100%;
       }
+    }
+
+    & a::before {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: #f5e8dd;
+
+      bottom: 0;
+      width: 0%;
+
+      transition: ease 200ms;
+    }
+
+    & a:hover::before {
+      width: 100%;
     }
 
     & .searchSection {
       margin: 0;
-      width: 500px;
+      width: 400px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px;
 
       & .searchIcon {
-        height: 30px;
+        height: 20px;
       }
     }
   }
