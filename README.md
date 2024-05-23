@@ -1,4 +1,4 @@
-# Final project - A personal blogging system - {GROUP_NAME}
+# Final project - A personal blogging system - Charizard Coders
 
 This repository contains a starting point for your team's final project.
 
