@@ -1,9 +1,20 @@
-// This file contains the functions for processing requests to the user API. 
-//The user-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
+/**
+* This file contains the functions for processing requests to the user API. 
+* The user-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
+*/
+
 import yup from "yup";
 import { getDatabase } from "./database.js";
 import bcrypt from "bcrypt";
 
+
+/**
+ * Retrieves a user from the database using the provided username and password.
+ *
+ * @param {string} username - The username of the user to retrieve.
+ * @param {string} password - The password of the user to retrieve.
+ * @returns {Promise<Object|undefined>} - A promise that resolves to the user object if the credentials are valid, or undefined if the user is not found or the credentials are invalid.
+ */
 export async function getUserWithCredentials(username, password) {
   const db = await getDatabase();
   const user = await db.get("SELECT * from user WHERE username = ?", username );
@@ -14,8 +25,25 @@ export async function getUserWithCredentials(username, password) {
   return isValid ? user : undefined;
 }
 
+/**
+ * This schema defines a valid "create user" request.
+ * These requests must have a userName, password, email, fisrtName, lastName, dateOfBirth and avatar(URL). Description is optional.
+ */
+const createUserSchema = yup
+  .object({
+    userName: yup.string().required(),
+    password: yup.string().required(),
+    email: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    dateOfBirth: yup.date().required(),
+    avatar: yup.string().required(),
+    description: yup.string().optional(),
+  })
+  .required();
+
 export function createUser(user) {
-  // ...
+
 }
 
 export function getUserById(userId) {
@@ -25,12 +53,12 @@ export function getUserById(userId) {
 /**
  * Gets the user with the given username, if it exists.
  *
- * @param {string} username the username to search
+ * @param {string} userName the username to search
  * @returns the user with the matching username, or undefined.
  */
-export async function getUserWithUsername(username) {
+export async function getUserWithUsername(userName) {
   const db = await getDatabase();
-  return await db.get("SELECT * from user WHERE username = ?", username);
+  return await db.get("SELECT * from user WHERE userName = ?", userName);
 }
 
 /**
