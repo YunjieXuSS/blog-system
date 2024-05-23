@@ -1,8 +1,6 @@
 // Middleware for authentication
 import { getUsernameFromJWT } from "../utils/jwt-utils.js";
 import { getUserWithUsername } from "../data/user-dao.js";
-import bcrypt from "bcrypt";
-import { getUserWithUsername} from "../data/user-dao.js";
 
 export async function authenticateUser(req, res, next) {
   if (!req.cookies.authToken) return res.sendStatus(401);

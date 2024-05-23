@@ -6,6 +6,7 @@
 import yup from "yup";
 import { getDatabase } from "./database.js";
 import bcrypt from "bcrypt";
+import { createPasswordHashSalt } from "../utils/hash-utils.js";
 
 
 /**
@@ -31,18 +32,42 @@ export async function getUserWithCredentials(username, password) {
  */
 const createUserSchema = yup
   .object({
-    userName: yup.string().required(),
-    password: yup.string().required(),
+    userName: yup.string().min(3).trim().required(),
+    password: yup.string().min(8).required(),
     email: yup.string().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
+    firstName: yup.string().trim().required(),
+    lastName: yup.string().trim().required(),
     dateOfBirth: yup.date().required(),
     avatar: yup.string().required(),
     description: yup.string().optional(),
   })
   .required();
 
-export function createUser(user) {
+export async function createUser(user) {
+  const newUser = createUserSchema.validateSync(user, {
+    abortEarly: false,
+    stripUnknown: true
+  });
+
+  // Insert new user into database
+  const db = await getDatabase();
+  newUser.password = await createPasswordHashSalt(newUser.password);
+  if (newUser.description === undefined) newUser.description = "I know myself so well";
+  const dbResult = await db.run(
+    "INSERT INTO user(userName, password, email, firstName, lastName, dateOfBirth, avatar, description ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+    newUser.userName,
+    newUser.password,
+    newUser.email,
+    newUser.firstName,
+    newUser.lastName,
+    newUser.dateOfBirth,
+    newUser.avatar,
+    newUser.description
+  );
+
+  // Give the returned user an ID, which was created by the database, then return.
+  newUser.userId = dbResult.lastID;
+  return newUser;
 
 }
 
