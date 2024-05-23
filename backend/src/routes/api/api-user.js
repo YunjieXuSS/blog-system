@@ -18,6 +18,7 @@ router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
   }
   try {
     const newUser = await createUser(user);
+    delete newUser.password;
     if(req.file) {
       fs.writeFileSync("public"+ newUser.avatar, req.file.buffer);
     }
