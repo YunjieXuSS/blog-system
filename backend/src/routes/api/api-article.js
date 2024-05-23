@@ -8,7 +8,8 @@ import {
   getArticlesByContent,
   getArticlesByDate,
   getArticlesByUserName,
-  deleteArticle
+  deleteArticle,
+  createArticle
 } from "../../data/article-dao.js";
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.get("/search", async (req, res) => {
     } else if (req.query.createDate) {
       const articlesOfDate = await getArticlesByDate(req.query.createDate);
       return res.status(200).json(articlesOfDate);
-    }else if(req.query.userName){
+    } else if (req.query.userName) {
       const articlesOfUser = await getArticlesByUserName(req.query.userName);
       return res.status(200).json(articlesOfUser);
     }
@@ -49,7 +50,7 @@ router.get("/", async (req, res) => {
 });
 
 // get articles by articleId
-router.get("/:articleId", async(req,res)=>{
+router.get("/:articleId", async (req, res) => {
   try {
     const articles = await getArticlesById(req.params.articleId);
     return res.status(200).json(articles);
@@ -58,11 +59,21 @@ router.get("/:articleId", async(req,res)=>{
   }
 });
 
+//create a new article if the user is logged in
+//POST /api/userarticles - Creates a new customer.
+router.post("/", authenticateUser, async (req, res) => {
+  const userId = req.user.userId;
+    const newArticle = await createArticle(req.body);
+    if(newArticle)
+    return res.status(201).json(newArticle);
+
+});
+
 /**
  * DELETE /api/articles/:articleId - Deletes the article with the given id, if found. Either way,
  * returns a 204 (No Content) response.
  */
-router.delete("/:articleId", async(req, res) =>{
+router.delete("/:articleId", async (req, res) => {
   await deleteArticle(req.params.articleId);
   return res.sendStatus(204);
 });

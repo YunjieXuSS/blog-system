@@ -30,13 +30,20 @@ export async function createArticle(articleData) {
     stripUnknown: true
   });
 
+  // if(newArticle.imgUrl)
+  // const dbResult = await db.run(
+  //   "INSERT INTO article(imgUrl) VALUES(?)",
+  //   newArticle.imgUrl
+  
+
   // Insert new article into database
   const db = await getDatabase();
   const dbResult = await db.run(
-    "INSERT INTO article(title, content, createDate) VALUES(?, ?, ?)",
+    "INSERT INTO article(title, content, createDate, updateDate, userId) VALUES(?, ?, ?, ?,?)",
     newArticle.title,
     newArticle.content,
-    newArticle.createDate
+    newArticle.createDate,
+    newArticle.userId
   );
 
   // Give the returned article an ID, which was created by the database, then return.
@@ -121,8 +128,8 @@ export async function getArticlesByUserName(userName) {
  */
 const updateArticleSchema = yup
   .object({
-    title: yup.string().optional(),
-    content: yup.string().optional(),
+    title: yup.string().min(1).optional(),
+    content: yup.string().min(1).optional(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
     imgUrl: yup.string().optional()
   })

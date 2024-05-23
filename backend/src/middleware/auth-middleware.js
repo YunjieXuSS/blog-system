@@ -7,7 +7,7 @@ export function authenticateUser(req, res, next) {
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
     const user = getUserWithUsername(userName);
-    if (!user || user.isDeleted) return res.sendStatus(401);
+    if (!user) return res.sendStatus(401);
     req.user = user;
     next();
   } catch (err) {
