@@ -9,7 +9,7 @@
   <input
     type="text"
     id="search-field"
-    placeholder="Enter Search Term"
+    placeholder="Search"
     autocomplete="off"
     bind:value={searchTerm}
     on:input
@@ -23,7 +23,7 @@
     width: 53%;
     display: flex;
     align-items: center;
-    margin: 0 0 0 0;
+    margin: 0 40px 0 0;
     background-color: white;
     border: 1px solid gray;
     border-radius: 5px;
@@ -33,7 +33,13 @@
   #search-field {
     width: 100%;
     height: 80%;
-    font-size: 1.3rem;
-    border:transparent;
+    border-radius: 5px;
+    border: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: gray;
+    padding: 8px;
+    margin: 0;
   }
 </style>
