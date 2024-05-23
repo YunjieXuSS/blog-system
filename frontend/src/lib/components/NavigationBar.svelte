@@ -1,6 +1,7 @@
 <script>
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
+  import { invalidateAll } from "$app/navigation";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
@@ -22,7 +23,13 @@
   // $:console.log("Navi layer",selectedCategory);
 
   // For Search Input
+  // If user delete all the content in search box , refresh the page
   let searchTerm = "";
+  $: if (searchTerm.trim() === "") {
+    console.log("if searchTerm = null");
+
+    refreshpage();
+  }
 
   function userLogout() {
     //..
@@ -44,6 +51,17 @@
     // testing code
     // console.log("store in articleStore",$articleStore);
     return articles;
+  }
+
+  async function refreshpage() {
+    console.log("refresh page start");
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
+    if(!response) return ;//have to add some solution here
+    const articles = await response.json();
+    // testing coded
+    // console.log(articles);
+    articleStore.set(articles);
+    // console.log(articles);
   }
 </script>
 
@@ -80,11 +98,11 @@
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
-  <div class="searchSection">
-    <SearchMenu bind:selectedCategory />
-    <SearchBox bind:searchTerm on:input={searchArticles(selectedCategory, searchTerm)} />
-    <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
-  </div>
+    <div class="searchSection">
+      <SearchMenu bind:selectedCategory />
+      <SearchBox bind:searchTerm on:input={searchArticles(selectedCategory, searchTerm)} />
+      <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
+    </div>
   {/if}
 </nav>
 
