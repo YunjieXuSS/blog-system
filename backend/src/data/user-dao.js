@@ -30,7 +30,7 @@ export function getUserById(userId) {
  */
 export async function getUserWithUsername(username) {
   const db = await getDatabase();
-  return await db.get("SELECT * from user WHERE username = ?", username);
+  return await db.get("SELECT * from user WHERE userName = ?", username);
 }
 
 /**
