@@ -9,7 +9,7 @@ export let selectedCategory;
   <select class="menu" name="menu" id="menu" bind:value={selectedCategory} >
     <option disabled selected value="">Select a category</option>
     <option value="title">Article Title</option>
-    <option value="username">User Name</option>
+    <option value="userName">User Name</option>
     <option value="date">Date</option>
   </select>
 </section>
@@ -17,7 +17,7 @@ export let selectedCategory;
 <style>
   .menu-cont {
     height: 40px;
-    width: 35%;
+    width: 47%;
     display: flex;
     margin: 0 10px 0 0;
   }
