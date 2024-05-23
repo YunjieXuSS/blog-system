@@ -1,4 +1,5 @@
 import { PUBLIC_API_BASE_URL } from "$env/static/public";
+import{ARTICLES_URL} from "../lib/js/apiUrls.js";
 
 
 
@@ -15,16 +16,12 @@ import { PUBLIC_API_BASE_URL } from "$env/static/public";
 //   }
 
 
-export async function load({ fetch }) {
-    // testing code
-    // console.log("Start Searching Articles");
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`, {
-        method: "GET",
-    });
-    const articles = await response.json();
-    // testing code
-    // console.log(articles);
-    
-
-    return { articles };
-}
+// export async function load({ fetch }) {
+//     console.log("Start Searching Articles");
+//     const response = await fetch(`${ARTICLES_URL}`, {
+//         method: "GET",
+//     });
+//     const articles = await response.json();
+//     console.log(articles);
+//     return { articles };
+// }

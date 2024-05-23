@@ -32,9 +32,7 @@ router.get("/search", async (req, res) => {
       const articlesOfDate = await getArticlesByDate(req.query.createDate);
       return res.status(200).json(articlesOfDate);
     } else if (req.query.userName) {
-      console.log("here");
       const articlesOfUser = await getArticlesByUserName(req.query.userName);
-      console.log("articles:", articlesOfUser);
       return res.status(200).json(articlesOfUser);
     }
   } catch (error) {
@@ -60,6 +58,16 @@ router.get("/:articleId", async (req, res) => {
   } catch (error) {
     return res.status(404).json({ error: "Can't find articles." });
   }
+});
+
+//create a new article if the user is logged in
+//POST /api/userarticles - Creates a new customer.
+router.post("/", authenticateUser, async (req, res) => {
+  const userId = req.user.userId;
+    const newArticle = await createArticle(req.body);
+    if(newArticle)
+    return res.status(201).json(newArticle);
+
 });
 
 /**
