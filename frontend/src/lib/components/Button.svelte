@@ -4,23 +4,23 @@
   export let buttonLabel;
   export let buttonPath;
   export let bckgColour;
+  export let txtColour = "white";
+  export let borderRadius = "4px";
 </script>
 
-<a href={buttonPath}><button style="background-color:{bckgColour}">{buttonLabel}</button></a>
+<a href={buttonPath}><button style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}">{buttonLabel}</button></a>
 
 <style>
   button {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
     border-style: none;
     box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 800;
+    cursor: pointer;
     line-height: 1.5;
     margin: 0;
-    max-width: 150px;
+    max-width: 200px;
     min-height: 45px;
     min-width: 100px;
     padding: 9px 20px 8px;
@@ -29,8 +29,7 @@
     width: 100%;
   }
 
-  button:hover,
-  button:focus {
+  button:hover {
     opacity: 0.75;
   }
 

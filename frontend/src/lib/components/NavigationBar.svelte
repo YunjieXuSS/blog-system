@@ -8,6 +8,7 @@
   import { articleStore } from "../js/utils.js";
   import { searchArticles, refreshPage } from "../js/utils.js";
   import { onMount } from "svelte";
+  import Button from "$lib/components/Button.svelte";
 
   export let data;
   $: path = $page.url.pathname;
@@ -52,7 +53,8 @@
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
-      <a href="/login">Login</a>
+      <Button buttonLabel="login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0"/>
+      <!-- <a href="/login">Login</a> -->
     </div>
   {/if}
 
@@ -67,10 +69,10 @@
 <nav class="navBar">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
-    <li><a href="/" class:active={path === "/"}>Homepage</a></li>
+    <li><a href="/" class:active={path === "/"}>home</a></li>
     <li>
       <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
+        >profile</a
       >
     </li>
     <!-- browsing here to see the default Svelte 404 page. -->
@@ -140,7 +142,7 @@
     & a {
       color: white;
       font-size: 1.4rem;
-      font-weight: bold;
+      font-weight: 600;
       text-decoration: none;
 
       &.active {
