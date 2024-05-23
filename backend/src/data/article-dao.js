@@ -12,6 +12,7 @@ const createArticleSchema = yup
     title: yup.string().required(),
     content: yup.string().required(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
+    updateData:yup.date().default(() => new Date()),
     imgUrl: yup.string().optional()
   })
   .required();
@@ -33,12 +34,15 @@ export async function createArticle(articleData) {
   // Insert new article into database
   const db = await getDatabase();
   const dbResult = await db.run(
-    "INSERT INTO article(title, content, createDate, updateDate, userId) VALUES(?, ?, ?, ?,?)",
+    "INSERT INTO article(title, content, createDate, updateDate, imgUrl, userId) VALUES(?, ?, ?, ?,?)",
     newArticle.title,
     newArticle.content,
     newArticle.createDate,
-    newArticle.userId
+    newArticle.updateData,
+    newArticle.imgUrl,
+    newArticle.userId 
   );
+  console.log('Article created successfully');
 
   // Give the returned article an ID, which was created by the database, then return.
   newArticle.articleId = dbResult.lastID;
@@ -47,20 +51,29 @@ export async function createArticle(articleData) {
 
 /**
  * Retrieves an array of all articles.
- *
- * @returns an array of all articles
+ * 10 articles in a page and displaying descendingly
+ * @returns an array of all articles 
  */
 export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
-  const articles = await db.all("SELECT * FROM article LIMIT ? OFFSET ?", pageSize, offset);
+  const articles = await db.all("SELECT * FROM article ORDER BY updateDate DESC LIMIT ? OFFSET ?", pageSize, offset);
   return articles;
 }
+
+//Get all articles and display them ascendingly base on their updateDate
+//from oldest to the newest
+export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
+  const db = await getDatabase();
+  const offset = (pageNumber - 1) * pageSize;
+  const articles = await db.all("SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?", pageSize, offset);
+  return articles;
+}
+
 
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
-  console.log(articlesOfUser);
   return articlesOfUser;
 }
 

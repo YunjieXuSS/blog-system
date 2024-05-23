@@ -9,6 +9,7 @@ import {
   getArticlesByDate,
   getArticlesByUserName,
   deleteArticle,
+  createArticle,
   likeArticle,
   unlikeArticle
 } from "../../data/article-dao.js";
@@ -61,7 +62,7 @@ router.get("/:articleId", async (req, res) => {
 });
 
 //create a new article if the user is logged in
-//POST /api/userarticles - Creates a new customer.
+//POST /api/userarticles - Creates a new article.
 router.post("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
     const newArticle = await createArticle(req.body);
