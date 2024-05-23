@@ -11,6 +11,8 @@
   import Button from "$lib/components/Button.svelte";
 
   export let data;
+console.log("navi data",data);
+
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
   //The status of user
@@ -34,9 +36,9 @@
   }
   // Fetch articles on component mount
   // Avoid calling `fetch` eagerly during server side rendering — put your `fetch` calls inside `onMount` or a `load` function instead，
-  onMount(() => {
-    refreshPage(articleStore);
-  });
+  // onMount(() => {
+  //   refreshPage(articleStore);
+  // });
 
   async function handleSearch() {
     console.log("handleSearch");
