@@ -3,6 +3,7 @@
 <script>
   export let buttonLabel;
   export let buttonPath;
+  export let ref;
 </script>
 
 <a href={buttonPath}><button>{buttonLabel}</button></a>
@@ -10,14 +11,14 @@
 <style>
   button {
     background-color: #B5C0D0;
-    border-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     border-style: none;
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     color: #fff;
     cursor: pointer;
-    display: inline-block;
-    /* font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif; */
-    font-size: 16px;
+    /* display: inline-block; */
+    font-size: 18px;
     font-weight: 700;
     line-height: 1.5;
     margin: 0;

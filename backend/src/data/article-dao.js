@@ -191,11 +191,11 @@ export async function deleteArticle(articleId) {
 }
 
 //Like an article
-export function likeArticle(articleId) {
-  
+export async function likeArticle(articleId) {
+  const db = await getDatabase();
 }
 
 //Unlike an article
-export function unlikeArticle(articleId) {
-  //...
+export async function unlikeArticle(articleId) {
+  const db = await getDatabase();
 }
