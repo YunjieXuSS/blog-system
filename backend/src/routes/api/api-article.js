@@ -9,7 +9,8 @@ import {
   getArticlesByDate,
   getArticlesByUserName,
   deleteArticle,
-  createArticle
+  likeArticle,
+  unlikeArticle
 } from "../../data/article-dao.js";
 const router = express.Router();
 
@@ -89,13 +90,15 @@ router.post("/:articleId/comments", (req, res) => {
 });
 
 // Like article
-router.post("/:articleId/like", authenticateUser, (req, res) => {
-  // ...
+router.post("/:articleId/like", authenticateUser, async(req, res) => {
+  await likeArticle(req.params.articleId);
+  return res.sendStatus(200);
 });
 
 // Unlike article
-router.post("/:articleId/unlike", authenticateUser, (req, res) => {
-  // ...
+router.post("/:articleId/unlike", authenticateUser, async(req, res) => {
+  await unlikeArticle(req.params.articleId);
+  return res.sendStatus(200);
 });
 
 export default router;
