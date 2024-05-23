@@ -99,16 +99,17 @@ export async function getArticlesByDate(createDate) {
  */
 export async function getArticlesById(articleId) {
   const db = await getDatabase();
-  const article = await db.get("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
+  const article = await db.all("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
   return article;
 }
 
 export async function getArticlesByUserName(userName) {
   const db = await getDatabase();
+  const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
-  const articles = await db.get(
-    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName = ?",
-    userName
+  const articles = await db.all(
+    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE LOWER(u.userName) LIKE ?",
+    `%${lowercaseUserName}%`
   );
   return articles;
 }
