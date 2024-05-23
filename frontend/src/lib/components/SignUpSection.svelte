@@ -7,4 +7,4 @@
 <p>Welcome to chars!</p>
 <p>Join our community by creating a free account.</p>
 
-<Button buttonLable="Create Account" buttonPath="/signup"/>
+<Button buttonLabel="Create Account" buttonPath="/signup"/>

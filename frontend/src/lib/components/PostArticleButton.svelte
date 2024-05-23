@@ -4,4 +4,4 @@
   import Button from "$lib/components/Button.svelte";
 </script>
 
-<Button buttonLable="✚ New Post"/>
+<Button buttonLabel="✚ New Post" buttonPath="/articles/create"/>
