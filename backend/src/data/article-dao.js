@@ -188,11 +188,16 @@ export async function deleteArticle(articleId) {
 }
 
 //Like an article
-export async function likeArticle(articleId) {
+export async function likeArticle(userId, articleId) {
   const db = await getDatabase();
+  const dbResult = await db.run("INSERT INTO like (userId, articleId) VALUES (?,?)", userId, articleId);
+  return dbResult.changes > 0;
 }
 
 //Unlike an article
-export async function unlikeArticle(articleId) {
+export async function unlikeArticle(userId, articleId) {
   const db = await getDatabase();
+  const dbResult = await db.run("DELETE FROM like WHERE userId = ? AND articleId = ?", userId, articleId);
+  console.log(dbResult);
+  return dbResult.changes > 0;
 }

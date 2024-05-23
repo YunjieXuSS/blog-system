@@ -90,14 +90,20 @@ router.post("/:articleId/comments", (req, res) => {
 });
 
 // Like article
-router.post("/:articleId/like", authenticateUser, async(req, res) => {
-  await likeArticle(req.params.articleId);
-  return res.sendStatus(200);
+router.post("/:articleId/like", authenticateUser, async (req, res) => {
+  try {
+    await likeArticle(req.user.userId, req.params.articleId);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: "Article does not exist." });
+  }
 });
 
 // Unlike article
-router.post("/:articleId/unlike", authenticateUser, async(req, res) => {
-  await unlikeArticle(req.params.articleId);
+router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
+  const result = await unlikeArticle(req.user.userId, req.params.articleId);
+  if (!result) return res.status(404).json("Article does not exist");
   return res.sendStatus(200);
 });
 
