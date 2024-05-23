@@ -3,13 +3,13 @@ import express from "express";
 import { createUserJWT } from "../../utils/jwt-utils.js";
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
 import { getUserWithCredentials, getUserWithUsername } from "../../data/user-dao.js";
-import { createPasswordHashSalt } from "../../middleware/auth-middleware.js";
+import { createPasswordHashSalt } from "../../utils/hash-utils.js";
 
 const router = express.Router();
 
 // Register user
 router.post("/register", createPasswordHashSalt, (req, res) => {
-  
+
 });
 
 // Login user
