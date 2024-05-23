@@ -4,9 +4,11 @@
   import {USER_URL} from "../../lib/js/apiUrls.js";
   let userName;
   let password;
+  let confirmPassword;
   let isvalidation = false;
   let loginFailed = false;
   $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
+  $: passwordObj = {password}
   async function processLogin() {
     console.log("Processing login start");
     const response = await fetch(`${USER_URL}/login`, {
@@ -35,6 +37,8 @@
     }
     return { result: true, errorMsg: "" };
   }
+  import { validateConfirmPassword } from "../js/validation.js";
+  $: validateConfirmPasswordFn = validateConfirmPassword(passwordObj)
 </script>
 
 <div class="login-container">
@@ -57,6 +61,14 @@
       validate={validatePassword}
       bind:value={password}
     />
+
+    <InputBar
+    label="PASSWORD:"
+    type="password"
+    placeholder="Password (8+ characters)"
+    validate={validateConfirmPasswordFn}
+    bind:value={confirmPassword}
+  />
     <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}>LOGIN</button>
   </div>
   <div class="login-error" style = "display:{loginFailed?'block':'none'}">Invalid password or username. Try again.</div>

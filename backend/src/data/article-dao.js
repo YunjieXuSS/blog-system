@@ -106,11 +106,12 @@ export async function getArticlesById(articleId) {
 }
 
 export async function getArticlesByUserName(userName) {
+  console.log("dao-username",userName)
   const db = await getDatabase();
   // SQL query to join user and article tables and fetch articles by userName
-  const articles = await db.get(
-    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName = ?",
-    userName
+  const articles = await db.all(
+    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName like ?",
+    `%${userName}%`
   );
   console.log(articles);
   return articles;
