@@ -2,12 +2,13 @@
 import { getUsernameFromJWT } from "../utils/jwt-utils.js";
 import { getUserWithUsername } from "../data/user-dao.js";
 import bcrypt from "bcrypt";
+import { getUserWithUsername} from "../data/user-dao.js";
 
-export function authenticateUser(req, res, next) {
+export async function authenticateUser(req, res, next) {
   if (!req.cookies.authToken) return res.sendStatus(401);
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
-    const user = getUserWithUsername(userName);
+    const user = await getUserWithUsername(userName);
     if (!user) return res.sendStatus(401);
     req.user = user;
     next();

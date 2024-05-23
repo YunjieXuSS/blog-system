@@ -56,9 +56,9 @@ export function getUserById(userId) {
  * @param {string} userName the username to search
  * @returns the user with the matching username, or undefined.
  */
-export async function getUserWithUsername(userName) {
+export async function getUserWithUsername(username) {
   const db = await getDatabase();
-  return await db.get("SELECT * from user WHERE userName = ?", userName);
+  return await db.get("SELECT * from user WHERE userName = ?", username);
 }
 
 /**

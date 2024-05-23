@@ -31,10 +31,10 @@ router.get("/search", async (req, res) => {
     } else if (req.query.createDate) {
       const articlesOfDate = await getArticlesByDate(req.query.createDate);
       return res.status(200).json(articlesOfDate);
-    }else if(req.query.userName){
+    } else if (req.query.userName) {
       console.log("here");
       const articlesOfUser = await getArticlesByUserName(req.query.userName);
-      console.log("articles:",articlesOfUser);
+      console.log("articles:", articlesOfUser);
       return res.status(200).json(articlesOfUser);
     }
   } catch (error) {
@@ -53,7 +53,7 @@ router.get("/", async (req, res) => {
 });
 
 // get articles by articleId
-router.get("/:articleId", async(req,res)=>{
+router.get("/:articleId", async (req, res) => {
   try {
     const articles = await getArticlesById(req.params.articleId);
     return res.status(200).json(articles);
@@ -66,7 +66,7 @@ router.get("/:articleId", async(req,res)=>{
  * DELETE /api/articles/:articleId - Deletes the article with the given id, if found. Either way,
  * returns a 204 (No Content) response.
  */
-router.delete("/:articleId", async(req, res) =>{
+router.delete("/:articleId", async (req, res) => {
   await deleteArticle(req.params.articleId);
   return res.sendStatus(204);
 });
@@ -82,14 +82,20 @@ router.post("/:articleId/comments", (req, res) => {
 });
 
 // Like article
-router.post("/:articleId/like", authenticateUser, async(req, res) => {
-  await likeArticle(req.params.articleId);
-  return res.sendStatus(200);
+router.post("/:articleId/like", authenticateUser, async (req, res) => {
+  try {
+    await likeArticle(req.user.userId, req.params.articleId);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: "Article does not exist." });
+  }
 });
 
 // Unlike article
-router.post("/:articleId/unlike", authenticateUser, async(req, res) => {
-  await unlikeArticle(req.params.articleId);
+router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
+  const result = await unlikeArticle(req.user.userId, req.params.articleId);
+  if (!result) return res.status(404).json("Article does not exist");
   return res.sendStatus(200);
 });
 
