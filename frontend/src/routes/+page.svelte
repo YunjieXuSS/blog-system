@@ -4,6 +4,7 @@
   import { articleStore } from "../lib/js/test.js";
   import ArticleCard from "../lib/components/ArticleCard.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
 
   //testing code for hash
@@ -27,6 +28,10 @@
 
 </script>
 
+<div class="parent">
+  <PostArticleButton class="postButton"/>
+</div>
+
 <div class="mainBodyDiv">
   <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
   <div class="articleDiv">
@@ -46,4 +51,8 @@
     display: flex;
     flex-wrap: wrap;
   } */
+
+.parent:global(.postButton) {
+    color: red;
+  }
 </style>
