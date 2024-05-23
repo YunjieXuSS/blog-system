@@ -46,21 +46,18 @@
 
 <div class="titleDiv">
   <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
-  <!-- <span class="websiteName"> Chars </span> -->
 
   <!-- show different content depends on the status of user -->
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
       <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
-      <!-- <a href="/login">Login</a> -->
     </div>
   {/if}
 
   {#if isLoggined == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi! {userName}</span>
+      <span class="userName"> Hi {userName}!</span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userIcon" />
       <button on:click={userLogout}>Logout</button>
     </div>
@@ -89,17 +86,13 @@
 
 <style>
   .titleDiv {
-    margin: 0;
+    margin: 0 30px 0 25px;
     height: 100px;
     background-color: white;
     padding: 0 20px 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    /* & .websiteName { */
-    /* font-size: 40px; */
-    /* } */
 
     & .logo {
       max-width: 140px;
@@ -134,10 +127,6 @@
 
     & li {
       padding: 10px;
-
-      /* &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      } */
     }
 
     & a {
@@ -146,12 +135,17 @@
       font-weight: 600;
       text-decoration: none;
 
-      /* &.active {
-        text-decoration: underline;
-      } */
+      &.active::before {
+        content: "";
+        display: block;
+        height: 5px;
+        background-color: #f5e8dd;
+
+        bottom: 0;
+        width: 100%;
+      }
     }
 
-    /*  */
     & a::before {
       content: "";
       display: block;
@@ -167,7 +161,6 @@
     & a:hover::before {
       width: 100%;
     }
-    /*  */
 
     & .searchSection {
       margin: 0;
@@ -178,7 +171,7 @@
       padding: 8px;
 
       & .searchIcon {
-        height: 30px;
+        height: 20px;
       }
     }
   }

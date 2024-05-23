@@ -9,7 +9,7 @@
   <input
     type="text"
     id="search-field"
-    placeholder="Enter Search Term"
+    placeholder="Search"
     autocomplete="off"
     bind:value={searchTerm}
     on:input
@@ -22,12 +22,15 @@
     width: 55%;
     display: flex;
     align-items: center;
-    margin: 0 0 0 0;
+    margin: 0 25px 0 0;
   }
 
   #search-field {
     width: 100%;
-    font-size: 1.3rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: gray;
     border: 1px solid gray;
     border-radius: 5px;
     padding: 8px;
