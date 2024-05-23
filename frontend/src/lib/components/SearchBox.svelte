@@ -14,23 +14,26 @@
     bind:value={searchTerm}
     on:input
   />
+  <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
 </div>
 
 <style>
   #search-input-cont {
-    height: 40px;
-    width: 55%;
+    height: 30px;
+    width: 53%;
     display: flex;
     align-items: center;
     margin: 0 0 0 0;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
   }
 
   #search-field {
     width: 100%;
+    height: 80%;
     font-size: 1.3rem;
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 8px;
-    margin: 0 10px 0;
+    border:transparent;
   }
 </style>
