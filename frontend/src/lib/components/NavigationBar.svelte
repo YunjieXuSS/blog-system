@@ -79,7 +79,7 @@
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       <SearchBox bind:searchTerm on:input={handleSearch} />
-      <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
+     
     </div>
   {/if}
 </nav>
@@ -164,7 +164,7 @@
 
     & .searchSection {
       margin: 0;
-      width: 500px;
+      width: 400px;
       display: flex;
       justify-content: space-between;
       align-items: center;

@@ -17,7 +17,7 @@ export let selectedCategory;
 <style>
   .menu-cont {
     height: 40px;
-    width: 35%;
+    width: 47%;
     display: flex;
     margin: 0 10px 0 0;
   }
