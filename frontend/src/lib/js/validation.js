@@ -44,20 +44,7 @@ export function validateRegisterUserName(userName) {
     } 
     return { result: true, errorMsg: "" };
   }
-
-
-  // export function validateConfirmPassword(passwordObj) {
-  //   console.log("passwordObj",passwordObj);
-  //   return function(value) {
-  //     if (!value) return { result: false, errorMsg: "Password cannot be empty" };
-  //     if (value !== passwordObj.password) {
-  //       return { result: false, errorMsg: "Password does not match" };
-  //     }
-  //     return { result: true, errorMsg: "" };
-  //   }
-  // }
-
-
+  
   export function validateRegisterDate(date) {
     if (!date) {
       return { result: false, errorMsg: "Date cannot be empty." };
