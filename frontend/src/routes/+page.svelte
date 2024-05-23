@@ -5,25 +5,12 @@
   import SortingSection from "../lib/components/SortingSection.svelte";
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
+  export let data;
+  articleStore.set(data.articles);
 
-  //testing code for hash
-  /*   let result = {};
-  let salt, hash;
-  async function clickBTN() {
-    const response = await getPasswordHashSalt("password");
-    result = await response.json();
-    console.log(response);
-    console.log(result);
-    salt = result.password_salt;
-    hash = result.password_hash;
-    console.log(hash);
-  } */
-
-  // $: console.log($articleStore);
 
   let sortingCategory = ""; 
   // $: console.log(sortingCategory);
-  // $: console.log("+page",$articleStore);
 
 </script>
 
