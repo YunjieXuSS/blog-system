@@ -44,7 +44,8 @@
 </script>
 
 <div class="titleDiv">
-  <span class="websiteName"> Chars </span>
+  <div><img class="logo" src="/images/logo.png" alt="chars"/></div>
+  <!-- <span class="websiteName"> Chars </span> -->
 
   <!-- show different content depends on the status of user -->
   {#if isLoggined == false}
@@ -94,8 +95,13 @@
     justify-content: space-between;
     align-items: center;
 
-    & .websiteName {
-      font-size: 40px;
+    /* & .websiteName { */
+      /* font-size: 40px; */
+    /* } */
+
+    & .logo {
+      max-width: 140px;
+      width: 100%
     }
 
     & .userNameLogoutDiv {
