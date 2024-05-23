@@ -20,8 +20,7 @@ CREATE TABLE user (
     dateOfBirth DATE NOT NULL,
     description TEXT  DEFAULT "I know myself so well." NOT NULL,
     avatar VARCHAR(100),
-    isAdmin BOOLEAN NOT NULL,
-    isDeleted BOOLEAN DEFAULT FALSE NOT NULL
+    isAdmin BOOLEAN NOT NULL
 );
 
 CREATE TABLE article(
@@ -42,8 +41,9 @@ CREATE TABLE comment(
     parentCommentId INTEGER,
     userId INTEGER NOT NULL,
     articleId INTEGER NOT NULL,
-    FOREIGN KEY (userId) REFERENCES user(userId),
-    FOREIGN KEY (articleId) REFERENCES article(articleId),
+    isDeleted BOOLEAN DEFAULT FALSE NOT NULL,
+    FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE,
+    FOREIGN KEY (articleId) REFERENCES article(articleId) ON DELETE CASCADE,
     FOREIGN KEY (parentCommentId) REFERENCES comment(commentId)
 );
 
@@ -52,16 +52,16 @@ CREATE TABLE like(
     userId INTEGER NOT NULL,
     articleId INTEGER NOT NULL,
     FOREIGN KEY (userId) REFERENCES user(userId),
-    FOREIGN KEY (articleId) REFERENCES article(articleId)
+    FOREIGN KEY (articleId) REFERENCES article(articleId) ON DELETE CASCADE
 );
 
 -- Insert mock data
-INSERT INTO user (userName, password, email, firstName, lastName, dateOfBirth, avatar, isAdmin,isDeleted) VALUES
-('john_doe', '$2b$12$Yv/Cb6.FKpK6CNZRvKrCBeTNjFK1pvyHMdcaCvXQBBmp1xZSxDpei', 'john.doe@example.com', 'John', 'Doe', '1985-06-15', '/images/avatar1.jpg', FALSE, FALSE),
-('jane_smith', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', '/images/avatar2.jpg', TRUE, FALSE),
-('alice_jones', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'alice.jones@example.com', 'Alice', 'Jones', '1978-12-05', '/images/avatar3.jpg', FALSE, FALSE),
-('bob_brown', '$2b$12$9yuOvONQDqm5.YeITAd.L.FsyDhIblipXrl3vddN.BzjM1CWCsgIm', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', '/images/avatar4.jpg', FALSE, FALSE),
-('john_snow', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'john.jones@example.com', 'John', 'Snow', '1978-12-05', '/images/avatar3.jpg', FALSE, FALSE);
+INSERT INTO user (userName, password, email, firstName, lastName, dateOfBirth, avatar, isAdmin) VALUES
+('john_doe', '$2b$12$Yv/Cb6.FKpK6CNZRvKrCBeTNjFK1pvyHMdcaCvXQBBmp1xZSxDpei', 'john.doe@example.com', 'John', 'Doe', '1985-06-15', '/images/avatar1.jpg', FALSE),
+('jane_smith', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', '/images/avatar2.jpg', TRUE),
+('alice_jones', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'alice.jones@example.com', 'Alice', 'Jones', '1978-12-05', '/images/avatar3.jpg', FALSE),
+('bob_brown', '$2b$12$9yuOvONQDqm5.YeITAd.L.FsyDhIblipXrl3vddN.BzjM1CWCsgIm', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', '/images/avatar4.jpg', FALSE),
+('john_snow', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'john.jones@example.com', 'John', 'Snow', '1978-12-05', '/images/avatar3.jpg', FALSE);
 
 -- Insert mock data into article table
 INSERT INTO article (articleId, title, content, createDate, updateDate, imgUrl, userId) VALUES
