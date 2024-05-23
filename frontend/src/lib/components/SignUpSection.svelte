@@ -1,5 +1,4 @@
 <!-- A component for the area right of the log in component. Contains a button that takes the user to the create account page -->
-
 <script>
     import Button from "$lib/components/Button.svelte";
 </script>

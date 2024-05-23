@@ -28,5 +28,33 @@ export async function getPasswordHashSalt(user_password) {
 
 }
 
-//test code
-// postPassword();
+
+export async function searchArticles(articleStore,selectedCategory, searchTerm) {
+    console.log("Start Searching Articles");
+    const response = await fetch(
+      `${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`,
+      {
+        method: "GET"
+      }
+    );
+    const articles = await response.json();
+    // testing code
+    // console.log(articles);
+    articleStore.set(articles);
+    // testing code
+    // console.log("store in articleStore",$articleStore);
+    return articleStore;
+  }
+
+  export async function refreshPage(articleStore) {
+    console.log("refresh page start");
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
+    if(!response) return ;//have to add some solution here
+    const articles = await response.json();
+    // testing coded
+    // console.log(articles);
+    articleStore.set(articles);
+    // console.log(articles);
+    return articleStore;
+  }
+

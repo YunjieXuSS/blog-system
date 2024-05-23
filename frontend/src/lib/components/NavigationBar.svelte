@@ -5,8 +5,10 @@
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
-  import { writable } from "svelte/store";
   import { articleStore } from "../js/test.js";
+  import {searchArticles,refreshPage} from "../js/utils.js";
+
+  
 
   export let data;
   $: path = $page.url.pathname;
@@ -27,8 +29,7 @@
   let searchTerm = "";
   $: if (searchTerm.trim() === "") {
     console.log("if searchTerm = null");
-
-    refreshpage();
+    refreshPage(articleStore);
   }
 
   function userLogout() {
@@ -36,33 +37,6 @@
     console.log("User logout Successfully!");
   }
 
-  async function searchArticles(selectedCategory, searchTerm) {
-    console.log("Start Searching Articles");
-    const response = await fetch(
-      `${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`,
-      {
-        method: "GET"
-      }
-    );
-    const articles = await response.json();
-    // testing code
-    // console.log(articles);
-    articleStore.set(articles);
-    // testing code
-    // console.log("store in articleStore",$articleStore);
-    return articles;
-  }
-
-  async function refreshpage() {
-    console.log("refresh page start");
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
-    if(!response) return ;//have to add some solution here
-    const articles = await response.json();
-    // testing coded
-    // console.log(articles);
-    articleStore.set(articles);
-    // console.log(articles);
-  }
 </script>
 
 <div class="titleDiv">
@@ -73,7 +47,7 @@
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi! Please Login / Signup </span>
       <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
-      <a href="/notfound">Login</a>
+      <a href="/login">Login</a>
     </div>
   {/if}
 
@@ -100,7 +74,7 @@
   {#if path === "/"}
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
-      <SearchBox bind:searchTerm on:input={searchArticles(selectedCategory, searchTerm)} />
+      <SearchBox bind:searchTerm on:input={searchArticles(articleStore,selectedCategory, searchTerm)} />
       <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
     </div>
   {/if}
