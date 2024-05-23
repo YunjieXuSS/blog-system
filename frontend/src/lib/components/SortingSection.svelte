@@ -1,5 +1,5 @@
 <script>
-  import { articleStore } from "../js/test.js";
+  import { articleStore } from "../js/utils.js";
   export let sortingCategory;
 
   const articles = $articleStore;

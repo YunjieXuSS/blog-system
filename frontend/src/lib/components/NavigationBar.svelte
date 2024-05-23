@@ -5,38 +5,42 @@
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
-  import { articleStore } from "../js/test.js";
-  import {searchArticles,refreshPage} from "../js/utils.js";
-
-  
+  import { articleStore } from "../js/utils.js";
+  import { searchArticles, refreshPage } from "../js/utils.js";
+  import { onMount } from "svelte";
 
   export let data;
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
   //The status of user
   $: isLoggined = false;
-
   // $:isLoggined = data.isLoggined;
   //testing code
 
   let userName = "userName";
   let selectedCategory = ""; //  menu selection
-  // testing code
-  // $:console.log("Navi layer",selectedCategory);
 
-  // For Search Input
-  // If user delete all the content in search box , refresh the page
   let searchTerm = "";
-  $: if (searchTerm.trim() === "") {
-    console.log("if searchTerm = null");
-    refreshPage(articleStore);
-  }
+  //why I don't need this code any more when I put the searchArticles in the  handleSearch()??
+  // $: if (searchTerm.trim() === "") {
+  //   console.log("if searchTerm = null");
+  //   refreshPage(articleStore);
+  // }
 
   function userLogout() {
     //..
     console.log("User logout Successfully!");
   }
+  // Fetch articles on component mount
+  // Avoid calling `fetch` eagerly during server side rendering — put your `fetch` calls inside `onMount` or a `load` function instead，
+  onMount(() => {
+    refreshPage(articleStore);
+  });
 
+  async function handleSearch() {
+    console.log("handleSearch");
+    await searchArticles(articleStore, selectedCategory, searchTerm);
+  }
 </script>
 
 <div class="titleDiv">
@@ -74,7 +78,7 @@
   {#if path === "/"}
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
-      <SearchBox bind:searchTerm on:input={searchArticles(articleStore,selectedCategory, searchTerm)} />
+      <SearchBox bind:searchTerm on:input={handleSearch} />
       <img class="searchIcon" src="search_icon.png" alt="searchIcon" />
     </div>
   {/if}

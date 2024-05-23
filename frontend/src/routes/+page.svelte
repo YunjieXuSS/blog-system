@@ -1,7 +1,6 @@
 <script>
   import { getPasswordHashSalt } from "../lib/js/utils";
-  //testcode
-  import { articleStore } from "../lib/js/test.js";
+  import { articleStore } from "../lib/js/utils.js";
   import ArticleCard from "../lib/components/ArticleCard.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";
 
@@ -42,8 +41,8 @@
 <button on:click={clickBTN}>test</button> -->
 
 <style>
-  /* .articleDiv {
+  .articleDiv {
     display: flex;
     flex-wrap: wrap;
-  } */
+  }
 </style>
