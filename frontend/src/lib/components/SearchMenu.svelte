@@ -9,7 +9,7 @@ export let selectedCategory;
   <select class="menu" name="menu" id="menu" bind:value={selectedCategory} >
     <option disabled selected value="">Select</option>
     <option value="title">Title</option>
-    <option value="username">Author</option>
+    <option value="userName">Author</option>
     <option value="date">Date</option>
   </select>
 </section>
