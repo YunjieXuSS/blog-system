@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
 
 // User logout
 router.post("/logout", (req, res) => {
-  // ...
+  return res.clearCookie("authToken").json({ message: "Logged out." });
 });
 
 // Get user by username

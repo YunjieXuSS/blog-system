@@ -4,52 +4,6 @@ import { getDatabase } from "./database.js";
 import yup from "yup";
 
 /**
- * This schema defines a valid "create article" request.
- * These requests must have a title, content and createDate. Uploading image is optional.
- */
-const createArticleSchema = yup
-  .object({
-    title: yup.string().required(),
-    content: yup.string().required(),
-    createDate: yup.date().default(() => new Date()), // Setting default value to current date
-    updateData:yup.date().default(() => new Date()),
-    imgUrl: yup.string().optional()
-  })
-  .required();
-
-/**
- * Creates a new article and returns it. Throws an error if any of the required data is undefined.
- *
- * @param {any} articleData Must contain a title, content, and createDate.
- *
- * @returns the newly created article
- * @throws an error if the input does not contain the required data.
- */
-export async function createArticle(articleData) {
-  const newArticle = createArticleSchema.validateSync(articleData, {
-    abortEarly: false,
-    stripUnknown: true
-  });
-
-  // Insert new article into database
-  const db = await getDatabase();
-  const dbResult = await db.run(
-    "INSERT INTO article(title, content, createDate, updateDate, imgUrl, userId) VALUES(?, ?, ?, ?,?)",
-    newArticle.title,
-    newArticle.content,
-    newArticle.createDate,
-    newArticle.updateData,
-    newArticle.imgUrl,
-    newArticle.userId 
-  );
-  console.log('Article created successfully');
-
-  // Give the returned article an ID, which was created by the database, then return.
-  newArticle.articleId = dbResult.lastID;
-  return newArticle;
-}
-
-/**
  * Retrieves an array of all articles.
  * 10 articles in a page and displaying descendingly
  * @returns an array of all articles 
@@ -126,6 +80,59 @@ export async function getArticlesByUserName(userName) {
     `%${lowercaseUserName}%`
   );
   return articles;
+}
+
+/**
+ * This schema defines a valid "create article" request.
+ * These requests must have a title, content and createDate. Uploading image is optional.
+ */
+const createArticleSchema = yup
+  .object({
+    title: yup.string().required(),
+    content: yup.string().required(),
+    createDate: yup.date().default(() => new Date()), // Setting default value to current date
+    updateData:yup.date().default(() => new Date()),
+    imgUrl: yup.string().optional(),
+    userId: yup.number().required()
+  })
+  .required();
+
+/**
+ * Creates a new article and returns it. Throws an error if any of the required data is undefined.
+ *
+ * @param {any} articleData Must contain a title, content, and createDate.
+ *
+ * @returns the newly created article
+ * @throws an error if the input does not contain the required data.
+ */
+export async function createArticle(articleData) {
+  const newArticle = createArticleSchema.validateSync(articleData, {
+    abortEarly: false,
+    stripUnknown: true
+  });
+
+  // Insert new article into database
+  const db = await getDatabase();
+  "SELECT * FROM user WHERE userId = ?"
+  if(!articleData.userId) {
+    throw new Error("You need to log in before creating an article.");
+  }
+  if(newArticle.imgUrl === undefined) newArticle.imgUrl = null;
+
+  const dbResult = await db.run(
+    "INSERT INTO article(title, content, createDate, updateDate, imgUrl, userId) VALUES(?, ?, ?, ?,?,?)",
+    newArticle.title,
+    newArticle.content,
+    newArticle.createDate,
+    newArticle.updateData,
+    newArticle.imgUrl,
+    newArticle.userId 
+  );
+  console.log('Article created successfully');
+
+  // Give the returned article an ID, which was created by the database, then return.
+  newArticle.articleId = dbResult.lastID;
+  return newArticle;
 }
 
 /**

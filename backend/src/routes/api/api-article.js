@@ -13,6 +13,8 @@ import {
   likeArticle,
   unlikeArticle
 } from "../../data/article-dao.js";
+import { imageUploader } from "../../middleware/image-middleware.js";
+import fsExtra from "fs-extra";
 const router = express.Router();
 
 // Articles' API
@@ -63,12 +65,24 @@ router.get("/:articleId", async (req, res) => {
 
 //create a new article if the user is logged in
 //POST /api/userarticles - Creates a new article.
-router.post("/", authenticateUser, async (req, res) => {
-  const userId = req.user.userId;
-    const newArticle = await createArticle(req.body);
-    if(newArticle)
-    return res.status(201).json(newArticle);
-
+router.post("/", authenticateUser, imageUploader, async (req, res) => {
+    const article = req.body;
+    article.userId = req.user.userId;
+    if(req.file) {
+      article.imgUrl = "/images/" + req.file.filename;
+    }
+    try {
+      const newArticle = await createArticle(article);
+      if(req.file) {
+        await fsExtra.copy(req.file.path, "public"+ newArticle.imgUrl);
+      }
+      return res.status(201).json(newArticle);
+    } catch (err) {
+      console.log(err);
+      return res.status(422).send(err.errors);
+    }finally{
+      await fsExtra.emptyDir('temp');
+    }
 });
 
 /**
