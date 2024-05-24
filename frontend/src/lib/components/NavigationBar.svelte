@@ -25,7 +25,7 @@ console.log("navi data",data);
 
   let searchTerm = "";
   //why I don't need this code any more when I put the searchArticles in the  handleSearch()??
-  // $: if (searchTerm.trim() === "") {
+  // $: if (searchTerm.trim() == "") {
   //   console.log("if searchTerm = null");
   //   refreshPage(articleStore);
   // }
@@ -36,6 +36,7 @@ console.log("navi data",data);
   }
   // Fetch articles on component mount
   // Avoid calling `fetch` eagerly during server side rendering — put your `fetch` calls inside `onMount` or a `load` function instead，
+  // Also for user delete all the input text
   // onMount(() => {
   //   refreshPage(articleStore);
   // });
@@ -81,7 +82,6 @@ console.log("navi data",data);
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       <SearchBox bind:searchTerm on:input={handleSearch} />
-     
     </div>
   {/if}
 </nav>
