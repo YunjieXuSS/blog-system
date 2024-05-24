@@ -11,6 +11,9 @@ import fsExtra from 'fs-extra';
 // Register user
 router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
   const user = req.body;
+  console.log("register.body",req.body);
+  console.log("register.body",req.file);
+  console.log("register.body",typeof req.body.avatar);
   if(req.file) {
     user.avatar = "/images/" + req.file.filename;
   }
