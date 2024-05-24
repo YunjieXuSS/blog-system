@@ -1,5 +1,7 @@
 <script>
   import InputBar from "./InputBar.svelte";
+  import AvatarUpload from "./AvatarUpload.svelte";
+  import SignUpTable from "./SignUpTable.svelte";
   import { createAccount } from "../js/utils.js";
   import {
     validateRegisterUserName,
@@ -8,15 +10,14 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import AvatarUpload from "./AvatarUpload.svelte";
+  import SignUpSection from "./SignUpSection.svelte";
+  import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
   let firstName, lastName, userName;
   let password;
   let email;
-  let birthday;
-  let confirmPassword;
-
-  $: console.log("confirmPassword", confirmPassword);
+  let dateOfBirth;
+  let filesToUpload;
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -25,11 +26,51 @@
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
-  async function handleRegister(firstName, lastName, email, birthday, userName, password) {
-    const user={firstName,lastName, email, birthday, userName, password};
-    console.log("register",user);
-    const result = createAccount(user);
-    console.log("result",result);
+  async function handleRegister(
+    firstName,
+    lastName,
+    email,
+    dateOfBirth,
+    userName,
+    password,
+    filesToUpload
+  ) {
+    const userRegisterData = { firstName, lastName, email, dateOfBirth, userName, password };
+    const userRegisterImage = filesToUpload[0];
+    // const userRegisterImage =events.target.files[0];
+    console.log("filesToUpload", filesToUpload);
+    console.log("register", userRegisterData);
+    console.log("Image", userRegisterImage);
+
+    // Create a FormData object to send, rather than sending JSON as usual.
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("email", email);
+    formData.append("dateOfBirth", dateOfBirth);
+    formData.append("userName", userName);
+    formData.append("password", password);
+    if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
+      formData.append("avatar", userRegisterImage);
+    }else{
+      //if no image is uploaded, use the default image
+      formData.append("avatar", "/images/avatar-default.png");
+    }
+
+    // console.log("formData", formData);
+
+    // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
+    // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
+    // by the multer middleware on our server.
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
+      method: "POST",
+      body: formData
+    });
+
+    const serverResponse = await response.json();
+
+    // const result = createAccount(user);
+    // console.log("result", result);
   }
 </script>
 
@@ -37,73 +78,33 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload />
+      <AvatarUpload bind:filesToUpload />
     </div>
-    <div class="table-container">
-      <InputBar
-        label="FIRTST NAME:"
-        type="text"
-        placeholder="Enter your first name"
-        validate={validateRegisterUserName}
-        maxlength="20"
-        bind:value={firstName}
-      />
-      <InputBar
-        label="LAST NAME:"
-        type="text"
-        placeholder="Enter your second name"
-        validate={validateRegisterUserName}
-        maxlength="20"
-        bind:value={lastName}
-      />
-      <InputBar
-        label="EMAIL:"
-        type="email"
-        placeholder="Enter your user email"
-        validate={validateRegisterEmail}
-        maxlength="20"
-        bind:value={email}
-      />
-
-      <InputBar
-        label="DAY OF BIRTH:"
-        type="date"
-        placeholder="Enter your user birthday"
-        validate={validateRegisterDate}
-        maxlength="20"
-        bind:value={birthday}
-      />
-
-      <InputBar
-        label="USERNAME:"
-        type="text"
-        placeholder="Enter your user name"
-        validate={validateRegisterUserName}
-        maxlength="20"
-        bind:value={userName}
-      />
-      <InputBar
-        label="PASSWORD:"
-        type="password"
-        placeholder="Enter your password"
-        validate={validateRegisterPassword}
-        maxlength="20"
-        bind:value={password}
-      />
-      <InputBar
-        label="CONFIRM PASSWORD:"
-        type="password"
-        placeholder="Re-enter your password"
-        validate={confirmPasswordValidator}
-        maxlength="20"
-        bind:value={confirmPassword}
+    <div>
+      <SignUpTable
+        bind:firstName
+        bind:lastName
+        bind:email
+        bind:dateOfBirth
+        bind:userName
+        bind:password
       />
     </div>
   </div>
 
-  <button on:click={handleRegister(firstName, lastName, email, birthday, userName, password)}>
-    Create account</button
+  <button
+    on:click={handleRegister(
+      firstName,
+      lastName,
+      email,
+      dateOfBirth,
+      userName,
+      password,
+      filesToUpload
+    )}
   >
+    Create account
+  </button>
 </div>
 
 <style>

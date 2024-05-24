@@ -2,3 +2,5 @@ backend/package.json
 backend/src/test-app.js
 backend/package-lock.json
 frontend/src/lib/components/FakeArticleCard.svelte
+frontend/src/lib/js/test.js
+backend/src/routes/api/api-upload.js
