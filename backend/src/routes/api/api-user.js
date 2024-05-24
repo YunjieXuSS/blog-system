@@ -6,8 +6,7 @@ import { getUserWithCredentials, getUserWithUsername } from "../../data/user-dao
 const router = express.Router();
 import { avatarUploader } from "../../middleware/image-middleware.js";
 import { verifyUserExists } from "../../middleware/verifyExists-middleware.js";
-import fs from "fs";
-import path from "path";
+import fsExtra from 'fs-extra';
 
 // Register user
 router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
@@ -16,19 +15,20 @@ router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
   console.log("register.body",req.file);
   console.log("register.body",typeof req.body.avatar);
   if(req.file) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    user.avatar = "/images/" + req.file.fieldname + "-" + uniqueSuffix + path.extname(req.file.originalname);
+    user.avatar = "/images/" + req.file.filename;
   }
   try {
     const newUser = await createUser(user);
     delete newUser.password;
     if(req.file) {
-      fs.writeFileSync("public"+ newUser.avatar, req.file.buffer);
+      await fsExtra.copy(req.file.path, "public"+ newUser.avatar);
     }
     return res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
     return res.status(422).send(err.errors);
+  } finally{
+    await fsExtra.emptyDir('temp');
   }
 });
 
