@@ -11,8 +11,15 @@ import yup from "yup";
 export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
-  const articles = await db.all("SELECT * FROM article ORDER BY updateDate DESC LIMIT ? OFFSET ?", pageSize, offset);
-  return articles;
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+     FROM article 
+     INNER JOIN user ON article.userId = user.userId 
+     ORDER BY article.updateDate DESC 
+     LIMIT ? OFFSET ?`, 
+    pageSize, offset
+  );
+  return articles
 }
 
 //Get all articles and display them ascendingly base on their updateDate
