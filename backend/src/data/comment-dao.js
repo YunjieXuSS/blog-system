@@ -2,28 +2,28 @@
 import { getDatabase } from "./database.js";
 
 //Create a new comment on an article
-export async function createComment(commentData){
+export async function createComment(userId, articleId, parentCommentId) {
     const db = await getDatabase();
-    const dbResult = await db.run("INSERT INTO comment (content, createDate, parentCommentID, userID, articleId, isDeleted) VALUES (?,?,?,?,?,?)",
-    content,
-    createDate,
-    parentCommentID,
-    userID,
-    articleId,
-    isDeleted
+    const dbResult = await db.run("INSERT INTO comment (content, createDate, parentCommentId, userId, articleId, isDeleted) VALUES (?,?,?,?,?,?)",
+        content,
+        createDate,
+        parentCommentId,
+        userId,
+        articleId,
+        isDeleted
     );
     return dbResult.changes > 0;
 }
 
-export async function getComments(articleId){
+export async function getComments(articleId) {
     const db = await getDatabase();
-    const comment = await db.get("SELECT * FROM comment WHERE articleId = ?", parseInt(articleId));
+    const comment = await db.all("SELECT * FROM comment WHERE articleId = ?", parseInt(articleId));
     return comment;
 }
 
 //Delete a comment
-export async function deleteComment(commentID){
+export async function deleteComment(commentId) {
     const db = await getDatabase();
-    const dbResult = await db.run("UPDATE comment SET content = 'This message has been deleted', isDeleted = 'TRUE' WHERE commentID = ?", commentID,);
+    const dbResult = await db.run("UPDATE comment SET content = 'This message has been deleted', isDeleted = 'TRUE' WHERE commentID = ?", commentId,);
     return dbResult.changes > 0;
 }

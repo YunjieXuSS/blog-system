@@ -65,8 +65,8 @@ router.get("/:articleId", async (req, res) => {
 //POST /api/userarticles - Creates a new customer.
 router.post("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
-    const newArticle = await createArticle(req.body);
-    if(newArticle)
+  const newArticle = await createArticle(req.body);
+  if (newArticle)
     return res.status(201).json(newArticle);
 
 });
@@ -82,19 +82,21 @@ router.delete("/:articleId", async (req, res) => {
 
 // Get articles' comments
 router.get("/:articleId/comments", async (req, res) => {
-try {
-    const comments = await getComments(req.params.articleId)
-    return res.status(200).json(comments);
-} catch (error) {
-  return res.status(404).json({ error: "Can't find article."})
-}
+  const article = await getArticlesById(req.params.articleId);
+  if ( article) {  
+    const comments = await getComments(req.params.articleId);
+    if(comments) return res.status(200).json(comments);
+    return res.status(404).json({ error: "No one has commented yet." });
+  } else {
+    return res.status(404).json({ error: "Article does not exist." });
+  }
 });
 
 //Create a new comment on an article
 router.post("/:articleId/comments", async (req, res) => {
-  const userID = req.user.userID;
-  const newComment = await createComment(req.body)
-  if(newComment)
+  const userID = req.user.userId;
+  const newComment = await createComment(req.params.userId, req.params.articleId, req.params.parentArticleId)
+  if (newComment)
     return res.status(201).json(newArticle);
 });
 
