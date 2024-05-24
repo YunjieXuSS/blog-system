@@ -22,7 +22,20 @@ export async function load({ fetch }) {
     const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
     if (!response) return;//have to add some solution here
     const articles = await response.json();
-    // console.log(articles);
+
+    articles.forEach(async (article) => {
+        try {
+            const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
+            if(res.status === 200){
+                article.isImgExist = true;
+            }
+            else{
+                article.isImgExist = false;
+            }
+          } catch (error) {
+            article.isImgExist = false;
+          }
+        });
     return { articles };
 
 }

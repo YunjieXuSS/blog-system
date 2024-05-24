@@ -3,8 +3,9 @@
 </script>
 
 <article class="article-container">
-  {#if article.imgUrl}
-    <img src={`/images/${article.imgUrl}`} alt="" class="article-image" />
+  {#if article.isImgExist}
+  <p>here you are!</p>
+    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image" />
   {/if}
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>

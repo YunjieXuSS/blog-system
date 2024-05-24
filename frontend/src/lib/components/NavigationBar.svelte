@@ -11,7 +11,7 @@
   import Button from "$lib/components/Button.svelte";
 
   export let data;
-console.log("navi data",data);
+// console.log("navi data",data);
 
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
