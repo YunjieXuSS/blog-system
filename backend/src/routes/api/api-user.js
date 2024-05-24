@@ -12,6 +12,9 @@ import path from "path";
 // Register user
 router.post("/register", avatarUploader, verifyUserExists, async (req, res) => {
   const user = req.body;
+  console.log("register.body",req.body);
+  console.log("register.body",req.file);
+  console.log("register.body",typeof req.body.avatar);
   if(req.file) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     user.avatar = "/images/" + req.file.fieldname + "-" + uniqueSuffix + path.extname(req.file.originalname);

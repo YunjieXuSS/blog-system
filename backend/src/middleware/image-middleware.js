@@ -32,6 +32,7 @@ const upload = multer({
   });
 
 export function avatarUploader(req, res, next) {
+  console.log("avatarUploader",req);
     upload.single("avatar")(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
