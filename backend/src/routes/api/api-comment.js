@@ -1,4 +1,5 @@
 import express from "express";
+import { deleteComment } from "../../data/comment-dao";
 //import { ... } from "../../data/comment-dao.js"; ----import the functions from the DAO file to process the requests
 
 const router = express.Router();
@@ -6,8 +7,9 @@ const router = express.Router();
 // Comment API
 
 //Delete a comment.
-router.delete("/commentId", (req, res) => {
-    // ...
+router.delete("/commentId", async (req, res) => {
+  await deleteComment(req.params.commentID);
+  return res.sendStatus(204);
   })
 
 

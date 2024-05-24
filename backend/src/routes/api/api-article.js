@@ -12,6 +12,7 @@ import {
   likeArticle,
   unlikeArticle
 } from "../../data/article-dao.js";
+import { createComment, getComments } from "../../data/comment-dao.js";
 const router = express.Router();
 
 // Articles' API
@@ -80,13 +81,21 @@ router.delete("/:articleId", async (req, res) => {
 });
 
 // Get articles' comments
-router.get("/:articleId/comments", (req, res) => {
-  // ...
+router.get("/:articleId/comments", async (req, res) => {
+try {
+    const comments = await getComments(req.params.articleId)
+    return res.status(200).json(comments);
+} catch (error) {
+  return res.status(404).json({ error: "Can't find article."})
+}
 });
 
 //Create a new comment on an article
-router.post("/:articleId/comments", (req, res) => {
-  // ...
+router.post("/:articleId/comments", async (req, res) => {
+  const userID = req.user.userID;
+  const newComment = await createComment(req.body)
+  if(newComment)
+    return res.status(201).json(newArticle);
 });
 
 // Like article

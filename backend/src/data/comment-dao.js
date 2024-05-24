@@ -2,15 +2,28 @@
 import { getDatabase } from "./database.js";
 
 //Create a new comment on an article
-export function createComment(articleId, parentCommentID){
-    //...
+export async function createComment(commentData){
+    const db = await getDatabase();
+    const dbResult = await db.run("INSERT INTO comment (content, createDate, parentCommentID, userID, articleId, isDeleted) VALUES (?,?,?,?,?,?)",
+    content,
+    createDate,
+    parentCommentID,
+    userID,
+    articleId,
+    isDeleted
+    );
+    return dbResult.changes > 0;
 }
 
-export function getComments(articleId){
-    //...
+export async function getComments(articleId){
+    const db = await getDatabase();
+    const comment = await db.get("SELECT * FROM comment WHERE articleId = ?", parseInt(articleId));
+    return comment;
 }
 
 //Delete a comment
-export function deleteComment(articleId, parentCommentID, commentID){
-    //...
+export async function deleteComment(commentID){
+    const db = await getDatabase();
+    const dbResult = await db.run("UPDATE comment SET content = 'This message has been deleted', isDeleted = 'TRUE' WHERE commentID = ?", commentID,);
+    return dbResult.changes > 0;
 }
