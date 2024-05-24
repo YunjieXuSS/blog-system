@@ -150,8 +150,9 @@ const updateArticleSchema = yup
   .object({
     title: yup.string().min(1).optional(),
     content: yup.string().min(1).optional(),
-    createDate: yup.date().default(() => new Date()), // Setting default value to current date
-    imgUrl: yup.string().optional()
+    updateDate: yup.date().default(() => new Date()), // Setting default value to current date
+    imgUrl: yup.string().optional(),
+    userId: yup.number().required()
   })
   .required();
 
@@ -159,7 +160,7 @@ const updateArticleSchema = yup
  * Updates the article with the given id, if it exists and the provided update data is valid.
  *
  * @param {*} articleId the id to match. Will be converted to a number using parseInt().
- * @param {*} updateData The data to update. Any included title, content, createDate and imgUrl properties
+ * @param {*} updateData The data to update. Any included title, content, updateDate and imgUrl properties
  *            will replace those existing values for the matching article. Any other properties will be ignored.
  *
  * @return true if the database was updated, false otherwise.
@@ -198,10 +199,11 @@ export async function updateArticle(articleId, updateData) {
 
   // Execute SQL
   const db = await getDatabase();
-  const dbResult = await db.run(sql, ...updateParams, parseInt(articleId));
+  const dbResult = await db.run(sql, [...updateParams, parseInt(articleId)]);
 
-  // Return true if changes were made, false otherwise.
-  return dbResult.changes > 0;
+  // Return updated content if changes were made, false otherwise.
+  if(dbResult.changes > 0) return db.get("Select * FROM article WHERE articleId = ?", parseInt(articleId));
+  return false;
 }
 
 /**

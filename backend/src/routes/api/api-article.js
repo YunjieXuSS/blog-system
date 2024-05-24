@@ -10,6 +10,7 @@ import {
   getArticlesByUserName,
   deleteArticle,
   createArticle,
+  updateArticle,
   likeArticle,
   unlikeArticle
 } from "../../data/article-dao.js";
@@ -66,23 +67,47 @@ router.get("/:articleId", async (req, res) => {
 //create a new article if the user is logged in
 //POST /api/userarticles - Creates a new article.
 router.post("/", authenticateUser, imageUploader, async (req, res) => {
-    const article = req.body;
-    article.userId = req.user.userId;
-    if(req.file) {
-      article.imgUrl = "/images/" + req.file.filename;
+  const article = req.body;
+  article.userId = req.user.userId;
+  if (req.file) {
+    article.imgUrl = "/images/" + req.file.filename;
+  }
+  try {
+    const newArticle = await createArticle(article);
+    if (req.file) {
+      await fsExtra.copy(req.file.path, "public" + newArticle.imgUrl);
     }
-    try {
-      const newArticle = await createArticle(article);
-      if(req.file) {
-        await fsExtra.copy(req.file.path, "public"+ newArticle.imgUrl);
-      }
-      return res.status(201).json(newArticle);
-    } catch (err) {
-      console.log(err);
-      return res.status(422).send(err.errors);
-    }finally{
-      await fsExtra.emptyDir('temp');
+    return res.status(201).json(newArticle);
+  } catch (err) {
+    console.log(err);
+    return res.status(422).send(err.errors);
+  } finally {
+    await fsExtra.emptyDir("temp");
+  }
+});
+
+//update an existing article
+//PATCH /api/:articleId - Updates the article with the given id.
+router.patch("/:articleId", authenticateUser, imageUploader, async (req, res) => {
+  console.log(req.body);
+  const articleId = req.params.articleId;
+  const articleData = req.body;
+  articleData.userId = req.user.userId;
+  if (req.file) {
+    articleData.imgUrl = "/images/" + req.file.filename;
+  }
+  try {
+    const updatedArticle = await updateArticle(articleId, articleData);
+    if (req.file) {
+      await fsExtra.copy(req.file.path, "public" + updatedArticle.imgUrl);
     }
+    return res.status(200).json({ ...updatedArticle, message: "Article updated successfully" });
+  } catch (err) {
+    console.log(err);
+    if (err.errors) return res.status(422).send(err.errors);
+  } finally {
+    await fsExtra.emptyDir("temp");
+  }
 });
 
 /**
