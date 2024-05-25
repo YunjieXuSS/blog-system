@@ -97,7 +97,7 @@ export async function getArticlesByDate(createDate) {
  * @param {*} id the id to match. Will be converted to a number using parseInt().
  * @returns a specific article, or undefined.
  */
-export async function getArticlesById(articleId) {
+export async function getArticleById(articleId) {
   const db = await getDatabase();
   const article = await db.get("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
   return article;
