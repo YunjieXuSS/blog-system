@@ -99,7 +99,7 @@ router.post("/:articleId/comment", authenticateUser, async (req, res) => {
     return res.status(201).json(newComment);
   } catch (err) {
     if (err.errors) return res.status(422).json(err.errors);
-    return res.status(422).send(err);
+    return res.status(500).json({ error: err.message });
   }
 });
 

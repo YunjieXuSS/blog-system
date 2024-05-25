@@ -2,7 +2,13 @@ import express from "express";
 import { createUser, updateUser } from "../../data/user-dao.js";
 import { createUserJWT } from "../../utils/jwt-utils.js";
 import { authenticateUser, authenticateAdmin } from "../../middleware/auth-middleware.js";
-import { getUserWithCredentials, getUserWithUserName, getUserById, getUsers, deleteUser} from "../../data/user-dao.js";
+import {
+  getUserWithCredentials,
+  getUserWithUserName,
+  getUserById,
+  getUsers,
+  deleteUser
+} from "../../data/user-dao.js";
 const router = express.Router();
 import { avatarUploader } from "../../middleware/image-middleware.js";
 import fsExtra from "fs-extra";
@@ -22,8 +28,8 @@ router.post("/register", avatarUploader, async (req, res) => {
     return res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
-    if (err.erros) return res.status(422).send(err.errors);
-    return res.status(409).send("User already exists.");
+    if (err.errors) return res.status(422).json({ error: err.errors });
+    return res.status(409).json({ error: "User already exists." });
   } finally {
     await fsExtra.emptyDir("temp");
   }
@@ -48,7 +54,7 @@ router.post("/login", async (req, res) => {
 
 // User logout
 router.post("/logout", (_, res) => {
-  return res.clearCookie("authToken").sendStatus(200);
+  return res.clearCookie("authToken").sendStatus(204);
 });
 
 // Get user by username ---- Not used
@@ -80,9 +86,9 @@ router.get("/:userName", async (req, res) => {
   const userName = req.params.userName;
   const user = await getUserWithUserName(userName);
   if (user) {
-    return res.status(200).json({ exists: true });
+    return res.status(200).json({ message: "User exists." });
   } else {
-    return res.status(404).json({ exists: false });
+    return res.status(404).json({ error: "User not found." });
   }
 });
 
@@ -112,6 +118,7 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
 // Get users
 router.get("/all", authenticateAdmin, async (req, res) => {
   const users = await getUsers();
+  if (!users) return res.status(404).json({ error: "No users found." });
   users.forEach((user) => {
     delete user.password;
   });
@@ -119,26 +126,25 @@ router.get("/all", authenticateAdmin, async (req, res) => {
 });
 
 // Delete user
-router.delete("/", authenticateUser, async(req, res) => {
+router.delete("/", authenticateUser, async (req, res) => {
   try {
     const result = await deleteUser(req.user.userId);
-    if(result) return res.sendStatus(204);
+    if (result) return res.sendStatus(204);
     return res.status(404).json({ error: "User not found." });
   } catch (error) {
-    return res.sendStatus(400);
-  }
-});
-       
-// Admin delete user
-router.delete("/:userId", authenticateAdmin, async(req, res) => {
-  try {
-    const result = await deleteUser(req.params.userId);
-    if(result) return res.sendStatus(204);
-    return res.status(404).json({ error: "User not found." });
-  } catch (error) {
-    return res.sendStatus(400);
+    return res.status(500).json({ error: error.message });
   }
 });
 
+// Admin delete user
+router.delete("/:userId", authenticateAdmin, async (req, res) => {
+  try {
+    const result = await deleteUser(req.params.userId);
+    if (result) return res.sendStatus(204);
+    return res.status(404).json({ error: "User not found." });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;
