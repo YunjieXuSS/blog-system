@@ -70,9 +70,9 @@ router.post("/logout", (_, res) => {
 }); */
 
 // Get user Info
-router.get("/", authenticateUser, (req, res) => {
+router.get("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
-  const user = getUserById(userId);
+  const user = await getUserById(userId);
   if (user) {
     delete user.password;
     return res.status(200).json(user);
