@@ -1,7 +1,7 @@
 <script>
   import { goto } from "$app/navigation";
   import InputBar from "./InputBar.svelte";
-  import {USER_URL} from "../js/apiUrls.js";
+  import { USER_URL } from "../js/apiUrls.js";
   let userName;
   let password;
   let isvalidation = false;
@@ -11,12 +11,13 @@
     console.log("Processing login start");
     const response = await fetch(`${USER_URL}/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userName, password }),
+      body: JSON.stringify({ userName, password })
     });
-    if(response.status === 200){
+    if (response.status === 200) {
       goto("/", { replaceState: true, invalidateAll: true });
     }
     loginFailed = true;
@@ -35,13 +36,12 @@
     }
     return { result: true, errorMsg: "" };
   }
-  async function validateUserNameTest(value){
+  async function validateUserNameTest(value) {
     const response = await fetch(`${USER_URL}/username/${value}`);
-    if(response.status === 200){
+    if (response.status === 200) {
       return { result: false, errorMsg: "Username already exists" };
     }
   }
-
 </script>
 
 <div class="login-container">
@@ -64,9 +64,13 @@
       validate={validatePassword}
       bind:value={password}
     />
-    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}>LOGIN</button>
+    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}
+      >LOGIN</button
+    >
   </div>
-  <div class="login-error" style = "display:{loginFailed?'block':'none'}">Invalid password or username. Try again.</div>
+  <div class="login-error" style="display:{loginFailed ? 'block' : 'none'}">
+    Invalid password or username. Try again.
+  </div>
 </div>
 
 <style>
