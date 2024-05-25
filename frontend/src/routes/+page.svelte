@@ -1,5 +1,4 @@
 <script>
-  import { getPasswordHashSalt } from "../lib/js/utils";
   import { articleStore } from "../lib/js/utils.js";
   import ArticleCard from "../lib/components/ArticleCard.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";

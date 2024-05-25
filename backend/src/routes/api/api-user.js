@@ -52,7 +52,7 @@ router.post("/logout", (_, res) => {
 });
 
 // Get user by username
-router.get("/userName/:userName", async (req, res) => {
+router.get("/username/:userName", async (req, res) => {
   const userName = req.params.userName;
   const user = await getUserWithUserName(userName);
   if (user) {
