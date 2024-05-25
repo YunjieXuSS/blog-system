@@ -3,7 +3,6 @@
 </script>
 
 <article class="article-container">
-  <p>{article.isImgExist}</p>
   {#if article.isImgExist===true}
   <!-- <p>Image is here</p> -->
     <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image" />
