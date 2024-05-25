@@ -2,6 +2,7 @@
 import { getDatabase } from "./database.js";
 import yup from "yup";
 import { getArticleById } from "./article-dao.js";
+import { get } from "http";
 
 //Create a new comment on an article
 const createCommentSchema = yup
@@ -70,9 +71,15 @@ export async function deleteComment(commentId, userId) {
   if (authorUserId.userId !== userId && articleUserId.userId !== userId) {
     throw "You are not authorized to delete this comment.";
   }
-  const dbResult = await db.run(
-    "UPDATE comment SET content = 'This message has been deleted', isDeleted = TRUE WHERE commentId = ? AND isDeleted = FALSE",
-    commentId
-  );
+  let dbResult;
+    const isParentComment = await db.get("SELECT * FROM comment WHERE parentCommentId = ?", commentId);
+    if (isParentComment) {
+      dbResult = await db.run(
+        "UPDATE comment SET content = 'This message has been deleted', isDeleted = TRUE WHERE commentId = ? AND isDeleted = FALSE",
+        commentId
+      );
+    } else {
+    dbResult = await db.run("DELETE FROM comment WHERE commentId = ?", commentId);
+  }
   return dbResult.changes > 0;
 }
