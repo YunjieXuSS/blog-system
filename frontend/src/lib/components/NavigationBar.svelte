@@ -59,10 +59,10 @@
 <nav class="navBar">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
-    <li><a href="/" class:active={path === "/"}>home</a></li>
+    <li><a href="/" class:active={path === "/"}>Home</a></li>
     <li>
       <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >profile</a
+        >Profile</a
       >
     </li>
     <!-- browsing here to see the default Svelte 404 page. -->
