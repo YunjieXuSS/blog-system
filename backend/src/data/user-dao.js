@@ -133,7 +133,6 @@ export async function updateUser(userId, udpateData) {
   return getUserById(userId);
 }
 
-
 /**
  * Deletes the user with the given id, if any.
  *

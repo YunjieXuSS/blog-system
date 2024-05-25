@@ -104,7 +104,7 @@ export async function getArticleById(articleId) {
 }
 
 export async function getArticlesByUserName(userName) {
-  console.log("dao-username", userName)
+  console.log("dao-username", userName);
   const db = await getDatabase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
@@ -191,13 +191,21 @@ export async function deleteArticle(articleId) {
 //Like an article
 export async function likeArticle(userId, articleId) {
   const db = await getDatabase();
-  const dbResult = await db.run("INSERT INTO like (userId, articleId) VALUES (?,?)", userId, articleId);
+  const dbResult = await db.run(
+    "INSERT INTO like (userId, articleId) VALUES (?,?)",
+    userId,
+    articleId
+  );
   return dbResult.changes > 0;
 }
 
 //Unlike an article
 export async function unlikeArticle(userId, articleId) {
   const db = await getDatabase();
-  const dbResult = await db.run("DELETE FROM like WHERE userId = ? AND articleId = ?", userId, articleId);
+  const dbResult = await db.run(
+    "DELETE FROM like WHERE userId = ? AND articleId = ?",
+    userId,
+    articleId
+  );
   return dbResult.changes > 0;
 }

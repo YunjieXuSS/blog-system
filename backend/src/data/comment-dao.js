@@ -31,17 +31,17 @@ export async function createComment(comment) {
       throw "Invalid Parent comment.";
     }
   }
-    const db = await getDatabase();
-    const dbResult = await db.run(
-      "INSERT INTO comment (content, createDate, parentCommentId, userId, articleId) VALUES (?,?,?,?,?)",
-      newComment.content,
-      Date.now(),
-      newComment.parentCommentId,
-      newComment.userId,
-      newComment.articleId
-    );
-    newComment.commentId = dbResult.lastID;
-    return newComment;
+  const db = await getDatabase();
+  const dbResult = await db.run(
+    "INSERT INTO comment (content, createDate, parentCommentId, userId, articleId) VALUES (?,?,?,?,?)",
+    newComment.content,
+    Date.now(),
+    newComment.parentCommentId,
+    newComment.userId,
+    newComment.articleId
+  );
+  newComment.commentId = dbResult.lastID;
+  return newComment;
 }
 
 export async function getCommentById(commentId) {

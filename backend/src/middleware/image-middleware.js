@@ -26,16 +26,16 @@ const fileFilter = (_, file, cb) => {
 };
 
 const upload1 = multer({
-    storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
-    fileFilter: fileFilter
-  });
+  storage: storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  fileFilter: fileFilter
+});
 
 export function avatarUploader(req, res, next) {
-    upload1.single("avatar")(req, res, function (err) {
+  upload1.single("avatar")(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(413).json({ error: 'File size is too large. Max limit is 2MB.' });
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(413).json({ error: "File size is too large. Max limit is 2MB." });
       }
     } else if (err) {
       return res.status(400).json({ error: err.message });
@@ -50,10 +50,10 @@ const upload2 = multer({
 });
 
 export function imageUploader(req, res, next) {
-    upload2.single("imgUrl")(req, res, function (err) {
+  upload2.single("imgUrl")(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(413).json({ error: 'File size is too large. Max limit is 8MB.' });
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(413).json({ error: "File size is too large. Max limit is 8MB." });
       }
     } else if (err) {
       return res.status(400).json({ error: err.message });
