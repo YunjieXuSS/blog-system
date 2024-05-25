@@ -8,16 +8,15 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
+  import ArticleCard from "./ArticleCard.svelte";
 
   export let firstName, lastName, userName;
   export let email;
   export let dateOfBirth;
   export let password;
   export let description = "I know myself so well.";
+  // export let validateResult;
   let confirmPassword;
-
-  $: console.log("confirmPassword", confirmPassword);
-
   // define a function to get the first password.
   const getPassword = function () {
     return password;
@@ -25,12 +24,7 @@
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
-  async function handleRegister(firstName, lastName, email, dateOfBirth, userName, password,description) {
-    const user = { firstName, lastName, email, dateOfBirth, userName, password };
-    console.log("register", user);
-    const result = createAccount(user);
-    console.log("result", result);
-  }
+
 </script>
 
 <div class="table-container">

@@ -7,13 +7,13 @@
   export let value = "";
   export let placeholder = "";
   export let maxlength = "100";
-  export let validate = (value) => {
+  export let validate = async (value) => {
     return { result: true, errorMsg: "" };
   };
-  let validateResult = true;
+  export let validateResult = true;
   let errorMsg = "";
-  function checkValue() {
-    const validation = validate(value);
+  async  function checkValue() {
+    const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
   }
@@ -21,19 +21,15 @@
     errorMsg = "";
     validateResult = true;
   }
-  //Only for username check, because it is async function and should get data from server.
-  async function aysncCheckValue() {
-    const validation = await validate(value);
-    errorMsg = validation.errorMsg;
-    validateResult = validation.result;
-  }
-
 </script>
+
+
 
 <div class="input-bar">
   <label for={label}>{label}</label>
   <div class="input-section">
     {#if type === "password"}
+    
       <input
         class:active={!validateResult}
         id={label}
@@ -74,7 +70,7 @@
         {placeholder}
         {maxlength}
         bind:value
-        on:blur={aysncCheckValue}
+        on:blur={checkValue}
         on:focus={clearError}
       />
     {/if}

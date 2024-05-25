@@ -23,7 +23,6 @@ export async function checkUserIsRegisterd(userName) {
     const response = await fetch(`${PUBLIC_API_BASE_URL}/users/exists/${userName}`, {
     })
     const result = await response.json();
-    console.log("checkUserIsRegisterd", result);
     return result;
 
 }

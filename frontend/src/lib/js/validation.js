@@ -18,7 +18,6 @@ export function validateRegisterPassword(password) {
   
 export async function validateRegisterUserName(userName) {
   const userIsExisted =  await checkUserIsRegisterd(userName);
-    console.log("usernameUnique1",userIsExisted.exists);
     if (userName.length < 3 || userName.length > 20) {
       return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
     } else if (userName.includes(" ")) {
@@ -58,7 +57,6 @@ export async function validateRegisterUserName(userName) {
     
     return function(value) {
       const password = getPassword();
-      console.log("password",password);
       if (!value) return { result: false, errorMsg: "Password cannot be empty" };
       if (value !== password) {
         return { result: false, errorMsg: "Password does not match" };

@@ -19,7 +19,7 @@
   let dateOfBirth;
   let description;
   let filesToUpload;
-
+  
   // define a function to get the first password.
   const getPassword = function () {
     return password;
@@ -37,8 +37,15 @@
     description,
     filesToUpload
   ) {
-    
-    const userRegisterData = { firstName, lastName, email, dateOfBirth, userName, password,description};
+    const userRegisterData = {
+      firstName,
+      lastName,
+      email,
+      dateOfBirth,
+      userName,
+      password,
+      description
+    };
     const userRegisterImage = filesToUpload[0];
     // const userRegisterImage =events.target.files[0];
     console.log("filesToUpload", filesToUpload);
@@ -97,7 +104,7 @@
   </div>
 
   <button
-    class="submitButton"
+  class="submitButton"
     on:click={handleRegister(
       firstName,
       lastName,
