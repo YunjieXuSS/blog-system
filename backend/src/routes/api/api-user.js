@@ -65,7 +65,7 @@ router.post("/logout", (_, res) => {
 
 // Get user Info
 router.get("/", authenticateUser, (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.userId;
   const user = getUserById(userId);
   if (user) {
     delete user.password;
@@ -119,20 +119,20 @@ router.get("/all", authenticateAdmin, async (req, res) => {
 });
 
 // Delete user
-router.delete("/", authenticateUser, (req, res) => {
+router.delete("/", authenticateUser, async(req, res) => {
   try {
-    const result = deleteUser(req.user.userId);
+    const result = await deleteUser(req.user.userId);
     if(result) return res.sendStatus(204);
     return res.status(404).json({ error: "User not found." });
   } catch (error) {
     return res.sendStatus(400);
   }
 });
-
+       
 // Admin delete user
-router.delete("/:userId", authenticateAdmin, (req, res) => {
+router.delete("/:userId", authenticateAdmin, async(req, res) => {
   try {
-    const result = deleteUser(req.params.userId);
+    const result = await deleteUser(req.params.userId);
     if(result) return res.sendStatus(204);
     return res.status(404).json({ error: "User not found." });
   } catch (error) {
