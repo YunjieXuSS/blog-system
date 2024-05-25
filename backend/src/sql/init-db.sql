@@ -49,7 +49,7 @@ CREATE TABLE like(
     userId INTEGER NOT NULL,
     articleId INTEGER NOT NULL,
     UNIQUE (userId, articleId),
-    FOREIGN KEY (userId) REFERENCES user(userId),
+    FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE,
     FOREIGN KEY (articleId) REFERENCES article(articleId) ON DELETE CASCADE
 );
 
