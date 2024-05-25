@@ -90,13 +90,13 @@ router.get("/:articleId/comments", async (req, res) => {
 });
 
 //Create a new comment on an article
-router.post("/:articleId/comments", authenticateUser, async (req, res) => {
+router.post("/:articleId/comment", authenticateUser, async (req, res) => {
   const comment = req.body;
   comment.articleId = req.params.articleId;
   comment.userId = req.user.userId;
   try {
     const newComment = await createComment(comment);
-    if (newComment) return res.status(201).json(newComment);
+    return res.status(201).json(newComment);
   } catch (err) {
     if (err.errors) return res.status(422).json(err.errors);
     return res.status(422).send(err);

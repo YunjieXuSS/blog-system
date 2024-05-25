@@ -7,7 +7,7 @@ import { getArticleById } from "./article-dao.js";
 const createCommentSchema = yup
   .object({
     content: yup.string().required(),
-    parentCommentId: yup.number().optional(),
+    parentCommentId: yup.number().optional().nullable(),
     userId: yup.number().required(),
     articleId: yup.number().required()
   })
@@ -23,21 +23,25 @@ export async function createComment(comment) {
   }
   if (newComment.parentCommentId) {
     const parentComment = await getCommentById(newComment.parentCommentId);
-    if (!parentComment) {
-      throw "Parent comment not found.";
+    if (
+      !parentComment ||
+      parentComment.articleId !== newComment.articleId ||
+      parentComment.isDeleted
+    ) {
+      throw "Invalid Parent comment.";
     }
   }
-
-  const db = await getDatabase();
-  const dbResult = await db.run(
-    "INSERT INTO comment (content, createDate, parentCommentId, userId, articleId) VALUES (?,?,?,?,?)",
-    newComment.content,
-    Date.now(),
-    newComment.parentCommentId,
-    newComment.userId,
-    newComment.articleId
-  );
-  return dbResult.changes > 0;
+    const db = await getDatabase();
+    const dbResult = await db.run(
+      "INSERT INTO comment (content, createDate, parentCommentId, userId, articleId) VALUES (?,?,?,?,?)",
+      newComment.content,
+      Date.now(),
+      newComment.parentCommentId,
+      newComment.userId,
+      newComment.articleId
+    );
+    newComment.commentId = dbResult.lastID;
+    return newComment;
 }
 
 export async function getCommentById(commentId) {
