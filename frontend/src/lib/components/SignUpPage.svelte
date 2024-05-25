@@ -27,6 +27,33 @@
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
+
+
+  let validationResults = {
+    firstName: true,
+    lastName: true,
+    email: true,
+    dateOfBirth: true,
+    userName: true,
+    password: true,
+    confirmPassword: true
+  };
+
+  
+
+  function handleValidation(event) {
+    console.log("event page", event);
+    //create a new array to store the validation results
+    validationResults[event.detail.label] = event.detail.validateResult;
+  }
+
+  //check if all the values are valid
+  //add a new property to the object to store the result
+  //Object.values(validationResults) means put all the values of the object into an array
+  //every(Boolean) means check if all the values are true
+  $: allValid = Object.values(validationResults).every(Boolean);
+
+
   async function handleRegister(
     firstName,
     lastName,
@@ -99,12 +126,14 @@
         bind:userName
         bind:password
         bind:description
+        on:validation={handleValidation}
       />
     </div>
   </div>
 
   <button
   class="submitButton"
+  class:valid={allValid}
     on:click={handleRegister(
       firstName,
       lastName,
@@ -151,10 +180,13 @@
       width: 200px;
       height: 80px;
       margin-top: 20px;
-      background-color: green;
+      background-color: grey;
       border-radius: 15px;
       color: white;
       font-size: 1.5em;
+    }
+    & .submitButton.valid {
+      background-color: green;
     }
   }
 </style>

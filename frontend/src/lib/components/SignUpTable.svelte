@@ -25,6 +25,22 @@
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
 
+  
+  let label=""
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+  //create a dispatcher to send the validation result to the SignUpPage.svelte
+  //Get validateResult, label from the event.detail (CustomEvent)
+  //validation event is dispatched from the InputBar.svelte's checkValue function
+  function handleValidation(event) {
+    console.log("event",event);
+    console.log("event.detail",event.detail);
+    const { validateResult, label } = event.detail;
+    console.log("event.detail2", { validateResult, label } );
+    dispatch('validation', { validateResult, label });
+  }
+
+
 </script>
 
 <div class="table-container">
@@ -35,6 +51,7 @@
     validate={validateRegisterUserName}
     maxlength="20"
     bind:value={firstName}
+    on:validation={handleValidation}
   />
   <InputBar
     label="LAST NAME:"
@@ -43,6 +60,7 @@
     validate={validateRegisterUserName}
     maxlength="20"
     bind:value={lastName}
+    on:validation={handleValidation}
   />
   <InputBar
     label="EMAIL:"
@@ -51,6 +69,7 @@
     validate={validateRegisterEmail}
     maxlength="20"
     bind:value={email}
+    on:validation={handleValidation}
   />
 
   <InputBar
@@ -60,6 +79,7 @@
     validate={validateRegisterDate}
     maxlength="20"
     bind:value={dateOfBirth}
+    on:validation={handleValidation}
   />
 
   <InputBar
@@ -69,6 +89,7 @@
     validate={validateRegisterUserName}
     maxlength="20"
     bind:value={userName}
+    on:validation={handleValidation}
   />
   <InputBar
     label="PASSWORD:"
@@ -77,6 +98,7 @@
     validate={validateRegisterPassword}
     maxlength="20"
     bind:value={password}
+    on:validation={handleValidation}
   />
   <InputBar
     label="CONFIRM PASSWORD:"
@@ -85,6 +107,7 @@
     validate={confirmPasswordValidator}
     maxlength="20"
     bind:value={confirmPassword}
+    on:validation={handleValidation}
   />
 
   <label for="description">DESCRIPTION:</label>

@@ -16,11 +16,15 @@
     const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
+    dispatch('validation', { validateResult, label });
   }
   function clearError() {
     errorMsg = "";
     validateResult = true;
   }
+//create a dispatcher to send the validation result to the SignUpTable.svelte
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
 </script>
 
 
