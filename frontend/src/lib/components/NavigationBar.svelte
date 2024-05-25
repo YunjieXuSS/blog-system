@@ -24,21 +24,12 @@ console.log("navi data",data);
   let selectedCategory = ""; //  menu selection
 
   let searchTerm = "";
-  //why I don't need this code any more when I put the searchArticles in the  handleSearch()??
-  // $: if (searchTerm.trim() === "") {
-  //   console.log("if searchTerm = null");
-  //   refreshPage(articleStore);
-  // }
 
   function userLogout() {
     //..
     console.log("User logout Successfully!");
   }
-  // Fetch articles on component mount
-  // Avoid calling `fetch` eagerly during server side rendering — put your `fetch` calls inside `onMount` or a `load` function instead，
-  // onMount(() => {
-  //   refreshPage(articleStore);
-  // });
+
 
   async function handleSearch() {
     console.log("handleSearch");
@@ -81,7 +72,6 @@ console.log("navi data",data);
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       <SearchBox bind:searchTerm on:input={handleSearch} />
-     
     </div>
   {/if}
 </nav>

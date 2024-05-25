@@ -78,7 +78,7 @@ export async function getArticlesById(articleId) {
 }
 
 export async function getArticlesByUserName(userName) {
-  console.log("dao-username",userName)
+  console.log("dao-username", userName)
   const db = await getDatabase();
   const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
@@ -229,6 +229,5 @@ export async function likeArticle(userId, articleId) {
 export async function unlikeArticle(userId, articleId) {
   const db = await getDatabase();
   const dbResult = await db.run("DELETE FROM like WHERE userId = ? AND articleId = ?", userId, articleId);
-  console.log(dbResult);
   return dbResult.changes > 0;
 }

@@ -120,13 +120,23 @@ router.delete("/:articleId", async (req, res) => {
 });
 
 // Get articles' comments
-router.get("/:articleId/comments", (req, res) => {
-  // ...
+router.get("/:articleId/comments", async (req, res) => {
+  const article = await getArticlesById(req.params.articleId);
+  if ( article) {  
+    const comments = await getComments(req.params.articleId);
+    if(comments) return res.status(200).json(comments);
+    return res.status(404).json({ error: "No one has commented yet." });
+  } else {
+    return res.status(404).json({ error: "Article does not exist." });
+  }
 });
 
 //Create a new comment on an article
-router.post("/:articleId/comments", (req, res) => {
-  // ...
+router.post("/:articleId/comments", async (req, res) => {
+  const userID = req.user.userId;
+  const newComment = await createComment(req.params.userId, req.params.articleId, req.params.parentArticleId)
+  if (newComment)
+    return res.status(201).json(newArticle);
 });
 
 // Like article
