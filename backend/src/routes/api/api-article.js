@@ -2,7 +2,7 @@ import express from "express";
 import { authenticateUser } from "../../middleware/auth-middleware.js";
 import {
   getArticles,
-  getArticlesById,
+  getArticleById,
   getArticlesByUserId,
   getArticlesByTitle,
   getArticlesByContent,
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
 // get articles by articleId
 router.get("/:articleId", async (req, res) => {
   try {
-    const articles = await getArticlesById(req.params.articleId);
+    const articles = await getArticleById(req.params.articleId);
     return res.status(200).json(articles);
   } catch (error) {
     return res.status(404).json({ error: "Can't find articles." });
@@ -62,13 +62,11 @@ router.get("/:articleId", async (req, res) => {
 });
 
 //create a new article if the user is logged in
-//POST /api/userarticles - Creates a new customer.
+//POST /api/articles - Creates a new customer.
 router.post("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
   const newArticle = await createArticle(req.body);
-  if (newArticle)
-    return res.status(201).json(newArticle);
-
+  if (newArticle) return res.status(201).json(newArticle);
 });
 
 /**
@@ -82,22 +80,27 @@ router.delete("/:articleId", async (req, res) => {
 
 // Get articles' comments
 router.get("/:articleId/comments", async (req, res) => {
-  const article = await getArticlesById(req.params.articleId);
-  if ( article) {  
+  const article = await getArticleById(req.params.articleId);
+  if (article) {
     const comments = await getComments(req.params.articleId);
-    if(comments) return res.status(200).json(comments);
-    return res.status(404).json({ error: "No one has commented yet." });
+    return res.status(200).json(comments);
   } else {
     return res.status(404).json({ error: "Article does not exist." });
   }
 });
 
 //Create a new comment on an article
-router.post("/:articleId/comments", async (req, res) => {
-  const userID = req.user.userId;
-  const newComment = await createComment(req.params.userId, req.params.articleId, req.params.parentArticleId)
-  if (newComment)
-    return res.status(201).json(newArticle);
+router.post("/:articleId/comments", authenticateUser, async (req, res) => {
+  const comment = req.body;
+  comment.articleId = req.params.articleId;
+  comment.userId = req.user.userId;
+  try {
+    const newComment = await createComment(comment);
+    if (newComment) return res.status(201).json(newComment);
+  } catch (err) {
+    if (err.errors) return res.status(422).json(err.errors);
+    return res.status(422).send(err);
+  }
 });
 
 // Like article

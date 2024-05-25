@@ -52,7 +52,7 @@ export async function createUser(user) {
   // Insert new user into database
   const db = await getDatabase();
   newUser.password = await createPasswordHashSalt(newUser.password);
-  if (newUser.description === undefined) newUser.description = "I know myself so well";
+  if (newUser.description === undefined) newUser.description = "I know myself so well.";
   const dbResult = await db.run(
     "INSERT INTO user(userName, password, email, firstName, lastName, dateOfBirth, avatar, description ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
     newUser.userName,
@@ -71,8 +71,9 @@ export async function createUser(user) {
 
 }
 
-export function getUserById(userId) {
-  // ...
+export async function getUserById(userId) {
+  const db = await getDatabase();
+  return await db.get("SELECT * from user WHERE userId = ?", userId);
 }
 
 /**
@@ -81,7 +82,7 @@ export function getUserById(userId) {
  * @param {string} userName the username to search
  * @returns the user with the matching username, or undefined.
  */
-export async function getUserWithUsername(username) {
+export async function getUserWithUserName(username) {
   const db = await getDatabase();
   return await db.get("SELECT * from user WHERE userName = ?", username);
 }
