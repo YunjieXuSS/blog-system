@@ -13,7 +13,8 @@
   export let email;
   export let dateOfBirth;
   export let password;
- let confirmPassword;
+  export let description = "I know myself so well.";
+  let confirmPassword;
 
   $: console.log("confirmPassword", confirmPassword);
 
@@ -24,8 +25,7 @@
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
-
-  async function handleRegister(firstName, lastName, email, dateOfBirth, userName, password) {
+  async function handleRegister(firstName, lastName, email, dateOfBirth, userName, password,description) {
     const user = { firstName, lastName, email, dateOfBirth, userName, password };
     console.log("register", user);
     const result = createAccount(user);
@@ -92,10 +92,32 @@
     maxlength="20"
     bind:value={confirmPassword}
   />
+
+  <label for="description">DESCRIPTION:</label>
+  <textarea class="description-textarea" name="description" rows="4" cols="50" bind:value={description}></textarea>
 </div>
 
 <style>
   .table-container {
     width: 48%;
+
+    & label {
+      display: block;
+      margin-top: 1em;
+      color: #808080;
+    }
+    & .description-textarea {
+      outline: none;
+      width: 335px;
+      padding: 1em 0.5em;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+      border: 1px solid #ddd;
+      background-color: #ddd;
+      color: #606060;
+      &::placeholder {
+        color: #909090;
+      }
+    }
   }
 </style>
