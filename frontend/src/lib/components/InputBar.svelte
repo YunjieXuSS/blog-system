@@ -21,6 +21,13 @@
     errorMsg = "";
     validateResult = true;
   }
+  //Only for username check, because it is async function and should get data from server.
+  async function aysncCheckValue() {
+    const validation = await validate(value);
+    errorMsg = validation.errorMsg;
+    validateResult = validation.result;
+  }
+
 </script>
 
 <div class="input-bar">
@@ -67,7 +74,7 @@
         {placeholder}
         {maxlength}
         bind:value
-        on:blur={checkValue}
+        on:blur={aysncCheckValue}
         on:focus={clearError}
       />
     {/if}

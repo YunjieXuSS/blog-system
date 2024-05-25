@@ -19,14 +19,11 @@ export const articleStore = writable(articles);
 
 
 export async function checkUserIsRegisterd(userName) {
-    //test code
-    //get password from argument,pass it in POST Fetch method, and get the result back
-    const userName = userName;
-    const result = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
+  
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/exists/${userName}`, {
     })
+    const result = await response.json();
+    console.log("checkUserIsRegisterd", result);
     return result;
 
 }

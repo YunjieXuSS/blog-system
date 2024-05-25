@@ -1,4 +1,6 @@
 
+import { checkUserIsRegisterd } from "../js/utils.js";
+
 export function validateRegisterPassword(password) {
     if (password.length < 8) {
       return { result: false, errorMsg: "Password must be at least 8 characters" };
@@ -14,26 +16,22 @@ export function validateRegisterPassword(password) {
     return { result: true, errorMsg: "" };
   }
   
-export function validateRegisterUserName(userName) {
+export async function validateRegisterUserName(userName) {
+  const userIsExisted =  await checkUserIsRegisterd(userName);
+    console.log("usernameUnique1",userIsExisted.exists);
     if (userName.length < 3 || userName.length > 20) {
       return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
     } else if (userName.includes(" ")) {
       return { result: false, errorMsg: "Username cannot contain spaces." };
     } else if (!/^[a-zA-Z0-9_]+$/.test(userName)) {
       return { result: false, errorMsg: "Username can only contain underscore, letters and numbers." };
-    } else if (!usernameUnique((userName)=>{return true;})) {
+    } else if (userIsExisted.exists) {
       return { result: false, errorMsg: "Username already exists." };
     }
     return { result: true, errorMsg: "" };
   }
 
   
-  function usernameUnique(userName) {
- //not done yet
-
-  return true;
-}
-
   export function validateRegisterEmail(email) {
     if (!email) {
       return { result: false, errorMsg: "Email cannot be empty." };
