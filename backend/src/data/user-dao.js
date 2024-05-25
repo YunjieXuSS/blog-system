@@ -1,13 +1,12 @@
 /**
-* This file contains the functions for processing requests to the user API. 
-* The user-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
-*/
+ * This file contains the functions for processing requests to the user API.
+ * The user-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
+ */
 
 import yup from "yup";
 import { getDatabase } from "./database.js";
 import bcrypt from "bcrypt";
 import { createPasswordHashSalt } from "../utils/hash-utils.js";
-
 
 /**
  * Retrieves a user from the database using the provided username and password.
@@ -18,7 +17,7 @@ import { createPasswordHashSalt } from "../utils/hash-utils.js";
  */
 export async function getUserWithCredentials(username, password) {
   const db = await getDatabase();
-  const user = await db.get("SELECT * from user WHERE username = ?", username );
+  const user = await db.get("SELECT * from user WHERE username = ?", username);
   if (!user) return;
   console.log("user: ", user);
   const isValid = await bcrypt.compare(password, user.password);
@@ -32,14 +31,14 @@ export async function getUserWithCredentials(username, password) {
  */
 const createUserSchema = yup
   .object({
-    userName: yup.string().min(3).trim().required(),
-    password: yup.string().min(8).required(),
+    userName: yup.string().min(3).max(20).trim().required(),
+    password: yup.string().min(8).max(20).required(),
     email: yup.string().required(),
     firstName: yup.string().trim().required(),
     lastName: yup.string().trim().required(),
     dateOfBirth: yup.date().required(),
     avatar: yup.string().required(),
-    description: yup.string().optional(),
+    description: yup.string().optional()
   })
   .required();
 
@@ -68,7 +67,6 @@ export async function createUser(user) {
   // Give the returned user an ID, which was created by the database, then return.
   newUser.userId = dbResult.lastID;
   return newUser;
-
 }
 
 export async function getUserById(userId) {
@@ -98,9 +96,41 @@ export async function getUsers() {
   return users;
 }
 
+const updateUserSchema = yup
+  .object({
+    userName: yup.string().min(3).max(20).trim().optional(),
+    password: yup.string().min(8).max(20).optional(),
+    email: yup.string().optional(),
+    firstName: yup.string().trim().optional(),
+    lastName: yup.string().trim().optional(),
+    dateOfBirth: yup.date().optional(),
+    avatar: yup.string().optional(),
+    description: yup.string().optional()
+  })
+  .required();
 
-export function updateUser(id, user) {
-  // ...
+export async function updateUser(userId, udpateData) {
+  // Find the user with the given id, get outta here if doesn't exist.
+  const db = await getDatabase();
+  const user = db.get("SELECT * FROM user WHERE userId = ?", userId);
+  if (!user) return false;
+
+  // Validate incoming data (throw error if invalid)
+  const parsedUpdateData = updateUserSchema.validateSync(udpateData, {
+    abortEarly: false,
+    stripUnknown: true
+  });
+  parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
+
+  // Do the update
+  const setStatement = Object.keys(parsedUpdateData)
+    .map((key) => `${key} = ?`)
+    .join(", ");
+  await db.run(`UPDATE user SET ${setStatement} WHERE userId = ?`, [
+    ...Object.values(parsedUpdateData),
+    userId
+  ]);
+  return getUserById(userId);
 }
 
 
