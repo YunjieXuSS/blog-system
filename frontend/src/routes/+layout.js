@@ -16,6 +16,17 @@ import { ARTICLES_URL } from "../lib/js/apiUrls.js";
 //   }
 
 
+// export async function load({ fetch }) {
+//     console.log("Start Searching Articles");
+//     // console.log("refresh page start");
+//     const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
+//     if (!response) return;//have to add some solution here
+//     const articles = await response.json();
+//     // console.log(articles);
+//     return { articles };
+
+// }
+
 export async function load({ fetch }) {
     console.log("Start Searching Articles");
     // console.log("refresh page start");
@@ -23,19 +34,13 @@ export async function load({ fetch }) {
     if (!response) return;//have to add some solution here
     const articles = await response.json();
 
-    articles.forEach(async (article) => {
+    await Promise.all(articles.map(async (article) => {
         try {
             const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
-            if(res.status === 200){
-                article.isImgExist = true;
-            }
-            else{
-                article.isImgExist = false;
-            }
-          } catch (error) {
+            article.isImgExist = res.status === 200;
+        } catch (error) {
             article.isImgExist = false;
-          }
-        });
+        }
+    }));
     return { articles };
-
 }
