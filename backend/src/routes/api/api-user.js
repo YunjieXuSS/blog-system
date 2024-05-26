@@ -96,7 +96,6 @@ router.get("/:userName", async (req, res) => {
 // Update user
 router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   try {
-    console.log("req.body22222", req.body);
     const userId = req.user.userId;
     if (req.file) {
       req.body.avatar = "/images/" + req.file.filename;
