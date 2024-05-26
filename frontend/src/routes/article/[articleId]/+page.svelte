@@ -5,6 +5,7 @@
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
 
+  import LikeButton from "./../../../lib/components/LikeButton.svelte";
   export let data;
   const article = data.article;
   const { userId } = article;
@@ -51,15 +52,16 @@
   }
 </script>
 
-
-
 <PostArticleButton />
+
 <main>
   <div class="articleDiv">
     <button class = "edit" on:click={editArticle}> <img src="/icons/pencil-icon.png" alt="pencil"> </button>
     <ArticleCard {article} />
     <button class ="delete" on:click={deleteArticle}> <img src="/icons/delete-icon.png" alt = "trash-can"> </button>
   </div>
+
+  <LikeButton />
   <Comments authorId={userId} />
 </main>
 
