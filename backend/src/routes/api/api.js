@@ -21,5 +21,4 @@ router.use("/comments", commentRoutes);
 import routes from "./api-upload.js";
 router.use("/uploads", routes);
 
-
 export default router;

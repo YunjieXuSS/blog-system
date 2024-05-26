@@ -1,14 +1,15 @@
 <script>
-  import { ARTICLES_URL } from "../lib/js/apiUrls.js";
+  import Comments from "./../../../lib/components/Comments.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
-  /**
+  export let data;
+  const { article } = data;
+  const { userId } = article;
+    /**
    * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
    * them to be reloaded.
    */
   import { invalidate } from "$app/navigation";
-  export let data;
   console.log("111", data);
-
   async function editArticle(e) {
     e.preventDefault();
     console.log("editArticle");
@@ -45,6 +46,30 @@
     }
   }
 </script>
+
+<main>
+  <section class="article">// implement article component here</section>
+  <Comments authorId={userId} />
+</main>
+
+<style>
+  main {
+    padding: 16px;
+    width: 900px;
+    margin: 0 auto;
+  }
+
+  .article {
+    min-height: calc(100vh - 700px);
+  }
+</style>
+
+
+
+
+
+  
+
 
 // display the article with the given ID (reading and editing)
 <div class="articleDiv">

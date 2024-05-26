@@ -11,7 +11,7 @@
   import Button from "$lib/components/Button.svelte";
 
   export let data;
-console.log("navi data",data);
+// console.log("navi data",data);
 
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
@@ -43,7 +43,7 @@ console.log("navi data",data);
   <!-- show different content depends on the status of user -->
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
-      <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+      <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
@@ -51,7 +51,7 @@ console.log("navi data",data);
   {#if isLoggined == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {userName}!</span>
-      <img class="userIcon" src="userDefaultIcon.png" alt="userIcon" />
+      <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
       <button on:click={userLogout}>Logout</button>
     </div>
   {/if}
@@ -59,10 +59,10 @@ console.log("navi data",data);
 <nav class="navBar">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
-    <li><a href="/" class:active={path === "/"}>home</a></li>
+    <li><a href="/" class:active={path === "/"}>Home</a></li>
     <li>
       <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >profile</a
+        >Profile</a
       >
     </li>
     <!-- browsing here to see the default Svelte 404 page. -->

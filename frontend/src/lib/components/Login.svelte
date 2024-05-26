@@ -1,24 +1,23 @@
 <script>
   import { goto } from "$app/navigation";
   import InputBar from "./InputBar.svelte";
-  import {USER_URL} from "../js/apiUrls.js";
+  import { USER_URL } from "../js/apiUrls.js";
   let userName;
   let password;
-  let confirmPassword;
   let isvalidation = false;
   let loginFailed = false;
   $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
-  $: passwordObj = {password}
   async function processLogin() {
     console.log("Processing login start");
     const response = await fetch(`${USER_URL}/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userName, password }),
+      body: JSON.stringify({ userName, password })
     });
-    if(response.status === 200){
+    if (response.status === 200) {
       goto("/", { replaceState: true, invalidateAll: true });
     }
     loginFailed = true;
@@ -37,8 +36,12 @@
     }
     return { result: true, errorMsg: "" };
   }
-  import { validateConfirmPassword } from "../js/validation.js";
-  $: validateConfirmPasswordFn = validateConfirmPassword(passwordObj)
+  async function validateUserNameTest(value) {
+    const response = await fetch(`${USER_URL}/username/${value}`);
+    if (response.status === 200) {
+      return { result: false, errorMsg: "Username already exists" };
+    }
+  }
 </script>
 
 <div class="login-container">
@@ -49,7 +52,7 @@
       label="USERNAME:"
       type="text"
       placeholder="Enter your username"
-      validate={validateUserName}
+      validate={validateUserNameTest}
       maxlength="20"
       bind:value={userName}
     />
@@ -61,17 +64,13 @@
       validate={validatePassword}
       bind:value={password}
     />
-
-    <InputBar
-    label="PASSWORD:"
-    type="password"
-    placeholder="Password (8+ characters)"
-    validate={validateConfirmPasswordFn}
-    bind:value={confirmPassword}
-  />
-    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}>LOGIN</button>
+    <button class:diabled={!isvalidation} on:click={processLogin} disabled={!isvalidation}
+      >LOGIN</button
+    >
   </div>
-  <div class="login-error" style = "display:{loginFailed?'block':'none'}">Invalid password or username. Try again.</div>
+  <div class="login-error" style="display:{loginFailed ? 'block' : 'none'}">
+    Invalid password or username. Try again.
+  </div>
 </div>
 
 <style>

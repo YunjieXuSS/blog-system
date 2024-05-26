@@ -1,31 +1,31 @@
 // Middleware for authentication
 import { getUsernameFromJWT } from "../utils/jwt-utils.js";
-import { getUserWithUsername } from "../data/user-dao.js";
+import { getUserWithUserName } from "../data/user-dao.js";
 
 export async function authenticateUser(req, res, next) {
-  if (!req.cookies.authToken) return res.sendStatus(401);
+  if (!req.cookies.authToken) return res.status(401).json({ error: "Not login" });
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
-    const user = await getUserWithUsername(userName);
-    if (!user) return res.sendStatus(401);
+    const user = await getUserWithUserName(userName);
+    if (!user) return res.status(401).json({ error: "Not user." });
     req.user = user;
     next();
   } catch (err) {
-    return res.sendStatus(401);
+    return res.status(401).json({ error: "Not login" });
   }
 }
 
-export function authenticateAdmin(req, res, next) {
-  if (!req.cookies.authToken) return res.sendStatus(401);
+export async function authenticateAdmin(req, res, next) {
+  if (!req.cookies.authToken) return res.sendStatus(401).json({ error: "Not login" });
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
-    const user = getUserWithUsername(userName);
-    if (!user) return res.sendStatus(401);
+    const user = await getUserWithUserName(userName);
+    if (!user) return res.status(401).json({ error: "Not user." });
     req.user = user;
-    if (!user.isAdmin) return res.sendStatus(403);
+    if (!user.isAdmin) return res.status(403).json({ error: "Not admin" });
     req.admin = user;
     next();
   } catch (err) {
-    return res.sendStatus(401);
+    return res.status(401).json({ error: "Not login" });
   }
 }

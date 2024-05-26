@@ -6,20 +6,20 @@ import yup from "yup";
 /**
  * Retrieves an array of all articles.
  * 10 articles in a page and displaying descendingly
- * @returns an array of all articles 
+ * @returns an array of all articles
  */
 export async function getArticles(pageSize = 10, pageNumber = 1) {
+  console.log(111)
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
+  console.log(222);
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-     FROM article 
-     INNER JOIN user ON article.userId = user.userId 
-     ORDER BY article.updateDate DESC 
-     LIMIT ? OFFSET ?`, 
-    pageSize, offset
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY a.createDate DESC 
+    LIMIT ? OFFSET ?`,
+    pageSize,
+    offset
   );
-  return articles
+  return articles;
 }
 
 //Get all articles and display them ascendingly base on their updateDate
@@ -27,14 +27,22 @@ export async function getArticles(pageSize = 10, pageNumber = 1) {
 export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
-  const articles = await db.all("SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?", pageSize, offset);
+  const articles = await db.all(
+    "SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?",
+    pageSize,
+    offset
+  );
   return articles;
 }
 
-
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
-  const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
+  const articlesOfUser = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+     FROM article 
+     INNER JOIN user ON article.userId = user.userId WHERE userId = ?`,
+    parseInt(userId)
+  );
   return articlesOfUser;
 }
 
@@ -42,7 +50,9 @@ export async function getArticlesByTitle(title) {
   const db = await getDatabase();
   const lowercaseTitle = title.toLowerCase();
   const articles = await db.all(
-    "SELECT * FROM article WHERE LOWER(title) LIKE ?",
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+     FROM article 
+     INNER JOIN user ON article.userId = user.userId WHERE title= ?`,
     `%${lowercaseTitle}%`
   );
 
@@ -53,7 +63,9 @@ export async function getArticlesByContent(content) {
   const db = await getDatabase();
   const lowercaseContent = content.toLowerCase();
   const articles = await db.all(
-    "SELECT * FROM article WHERE LOWER(content) LIKE ?",
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+    FROM article 
+    INNER JOIN user ON article.userId = user.userId WHERE content LIKE?`,
     `%${lowercaseContent}%`
   );
 
@@ -62,7 +74,12 @@ export async function getArticlesByContent(content) {
 
 export async function getArticlesByDate(createDate) {
   const db = await getDatabase();
-  const articles = await db.all("SELECT * FROM article WHERE DATE(createDate) = ?", [createDate]);
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+  FROM article 
+  INNER JOIN user ON article.userId = user.userId WHERE DATE(createDate) = ?`,
+    [createDate]
+  );
   return articles;
 }
 
@@ -71,19 +88,26 @@ export async function getArticlesByDate(createDate) {
  * @param {*} id the id to match. Will be converted to a number using parseInt().
  * @returns a specific article, or undefined.
  */
-export async function getArticlesById(articleId) {
+export async function getArticleById(articleId) {
   const db = await getDatabase();
-  const article = await db.all("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
+  const article = await db.get(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+  FROM article 
+  INNER JOIN user ON article.userId = user.userId WHERE  articleId = ?`,
+    parseInt(articleId)
+  );
   return article;
 }
 
 export async function getArticlesByUserName(userName) {
-  console.log("dao-username", userName)
+  console.log("dao-username", userName);
   const db = await getDatabase();
   const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE LOWER(u.userName) LIKE ?",
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+    FROM article 
+    INNER JOIN user ON article.userId = user.userId WHERE LOWER(u.userName) LIKE ?`,
     `%${lowercaseUserName}%`
   );
   return articles;
@@ -98,7 +122,7 @@ const createArticleSchema = yup
     title: yup.string().required(),
     content: yup.string().required(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
-    updateData:yup.date().default(() => new Date()),
+    updateData: yup.date().default(() => new Date()),
     imgUrl: yup.string().optional(),
     userId: yup.number().required()
   })
@@ -120,11 +144,11 @@ export async function createArticle(articleData) {
 
   // Insert new article into database
   const db = await getDatabase();
-  "SELECT * FROM user WHERE userId = ?"
-  if(!articleData.userId) {
+  ("SELECT * FROM user WHERE userId = ?");
+  if (!articleData.userId) {
     throw new Error("You need to log in before creating an article.");
   }
-  if(newArticle.imgUrl === undefined) newArticle.imgUrl = null;
+  if (newArticle.imgUrl === undefined) newArticle.imgUrl = null;
 
   const dbResult = await db.run(
     "INSERT INTO article(title, content, createDate, updateDate, imgUrl, userId) VALUES(?, ?, ?, ?,?,?)",
@@ -133,9 +157,9 @@ export async function createArticle(articleData) {
     newArticle.createDate,
     newArticle.updateData,
     newArticle.imgUrl,
-    newArticle.userId 
+    newArticle.userId
   );
-  console.log('Article created successfully');
+  console.log("Article created successfully");
 
   // Give the returned article an ID, which was created by the database, then return.
   newArticle.articleId = dbResult.lastID;
@@ -202,7 +226,8 @@ export async function updateArticle(articleId, updateData) {
   const dbResult = await db.run(sql, [...updateParams, parseInt(articleId)]);
 
   // Return updated content if changes were made, false otherwise.
-  if(dbResult.changes > 0) return db.get("Select * FROM article WHERE articleId = ?", parseInt(articleId));
+  if (dbResult.changes > 0)
+    return db.get("Select * FROM article WHERE articleId = ?", parseInt(articleId));
   return false;
 }
 
@@ -221,13 +246,21 @@ export async function deleteArticle(articleId) {
 //Like an article
 export async function likeArticle(userId, articleId) {
   const db = await getDatabase();
-  const dbResult = await db.run("INSERT INTO like (userId, articleId) VALUES (?,?)", userId, articleId);
+  const dbResult = await db.run(
+    "INSERT INTO like (userId, articleId) VALUES (?,?)",
+    userId,
+    articleId
+  );
   return dbResult.changes > 0;
 }
 
 //Unlike an article
 export async function unlikeArticle(userId, articleId) {
   const db = await getDatabase();
-  const dbResult = await db.run("DELETE FROM like WHERE userId = ? AND articleId = ?", userId, articleId);
+  const dbResult = await db.run(
+    "DELETE FROM like WHERE userId = ? AND articleId = ?",
+    userId,
+    articleId
+  );
   return dbResult.changes > 0;
 }

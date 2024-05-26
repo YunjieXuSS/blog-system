@@ -17,6 +17,7 @@
   let password;
   let email;
   let dateOfBirth;
+  let description;
   let filesToUpload;
 
   // define a function to get the first password.
@@ -33,9 +34,11 @@
     dateOfBirth,
     userName,
     password,
+    description,
     filesToUpload
   ) {
-    const userRegisterData = { firstName, lastName, email, dateOfBirth, userName, password };
+    
+    const userRegisterData = { firstName, lastName, email, dateOfBirth, userName, password,description};
     const userRegisterImage = filesToUpload[0];
     // const userRegisterImage =events.target.files[0];
     console.log("filesToUpload", filesToUpload);
@@ -52,7 +55,7 @@
     formData.append("password", password);
     if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
       formData.append("avatar", userRegisterImage);
-    }else{
+    } else {
       //if no image is uploaded, use the default image
       formData.append("avatar", "/images/avatar-default.png");
     }
@@ -88,11 +91,13 @@
         bind:dateOfBirth
         bind:userName
         bind:password
+        bind:description
       />
     </div>
   </div>
 
   <button
+    class="submitButton"
     on:click={handleRegister(
       firstName,
       lastName,
@@ -100,6 +105,7 @@
       dateOfBirth,
       userName,
       password,
+      description,
       filesToUpload
     )}
   >
@@ -112,19 +118,36 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+
+    & .page-title {
+      & > h2 {
+        font-size: 2em;
+        margin: 5px 0 0 0;
+      }
+    }
 
     & > .content-container {
       display: flex;
       flex-direction: row;
       align-content: center;
-      gap: 20px;
+      gap: 10px;
 
       & > .avatar-container {
         width: 50%;
       }
-      & > .table-container {
+      & .table-container {
         width: 48%;
       }
+    }
+    & .submitButton {
+      width: 200px;
+      height: 80px;
+      margin-top: 20px;
+      background-color: green;
+      border-radius: 15px;
+      color: white;
+      font-size: 1.5em;
     }
   }
 </style>

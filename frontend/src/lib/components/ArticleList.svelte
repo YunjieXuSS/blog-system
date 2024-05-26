@@ -2,8 +2,9 @@
   import ArticleCard from "./ArticleCard.svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
-  import { ARTICLES_URL } from "../js/utils.js";
+  import { ARTICLES_URL } from "../js/apiUrls.js"
   export let articles;
+  $: console.log(articles);
 
   function navigateToArticle(articleId) {
     if (browser) {

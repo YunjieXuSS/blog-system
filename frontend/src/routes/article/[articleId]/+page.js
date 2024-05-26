@@ -1,16 +1,27 @@
-// pre-load article data
-import { ARTICLES_URL } from "../lib/js/apiUrls.js";
+import { ARTICLES_URL } from "../../../lib/js/apiUrls";
 
-export async function load({ fetch, params }) {
-  const { articleId } = params;
-  const response = await fetch(`${ARTICLES_URL}/${articleId}`);
-  const article = await response.json();
-  if (res.ok) {
-    return { props: { article } };
-  } else {
-    return {
-      status: res.status,
-      error: new Error(`Could not load article ${articleId}`)
-    };
+// pre-load article data
+export async function load({ params }) {
+  const articleId  = params.articleId;
+  console.log("fetching....");
+  async function getArticle() {
+    const res = await fetch(`${ARTICLES_URL}/${articleId}`);
+    if (res.status === 200) {
+      const data = await res.json();
+
+      return data;
+    } else {
+      throw Error("Failed to fetch article");
+    }
   }
+
+  let article = {};
+  try {
+    article = await getArticle();
+    
+  } catch (error) {
+
+    console.error(error);
+  }
+  return { article };
 }
