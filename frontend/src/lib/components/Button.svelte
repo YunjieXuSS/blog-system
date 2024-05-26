@@ -2,19 +2,26 @@
 
 <script>
   export let buttonLabel;
-  export let buttonPath;
+  export let buttonFunction = () => {};
   export let bckgColour;
   export let txtColour = "white";
+  export let buttonWidth = "100%";
   export let borderRadius = "4px";
 </script>
 
-<a href={buttonPath}><button style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}">{buttonLabel}</button></a>
+<button
+  on:click={buttonFunction}
+  style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
+  >{buttonLabel}
+</button>
 
 <style>
   button {
+    display: flex;
+    justify-content: center;
     border-style: none;
     box-sizing: border-box;
-    font-family: 'Nunito', sans-serif;
+    font-family: "Nunito", sans-serif;
     font-size: 17px;
     font-weight: 800;
     cursor: pointer;
@@ -26,11 +33,9 @@
     padding: 9px 20px 8px;
     position: relative;
     text-align: center;
-    width: 100%;
   }
 
   button:hover {
     opacity: 0.75;
   }
-
 </style>

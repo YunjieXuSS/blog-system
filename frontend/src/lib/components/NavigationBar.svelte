@@ -30,10 +30,13 @@
     console.log("User logout Successfully!");
   }
 
-
   async function handleSearch() {
     console.log("handleSearch");
     await searchArticles(articleStore, selectedCategory, searchTerm);
+  }
+
+  function loginButton() {
+    window.location = "/login";
   }
 </script>
 
@@ -44,7 +47,7 @@
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <Button buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
 
