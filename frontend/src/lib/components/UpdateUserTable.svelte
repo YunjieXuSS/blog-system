@@ -4,12 +4,14 @@
   import {
     validateRegisterName,
     validateRegisterUserName,
+    validateUpdateUserName,
     validateRegisterPassword,
     validateConfirmPassword,
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
   import ArticleCard from "./ArticleCard.svelte";
+ 
 
   export let firstName, lastName, userName;
   export let email;
@@ -29,6 +31,7 @@
   
   let label=""
   import { createEventDispatcher } from 'svelte';
+  import { user } from "../js/store";
   const dispatch = createEventDispatcher();
   //create a dispatcher to send the validation result to the SignUpPage.svelte
   //Get validateResult, label from the event.detail (CustomEvent)
@@ -36,6 +39,34 @@
   function handleValidation(event) {
     const { validateResult, label } = event.detail;
     dispatch('validation', { validateResult, label });
+  }
+
+  function handleUserNameValidation(event) {
+    
+    if ($user.userName === userName) {
+      return;
+    } else {
+      return validateRegisterUserName(userName);
+    }
+  }
+
+
+
+  function handlePasswordValidation(event) {
+    if (password.isempty()){
+      return;
+    } else {
+      return validateRegisterPassword(password);
+    }
+  }
+
+
+  function handleConfirmedPasswordValidation(event) {
+    if (password.isempty()){
+      return;
+    } else {
+      return confirmPasswordValidator(confirmPassword);
+    }
   }
 
 
@@ -61,7 +92,7 @@
     on:validation={handleValidation}
   />
   <InputBar
-    label="EMAIL:"x
+    label="EMAIL:"
     type="email"
     placeholder="Enter your user email"
     validate={validateRegisterEmail}
@@ -84,16 +115,17 @@
     label="USERNAME:"
     type="text"
     placeholder="Enter your user name"
-    validate={validateRegisterUserName}
+    validate={handleUserNameValidation}
     maxlength="20"
     bind:value={userName}
     on:validation={handleValidation}
   />
+
   <InputBar
-    label="PASSWORD:"
+    label="RESET PASSWORD:"
     type="password"
     placeholder="Enter your password"
-    validate={validateRegisterPassword}
+    validate={handlePasswordValidation}
     maxlength="20"
     bind:value={password}
     on:validation={handleValidation}
@@ -102,7 +134,7 @@
     label="CONFIRM PASSWORD:"
     type="password"
     placeholder="Re-enter your password"
-    validate={confirmPasswordValidator}
+    validate={handleConfirmedPasswordValidation}
     maxlength="20"
     bind:value={confirmPassword}
     on:validation={handleValidation}

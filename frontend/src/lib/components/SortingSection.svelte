@@ -28,7 +28,6 @@
     articleStore.set(newOrderArticles);
   }
 
-  // $: console.log(sortingCategory);
   $: console.log("+sorting", $articleStore);
 </script>
 

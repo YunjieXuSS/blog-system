@@ -17,7 +17,7 @@
   }
 </script>
 
-<!-- A form -->
+
 <form>
   <div class="img-container">
     <div class="img-bg-container"> 
@@ -36,19 +36,8 @@
     on:change={previewImage}
     required
   />
-  <!-- <label for="message">Message:</label>
-  <input type="text" name="message" bind:value={messageToSend} required />
-  <button type="submit">Upload</button> -->
-</form>
 
-<!-- Test code -->
-<!-- <h2>Server response</h2>
-{#if serverResponse}
-  <p><strong>Message:</strong> {serverResponse.message}</p>
-  <img src={`${PUBLIC_SERVER_URL}${serverResponse.imageUrl}`} alt={serverResponse.message} />
-{:else}
-  <p>No response yet 😔</p>
-{/if} -->
+</form>
 
 <style>
   form {

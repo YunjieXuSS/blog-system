@@ -8,6 +8,8 @@
         console.log(value);
     }
 
+    $: console.log(value);
+
     // /** @type {import('tinymce').RawEditorOptions} */
 	const conf = {
 		plugins: [
