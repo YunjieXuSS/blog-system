@@ -1,8 +1,58 @@
 // This file contains the functions for processing requests to the article API and their comments and likes.
 // The article-dao.js file is responsible for interacting with the database and performing the necessary operations to process the requests.
+import { start } from "repl";
 import { getDatabase } from "./database.js";
 import yup from "yup";
 
+const getArticleSchema = yup
+  .object({
+    title: yup.string().optional(),
+    userName: yup.string().optional(),
+    startDate: yup.date().optional(),
+    endDate: yup.date().optional(),
+    sortBy: yup
+      .string()
+      .oneOf(["title", "userName", "createDate"])
+      .default("createDate")
+      .optional(),
+    sortOrder: yup.number().oneOf([0, 1]).default(1).optional()
+  })
+  .required();
+export async function getArticlesByKeywords(query) {
+  const validatedQuery = getArticleSchema.validateSync(query, {
+    abortEarly: false,
+    stripUnknown: true
+  });
+
+  const { title, userName, startDate, endDate, sortBy, sortOrder } = validatedQuery;
+  const values = [];
+  let sql = "SELECT a.*, u.userName, u.avatar FROM article a JOIN user u WHERE a.userId = u.userId";
+  if (title) {
+    sql += " AND title LIKE ?";
+    values.push(`%${title}%`);
+  }
+
+  if (userName) {  
+    sql += " AND a.userId in (SELECT userId FROM user WHERE userName LIKE ?)";
+    values.push(`%${userName}%`);
+  }
+
+  if (startDate) {
+    sql += " AND createDate >= ?";
+    values.push(startDate);
+  }
+  if (endDate) {
+    sql += " AND createDate <= ?";
+    values.push(endDate);
+  }
+  sql += ` ORDER BY ${sortBy} ${sortOrder === 1 ? "DESC" : "ASC"}`;
+  console.log("sql", sql);
+  console.log("values", values);
+  const db = await getDatabase();
+  const articles = await db.all(sql, values);
+
+  return articles;
+}
 /**
  * Retrieves an array of all articles.
  * 10 articles in a page and displaying descendingly
@@ -251,4 +301,3 @@ export async function unlikeArticle(userId, articleId) {
 
   return dbResult.changes > 0;
 }
-
