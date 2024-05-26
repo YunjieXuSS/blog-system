@@ -3,15 +3,15 @@ import { getUsernameFromJWT } from "../utils/jwt-utils.js";
 import { getUserWithUserName } from "../data/user-dao.js";
 
 export async function authenticateUser(req, res, next) {
-  if (!req.cookies.authToken) return res.sendStatus(401).json({ error: "Not login" });
+  if (!req.cookies.authToken) return res.status(401).json({ error: "Not login" });
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
     const user = await getUserWithUserName(userName);
-    if (!user) return res.sendStatus(401).json({ error: "Not user." });
+    if (!user) return res.status(401).json({ error: "Not user." });
     req.user = user;
     next();
   } catch (err) {
-    return res.sendStatus(401).json({ error: "Not login" });
+    return res.status(401).json({ error: "Not login" });
   }
 }
 
@@ -20,12 +20,12 @@ export async function authenticateAdmin(req, res, next) {
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
     const user = await getUserWithUserName(userName);
-    if (!user) return res.sendStatus(401).json({ error: "Not user." });
+    if (!user) return res.status(401).json({ error: "Not user." });
     req.user = user;
-    if (!user.isAdmin) return res.sendStatus(403).json({ error: "Not admin" });
+    if (!user.isAdmin) return res.status(403).json({ error: "Not admin" });
     req.admin = user;
     next();
   } catch (err) {
-    return res.sendStatus(401).json({ error: "Not login" });
+    return res.status(401).json({ error: "Not login" });
   }
 }
