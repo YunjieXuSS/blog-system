@@ -1,9 +1,12 @@
 <script>
   import Comments from "./../../../lib/components/Comments.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
+  import{goto} from "$app/navigation";
+  import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
+  import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
+
   export let data;
   const article = data.article;
-  console.log("individualArticle", article);
   const { userId } = article;
   import { invalidate } from "$app/navigation";
 
@@ -50,27 +53,45 @@
 
 
 
-
+<PostArticleButton />
 <main>
   <div class="articleDiv">
+    <button class = "edit" on:click={editArticle}> <img src="/icons/pencil-icon.png" alt="pencil"> </button>
     <ArticleCard {article} />
+    <button class ="delete" on:click={deleteArticle}> <img src="/icons/delete-icon.png" alt = "trash-can"> </button>
   </div>
   <Comments authorId={userId} />
 </main>
 
 
 
-// edit button
-<button on:click={editArticle}>Edit</button>
 
-// delete button
-<button on:click={deleteArticle}>Delete</button>
 
 <style>
   main {
     padding: 16px;
     width: 900px;
     margin: 0 auto;
+  }
+  .articleDiv {
+    position: relative;
+  }
+
+  .edit,.delete{
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    
+
+    & img{
+      width: 100%;
+      height: 100%;
+    }
   }
 
 </style>
