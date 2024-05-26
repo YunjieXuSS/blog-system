@@ -1,8 +1,6 @@
 <script>
-  import ArticleCard from "../lib/components/ArticleCard.svelte";
   // import { articles, getPasswordHashSalt } from "../lib/js/utils";
   import { articleStore } from "../lib/js/utils.js";
-  // import ArticleCard from "../lib/components/ArticleCard.svelte";
   import ArticleList from "../lib/components/ArticleList.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
@@ -11,7 +9,6 @@
   articleStore.set(data.articles);
 
   let sortingCategory = "";
-  // $: console.log(sortingCategory);
 </script>
 
 <PostArticleButton />
