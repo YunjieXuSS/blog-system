@@ -3,26 +3,14 @@ import { writable } from "svelte/store";
 export const articles = [];
 export const articleStore = writable(articles);
 
-//test code
-// export async function getPasswordHashSalt(user_password) {
-//     //test code
-//     //get password from argument,pass it in POST Fetch method, and get the result back
-//     const password = user_password;
-//     const result = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ password })
-//     })
-//     return result;
-
-// }
-
-
 export async function checkUserIsRegisterd(userName) {
-  
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/exists/${userName}`, {
+    //test code
+    //get password from argument,pass it in POST Fetch method, and get the result back
+    const result = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password })
     })
-    const result = await response.json();
     return result;
 
 }

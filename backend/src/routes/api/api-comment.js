@@ -9,15 +9,19 @@ const router = express.Router();
 
 //Delete a comment.
 router.delete("/:commentId", authenticateUser, async (req, res) => {
-  if (!req.params.commentId) return res.status(422).send("Comment ID is required");
-  if (Number.isInteger(req.params.commentId) === false)
-    return res.status(422).send("Comment ID must be an integer");
+  if (!req.params.commentId) return res.status(422).json({ error: "Comment ID is required" });
+  let commentId;
   try {
-    const result = await deleteComment(req.params.commentId, req.user.userId);
-    if (result) return res.sendStatus(204);
-    return res.status(404).send("Comment not found");
+    commentId = parseInt(req.params.commentId);
   } catch (error) {
-    return res.status(403).send(error);
+    return res.status(422).json({ error: "Comment ID must be an integer" });
+  }
+  try {
+    const result = await deleteComment(commentId, req.user.userId);
+    if (result) return res.sendStatus(204);
+    return res.status(404).json({ error: "Comment not found" });
+  } catch (error) {
+    return res.status(403).json({ error: error });
   }
 });
 

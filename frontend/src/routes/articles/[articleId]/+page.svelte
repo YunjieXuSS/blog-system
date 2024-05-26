@@ -1,1 +1,0 @@
-// display the article with the given ID (reading and editing)

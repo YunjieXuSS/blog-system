@@ -43,7 +43,7 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
-      <img class="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+      <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       <Button buttonLabel="Login" buttonPath="/login" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
@@ -51,7 +51,7 @@
   {#if isLoggined == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {userName}!</span>
-      <img class="userIcon" src="userDefaultIcon.png" alt="userIcon" />
+      <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
       <button on:click={userLogout}>Logout</button>
     </div>
   {/if}
