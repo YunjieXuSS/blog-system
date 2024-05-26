@@ -4,6 +4,115 @@ import { getDatabase } from "./database.js";
 import yup from "yup";
 
 /**
+ * Retrieves an array of all articles.
+ * 10 articles in a page and displaying descendingly
+ * @returns an array of all articles
+ */
+export async function getArticles(pageSize = 10, pageNumber = 1) {
+  const db = await getDatabase();
+  const offset = (pageNumber - 1) * pageSize;
+  console.log(222);
+  const articles = await db.all(
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY a.createDate DESC 
+    LIMIT ? OFFSET ?`,
+    pageSize,
+    offset
+  );
+  return articles;
+}
+
+//Get all articles and display them ascendingly base on their updateDate
+//from oldest to the newest
+export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
+  const db = await getDatabase();
+  const offset = (pageNumber - 1) * pageSize;
+  const articles = await db.all(
+    "SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?",
+    pageSize,
+    offset
+  );
+  return articles;
+}
+
+export async function getArticlesByUserId(userId) {
+  const db = await getDatabase();
+  const articlesOfUser = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+     FROM article 
+     INNER JOIN user ON article.userId = user.userId WHERE userId = ?`,
+    parseInt(userId)
+  );
+  return articlesOfUser;
+}
+
+export async function getArticlesByTitle(title) {
+  const db = await getDatabase();
+  const lowercaseTitle = title.toLowerCase();
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+     FROM article 
+     INNER JOIN user ON article.userId = user.userId WHERE title LIKE ?`,
+    `%${lowercaseTitle}%`
+  );
+
+  return articles;
+}
+
+export async function getArticlesByContent(content) {
+  const db = await getDatabase();
+  const lowercaseContent = content.toLowerCase();
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+    FROM article 
+    INNER JOIN user ON article.userId = user.userId WHERE content LIKE ?`,
+    `%${lowercaseContent}%`
+  );
+
+  return articles;
+}
+
+export async function getArticlesByDate(createDate) {
+  const db = await getDatabase();
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+  FROM article 
+  INNER JOIN user ON article.userId = user.userId WHERE DATE(createDate) = ?`,
+    [createDate]
+  );
+  return articles;
+}
+
+/**
+ * Retrieves an article with the matching id. Returns undefined if no match.
+ * @param {*} id the id to match. Will be converted to a number using parseInt().
+ * @returns a specific article, or undefined.
+ */
+export async function getArticleById(articleId) {
+  const db = await getDatabase();
+  const article = await db.get(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+  FROM article 
+  INNER JOIN user ON article.userId = user.userId WHERE  articleId = ?`,
+    parseInt(articleId)
+  );
+  return article;
+}
+
+export async function getArticlesByUserName(userName) {
+  console.log("dao-username", userName);
+  const db = await getDatabase();
+  const lowercaseUserName = userName.toLowerCase();
+  // SQL query to join user and article tables and fetch articles by userName
+  const articles = await db.all(
+    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
+    FROM article 
+    INNER JOIN user ON article.userId = user.userId WHERE LOWER(u.userName) LIKE ?`,
+    `%${lowercaseUserName}%`
+  );
+  return articles;
+}
+
+/**
  * This schema defines a valid "create article" request.
  * These requests must have a title, content and createDate. Uploading image is optional.
  */
@@ -12,7 +121,9 @@ const createArticleSchema = yup
     title: yup.string().required(),
     content: yup.string().required(),
     createDate: yup.date().default(() => new Date()), // Setting default value to current date
-    imgUrl: yup.string().optional()
+    updateData: yup.date().default(() => new Date()),
+    imgUrl: yup.string().optional(),
+    userId: yup.number().required()
   })
   .required();
 
@@ -32,86 +143,26 @@ export async function createArticle(articleData) {
 
   // Insert new article into database
   const db = await getDatabase();
+  ("SELECT * FROM user WHERE userId = ?");
+  if (!articleData.userId) {
+    throw new Error("You need to log in before creating an article.");
+  }
+  if (newArticle.imgUrl === undefined) newArticle.imgUrl = null;
+
   const dbResult = await db.run(
-    "INSERT INTO article(title, content, createDate, updateDate, userId) VALUES(?, ?, ?, ?,?)",
+    "INSERT INTO article(title, content, createDate, updateDate, imgUrl, userId) VALUES(?, ?, ?, ?,?,?)",
     newArticle.title,
     newArticle.content,
     newArticle.createDate,
+    newArticle.updateData,
+    newArticle.imgUrl,
     newArticle.userId
   );
+  console.log("Article created successfully");
 
   // Give the returned article an ID, which was created by the database, then return.
   newArticle.articleId = dbResult.lastID;
   return newArticle;
-}
-
-/**
- * Retrieves an array of all articles.
- *
- * @returns an array of all articles
- */
-export async function getArticles(pageSize = 10, pageNumber = 1) {
-  const db = await getDatabase();
-  const offset = (pageNumber - 1) * pageSize;
-  const articles = await db.all("SELECT * FROM article LIMIT ? OFFSET ?", pageSize, offset);
-  return articles;
-}
-
-export async function getArticlesByUserId(userId) {
-  const db = await getDatabase();
-  const articlesOfUser = await db.all("SELECT * FROM article WHERE userId = ?", parseInt(userId));
-  console.log(articlesOfUser);
-  return articlesOfUser;
-}
-
-export async function getArticlesByTitle(title) {
-  const db = await getDatabase();
-  const lowercaseTitle = title.toLowerCase();
-  const articles = await db.all(
-    "SELECT * FROM article WHERE LOWER(title) LIKE ?",
-    `%${lowercaseTitle}%`
-  );
-
-  return articles;
-}
-
-export async function getArticlesByContent(content) {
-  const db = await getDatabase();
-  const lowercaseContent = content.toLowerCase();
-  const articles = await db.all(
-    "SELECT * FROM article WHERE LOWER(content) LIKE ?",
-    `%${lowercaseContent}%`
-  );
-
-  return articles;
-}
-
-export async function getArticlesByDate(createDate) {
-  const db = await getDatabase();
-  const articles = await db.all("SELECT * FROM article WHERE DATE(createDate) = ?", [createDate]);
-  return articles;
-}
-
-/**
- * Retrieves an article with the matching id. Returns undefined if no match.
- * @param {*} id the id to match. Will be converted to a number using parseInt().
- * @returns a specific article, or undefined.
- */
-export async function getArticleById(articleId) {
-  const db = await getDatabase();
-  const article = await db.get("SELECT * FROM article WHERE articleId = ?", parseInt(articleId));
-  return article;
-}
-
-export async function getArticlesByUserName(userName) {
-  console.log("dao-username", userName);
-  const db = await getDatabase();
-  // SQL query to join user and article tables and fetch articles by userName
-  const articles = await db.all(
-    "SELECT a.* FROM article AS a JOIN user AS u ON a.userId = u.userId WHERE u.userName like ?",
-    `%${userName}%`
-  );
-  return articles;
 }
 
 /**
@@ -122,8 +173,9 @@ const updateArticleSchema = yup
   .object({
     title: yup.string().min(1).optional(),
     content: yup.string().min(1).optional(),
-    createDate: yup.date().default(() => new Date()), // Setting default value to current date
-    imgUrl: yup.string().optional()
+    updateDate: yup.date().default(() => new Date()), // Setting default value to current date
+    imgUrl: yup.string().optional(),
+    userId: yup.number().required()
   })
   .required();
 
@@ -131,7 +183,7 @@ const updateArticleSchema = yup
  * Updates the article with the given id, if it exists and the provided update data is valid.
  *
  * @param {*} articleId the id to match. Will be converted to a number using parseInt().
- * @param {*} updateData The data to update. Any included title, content, createDate and imgUrl properties
+ * @param {*} updateData The data to update. Any included title, content, updateDate and imgUrl properties
  *            will replace those existing values for the matching article. Any other properties will be ignored.
  *
  * @return true if the database was updated, false otherwise.
@@ -170,10 +222,12 @@ export async function updateArticle(articleId, updateData) {
 
   // Execute SQL
   const db = await getDatabase();
-  const dbResult = await db.run(sql, ...updateParams, parseInt(articleId));
+  const dbResult = await db.run(sql, [...updateParams, parseInt(articleId)]);
 
-  // Return true if changes were made, false otherwise.
-  return dbResult.changes > 0;
+  // Return updated content if changes were made, false otherwise.
+  if (dbResult.changes > 0)
+    return db.get("Select * FROM article WHERE articleId = ?", parseInt(articleId));
+  return false;
 }
 
 /**
@@ -207,5 +261,7 @@ export async function unlikeArticle(userId, articleId) {
     userId,
     articleId
   );
+
   return dbResult.changes > 0;
 }
+
