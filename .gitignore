@@ -4,3 +4,8 @@ backend/package-lock.json
 frontend/src/lib/components/FakeArticleCard.svelte
 frontend/src/lib/js/test.js
 backend/src/routes/api/api-upload.js
+frontend/src/lib/components/SignUpTable copy.svelte
+frontend/src/lib/components/SignUpPage copy.svelte
+frontend/src/lib/components/AvatarUpload copy.svelte
+frontend/src/routes/edituser/+page.js
+frontend/src/routes/edituser/+page.svelte
