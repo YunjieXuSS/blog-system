@@ -1,5 +1,5 @@
 <script>
-  import CommentCard from "./Comment.svelte";
+  import CommentCard from "./CommentCard.svelte";
   import { page } from "$app/stores";
   import { getComments, postComment } from "../js/comments";
   import { onMount } from "svelte";
