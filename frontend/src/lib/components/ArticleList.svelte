@@ -8,7 +8,7 @@
 
   function navigateToArticle(articleId) {
     if (browser) {
-      goto(`${ARTICLES_URL}/${articleId}`);
+      goto(`/article/${articleId}`);
     }
     
   }
