@@ -1,10 +1,11 @@
 <script>
-  import Comment from "./Comment.svelte";
+  import CommentCard from "./CommentCard.svelte";
   import { page } from "$app/stores";
   import { getComments, postComment } from "../js/comments";
   import { onMount } from "svelte";
 
   export let authorId;
+  export let loginUserId = 0;
 
   let commentToArticle = "";
   const { articleId } = $page.params;
@@ -36,9 +37,16 @@
     return rootComments;
   }
 
+  // function removeParentCommentId(comments) {
+  //   return comments.map(comment => {
+  //       delete comment.parentCommentId;
+  //       return comment;
+  //     });
+  // }
   onMount(async () => {
     try {
       comments = await getComments({ articleId });
+      // comments = removeParentCommentId(comments);
       loadedComment = true;
     } catch (error) {
       console.error(error);
@@ -52,6 +60,7 @@
     try {
       await postComment({ content: commentToArticle, articleId });
       comments = await getComments({ articleId });
+      // comments = removeParentCommentId(comments);
       clearTextarea();
     } catch (error) {
       console.error(error);
@@ -66,6 +75,7 @@
 
   async function refreshComments() {
     comments = await getComments({ articleId });
+    // comments = removeParentCommentId(comments);
   }
 </script>
 
@@ -93,7 +103,7 @@
       <p class="loading">loading...</p>
     {:else}
       {#each commentProps as comment}
-        <Comment {...comment} {refreshComments} {authorId} />
+        <CommentCard {...comment} {refreshComments} {authorId} {loginUserId} />
       {/each}
     {/if}
   </div>

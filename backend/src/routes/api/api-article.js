@@ -12,7 +12,8 @@ import {
   createArticle,
   updateArticle,
   likeArticle,
-  unlikeArticle
+  unlikeArticle,
+  getArticlesByKeywords
 } from "../../data/article-dao.js";
 import { imageUploader } from "../../middleware/image-middleware.js";
 import { getComments, createComment } from "../../data/comment-dao.js";
@@ -20,6 +21,16 @@ import fsExtra from "fs-extra";
 const router = express.Router();
 
 // Articles' API
+router.get("/", async (req, res) => {
+  console.log("------start getArticlesByKeywords------");
+  try {
+    const articles = await getArticlesByKeywords(req.query);
+    return res.json(articles);
+  } catch (err) {
+    console.error(err);
+    if(err.errors) return res.status(422).json({error: err.errors});
+  }
+});
 
 router.get("/search", async (req, res) => {
   console.log(req.query);

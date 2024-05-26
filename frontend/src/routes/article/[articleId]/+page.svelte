@@ -1,5 +1,5 @@
 <script>
-  import Comments from "./../../../lib/components/Comments.svelte";
+  import CommentList from "../../../lib/components/CommentList.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
   import{goto} from "$app/navigation";
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
@@ -8,7 +8,13 @@
   import LikeButton from "./../../../lib/components/LikeButton.svelte";
   export let data;
   const article = data.article;
-  const { userId } = article;
+  const isLoggedIn = data.isLoggedIn;
+  let loginUser = {};
+  if (isLoggedIn) {
+    loginUser = data.user;
+  }
+  const authorId  = article.userId;
+  console.log("loginUser", loginUser);
   import { invalidate } from "$app/navigation";
 
 
@@ -62,7 +68,7 @@
   </div>
 
   <LikeButton />
-  <Comments authorId={userId} />
+  <CommentList {authorId} loginUserId={loginUser.userId}/>
 </main>
 
 

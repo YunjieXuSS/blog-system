@@ -87,7 +87,7 @@ router.get("/:userName", async (req, res) => {
   const userName = req.params.userName;
   const user = await getUserWithUserName(userName);
   if (user) {
-    return res.status(200).json({ exists: true});
+    return res.status(200).json({ exists: true });
   } else {
     return res.status(200).json({ exists: false });
   }
@@ -97,6 +97,7 @@ router.get("/:userName", async (req, res) => {
 router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   try {
     const userId = req.user.userId;
+    const userNameExists = req.body.userName;
     if (req.file) {
       req.body.avatar = "/images/" + req.file.filename;
     }
@@ -106,7 +107,14 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
     if (req.file) {
       await fsExtra.copy(req.file.path, "public" + newUser.avatar);
     }
-    res.status(200).json(newUser);
+    if (userNameExists)
+      return res
+        .cookie("authToken", createUserJWT(newUser.userName), {
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          httpOnly: true
+        })
+        .json({ newUser });
+    return res.json(newUser);
   } catch (err) {
     console.log(err);
     if (err.errors) return res.status(422).json(err.erros);
