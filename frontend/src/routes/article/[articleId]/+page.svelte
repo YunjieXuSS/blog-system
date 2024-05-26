@@ -1,5 +1,6 @@
 <script>
   import Comments from "./../../../lib/components/Comments.svelte";
+  import LikeButton from "./../../../lib/components/LikeButton.svelte";
   export let data;
   const { article } = data;
   const { userId } = article;
@@ -7,6 +8,8 @@
 
 <main>
   <section class="article">// implement article component here</section>
+
+  <LikeButton />
   <Comments authorId={userId} />
 </main>
 

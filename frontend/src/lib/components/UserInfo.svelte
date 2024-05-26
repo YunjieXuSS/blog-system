@@ -1,7 +1,7 @@
 <!-- Displays the user's information (username, name, avatar, description) on their profile. -->
 
 <script>
-  import Button from "$lib/components/Button.svelte";
+  import ButtonText from "$lib/components/ButtonText.svelte";
 
   export let userName = "@john-smith";
   export let firstName = "John";
@@ -21,7 +21,7 @@
       <img class ="userAvatar" src={avatarURL} alt="User avatar" />
 
       <div class="settings">
-        <Button
+        <ButtonText
           buttonLabel="Settings"
           buttonFunction={settingsButton}
           bckgColour="lightgray"

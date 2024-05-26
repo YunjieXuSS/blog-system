@@ -8,7 +8,7 @@
   import { articleStore } from "../js/utils.js";
   import { searchArticles, refreshPage } from "../js/utils.js";
   import { onMount } from "svelte";
-  import Button from "$lib/components/Button.svelte";
+  import ButtonText from "$lib/components/ButtonText.svelte";
 
   export let data;
 // console.log("navi data",data);
@@ -47,7 +47,7 @@
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <Button buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
 
