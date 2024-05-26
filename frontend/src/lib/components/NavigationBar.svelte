@@ -21,7 +21,7 @@
   //testing code
 
   let userName = "userName";
-  let selectedCategory = ""; //  menu selection
+  let selectedCategory = "title"; //  menu selection
 
   let searchTerm = "";
 

@@ -7,6 +7,25 @@
   import SignUpSection from "$lib/components/SignUpSection.svelte";
 </script>
 
+<div class="container">
+<div class="loginDev">
 <Login />
+</div>
 
+<div class="signupDev">
 <SignUpSection />
+</div>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+  }
+  .loginDev, .signupDev {
+    margin: 0 30px; 
+  }
+
+</style>
