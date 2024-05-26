@@ -251,11 +251,6 @@ export async function likeArticle(userId, articleId) {
     userId,
     articleId
   );
-  const dbResult = await db.run(
-    "INSERT INTO like (userId, articleId) VALUES (?,?)",
-    userId,
-    articleId
-  );
   return dbResult.changes > 0;
 }
 
@@ -267,11 +262,7 @@ export async function unlikeArticle(userId, articleId) {
     userId,
     articleId
   );
-  const dbResult = await db.run(
-    "DELETE FROM like WHERE userId = ? AND articleId = ?",
-    userId,
-    articleId
-  );
+
   return dbResult.changes > 0;
 }
 
