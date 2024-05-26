@@ -1,5 +1,4 @@
 import { ARTICLES_URL } from "../../../lib/js/apiUrls";
-
 // pre-load article data
 export async function load({ params, fetch }) {
   const articleId  = params.articleId;
@@ -7,7 +6,9 @@ export async function load({ params, fetch }) {
     const res = await fetch(`${ARTICLES_URL}/${articleId}`);
     if (res.status === 200) {
       const data = await res.json();
+      console.log("check article",data);
       return data;
+      
     } else {
       throw Error("Failed to fetch article");
     }

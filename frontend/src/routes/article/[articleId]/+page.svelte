@@ -4,10 +4,7 @@
   export let data;
   const { article } = data;
   const { userId } = article;
-    /**
-   * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
-   * them to be reloaded.
-   */
+
   import { invalidate } from "$app/navigation";
   console.log("111", data);
   async function editArticle(e) {
@@ -40,6 +37,10 @@
     if (response.status === 204) {
       // Invalidating this URL will cause our +page.js load() function to rerun, because that load() function
       // depends on this URL.
+      /**
+       * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
+       * them to be reloaded.
+       */
       invalidate(ARTICLES_URL);
     } else {
       alert(`Unexpected status code received: ${response.status}`);
@@ -47,10 +48,23 @@
   }
 </script>
 
+// display the article with the given ID (reading and editing)
+<div class="articleDiv">
+  <ArticleCard article={data} />
+</div>
+
 <main>
   <section class="article">// implement article component here</section>
   <Comments authorId={userId} />
 </main>
+
+
+
+// edit button
+<button on:click={editArticle}>Edit</button>
+
+// delete button
+<button on:click={deleteArticle}>Delete</button>
 
 <style>
   main {
@@ -63,21 +77,3 @@
     min-height: calc(100vh - 700px);
   }
 </style>
-
-
-
-
-
-  
-
-
-// display the article with the given ID (reading and editing)
-<div class="articleDiv">
-  <ArticleCard article={data} />
-</div>
-
-// edit button
-<button on:click={editArticle}>Edit</button>
-
-// delete button
-<button on:click={deleteArticle}>Delete</button>
