@@ -1,20 +1,34 @@
 <script>
-  import { PUBLIC_IMAGES_URL } from "$env/static/public";
-  import MessageView from "$lib/components/MessageView.svelte";
+  // import { articles, getPasswordHashSalt } from "../lib/js/utils";
+  import { articleStore } from "../lib/js/utils.js";
+  import ArticleList from "../lib/components/ArticleList.svelte";
+  import SortingSection from "../lib/components/SortingSection.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
+
   export let data;
+  articleStore.set(data.articles);
+
+  let sortingCategory = "";
 </script>
 
-<svelte:head>
-  <title>Home</title>
-</svelte:head>
+<PostArticleButton />
 
-<h1>Home page</h1>
-<p>This is the homepage.</p>
+<div class="mainBodyDiv">
+  <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
+  <p>Articles by everyone</p>
+  <div class="articleDiv">
+    <ArticleList articles={$articleStore} />
+  </div>
+</div>
+//testing code for hash
 
-<!-- This image is stored on our Express server. -->
-<img src={`${PUBLIC_IMAGES_URL}/Dragonite.png`} alt="Dragonite" style="width: 320px" />
+<!-- <span>{result}</span>
+<span>{salt}</span>
+<button on:click={clickBTN}>test</button> -->
 
-<h2>Messages from server</h2>
-{#each data.messages as message (message.id)}
-  <MessageView {message} />
-{/each}
+<style>
+  /* .articleDiv {
+    display: flex;
+    flex-wrap: wrap;
+  } */
+</style>

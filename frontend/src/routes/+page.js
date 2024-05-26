@@ -1,17 +1,33 @@
-import { PUBLIC_API_BASE_URL } from "$env/static/public";
+// ---/routes/+page.js
+// It requests the articles from the backend and returns them to the frontend.
+// API: Get /api/articles
+import { ARTICLES_URL } from "../lib/js/apiUrls.js";
 
-const MESSAGES_URL = `${PUBLIC_API_BASE_URL}/messages`;
-
-/**
- * TODO Load your own data in the homepage here.
- *
- * You will likely need other *.js files with other load functions too.
- */
 export async function load({ fetch }) {
-  const response = await fetch(MESSAGES_URL, { credentials: "include" });
-  const messages = await response.json();
-  return { messages };
-}
-
-// disable server side rendering
-export const ssr = false;
+    console.log("Start Searching Articles");
+    try {
+      const response = await fetch(ARTICLES_URL);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch articles: ${response.statusText}`);
+      }
+  
+      const articles = await response.json();
+      await Promise.all(
+        articles.map(async (article) => {
+          try {
+            const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
+            article.isImgExist = res.ok;
+          } catch (error) {
+            console.error(`Error checking image for article ${article.id}:`, error);
+            article.isImgExist = false;
+          }
+        })
+      );
+  
+      return { articles };
+    } catch (error) {
+      console.error("Error loading articles:", error);
+      return { articles: [] }; // Return an empty array to avoid breaking the app
+    }
+  }
+  

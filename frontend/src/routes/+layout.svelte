@@ -1,17 +1,20 @@
 <script>
+  // ---/routes/+layout.svelte
+// This file is our homepage layout. It wraps around the homepage and provides a navbar, a post button, etc.
   import "$lib/css/app.css";
-
+  import  NavigationBar from "$lib/components/NavigationBar.svelte";
   import { page } from "$app/stores";
+ 
   $: path = $page.url.pathname;
+
+  export let data ;
+    // testing code
+  // $:console.log("layout",data.articles);
+
+
 </script>
 
-<nav>
-  <p>This is the navbar. You will need to style this (if you even want a navbar at all...)</p>
-  <ul>
-    <li><a href="/" class:active={path === "/"}>Home</a></li>
-  </ul>
-</nav>
-
+<NavigationBar {data}/>
 <div class="container">
   <slot />
 </div>
