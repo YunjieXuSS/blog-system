@@ -33,8 +33,8 @@ router.get("/search", async (req, res) => {
     } else if (req.query.content) {
       const articlesOfContent = await getArticlesByContent(req.query.content);
       return res.status(200).json(articlesOfContent);
-    } else if (req.query.createDate) {
-      const articlesOfDate = await getArticlesByDate(req.query.createDate);
+    } else if (req.query.updateDate) {
+      const articlesOfDate = await getArticlesByDate(req.query.updateDate);
       return res.status(200).json(articlesOfDate);
     } else if (req.query.userName) {
       const articlesOfUser = await getArticlesByUserName(req.query.userName);
