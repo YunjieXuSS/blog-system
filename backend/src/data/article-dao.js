@@ -52,7 +52,7 @@ export async function getArticlesByTitle(title) {
   const articles = await db.all(
     `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
      FROM article 
-     INNER JOIN user ON article.userId = user.userId WHERE title= ?`,
+     INNER JOIN user ON article.userId = user.userId WHERE title LIKE ?`,
     `%${lowercaseTitle}%`
   );
 
@@ -65,7 +65,7 @@ export async function getArticlesByContent(content) {
   const articles = await db.all(
     `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
     FROM article 
-    INNER JOIN user ON article.userId = user.userId WHERE content LIKE?`,
+    INNER JOIN user ON article.userId = user.userId WHERE content LIKE ?`,
     `%${lowercaseContent}%`
   );
 
