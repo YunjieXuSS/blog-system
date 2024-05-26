@@ -11,7 +11,7 @@
   import ButtonText from "$lib/components/ButtonText.svelte";
 
   export let data;
-// console.log("navi data",data);
+
 
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
@@ -31,7 +31,6 @@
   }
 
   async function handleSearch() {
-    console.log("handleSearch");
     await searchArticles(articleStore, selectedCategory, searchTerm);
   }
 

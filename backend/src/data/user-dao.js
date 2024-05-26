@@ -120,7 +120,7 @@ export async function updateUser(userId, udpateData) {
     abortEarly: false,
     stripUnknown: true
   });
-  parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
+  if(parsedUpdateData.password) parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
 
   // Do the update
   const setStatement = Object.keys(parsedUpdateData)

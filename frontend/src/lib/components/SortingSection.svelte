@@ -28,8 +28,7 @@
     articleStore.set(newOrderArticles);
   }
 
-  // $: console.log(sortingCategory);
-  // $: console.log("+sorting", $articleStore);
+  $: console.log("+sorting", $articleStore);
 </script>
 
 <!-- svelte-ignore a11y-no-onchange -->

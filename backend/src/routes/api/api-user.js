@@ -12,6 +12,7 @@ import {
 const router = express.Router();
 import { avatarUploader } from "../../middleware/image-middleware.js";
 import fsExtra from "fs-extra";
+import e from "express";
 
 // Register user
 router.post("/register", avatarUploader, async (req, res) => {
@@ -86,9 +87,9 @@ router.get("/:userName", async (req, res) => {
   const userName = req.params.userName;
   const user = await getUserWithUserName(userName);
   if (user) {
-    return res.status(200).json({ message: "User exists." });
+    return res.status(200).json({ exists: true});
   } else {
-    return res.status(404).json({ error: "User not found." });
+    return res.status(200).json({ exists: false });
   }
 });
 

@@ -1,7 +1,7 @@
 <script>
   import InputBar from "./InputBar.svelte";
-  import AvatarUpload from "./UploadAvatar.svelte";
-  import SignUpTable from "./SignUpTable.svelte";
+  import UpdateUserTable from "./UpdateUserTable.svelte";
+  import UpdateAvatar from "./UpdateAvatar.svelte";
   import { createAccount } from "../js/utils.js";
   import {
     validateRegisterUserName,
@@ -12,22 +12,28 @@
   } from "../js/validation.js";
   import SignUpSection from "./SignUpSection.svelte";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { user } from "../js/store.js";
+  import Dayjs from "dayjs";
+  import { SERVER_URL } from "../js/apiUrls.js";
 
-  let firstName, lastName, userName;
+  export let data;
+  user.set(data.userInfo);
+  let firstName = $user.firstName;
+  let lastName = $user.lastName;
+  let userName = $user.userName;
   let password;
-  let email;
-  let dateOfBirth;
-  let description;
+  let email = $user.email;
+  let dateOfBirth = Dayjs($user.dateOfBirth).format("YYYY-MM-DD");
+  let description = $user.description;
   let filesToUpload;
-  
+  let avatarURL = $user.avatar;
+
   // define a function to get the first password.
   const getPassword = function () {
     return password;
   };
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
-
-
 
   let validationResults = {
     firstName: true,
@@ -38,8 +44,6 @@
     password: true,
     confirmPassword: true
   };
-
-  
 
   function handleValidation(event) {
     //create a new array to store the validation results
@@ -52,8 +56,7 @@
   //every(Boolean) means check if all the values are true
   $: allValid = Object.values(validationResults).every(Boolean);
 
-
-  async function handleRegister(
+  async function handleUpdate(
     firstName,
     lastName,
     email,
@@ -74,45 +77,66 @@
     };
     const userRegisterImage = filesToUpload[0];
     // const userRegisterImage =events.target.files[0];
+  
 
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("email", email);
-    formData.append("dateOfBirth", dateOfBirth);
-    formData.append("userName", userName);
-    formData.append("password", password);
+    console.log("firstName", firstName);
+    console.log("user.firstName", $user.firstName);
+    if (firstName !== $user.firstName) {
+      console.log("firstName", firstName);
+      console.log("user.firstName", $user.firstName);
+      formData.append("firstName", firstName);
+    }
+    if (lastName !== $user.lastName) {
+      formData.append("lastName", lastName);
+    }
+    if (email !== $user.email) {
+      formData.append("email", email);
+    }
+    if (dateOfBirth !== $user.dateOfBirth) {
+      formData.append("dateOfBirth", dateOfBirth);
+    }
+    if (userName !== $user.userName) {
+      formData.append("userName", userName);
+    }
+    if (password) {
+      formData.append("password", password);
+    }
     if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
       formData.append("avatar", userRegisterImage);
     } else {
       //if no image is uploaded, use the default image
       formData.append("avatar", "/images/avatar-default.png");
+      // formData.append("avatar", "localhost:3000/images/avatar-default.png");
     }
 
 
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
-      method: "POST",
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+      method: "PATCH",
+      credentials: "include",
       body: formData
     });
 
     const serverResponse = await response.json();
 
-
   }
 </script>
 
 <div class="page-container">
-  <div class="page-title"><h2>Create account</h2></div>
+  <div class="page-title"><h2>Edit account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload />
+      <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
+      <UpdateAvatar bind:filesToUpload userIconURL={`${SERVER_URL}/${avatarURL}`} />
+
+      <!-- /userDefaultIcon.png -->
     </div>
     <div>
-      <SignUpTable
+      <UpdateUserTable
         bind:firstName
         bind:lastName
         bind:email
@@ -126,9 +150,9 @@
   </div>
 
   <button
-  class="submitButton"
-  class:valid={allValid}
-    on:click={handleRegister(
+    class="submitButton"
+    class:valid={allValid}
+    on:click={handleUpdate(
       firstName,
       lastName,
       email,
@@ -139,7 +163,7 @@
       filesToUpload
     )}
   >
-    Create account
+    Confirm edit
   </button>
 </div>
 
