@@ -2,11 +2,12 @@
   import Comments from "./../../../lib/components/Comments.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
   export let data;
-  const { article } = data;
+  const article = data.article;
+  console.log("individualArticle", article);
   const { userId } = article;
-
   import { invalidate } from "$app/navigation";
-  console.log("111", data);
+
+
   async function editArticle(e) {
     e.preventDefault();
     console.log("editArticle");
@@ -32,7 +33,6 @@
       method: "DELETE"
     });
 
-    console.log(`${ARTICLES_URL}/${article.id}`);
     console.log(response.status);
     if (response.status === 204) {
       // Invalidating this URL will cause our +page.js load() function to rerun, because that load() function
@@ -48,13 +48,13 @@
   }
 </script>
 
-// display the article with the given ID (reading and editing)
-<div class="articleDiv">
-  <ArticleCard article={data} />
-</div>
+
+
 
 <main>
-  <section class="article">// implement article component here</section>
+  <div class="articleDiv">
+    <ArticleCard {article} />
+  </div>
   <Comments authorId={userId} />
 </main>
 
@@ -73,7 +73,4 @@
     margin: 0 auto;
   }
 
-  .article {
-    min-height: calc(100vh - 700px);
-  }
 </style>
