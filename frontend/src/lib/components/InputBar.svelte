@@ -7,13 +7,13 @@
   export let value = "";
   export let placeholder = "";
   export let maxlength = "100";
-  export let validate = (value) => {
+  export let validate = async(value) => {
     return { result: true, errorMsg: "" };
   };
   let validateResult = true;
   let errorMsg = "";
-  function checkValue() {
-    const validation = validate(value);
+  async function checkValue() {
+    const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
   }
