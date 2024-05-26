@@ -1,27 +1,25 @@
 <script>
-  import { getPasswordHashSalt } from "../lib/js/utils";
-  import { articleStore } from "../lib/js/utils.js";
-  import ArticleCard from "../lib/components/ArticleCard.svelte";
+  // import { articles, getPasswordHashSalt } from "../lib/js/utils";
+  // import { articleStore } from "../lib/js/utils.js";
+  // import ArticleCard from "../lib/components/ArticleCard.svelte";
+  import ArticleList from "../lib/components/ArticleList.svelte";
   import SortingSection from "../lib/components/SortingSection.svelte";
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
   export let data;
-  articleStore.set(data.articles);
+  // articleStore.set(data.articles);
 
-
-  let sortingCategory = ""; 
+  let sortingCategory = "";
   // $: console.log(sortingCategory);
-
 </script>
 
-  <PostArticleButton />
+<PostArticleButton />
 
 <div class="mainBodyDiv">
   <div class="sortingSectionDiv"><SortingSection bind:sortingCategory /></div>
+  <p>Articles by everyone</p>
   <div class="articleDiv">
-    {#each $articleStore as article}
-      <ArticleCard {article} />
-    {/each}
+    <ArticleList articles={data.articles} />
   </div>
 </div>
 //testing code for hash
@@ -31,8 +29,8 @@
 <button on:click={clickBTN}>test</button> -->
 
 <style>
-  .articleDiv {
+  /* .articleDiv {
     display: flex;
     flex-wrap: wrap;
-  }
+  } */
 </style>

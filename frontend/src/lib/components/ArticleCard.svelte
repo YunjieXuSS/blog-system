@@ -3,7 +3,7 @@
 </script>
 
 <article class="article-container">
-  <p>{article.isImgExist}</p>
+  <!-- <p>{article.isImgExist}</p> -->
   {#if article.isImgExist===true}
   <!-- <p>Image is here</p> -->
     <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image" />
@@ -19,11 +19,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 25%;
+    width: 100%;
     max-width: 800px;
     margin: auto;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     box-sizing: border-box; /* Ensure padding is included in the width */
   }
