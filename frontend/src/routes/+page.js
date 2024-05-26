@@ -12,7 +12,6 @@ export async function load({ fetch }) {
       }
   
       const articles = await response.json();
-      console.log(articles)
       await Promise.all(
         articles.map(async (article) => {
           try {

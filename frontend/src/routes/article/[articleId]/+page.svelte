@@ -1,15 +1,16 @@
 <script>
   import Comments from "./../../../lib/components/Comments.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
+  import{goto} from "$app/navigation";
+  import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
+  import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
+
   export let data;
-  const { article } = data;
+  const article = data.article;
   const { userId } = article;
-    /**
-   * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
-   * them to be reloaded.
-   */
   import { invalidate } from "$app/navigation";
-  console.log("111", data);
+
+
   async function editArticle(e) {
     e.preventDefault();
     console.log("editArticle");
@@ -35,11 +36,14 @@
       method: "DELETE"
     });
 
-    console.log(`${ARTICLES_URL}/${article.id}`);
     console.log(response.status);
     if (response.status === 204) {
       // Invalidating this URL will cause our +page.js load() function to rerun, because that load() function
       // depends on this URL.
+      /**
+       * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
+       * them to be reloaded.
+       */
       invalidate(ARTICLES_URL);
     } else {
       alert(`Unexpected status code received: ${response.status}`);
@@ -47,10 +51,21 @@
   }
 </script>
 
+
+
+<PostArticleButton />
 <main>
-  <section class="article">// implement article component here</section>
+  <div class="articleDiv">
+    <button class = "edit" on:click={editArticle}> <img src="/icons/pencil-icon.png" alt="pencil"> </button>
+    <ArticleCard {article} />
+    <button class ="delete" on:click={deleteArticle}> <img src="/icons/delete-icon.png" alt = "trash-can"> </button>
+  </div>
   <Comments authorId={userId} />
 </main>
+
+
+
+
 
 <style>
   main {
@@ -58,26 +73,25 @@
     width: 900px;
     margin: 0 auto;
   }
-
-  .article {
-    min-height: calc(100vh - 700px);
+  .articleDiv {
+    position: relative;
   }
+
+  .edit,.delete{
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    
+
+    & img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+
 </style>
-
-
-
-
-
-  
-
-
-// display the article with the given ID (reading and editing)
-<div class="articleDiv">
-  <ArticleCard article={data} />
-</div>
-
-// edit button
-<button on:click={editArticle}>Edit</button>
-
-// delete button
-<button on:click={deleteArticle}>Delete</button>

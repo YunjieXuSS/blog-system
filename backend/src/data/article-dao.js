@@ -9,7 +9,6 @@ import yup from "yup";
  * @returns an array of all articles
  */
 export async function getArticles(pageSize = 10, pageNumber = 1) {
-  console.log(111)
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
   console.log(222);
