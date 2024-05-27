@@ -1,5 +1,6 @@
 <script>
   export let article;
+  import dayjs from "dayjs";
 </script>
 
 <article class="article-container">
@@ -8,7 +9,7 @@
   {/if}
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{article.createDate}</p>
+  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   <p class="article-content">{article.content}</p>
 </article>
 

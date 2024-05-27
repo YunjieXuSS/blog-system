@@ -20,10 +20,10 @@
 <style>
   #search-input-cont {
     height: 30px;
-    width: 53%;
+    width: 150px;
     display: flex;
     align-items: center;
-    margin: 0 40px 0 0;
+    margin: 5px 1px;
     background-color: white;
     border: 1px solid gray;
     border-radius: 5px;

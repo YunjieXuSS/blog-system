@@ -27,7 +27,6 @@
 
 <style>
   .home-articles {
-    width: 1200px;
     padding: 0 20px;
   }
   .article-list {
@@ -74,15 +73,15 @@
     .article-list {
       column-count: 2;
     }
-    .sort-bar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
   }
 
   @media (max-width: 600px) {
     .article-list {
       column-count: 1;
+    }
+    .sort-bar {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
