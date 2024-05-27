@@ -23,6 +23,7 @@
   let filesToUpload;
   let avatarURL = user.avatar;
 
+
   // define a function to get the first password.
   const getPassword = function () {
     return password;
@@ -72,8 +73,6 @@
     };
     const userRegisterImage = filesToUpload[0];
     // const userRegisterImage =events.target.files[0];
-  
-
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
     console.log("firstName", firstName);
@@ -105,8 +104,6 @@
       formData.append("avatar", "/images/avatar-default.png");
       // formData.append("avatar", "localhost:3000/images/avatar-default.png");
     }
-
-    
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
@@ -115,9 +112,7 @@
       credentials: "include",
       body: formData
     });
-
     const serverResponse = await response.json();
-
   }
 </script>
 
