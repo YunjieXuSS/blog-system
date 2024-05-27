@@ -2,11 +2,14 @@
   export let article;
   import dayjs from "dayjs";
   import {SERVER_URL} from "../js/apiUrls.js";
+  function handleImageError(event){
+    event.target.style.display = 'none';
+  }
 </script>
 
 <article class="article-container">
   <!-- {#if article.isImgExist === true} -->
-    <img src={SERVER_URL+article.imgUrl} alt="" class="article-image" on:error={function(){this.style.display="none"}}/>
+    <img src={SERVER_URL+article.imgUrl} alt="" class="article-image" on:error={handleImageError}/>
   <!-- {/if} -->
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
