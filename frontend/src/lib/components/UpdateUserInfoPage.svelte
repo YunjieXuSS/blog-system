@@ -115,10 +115,30 @@
     }
     const serverResponse = await response.json();
   }
+
+  function handleDelete() {
+    fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+      method: "DELETE",
+      credentials: "include"
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          console.log("User deleted successfully.");
+          goto("/", { replaceState: true, invalidateAll: true });
+        } else {
+          console.error(`Failed to delete user.${response.status}`);
+        }
+      })
+      .catch((error) => {
+        console.error(`Failed to delete user.${error}`);
+      });
+  }
+
+
 </script>
 
 <div class="page-container">
-  <div class="page-title"><h2>Edit account</h2></div>
+  <div class="page-title"><h2>Edit Account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
       <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
@@ -140,6 +160,14 @@
       />
     </div>
   </div>
+  <div class = "button_div" >
+
+  <button
+    class="deleteButton"
+    on:click={handleDelete}
+  >
+    Delete Account
+  </button>
 
   <button
     class="submitButton"
@@ -155,8 +183,9 @@
       filesToUpload
     )}
   >
-    Confirm edit
+    Confirm Edit
   </button>
+</div>
 </div>
 
 <style>
@@ -186,6 +215,14 @@
         width: 48%;
       }
     }
+
+    & .button_div{
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      gap: 50px;
+    }
+
     & .submitButton {
       width: 200px;
       height: 80px;
@@ -198,5 +235,17 @@
     & .submitButton.valid {
       background-color: green;
     }
+
+    & .deleteButton {
+      width: 200px;
+      height: 80px;
+      margin-top: 20px;
+      background-color: rgb(183, 2, 2);
+      border-radius: 15px;
+      color: white;
+      font-size: 1.5em;
+    }
+
   }
+  
 </style>
