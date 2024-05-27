@@ -1,12 +1,13 @@
 <script>
   export let article;
   import dayjs from "dayjs";
+  import {SERVER_URL} from "../js/apiUrls.js";
 </script>
 
 <article class="article-container">
-  {#if article.isImgExist === true}
-    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image" />
-  {/if}
+  <!-- {#if article.isImgExist === true} -->
+    <img src={SERVER_URL+article.imgUrl} alt="" class="article-image" on:error={function(){this.style.display="none"}}/>
+  <!-- {/if} -->
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
   <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
