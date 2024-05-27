@@ -2,15 +2,30 @@
   export let article;
   import dayjs from "dayjs";
   import {SERVER_URL} from "../js/apiUrls.js";
-  function handleImageError(event){
-    event.target.style.display = 'none';
+  import {onMount} from "svelte";
+
+
+  let imageLoaded = true;
+  function handleImageError(event) {
+    imageLoaded = false;
   }
+
+  onMount(() => {
+    const img = new Image();
+    img.src = SERVER_URL + article.imgUrl;
+    img.onload = () => {
+      imageLoaded = true;
+    };
+    img.onerror = () => {
+      handleImageError();
+    };
+  });
 </script>
 
 <article class="article-container">
-  <!-- {#if article.isImgExist === true} -->
-    <img src={SERVER_URL+article.imgUrl} alt="" class="article-image" on:error={handleImageError}/>
-  <!-- {/if} -->
+  {#if imageLoaded}
+    <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
+  {/if}
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
   <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>

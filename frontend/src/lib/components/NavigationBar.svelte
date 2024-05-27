@@ -1,13 +1,9 @@
 <script>
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
-  import { invalidateAll } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
-  import { articleStore } from "../js/utils.js";
   import { searchArticles } from "../js/utils.js";
-  import { onMount } from "svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
@@ -19,11 +15,13 @@
   let searchTermStart = "";
   let searchTermEnd = "";
   $: {
-    if (selectedCategory === "title") {
-      query = { title: searchTerm };
-    } else if (selectedCategory === "userName") {
-      query = { userName: searchTerm };
-    } else if (selectedCategory === "date") {
+    if (selectedCategory !== "date") {
+      searchTermStart = "";
+      searchTermEnd = "";
+      delete $queryStore.startDate;
+      delete $queryStore.endDate;
+      query = selectedCategory === "title" ? { title: searchTerm } : { userName: searchTerm };
+    } else {
       query = { startDate: searchTermStart, endDate: searchTermEnd };
     }
     queryStore.update((current) => ({ ...current, ...query }));
@@ -97,10 +95,10 @@
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       {#if selectedCategory === "date"}
-      <div class = "date-search" >
-        <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
-        <div style="color: #606060">to</div>
-        <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
+        <div class="date-search">
+          <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
+          <div style="color: #606060">to</div>
+          <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
         </div>
       {:else}
         <SearchBox bind:searchTerm on:input={handleSearch} />
@@ -202,8 +200,8 @@
       flex-direction: column;
     }
   }
-  .date-search{
+  .date-search {
     display: flex;
     align-items: center;
-    }
+  }
 </style>

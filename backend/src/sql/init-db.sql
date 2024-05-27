@@ -41,7 +41,7 @@ CREATE TABLE comment(
     isDeleted BOOLEAN DEFAULT FALSE NOT NULL,
     FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE,
     FOREIGN KEY (articleId) REFERENCES article(articleId) ON DELETE CASCADE,
-    FOREIGN KEY (parentCommentId) REFERENCES comment(commentId)
+    FOREIGN KEY (parentCommentId) REFERENCES comment(commentId) ON DELETE CASCADE
 );
 
 CREATE TABLE like(
