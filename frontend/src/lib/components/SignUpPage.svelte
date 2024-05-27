@@ -1,5 +1,6 @@
 <script>
   import AvatarUpload from "./UploadAvatar.svelte";
+  import { goto } from "$app/navigation";
   import SignUpTable from "./SignUpTable.svelte";
   import {
     validateRegisterUserName,
@@ -9,6 +10,7 @@
     validateRegisterDate
   } from "../js/validation.js";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import AvatarChooser from "./AvatarChooser.svelte";
 
   let firstName, lastName, userName;
   let password;
@@ -16,6 +18,7 @@
   let dateOfBirth;
   let description;
   let filesToUpload;
+  let selectedImage = "";
   
   // define a function to get the first password.
   const getPassword = function () {
@@ -80,14 +83,17 @@
     formData.append("dateOfBirth", dateOfBirth);
     formData.append("userName", userName);
     formData.append("password", password);
+    formData.append("description", description);
     if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
       formData.append("avatar", userRegisterImage);
     } else {
       //if no image is uploaded, use the default image
-      formData.append("avatar", "/images/avatar-default.png");
+      if (selectedImage !== "") {
+        formData.append("avatar", `/images${selectedImage}`);
+      } else {
+        formData.append("avatar", "/images/avatar-default.png");
+      }
     }
-
-
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
@@ -96,9 +102,18 @@
       body: formData
     });
 
+    if (response.status === 201) {
+      // Redirect to the login page if successful.
+      console.log("User registered successfully.");
+      goto("/", { replaceState: true, invalidateAll: true });
+    } else {
+      // If there was an error, log the error to the console.
+      console.error(`Failed to register user.${response.status}`);
+    }
+
     const serverResponse = await response.json();
 
-
+    
   }
 </script>
 
@@ -107,6 +122,7 @@
   <div class="content-container">
     <div class="avatar-container">
       <AvatarUpload bind:filesToUpload />
+      <AvatarChooser  bind:selectedImage   />
     </div>
     <div>
       <SignUpTable

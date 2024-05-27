@@ -22,7 +22,9 @@
   let description = user.description;
   let filesToUpload;
   let avatarURL = user.avatar;
+  let selectedImage = "";
 
+  $:console.log("selectedImage", selectedImage);
 
   // define a function to get the first password.
   const getPassword = function () {
