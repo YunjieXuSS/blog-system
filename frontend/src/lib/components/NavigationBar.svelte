@@ -2,40 +2,59 @@
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
   import { invalidateAll } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
   import { articleStore } from "../js/utils.js";
   import { searchArticles, refreshPage } from "../js/utils.js";
   import { onMount } from "svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { user } from "../js/store";
+  import { USER_URL } from "../js/apiUrls.js";
+  import { goto } from "$app/navigation";
 
   export let data;
 
+  $: isLoggedIn = data.isLoggedIn;
+  let loginUser = {};
+  $: if (isLoggedIn) {
+    loginUser = data.user;
+  }
 
   $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-  //The status of user
-  $: isLoggined = false;
-  // $:isLoggined = data.isLoggined;
-  //testing code
 
-  let userName = "userName";
+  async function userLogout() {
+    try {
+      console.log("Processing logout start");
+
+      // Make the logout request to the server
+      const response = await fetch(`${USER_URL}/logout`, {
+        method: "POST",
+        credentials: "include"
+      });
+
+      // Check if the logout was successful
+      if (response.status === 204) {
+        await invalidateAll();
+        goto("/", { replaceState: true });
+      } else {
+        console.error("Logout failed with status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+  async function userLogin() {
+    goto("/login", { replaceState: true });
+    await refreshPage();
+  }
+
   let selectedCategory = "title"; //  menu selection
 
   let searchTerm = "";
 
-  function userLogout() {
-    //..
-    console.log("User logout Successfully!");
-  }
-
   async function handleSearch() {
     await searchArticles(articleStore, selectedCategory, searchTerm);
-  }
-
-  function loginButton() {
-    window.location = "/login";
   }
 </script>
 
@@ -43,18 +62,29 @@
   <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
 
   <!-- show different content depends on the status of user -->
-  {#if isLoggined == false}
+  {#if !isLoggedIn}
     <div class="userNameLogoutDiv">
+      <span class="userName"> Hi!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText
+        buttonLabel="Login"
+        buttonFunction={userLogin}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 
-  {#if isLoggined == true}
+  {#if isLoggedIn}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {userName}!</span>
+      <span class="userName"> Hi {loginUser.userName}!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
-      <button on:click={userLogout}>Logout</button>
+      <ButtonText
+        buttonLabel="Logout"
+        buttonFunction={userLogout}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 </div>
@@ -62,13 +92,14 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
-      >
-    </li>
-    <!-- browsing here to see the default Svelte 404 page. -->
-    <!-- <li><a href="/notfound">Not Found</a></li> -->
+    {#if isLoggedIn}
+      <li>
+        <a
+          href="/profile/{loginUser.userName}"
+          class:active={path === "/profile/{loginUser.userName}"}>Profile</a
+        >
+      </li>
+    {/if}
   </ul>
   {#if path === "/"}
     <div class="searchSection">

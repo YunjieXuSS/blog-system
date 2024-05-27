@@ -1,5 +1,6 @@
 <script>
   export let article;
+  import dayjs from "dayjs";
 </script>
 
 <article class="article-container">
@@ -7,8 +8,10 @@
     <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image"/>
   {/if}
   <h1 class="article-title">{article.title}</h1>
+  <div class ="authorInfo">
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{article.createDate}</p>
+  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD")}</p>
+  </div>
   <p class="article-content">{article.content}</p>
 </article>
 
@@ -37,18 +40,23 @@
     text-align: center;
   }
 
+  .authorInfo{
+    width: 100%;
+    display: flex;
+    align-content:right;
+    margin-right: 10px;
+  }
+
   .user {
     font-size: 1em;
     color: #555;
-    margin-bottom: 5px;
   }
 
   .date {
     font-size: 0.9em;
     font-style: italic;
     color: #999;
-    margin-bottom: 10px;
-  }
+  } 
 
   .article-content {
     font-size: 1.2em;

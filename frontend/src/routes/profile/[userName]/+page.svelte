@@ -3,7 +3,12 @@
 // API: PATCH /api/users/:userId -->
 
 <script>
-    import UserInfo from "$lib/components/UserInfo.svelte";
+  import UserInfo from "$lib/components/UserInfo.svelte";
+  import ArticleList from "$lib/components/ArticleList.svelte";
+
+  export let data;
+  $: console.log("data", data.articlesOfUser);
 </script>
 
-<UserInfo />
+<UserInfo {data} />
+<ArticleList articles={data.articlesOfUser} />
