@@ -8,7 +8,7 @@
   export let bckgColour;
   export let txtColour = "white";
   export let buttonWidth = "100%";
-  export let borderRadius = "4px";
+  export let borderRadius = "8px";
 
   function handleClick() {
     if (!buttonDisabled) {
@@ -27,6 +27,8 @@
   button {
     display: flex;
     justify-content: center;
+    align-items: center;
+    text-align: center;
     border-style: none;
     box-sizing: border-box;
     font-family: "Nunito", sans-serif;
@@ -40,7 +42,6 @@
     min-width: 100px;
     padding: 9px 20px 8px;
     position: relative;
-    text-align: center;
   }
 
   button:hover {

@@ -28,9 +28,10 @@
     align-items: center;
     text-align: center;
     padding: 40px;
-    height: 36em;
+    height: 35em;
     width: 19em;
     background-color: #B5C0D0;
+    border: 10px solid #B5C0D0;
     color: white;
 
     & h1 {
@@ -41,7 +42,13 @@
 
     & p {
       font-size: 1.2em;
-      margin: 20px 0 60px 0;
+      margin: 20px 0 45px 0;
     }
   }
+
+  @media (max-width: 1035px) {
+    .newHere {
+      width: 25em;
+    }
+}
 </style>

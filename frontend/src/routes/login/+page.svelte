@@ -22,6 +22,7 @@
 <style>
   .container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: 50px 0;
@@ -30,5 +31,12 @@
   .signupDev {
     display: flex;
     margin: 0;
+  }
+
+  @media (max-width: 1035px) {
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
   }
 </style>

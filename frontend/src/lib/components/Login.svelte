@@ -90,10 +90,10 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    border: 1px solid #505050;
+    border: 10px solid #F5E8DD;
     padding: 40px;
-    height: 36em;
-    width: 35em;
+    height: 35em;
+    width: 32em;
     color: #505050;
 
     & h1 {
@@ -105,7 +105,7 @@
 
   .login-container > p {
     font-size: 1.2em;
-    margin: 20px 0 60px 0;
+    margin: 20px 0 45px 0;
   }
 
   .login-bar {
@@ -113,7 +113,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 30px;
+  }
+
+  .login-bar > * {
+    margin: 0;
   }
 
   .login-error {
@@ -121,9 +124,14 @@
     margin-top: 20px;
     display: none;
   }
-  @media (max-width: 450px) {
+  @media (max-width: 1035px) {
     .login-container {
-      margin: 20px 2% 20px 2%;
+      width: 25em;
+      margin-bottom: 20px;
     }
+  }
+
+  .loginBtn {
+    margin: 30px 0 0 0;
   }
 </style>
