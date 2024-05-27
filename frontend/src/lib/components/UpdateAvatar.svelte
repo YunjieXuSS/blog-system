@@ -1,6 +1,5 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
-  import { user } from "../js/store";
 
   export let filesToUpload = "";
   let messageToSend;

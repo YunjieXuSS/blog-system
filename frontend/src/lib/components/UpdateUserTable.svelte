@@ -1,6 +1,5 @@
 <script>
   import InputBar from "./InputBar.svelte";
-  import { createAccount } from "../js/utils.js";
   import {
     validateRegisterName,
     validateRegisterUserName,
@@ -10,14 +9,14 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import ArticleCard from "./ArticleCard.svelte";
- 
-
+  export let userData;
   export let firstName, lastName, userName;
   export let email;
   export let dateOfBirth;
   export let password;
   export let description = "I know myself so well.";
+  import { createEventDispatcher } from "svelte";
+
   // export let validateResult;
   let confirmPassword;
   // define a function to get the first password.
@@ -27,49 +26,40 @@
   // create closure function to validate two passwords.
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
+  let label = "";
 
-  
-  let label=""
-  import { createEventDispatcher } from 'svelte';
-  import { user } from "../js/store";
   const dispatch = createEventDispatcher();
   //create a dispatcher to send the validation result to the SignUpPage.svelte
   //Get validateResult, label from the event.detail (CustomEvent)
   //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
     const { validateResult, label } = event.detail;
-    dispatch('validation', { validateResult, label });
+    dispatch("validation", { validateResult, label });
   }
 
   function handleUserNameValidation(event) {
-    
-    if ($user.userName === userName) {
-      return;
+    if (userData.userName === userName) {
+      return { result: true, errorMsg: "user hasn't been changed" };
     } else {
       return validateRegisterUserName(userName);
     }
   }
 
-
-
   function handlePasswordValidation(event) {
-    if (password.isempty()){
-      return;
+    if (password == "") {
+      return { result: true, errorMsg: "Password is empty" };
     } else {
       return validateRegisterPassword(password);
     }
   }
 
-
   function handleConfirmedPasswordValidation(event) {
-    if (password.isempty()){
-      return;
+    if (confirmPassword == "") {
+      return { result: true, errorMsg: "ConfirmPassword is empty" };
     } else {
       return confirmPasswordValidator(confirmPassword);
     }
   }
-
-
 </script>
 
 <div class="table-container">
@@ -141,7 +131,13 @@
   />
 
   <label for="description">DESCRIPTION:</label>
-  <textarea class="description-textarea" name="description" rows="4" cols="50" bind:value={description}></textarea>
+  <textarea
+    class="description-textarea"
+    name="description"
+    rows="4"
+    cols="50"
+    bind:value={description}
+  />
 </div>
 
 <style>

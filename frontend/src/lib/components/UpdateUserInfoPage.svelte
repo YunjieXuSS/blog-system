@@ -1,8 +1,6 @@
 <script>
-  import InputBar from "./InputBar.svelte";
   import UpdateUserTable from "./UpdateUserTable.svelte";
   import UpdateAvatar from "./UpdateAvatar.svelte";
-  import { createAccount } from "../js/utils.js";
   import {
     validateRegisterUserName,
     validateRegisterPassword,
@@ -10,23 +8,20 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import SignUpSection from "./SignUpSection.svelte";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
-  import { user } from "../js/store.js";
   import Dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
 
-  export let data;
-  user.set(data.userInfo);
-  let firstName = $user.firstName;
-  let lastName = $user.lastName;
-  let userName = $user.userName;
+  export let user;
+  let firstName = user.firstName;
+  let lastName = user.lastName;
+  let userName = user.userName;
   let password;
-  let email = $user.email;
-  let dateOfBirth = Dayjs($user.dateOfBirth).format("YYYY-MM-DD");
-  let description = $user.description;
+  let email = user.email;
+  let dateOfBirth = Dayjs(user.dateOfBirth).format("YYYY-MM-DD");
+  let description = user.description;
   let filesToUpload;
-  let avatarURL = $user.avatar;
+  let avatarURL = user.avatar;
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -82,22 +77,22 @@
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
     console.log("firstName", firstName);
-    console.log("user.firstName", $user.firstName);
-    if (firstName !== $user.firstName) {
+    console.log("user.firstName", user.firstName);
+    if (firstName !== user.firstName) {
       console.log("firstName", firstName);
-      console.log("user.firstName", $user.firstName);
+      console.log("user.firstName", user.firstName);
       formData.append("firstName", firstName);
     }
-    if (lastName !== $user.lastName) {
+    if (lastName !== user.lastName) {
       formData.append("lastName", lastName);
     }
-    if (email !== $user.email) {
+    if (email !== user.email) {
       formData.append("email", email);
     }
-    if (dateOfBirth !== $user.dateOfBirth) {
+    if (dateOfBirth !== user.dateOfBirth) {
       formData.append("dateOfBirth", dateOfBirth);
     }
-    if (userName !== $user.userName) {
+    if (userName !== user.userName) {
       formData.append("userName", userName);
     }
     if (password) {
@@ -111,7 +106,7 @@
       // formData.append("avatar", "localhost:3000/images/avatar-default.png");
     }
 
-
+    
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
@@ -145,6 +140,7 @@
         bind:password
         bind:description
         on:validation={handleValidation}
+        userData={user}
       />
     </div>
   </div>

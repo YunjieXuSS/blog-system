@@ -1,8 +1,6 @@
 <script>
-  import InputBar from "./InputBar.svelte";
   import AvatarUpload from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
-  import { createAccount } from "../js/utils.js";
   import {
     validateRegisterUserName,
     validateRegisterPassword,
@@ -10,7 +8,6 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import SignUpSection from "./SignUpSection.svelte";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
   let firstName, lastName, userName;
