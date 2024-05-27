@@ -3,8 +3,8 @@
 </script>
 
 <article class="article-container">
-  {#if article.isImgExist===true}
-    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image"/>
+  {#if article.isImgExist === true}
+    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image" />
   {/if}
   <h1 class="article-title">{article.title}</h1>
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
@@ -27,7 +27,7 @@
 
   .article-image {
     height: 150px;
-    width:200px;
+    width: 200px;
     margin-bottom: 5px;
   }
 
@@ -55,6 +55,13 @@
     line-height: 1.6;
     color: #333;
     text-align: justify;
-    width: 100%; /* Ensure content takes full width of container */
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7; /* numbed of lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    max-height: calc(1.5em * 7); /* calculate from line-height */
   }
 </style>

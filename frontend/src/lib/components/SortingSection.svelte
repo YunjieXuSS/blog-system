@@ -49,8 +49,8 @@
 
 <style>
   .menu-cont {
-    height: 40px;
-    width: 200px;
+    height: 30px;
+    width: 100px;
     display: flex;
     margin: 5px 10px 0 0;
   }

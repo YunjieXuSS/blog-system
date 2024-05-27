@@ -21,7 +21,7 @@ export async function searchArticles() {
     const query = get(queryStore);
     let queryList = [];
     Object.keys(query).forEach((key)=>{
-        if(query[key]) queryList.push(`${key}=${query[key]}`);
+        if(query[key]!==undefined) queryList.push(`${key}=${query[key]}`);
     });
     const queryStatement = queryList.join("&");
     console.log("my final query statement",queryStatement);

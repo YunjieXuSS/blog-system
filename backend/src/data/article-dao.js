@@ -18,7 +18,7 @@ const getArticleSchema = yup
       .optional(),
     sortOrder: yup.number().oneOf([0, 1]).default(1).optional(),
     pageNumber: yup.number().default(1).optional(),
-    pageSize: yup.number().default(10).optional()
+    pageSize: yup.number().default(12).optional()
   })
   .required();
 export async function getArticlesByKeywords(query) {

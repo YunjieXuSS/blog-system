@@ -20,20 +20,18 @@
   let searchTermEnd = "";
   $: {
     if (selectedCategory === "title") {
-      query ={title:searchTerm};
+      query = { title: searchTerm };
+    } else if (selectedCategory === "userName") {
+      query = { userName: searchTerm };
+    } else if (selectedCategory === "date") {
+      query = { startDate: searchTermStart, endDate: searchTermEnd };
     }
-    else if (selectedCategory === "userName") {
-      query ={userName:searchTerm};
-    }
-    else if (selectedCategory === "date") { 
-      query = {startDate:searchTermStart, endDate:searchTermEnd};
-    }
-    queryStore.update(current => ({ ...current, ...query }));
+    queryStore.update((current) => ({ ...current, ...query }));
     console.log("i want to see my query now:", $queryStore);
   }
 
   $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
+  console.log($page.url.pathname);
 
   //The status of user
   $: isLoggedIn = data.isLoggedIn;
@@ -42,7 +40,6 @@
   $: if (isLoggedIn) {
     userName = data.user.userName;
   }
-  console.log("data", data);
 
   function userLogout() {
     //..
@@ -85,11 +82,14 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
-      >
-    </li>
+    {#if isLoggedIn}
+      <li>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path === `/profile/${data.user.userName}`}>Profile</a
+        >
+      </li>
+    {/if}
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>

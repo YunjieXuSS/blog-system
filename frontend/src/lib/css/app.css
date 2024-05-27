@@ -7,3 +7,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+body a {
+  color: #404040;
+  text-decoration: none;
+}
