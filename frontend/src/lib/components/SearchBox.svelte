@@ -20,7 +20,7 @@
 <style>
   #search-input-cont {
     height: 30px;
-    width: 53%;
+    width: 100px;
     display: flex;
     align-items: center;
     margin: 0 40px 0 0;

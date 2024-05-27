@@ -31,7 +31,7 @@
   }
 
   $: path = $page.url.pathname;
-  console.log($page.url.pathname);
+  $: console.log($page.url.pathname);
 
   //The status of user
   $: isLoggedIn = data.isLoggedIn;
@@ -86,7 +86,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path === `/profile/${data.user.userName}`}>Profile</a
+          class:active={path === `/profile/${data.user.userName}/`}>Profile</a
         >
       </li>
     {/if}
@@ -97,8 +97,11 @@
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
       {#if selectedCategory === "date"}
-        <DateSearchBox bind:searchTermStart on:input={handleSearch} />
-        <DateSearchBox bind:searchTermEnd on:input={handleSearch} />
+      <div class = "date-search" >
+        <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
+        <div style="color: #606060">to</div>
+        <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
+        </div>
       {:else}
         <SearchBox bind:searchTerm on:input={handleSearch} />
       {/if}
@@ -138,7 +141,6 @@
     align-items: center;
     background-color: #b5c0d0;
     box-shadow: 0 5px 3px lightgray;
-    height: 60px;
 
     & > ul {
       list-style: none;
@@ -186,9 +188,7 @@
 
     & .searchSection {
       margin: 0;
-      width: 400px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 8px;
 
@@ -197,4 +197,13 @@
       }
     }
   }
+  @media (max-width: 600px) {
+    .navBar {
+      flex-direction: column;
+    }
+  }
+  .date-search{
+    display: flex;
+    align-items: center;
+    }
 </style>
