@@ -2,7 +2,7 @@
   import { user } from "./../js/store.js";
   import userDefaultIcon from "../images/userDefaultIcon.png";
   import { deleteComment, postComment } from "../js/comments";
-  import Dayjs from "dayjs";
+  import dayjs from "dayjs";
   export let articleId = "";
   export let userId = "";
   export let userName = "";
@@ -84,7 +84,7 @@
     />
     {#if !isDeleted}
       <div class="author">{userName}</div>
-      <div class="date">{Dayjs(createDate).format("YYYY-MM-DD")}</div>
+      <div class="date">{dayjs(createDate).format("YYYY-MM-DD hh:mm:ss")}</div>
     {/if}
   </a>
 

@@ -6,32 +6,50 @@
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
   import { articleStore } from "../js/utils.js";
-  import { searchArticles, refreshPage } from "../js/utils.js";
+  import { searchArticles } from "../js/utils.js";
   import { onMount } from "svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import DateSearchBox from "./DateSearchBox.svelte";
+  import { queryStore } from "../js/store.js";
 
   export let data;
-
+  let query = {};
+  let selectedCategory = "title"; //  menu selection
+  let searchTerm = "";
+  let searchTermStart = "";
+  let searchTermEnd = "";
+  $: {
+    if (selectedCategory === "title") {
+      query ={title:searchTerm};
+    }
+    else if (selectedCategory === "userName") {
+      query ={userName:searchTerm};
+    }
+    else if (selectedCategory === "date") { 
+      query = {startDate:searchTermStart, endDate:searchTermEnd};
+    }
+    queryStore.update(current => ({ ...current, ...query }));
+    console.log("i want to see my query now:", $queryStore);
+  }
 
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
+
   //The status of user
-  $: isLoggined = false;
-  // $:isLoggined = data.isLoggined;
-  //testing code
+  $: isLoggedIn = data.isLoggedIn;
 
-  let userName = "userName";
-  let selectedCategory = "title"; //  menu selection
-
-  let searchTerm = "";
+  let userName;
+  $: if (isLoggedIn) {
+    userName = data.user.userName;
+  }
+  console.log("data", data);
 
   function userLogout() {
     //..
     console.log("User logout Successfully!");
   }
-
   async function handleSearch() {
-    await searchArticles(articleStore, selectedCategory, searchTerm);
+    await searchArticles();
   }
 
   function loginButton() {
@@ -43,14 +61,19 @@
   <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
 
   <!-- show different content depends on the status of user -->
-  {#if isLoggined == false}
+  {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText
+        buttonLabel="Login"
+        buttonFunction={loginButton}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 
-  {#if isLoggined == true}
+  {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {userName}!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
@@ -73,7 +96,12 @@
   {#if path === "/"}
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
-      <SearchBox bind:searchTerm on:input={handleSearch} />
+      {#if selectedCategory === "date"}
+        <DateSearchBox bind:searchTermStart on:input={handleSearch} />
+        <DateSearchBox bind:searchTermEnd on:input={handleSearch} />
+      {:else}
+        <SearchBox bind:searchTerm on:input={handleSearch} />
+      {/if}
     </div>
   {/if}
 </nav>

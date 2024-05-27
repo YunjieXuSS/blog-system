@@ -3,19 +3,22 @@
 import { start } from "repl";
 import { getDatabase } from "./database.js";
 import yup from "yup";
+import dayjs from "dayjs";
 
 const getArticleSchema = yup
   .object({
     title: yup.string().optional(),
     userName: yup.string().optional(),
-    startDate: yup.date().optional(),
-    endDate: yup.date().optional(),
+    startDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date(0)).optional(), // Unix epoch start date (0 milliseconds)
+    endDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date()).optional(), 
     sortBy: yup
       .string()
       .oneOf(["title", "userName", "createDate"])
       .default("createDate")
       .optional(),
-    sortOrder: yup.number().oneOf([0, 1]).default(1).optional()
+    sortOrder: yup.number().oneOf([0, 1]).default(1).optional(),
+    pageNumber: yup.number().default(1).optional(),
+    pageSize: yup.number().default(10).optional()
   })
   .required();
 export async function getArticlesByKeywords(query) {
@@ -24,7 +27,7 @@ export async function getArticlesByKeywords(query) {
     stripUnknown: true
   });
 
-  const { title, userName, startDate, endDate, sortBy, sortOrder } = validatedQuery;
+  const { title, userName, startDate, endDate, sortBy, sortOrder, pageNumber, pageSize } = validatedQuery;
   const values = [];
   let sql = "SELECT a.*, u.userName, u.avatar FROM article a JOIN user u WHERE a.userId = u.userId";
   if (title) {
@@ -45,11 +48,19 @@ export async function getArticlesByKeywords(query) {
     sql += " AND createDate <= ?";
     values.push(endDate);
   }
+
   sql += ` ORDER BY ${sortBy} ${sortOrder === 1 ? "DESC" : "ASC"}`;
-  console.log("sql", sql);
-  console.log("values", values);
+  sql += " LIMIT ? OFFSET ?";
+  const offset = (pageNumber - 1) * pageSize;
+  values.push(pageSize, offset);
+
+
   const db = await getDatabase();
-  const articles = await db.all(sql, values);
+  const articles = await db.all(sql, values)
+  articles.forEach((article) => {  
+    article.createDateFormatted = dayjs(article.createDate).format('YYYY/MM/DD HH:mm:ss');
+    article.updateDateFormatted = dayjs(article.updateDate).format('YYYY/MM/DD HH:mm:ss');
+  });
 
   return articles;
 }

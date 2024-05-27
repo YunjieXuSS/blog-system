@@ -1,7 +1,9 @@
 import { PUBLIC_API_BASE_URL } from "$env/static/public";
-import { writable } from "svelte/store";
+import { writable, get} from "svelte/store";
 export const articles = [];
 export const articleStore = writable(articles);
+import {queryStore} from "./store.js";
+
 
 export async function checkUserIsRegisterd(userName) {
     //test code
@@ -15,35 +17,29 @@ export async function checkUserIsRegisterd(userName) {
 }
 
 
-export async function searchArticles(articleStore, selectedCategory, searchTerm) {
-    let response;
-
-    if (searchTerm!=="") {
-         response = await fetch(
-            `${PUBLIC_API_BASE_URL}/articles/search?${selectedCategory}=${searchTerm}`,
-            {
-                method: "GET"
-            }
-        );
-    } else {
-         response = await fetch(
-            `${PUBLIC_API_BASE_URL}/articles/`,
-            {
-                method: "GET"
-            }
-        );
+export async function searchArticles() {
+    const query = get(queryStore);
+    let queryList = [];
+    Object.keys(query).forEach((key)=>{
+        if(query[key]) queryList.push(`${key}=${query[key]}`);
+    });
+    const queryStatement = queryList.join("&");
+    console.log("my final query statement",queryStatement);
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles?${queryStatement}`);
+    if(response.status=== 200) {
+        const articles = await response.json();
+        articleStore.set(articles);
     }
-    const articles = await response.json();
-    articleStore.set(articles);
+    
 }
 
-export async function refreshPage(articleStore) {
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
-    if (!response) return;//have to add some solution here
-    const articles = await response.json();
-    articleStore.set(articles);
-    return articles;
-}
+// export async function refreshPage(articleStore) {
+//     const response = await fetch(`${PUBLIC_API_BASE_URL}/articles/`);
+//     if (!response) return;//have to add some solution here
+//     const articles = await response.json();
+//     articleStore.set(articles);
+//     return articles;
+// }
 
 export async function createAccount(user) {
     //test code

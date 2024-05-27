@@ -8,7 +8,7 @@
   export let data;
   articleStore.set(data.articles);
 
-  let sortingCategory = "";
+  let sortingCategory = "dateDesc";
 </script>
 
 <PostArticleButton />
