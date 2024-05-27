@@ -261,15 +261,15 @@ export async function updateArticle(articleId, updateData) {
   // that updates all three, if all three aren't used. We must consider each one one-by-one.
   const updateOperations = [];
   const updateParams = [];
-  if (validatedUpdateData.title) {
+  if (validatedUpdateData.title!==undefined) {
     updateOperations.push("title = ?");
     updateParams.push(validatedUpdateData.title);
   }
-  if (validatedUpdateData.content) {
+  if (validatedUpdateData.content!==undefined) {
     updateOperations.push("content = ?");
     updateParams.push(validatedUpdateData.content);
   }
-  if (validatedUpdateData.imgUrl) {
+  if (validatedUpdateData.imgUrl!==undefined) {
     updateOperations.push("imgUrl = ?");
     updateParams.push(validatedUpdateData.imgUrl);
   }
