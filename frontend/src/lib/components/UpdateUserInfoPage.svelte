@@ -12,6 +12,8 @@
   import Dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
+  import PopupBox from "./PopupBox.svelte";
+
 
   export let user;
   let firstName = user.firstName;
@@ -26,7 +28,9 @@
   let selectedImage = "";
   let onMountTriggered = false;
   let userIconURL = `${SERVER_URL}${avatarURL}`;
-
+  let showPopupBox = false;
+  let popupMessage = "Mission Completed!";
+  let redirectUrl = "/";
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -66,6 +70,7 @@
     description,
     filesToUpload
   ) {
+  
     const userRegisterData = {
       firstName,
       lastName,
@@ -109,6 +114,7 @@
     if (response.status === 200) {
       // Redirect to the login page if successful.
       console.log("User update successfully.");
+      handlePopupBox("updated");
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to update user info.${response.status}`);
@@ -124,7 +130,7 @@
       .then((response) => {
         if (response.status === 204) {
           console.log("User deleted successfully.");
-          goto("/", { replaceState: true, invalidateAll: true });
+          handlePopupBox("deleted");
         } else {
           console.error(`Failed to delete user.${response.status}`);
         }
@@ -132,6 +138,15 @@
       .catch((error) => {
         console.error(`Failed to delete user.${error}`);
       });
+
+    
+  }
+
+
+  function handlePopupBox(operation) {
+    popupMessage = `User has been ${operation} . Redirecting to homepage...`;
+    redirectUrl = "/";
+    showPopupBox = true;
   }
 
 
@@ -187,6 +202,11 @@
   </button>
 </div>
 </div>
+
+{#if showPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} />
+{/if}
+
 
 <style>
   .page-container {

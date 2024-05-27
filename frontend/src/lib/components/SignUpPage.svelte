@@ -1,6 +1,5 @@
 <script>
   import AvatarUpload from "./UploadAvatar.svelte";
-  import { goto } from "$app/navigation";
   import SignUpTable from "./SignUpTable.svelte";
   import {
     validateRegisterUserName,
@@ -11,6 +10,7 @@
   } from "../js/validation.js";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import AvatarChooser from "./AvatarChooser.svelte";
+  import PopupBox from "./PopupBox.svelte";
 
   let firstName, lastName, userName;
   let password;
@@ -106,16 +106,25 @@
     if (response.status === 201) {
       // Redirect to the login page if successful.
       console.log("User registered successfully.");
-      goto("/", { replaceState: true, invalidateAll: true });
+      handlePopupBox("registered");
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to register user.${response.status}`);
     }
 
     const serverResponse = await response.json();
-
-    
   }
+
+  let showPopupBox = false;
+  let popupMessage = "Mission Completed!";
+  let redirectUrl = "/";
+  function handlePopupBox(operation) {
+    popupMessage = `User has ${operation} . Redirecting to homepage...`;
+    redirectUrl = "/";
+    showPopupBox = true;
+  }
+
+
 </script>
 
 <div class="page-container">
@@ -156,6 +165,10 @@
     Create account
   </button>
 </div>
+
+{#if showPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} />
+{/if}
 
 <style>
   .page-container {
