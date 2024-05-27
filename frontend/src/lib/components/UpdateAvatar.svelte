@@ -1,13 +1,16 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
+  import { onMount } from "svelte";
 
   export let filesToUpload = "";
   let messageToSend;
 
   let serverResponse = null;
 
-  export let userIconURL = "/userDefaultIcon.png";
+  export let userIconURL ;
+  export let selectedImage = "/userDefaultIcon1.png";
 
+  $:console.log("userIconURL", userIconURL);
 
   function previewImage(event) {
     const [file] = imgInp.files;
@@ -17,13 +20,21 @@
       userIcon.src = "/userDefaultIcon.png";
     }
   }
+
+  onMount(() => {
+    selectedImage=userIconURL;
+  });
+  
+
+
+
 </script>
 
 <!-- A form -->
 <form>
   <div class="img-container">
     <div class="img-bg-container"> 
-      <img id="userIcon" src={userIconURL} alt="userDefaultIcon" />   
+      <img id="userIcon" src={selectedImage} alt="userDefaultIcon" />   
     </div>
   
   </div>

@@ -11,6 +11,7 @@
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import Dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
+  import AvatarChooser from "./AvatarChooser.svelte";
 
   export let user;
   let firstName = user.firstName;
@@ -23,8 +24,9 @@
   let filesToUpload;
   let avatarURL = user.avatar;
   let selectedImage = "";
-
-  $:console.log("selectedImage", selectedImage);
+  let onMountTriggered = false;
+  let userIconURL = `${SERVER_URL}${avatarURL}`;
+  $: console.log("selectedImage", selectedImage);
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -77,35 +79,18 @@
     // const userRegisterImage =events.target.files[0];
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
-    console.log("firstName", firstName);
-    console.log("user.firstName", user.firstName);
-    if (firstName !== user.firstName) {
-      console.log("firstName", firstName);
-      console.log("user.firstName", user.firstName);
-      formData.append("firstName", firstName);
-    }
-    if (lastName !== user.lastName) {
-      formData.append("lastName", lastName);
-    }
-    if (email !== user.email) {
-      formData.append("email", email);
-    }
-    if (dateOfBirth !== user.dateOfBirth) {
-      formData.append("dateOfBirth", dateOfBirth);
-    }
-    if (userName !== user.userName) {
-      formData.append("userName", userName);
-    }
-    if (password) {
-      formData.append("password", password);
-    }
+
     if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
       formData.append("avatar", userRegisterImage);
-    } else {
-      //if no image is uploaded, use the default image
-      formData.append("avatar", "/images/avatar-default.png");
-      // formData.append("avatar", "localhost:3000/images/avatar-default.png");
     }
+
+    Object.keys(user).forEach((key) => {
+      if (key === "userId") return;
+      if (userRegisterData[key] !== user[key] && userRegisterData[key] !== undefined) {
+        formData.append(key, userRegisterData[key]);
+      }
+    });
+
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
@@ -114,6 +99,14 @@
       credentials: "include",
       body: formData
     });
+
+    if (response.status === 200) {
+      // Redirect to the login page if successful.
+      console.log("User update successfully.");
+    } else {
+      // If there was an error, log the error to the console.
+      console.error(`Failed to update user info.${response.status}`);
+    }
     const serverResponse = await response.json();
   }
 </script>
@@ -123,8 +116,8 @@
   <div class="content-container">
     <div class="avatar-container">
       <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
-      <UpdateAvatar bind:filesToUpload userIconURL={`${SERVER_URL}/${avatarURL}`} />
-
+      <UpdateAvatar bind:filesToUpload bind:selectedImage {userIconURL} />
+      <AvatarChooser bind:selectedImage {onMountTriggered} />
       <!-- /userDefaultIcon.png -->
     </div>
     <div>

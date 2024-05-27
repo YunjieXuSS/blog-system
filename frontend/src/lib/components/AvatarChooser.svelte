@@ -1,41 +1,38 @@
 <script>
   export let selectedImage = "";
   import { onMount } from "svelte";
+  export let onMountTriggered = true;
   let images = [
-    "/userDefaultIcon1.png",
-    "/userDefaultIcon2.png",
-    "/userDefaultIcon3.png",
-    "/userDefaultIcon4.png",
-    "/userDefaultIcon5.png",
-    "/userDefaultIcon6.png",
-    "/userDefaultIcon7.png",
-    "/userDefaultIcon8.png",
-    "/userDefaultIcon9.png",
-    "/userDefaultIcon10.png",
-    "/userDefaultIcon11.png",
-    "/userDefaultIcon12.png"
+    "/defaultAvatars/userDefaultIcon1.png",
+    "/defaultAvatars/userDefaultIcon2.png",
+    "/defaultAvatars/userDefaultIcon3.png",
+    "/defaultAvatars/userDefaultIcon4.png",
+    "/defaultAvatars/userDefaultIcon5.png",
+    "/defaultAvatars/userDefaultIcon6.png",
+    "/defaultAvatars/userDefaultIcon7.png",
+    "/defaultAvatars/userDefaultIcon8.png",
+    "/defaultAvatars/userDefaultIcon9.png",
   ];
-//update the path of images
+  //update the path of images
   function selectImage(image) {
     selectedImage = image;
   }
 
-//default image when the page is loaded
-  onMount(() => {
-    if (images.length > 0 && !selectedImage) {
-      selectImage(images[0]);
-    }
-  });
-
-
-
+  if (onMountTriggered) {
+    //default image when the page is loaded
+    onMount(() => {
+      if (images.length > 0 && !selectedImage) {
+        selectImage(images[0]);
+      }
+    });
+  }
 </script>
 
 <div class="image-grid">
   {#each images as image}
-    <button 
-      type="button" 
-      class="image-item" 
+    <button
+      type="button"
+      class="image-item"
       on:click={() => selectImage(image)}
       aria-pressed={selectedImage === image}
     >
@@ -47,7 +44,8 @@
 <style>
   .image-grid {
     display: grid;
-    grid-template-columns: repeat(3, 0.3fr);
+    grid-template-columns: repeat(3, 0.2fr);
+    justify-content: center;
     gap: 10px;
     width: 100%;
   }
@@ -56,7 +54,7 @@
     padding: 0;
     border: none;
     background: none;
-    cursor: pointer; 
+    cursor: pointer;
     border-radius: 10px;
   }
   .image-item img {

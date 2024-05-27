@@ -19,6 +19,7 @@
   let description;
   let filesToUpload;
   let selectedImage = "";
+  let onMountTriggered = false;
   
   // define a function to get the first password.
   const getPassword = function () {
@@ -121,8 +122,8 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload />
-      <AvatarChooser  bind:selectedImage   />
+      <AvatarUpload bind:filesToUpload bind:selectedImage/>
+      <AvatarChooser  bind:selectedImage onMountTriggered={onMountTriggered} />
     </div>
     <div>
       <SignUpTable
