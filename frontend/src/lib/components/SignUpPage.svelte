@@ -90,7 +90,7 @@
     } else {
       //if no image is uploaded, use the default image
       if (selectedImage !== "") {
-        formData.append("avatar", `/images${selectedImage}`);
+        formData.append("avatar", `/images${selectedImage.substring(15)}`);
       } else {
         formData.append("avatar", "/images/avatar-default.png");
       }

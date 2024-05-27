@@ -10,7 +10,6 @@
   export let userIconURL ;
   export let selectedImage = "/userDefaultIcon1.png";
 
-  $:console.log("userIconURL", userIconURL);
 
   function previewImage(event) {
     const [file] = imgInp.files;

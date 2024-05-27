@@ -26,7 +26,7 @@
   let selectedImage = "";
   let onMountTriggered = false;
   let userIconURL = `${SERVER_URL}${avatarURL}`;
-  $: console.log("selectedImage", selectedImage);
+
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -80,7 +80,13 @@
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
 
-    if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
+    console.log("selectedImage", selectedImage.substring(16));
+    console.log("userIconURL", userIconURL.substring(29));
+    if( userRegisterImage == undefined && selectedImage.substring(16) !== userIconURL.substring(29)){
+      console.log("selectedImage.substring(15)}",selectedImage.substring(15));
+      formData.append("avatar", `/images${selectedImage.substring(15)}`);
+    } else if (userRegisterImage && filesToUpload.length > 0) {
+      console.log("userRegisterImage",userRegisterImage);
       formData.append("avatar", userRegisterImage);
     }
 
