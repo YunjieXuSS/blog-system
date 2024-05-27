@@ -94,6 +94,7 @@
 
     & .logo {
       max-width: 140px;
+      min-width: 80px;
       width: 100%;
     }
 

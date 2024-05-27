@@ -25,18 +25,21 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin: 50px 0;
+    margin: 50px auto;
   }
+
   .loginDev,
   .signupDev {
     display: flex;
     margin: 0;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
   }
 
   @media (max-width: 1035px) {
     .container {
       display: flex;
       flex-direction: column;
+      box-shadow: none;
     }
   }
 </style>

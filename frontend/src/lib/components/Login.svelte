@@ -90,7 +90,7 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    border: 10px solid #F5E8DD;
+    border: 10px solid white;
     padding: 40px;
     height: 35em;
     width: 32em;
@@ -127,7 +127,6 @@
   @media (max-width: 1035px) {
     .login-container {
       width: 25em;
-      margin-bottom: 20px;
     }
   }
 

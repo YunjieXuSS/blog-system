@@ -6,4 +6,13 @@
     import UserInfo from "$lib/components/UserInfo.svelte";
 </script>
 
-<UserInfo />
+<div class="profileDiv">
+    <UserInfo />
+</div>
+
+<style>
+    .profileDiv {
+        display: flex;
+        justify-content: center;
+    }
+</style>
