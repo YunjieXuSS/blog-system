@@ -12,7 +12,6 @@
 
   export let data;
 
-
   $: path = $page.url.pathname;
   $: console.log($page.url.pathname);
   //The status of user
@@ -46,7 +45,12 @@
   {#if isLoggined == false}
     <div class="userNameLogoutDiv">
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText
+        buttonLabel="Login"
+        buttonFunction={loginButton}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 

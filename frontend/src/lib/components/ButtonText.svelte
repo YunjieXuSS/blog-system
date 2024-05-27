@@ -1,16 +1,24 @@
 <!-- A button component to be altered as needed -->
 
 <script>
-  export let buttonLabel = "";
   export let buttonFunction = () => {};
+  export let buttonDisabled = false;
+  export let buttonDisabledClass = "";
+  export let buttonLabel;
   export let bckgColour;
   export let txtColour = "white";
   export let buttonWidth = "100%";
   export let borderRadius = "4px";
+
+  function handleClick() {
+    if (!buttonDisabled) {
+      buttonFunction();
+    }
+  }
 </script>
 
 <button
-  on:click={buttonFunction}
+  on:click={handleClick} class="{buttonDisabled ? 'disabled' + buttonDisabledClass : buttonDisabledClass}" {buttonDisabled}
   style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
   >{buttonLabel}
 </button>
@@ -37,5 +45,9 @@
 
   button:hover {
     opacity: 0.75;
+  }
+
+  .disabled {
+    cursor: not-allowed;
   }
 </style>

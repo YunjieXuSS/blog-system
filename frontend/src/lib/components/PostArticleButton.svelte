@@ -2,10 +2,14 @@
 
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
+
+  function newPost() {
+    window.location = "/article/create"
+  }
 </script>
 
 <div class="button-container">
-  <ButtonText buttonLabel="✚ New article" buttonPath="/articles/create" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="4px 0 0 4px"/>
+  <ButtonText buttonFunction="{newPost}" buttonLabel="✚ New article" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="4px 0 0 4px"/>
 </div>
 
 <style>
