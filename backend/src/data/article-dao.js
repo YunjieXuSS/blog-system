@@ -317,7 +317,7 @@ export async function unlikeArticle(userId, articleId) {
 export async function getLikes(articleId) {
   const db = await getDatabase();
   const likes = await db.get(
-    "SELECT COUNT(*) as count FROM like WHERE articleId = ?",
+    "SELECT COUNT(*) as likesCount FROM like WHERE articleId = ?",
     articleId
   );
   return likes;

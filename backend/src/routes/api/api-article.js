@@ -195,10 +195,10 @@ router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
 
 //GET numbers of like by articleId
 router.get("/:articleId/like", async (req, res) => {
-  const article = req.params.articleId;
-  if (article) {
-    const likes = await getLikes(article);
-    return res.status(200).json({likesNums:likes.count});
+  const articleId = req.params.articleId;
+  if (articleId) {
+    const likesCount = await getLikes(articleId);
+    return res.status(200).json(likesCount);
   } else {
     return res.status(404).json({ error: "Article does not exist." });
   }
