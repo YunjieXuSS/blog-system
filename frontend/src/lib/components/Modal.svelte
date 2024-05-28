@@ -1,1 +1,0 @@
-// A pop up modal component for alerting users, which can be used in any page. Users can not interact with the page behind the modal until they close the modal.

@@ -25,7 +25,6 @@
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
 
-  
   let label=""
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
@@ -33,8 +32,8 @@
   //Get validateResult, label from the event.detail (CustomEvent)
   //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
-    const { validateResult, label } = event.detail;
-    dispatch('validation', { validateResult, label });
+    const { variableName,validateResult } = event.detail;
+    dispatch('validation', { variableName,validateResult });
   }
 
 
@@ -49,6 +48,7 @@
     maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
+    variableName="firstName"
   />
   <InputBar
     label="LAST NAME:"
@@ -58,6 +58,7 @@
     maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
+    variableName="lastName"
   />
   <InputBar
     label="EMAIL:"x
@@ -67,6 +68,7 @@
     maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
+    variableName="email"
   />
 
   <InputBar
@@ -77,6 +79,7 @@
     maxlength="20"
     bind:value={dateOfBirth}
     on:validation={handleValidation}
+    variableName="dateOfBirth"
   />
 
   <InputBar
@@ -87,6 +90,7 @@
     maxlength="30"
     bind:value={userName}
     on:validation={handleValidation}
+    variableName="userName"
   />
   <InputBar
     label="PASSWORD:"
@@ -96,6 +100,7 @@
     maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
+    variableName="password"
   />
   <InputBar
     label="CONFIRM PASSWORD:"
@@ -105,6 +110,7 @@
     maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
+    variableName="confirmPassword"
   />
 
   <label for="description">DESCRIPTION:</label>
