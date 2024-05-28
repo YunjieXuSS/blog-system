@@ -11,8 +11,9 @@
 
 
 </script>
-
+<div class="navBar">
 <NavigationBar {data}/>
+</div>
 <div class="container">
   <slot />
 </div>
@@ -21,4 +22,9 @@
   .container {
     margin: 0 auto;
   }
+  /* .navBar {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+  } */
 </style>

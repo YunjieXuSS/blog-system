@@ -23,8 +23,10 @@
 
 <article class="article-container">
   <h1 class="article-title">{articleDetail.title}</h1>
-  <p class="user"><strong>@Author: </strong>{articleDetail.userName}</p>
-  <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+  <div class="authorInfo">
+    <p class="user"><strong>@</strong>{articleDetail.userName}</p>
+    <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+  </div>
   {#if imageLoaded}
     <img src={SERVER_URL + articleDetail.imgUrl} alt="" class="article-image" />
   {/if}
@@ -55,13 +57,24 @@
     text-align: center;
   }
 
+  .authorInfo {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+  }
+
   .user {
     font-size: 1em;
     color: #555;
+    margin-right: 20px;
   }
 
   .date {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-style: italic;
     color: #999;
   }

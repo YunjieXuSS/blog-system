@@ -88,9 +88,10 @@
     disabled={sending}
     bind:value={commentToArticle}
   />
-  <button on:click={postCommentToArticle} disabled={sending}>reply</button><button
-    on:click={clearTextarea}>clear</button
-  >
+  <div class= "operations" >
+  <button on:click={postCommentToArticle} disabled={sending}>reply</button>
+  <button on:click={clearTextarea}>clear</button>
+  </div>
 
   <div class="list" style="display: {showComments ? '' : 'none'};">
     {#if !loadedComment}
@@ -124,13 +125,20 @@
       width: 100%;
       height: 100px;
       box-sizing: border-box;
-      margin: 16px 0;
+      margin:0;
       padding: 8px;
       resize: vertical;
     }
 
+    & .operations {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-bottom:20px;
+    }
+
     & button {
-      margin: 8px 16px 0 0;
+      margin: 0 16px 0 0;
       background: transparent;
       border: none;
       outline: none;

@@ -103,6 +103,9 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
+    <li>
+      <a href="/articles" class:active={path.startsWith("/article")}>Article</a>
+    </li>
     {#if isLoggedIn}
       <li>
         <a
