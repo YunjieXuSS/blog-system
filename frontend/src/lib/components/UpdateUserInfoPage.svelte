@@ -1,8 +1,6 @@
 <script>
-  import InputBar from "./InputBar.svelte";
   import UpdateUserTable from "./UpdateUserTable.svelte";
   import UpdateAvatar from "./UpdateAvatar.svelte";
-  import { createAccount } from "../js/utils.js";
   import {
     validateRegisterUserName,
     validateRegisterPassword,
@@ -10,23 +8,31 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import SignUpSection from "./SignUpSection.svelte";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
-  import { user } from "../js/store.js";
   import Dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
+  import AvatarChooser from "./AvatarChooser.svelte";
+  import PopupBox from "./PopupBox.svelte";
+  import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
 
-  export let data;
-  user.set(data.userInfo);
-  let firstName = $user.firstName;
-  let lastName = $user.lastName;
-  let userName = $user.userName;
+  export let user;
+  let firstName = user.firstName;
+  let lastName = user.lastName;
+  let userName = user.userName;
   let password;
-  let email = $user.email;
-  let dateOfBirth = Dayjs($user.dateOfBirth).format("YYYY-MM-DD");
-  let description = $user.description;
+  let email = user.email;
+  let dateOfBirth = Dayjs(user.dateOfBirth).format("YYYY-MM-DD");
+  let description = user.description;
   let filesToUpload;
-  let avatarURL = $user.avatar;
+  let avatarURL = user.avatar;
+  let selectedImage = "";
+  let onMountTriggered = false;
+  let userIconURL = `${SERVER_URL}${avatarURL}`;
+  let showPopupBox = false;
+  let popupMessage = "Mission Completed!";
+  let redirectUrl = "/";
+  let showConfirmPopupBox = false;
+  let confirmFunction = () => {};
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -77,40 +83,26 @@
     };
     const userRegisterImage = filesToUpload[0];
     // const userRegisterImage =events.target.files[0];
-  
-
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
-    console.log("firstName", firstName);
-    console.log("user.firstName", $user.firstName);
-    if (firstName !== $user.firstName) {
-      console.log("firstName", firstName);
-      console.log("user.firstName", $user.firstName);
-      formData.append("firstName", firstName);
-    }
-    if (lastName !== $user.lastName) {
-      formData.append("lastName", lastName);
-    }
-    if (email !== $user.email) {
-      formData.append("email", email);
-    }
-    if (dateOfBirth !== $user.dateOfBirth) {
-      formData.append("dateOfBirth", dateOfBirth);
-    }
-    if (userName !== $user.userName) {
-      formData.append("userName", userName);
-    }
-    if (password) {
-      formData.append("password", password);
-    }
-    if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
+
+    console.log("selectedImage", selectedImage.substring(16));
+    console.log("userIconURL", userIconURL.substring(29));
+    if (
+      userRegisterImage == undefined &&
+      selectedImage.substring(16) !== userIconURL.substring(29)
+    ) {
+      formData.append("avatar", `/images${selectedImage.substring(15)}`);
+    } else if (userRegisterImage && filesToUpload.length > 0) {
       formData.append("avatar", userRegisterImage);
-    } else {
-      //if no image is uploaded, use the default image
-      formData.append("avatar", "/images/avatar-default.png");
-      // formData.append("avatar", "localhost:3000/images/avatar-default.png");
     }
 
+    Object.keys(user).forEach((key) => {
+      if (key === "userId") return;
+      if (userRegisterData[key] !== user[key] && userRegisterData[key] !== undefined) {
+        formData.append(key, userRegisterData[key]);
+      }
+    });
 
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
@@ -121,18 +113,59 @@
       body: formData
     });
 
+    if (response.status === 200) {
+      // Redirect to the login page if successful.
+      console.log("User update successfully.");
+      handlePopupBox("updated");
+    } else {
+      // If there was an error, log the error to the console.
+      console.error(`Failed to update user info.${response.status}`);
+    }
     const serverResponse = await response.json();
+  }
 
+  function handleDelete() {
+    console.log("-----handleDelete");
+    fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+      method: "DELETE",
+      credentials: "include"
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          console.log("User deleted successfully.");
+          // handlePopupBox("deleted");
+        } else {
+          console.error(`Failed to delete user.Status code:${response.status}`);
+        }
+      })
+      .catch((error) => {
+        console.error(`Failed to delete user.${error}`);
+      });
+  }
+
+  function handlePopupBox(operation) {
+    popupMessage = `User has been ${operation} . Redirecting to homepage...`;
+    redirectUrl = "/";
+    showPopupBox = true;
+  }
+
+  function handleConfirmPopupBox() {
+    
+    console.log("-----handleConfirmPopupBox");
+    popupMessage = `Do you really want to delete this account?`;
+    redirectUrl = "/profile/edit";
+    showConfirmPopupBox = true;
+    confirmFunction = handleDelete;
   }
 </script>
 
 <div class="page-container">
-  <div class="page-title"><h2>Edit account</h2></div>
+  <div class="page-title"><h2>Edit Account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
       <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
-      <UpdateAvatar bind:filesToUpload userIconURL={`${SERVER_URL}/${avatarURL}`} />
-
+      <UpdateAvatar bind:filesToUpload bind:selectedImage {userIconURL} />
+      <AvatarChooser bind:selectedImage {onMountTriggered} />
       <!-- /userDefaultIcon.png -->
     </div>
     <div>
@@ -145,27 +178,39 @@
         bind:password
         bind:description
         on:validation={handleValidation}
+        userData={user}
       />
     </div>
   </div>
+  <div class="button_div">
+    <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
 
-  <button
-    class="submitButton"
-    class:valid={allValid}
-    on:click={handleUpdate(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-  >
-    Confirm edit
-  </button>
+    <button
+      class="submitButton"
+      class:valid={allValid}
+      on:click={handleUpdate(
+        firstName,
+        lastName,
+        email,
+        dateOfBirth,
+        userName,
+        password,
+        description,
+        filesToUpload
+      )}
+    >
+      Confirm Edit
+    </button>
+  </div>
 </div>
+
+{#if showPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} />
+{/if}
+
+{#if showConfirmPopupBox}
+  <ConfirmPopupBox {popupMessage} {redirectUrl} {confirmFunction} operation="Deleted" bind:showConfirmPopupBox/>
+{/if}
 
 <style>
   .page-container {
@@ -194,6 +239,14 @@
         width: 48%;
       }
     }
+
+    & .button_div {
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      gap: 50px;
+    }
+
     & .submitButton {
       width: 200px;
       height: 80px;
@@ -205,6 +258,16 @@
     }
     & .submitButton.valid {
       background-color: green;
+    }
+
+    & .deleteButton {
+      width: 200px;
+      height: 80px;
+      margin-top: 20px;
+      background-color: rgb(183, 2, 2);
+      border-radius: 15px;
+      color: white;
+      font-size: 1.5em;
     }
   }
 </style>

@@ -1,29 +1,34 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
+  import { onMount } from "svelte";
 
   export let filesToUpload = "";
+  export let selectedImage ="";
+
   let messageToSend;
 
   let serverResponse = null;
-
 
   function previewImage(event) {
     const [file] = imgInp.files;
     if (file) {
       userIcon.src = URL.createObjectURL(file);
     } else {
-      userIcon.src = "userDefaultIcon.png";
+      userIcon.src = "/userDefaultIcon.png";
     }
   }
-</script>
 
+  onMount(() => {
+    selectedImage= "/userDefaultIcon.png";
+  });
+
+</script>
 
 <form>
   <div class="img-container">
-    <div class="img-bg-container"> 
-      <img id="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />   
+    <div class="img-bg-container">
+      <img id="userIcon" src={selectedImage} alt="userDefaultIcon" />
     </div>
-  
   </div>
   <label for="imageFile">Choose a PNG or JPG to upload:</label>
   <input
@@ -36,7 +41,6 @@
     on:change={previewImage}
     required
   />
-
 </form>
 
 <style>
@@ -47,7 +51,6 @@
     padding-top: 45px;
 
     & .img-container {
-      
       width: 100%;
       height: 100%;
       display: block;

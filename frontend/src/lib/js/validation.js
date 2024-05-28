@@ -77,8 +77,8 @@ export function validateRegisterDate(date) {
     return { result: false, errorMsg: "Date cannot be empty." };
   } else if (date.length > 10) {
     return { result: false, errorMsg: "Date must be less than 10 characters." };
-  } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
-    return { result: false, errorMsg: "Invalid email format." };
+  // } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
+  //   return { result: false, errorMsg: "Invalid date format." };
   }
   return { result: true, errorMsg: "" };
 }
