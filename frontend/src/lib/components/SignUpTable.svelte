@@ -9,7 +9,6 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import ArticleCard from "./ArticleCard.svelte";
 
   export let firstName, lastName, userName;
   export let email;
@@ -26,7 +25,6 @@
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
 
-  
   let label=""
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
@@ -34,8 +32,8 @@
   //Get validateResult, label from the event.detail (CustomEvent)
   //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
-    const { validateResult, label } = event.detail;
-    dispatch('validation', { validateResult, label });
+    const { variableName,validateResult } = event.detail;
+    dispatch('validation', { variableName,validateResult });
   }
 
 
@@ -47,27 +45,30 @@
     type="text"
     placeholder="Enter your first name"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
+    variableName="firstName"
   />
   <InputBar
     label="LAST NAME:"
     type="text"
     placeholder="Enter your surname"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
+    variableName="lastName"
   />
   <InputBar
     label="EMAIL:"x
     type="email"
     placeholder="Enter your email"
     validate={validateRegisterEmail}
-    maxlength="20"
+    maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
+    variableName="email"
   />
 
   <InputBar
@@ -78,6 +79,7 @@
     maxlength="20"
     bind:value={dateOfBirth}
     on:validation={handleValidation}
+    variableName="dateOfBirth"
   />
 
   <InputBar
@@ -85,27 +87,30 @@
     type="text"
     placeholder="Enter your username"
     validate={validateRegisterUserName}
-    maxlength="20"
+    maxlength="30"
     bind:value={userName}
     on:validation={handleValidation}
+    variableName="userName"
   />
   <InputBar
     label="PASSWORD:"
     type="password"
     placeholder="Enter your password"
     validate={validateRegisterPassword}
-    maxlength="20"
+    maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
+    variableName="password"
   />
   <InputBar
     label="CONFIRM PASSWORD:"
     type="password"
     placeholder="Re-enter your password"
     validate={confirmPasswordValidator}
-    maxlength="20"
+    maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
+    variableName="confirmPassword"
   />
 
   <label for="description">DESCRIPTION:</label>
