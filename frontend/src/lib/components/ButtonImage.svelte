@@ -16,9 +16,9 @@
 </button>
 
 <style>
-  * {
-    /* border: black solid 1px; */
-  }
+  /* * {
+    border: black solid 1px;
+  } */
 
   button {
     display: flex;

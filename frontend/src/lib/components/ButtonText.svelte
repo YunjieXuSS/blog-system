@@ -48,7 +48,7 @@
     opacity: 0.75;
   }
 
-  .disabled {
+  button:disabled {
     cursor: not-allowed;  
   }
 </style>

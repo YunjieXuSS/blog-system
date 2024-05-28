@@ -1,16 +1,21 @@
 <script>
   import ButtonImage from "$lib/components/ButtonImage.svelte";
 
-  function likeUnlike() {
-    console.log("like/unlike");
+  let isLiked = false;
+
+  const heartEmpty = '/heartEmpty.png';
+  const heartFull = '/heartFull.png'
+
+  function toggleLike() {
+    isLiked = !isLiked;
   }
 </script>
 
 <div class="likeBtn">
   <ButtonImage
-    buttonFunction={likeUnlike}
-    imgSrc="/heartEmpty.png"
-    imgAlt="Like/Unlike"
+    buttonFunction={toggleLike}
+    imgSrc="{isLiked ? heartFull : heartEmpty}"
+    imgAlt="{isLiked ? 'Unlike' : 'Like'}"
     buttonWidth="10px"
   />
 </div>
