@@ -3,10 +3,11 @@
 <script>
   export let buttonFunction = () => {};
   export let buttonDisabled = false;
-  export let buttonDisabledClass = "";
   export let buttonLabel;
   export let bckgColour;
+  export let disabledBckgColour = "gray";
   export let txtColour = "white";
+  export let disabledTxtColour = "white";
   export let buttonWidth = "100%";
   export let borderRadius = "8px";
 
@@ -18,9 +19,12 @@
 </script>
 
 <button
-  on:click={handleClick} class="{buttonDisabled ? 'disabled' + buttonDisabledClass : buttonDisabledClass}" {buttonDisabled}
-  style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
-  >{buttonLabel}
+  on:click={handleClick} 
+  class="{buttonDisabled ? 'disabled' : ''}"
+  disabled={buttonDisabled}
+  style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; color:{buttonDisabled ? disabledTxtColour : txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
+>
+  {buttonLabel}
 </button>
 
 <style>
@@ -44,11 +48,12 @@
     position: relative;
   }
 
-  button:hover {
+  button:hover:not(:disabled) {
     opacity: 0.75;
   }
 
-  button:disabled {
-    cursor: not-allowed;  
+  .disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 </style>
