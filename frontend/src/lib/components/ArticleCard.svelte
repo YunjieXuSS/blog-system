@@ -26,9 +26,11 @@
     <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
   {/if}
   <h1 class="article-title">{article.title}</h1>
-  <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
-  <p class="article-content" bind:innerHTML={article.content} contenteditable="false"></p>
+  <div class="authorInfo">
+    <p class="user"><strong>@</strong>{article.userName}</p>
+    <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+  </div>
+  <p class="article-content" bind:innerHTML={article.content} contenteditable="false" />
 </article>
 
 <style>
@@ -50,18 +52,29 @@
   }
 
   .article-title {
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 5px;
-    text-align: center;
+    text-align: left;
+  }
+
+  .authorInfo{
+    display: flex;
+    flex-direction: row;
+    margin:0;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
   }
 
   .user {
     font-size: 1em;
     color: #555;
+    margin-right: 20px;
   }
 
   .date {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-style: italic;
     color: #999;
   }
