@@ -13,7 +13,7 @@
   import { SERVER_URL } from "../js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
-
+  import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
 
   export let user;
   let firstName = user.firstName;
@@ -31,6 +31,8 @@
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
+  let showConfirmPopupBox = false;
+  let confirmFunction = () => {};
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -70,7 +72,6 @@
     description,
     filesToUpload
   ) {
-  
     const userRegisterData = {
       firstName,
       lastName,
@@ -87,11 +88,12 @@
 
     console.log("selectedImage", selectedImage.substring(16));
     console.log("userIconURL", userIconURL.substring(29));
-    if( userRegisterImage == undefined && selectedImage.substring(16) !== userIconURL.substring(29)){
-      console.log("selectedImage.substring(15)}",selectedImage.substring(15));
+    if (
+      userRegisterImage == undefined &&
+      selectedImage.substring(16) !== userIconURL.substring(29)
+    ) {
       formData.append("avatar", `/images${selectedImage.substring(15)}`);
     } else if (userRegisterImage && filesToUpload.length > 0) {
-      console.log("userRegisterImage",userRegisterImage);
       formData.append("avatar", userRegisterImage);
     }
 
@@ -123,6 +125,7 @@
   }
 
   function handleDelete() {
+    console.log("-----handleDelete");
     fetch(`${PUBLIC_API_BASE_URL}/users/`, {
       method: "DELETE",
       credentials: "include"
@@ -130,18 +133,15 @@
       .then((response) => {
         if (response.status === 204) {
           console.log("User deleted successfully.");
-          handlePopupBox("deleted");
+          // handlePopupBox("deleted");
         } else {
-          console.error(`Failed to delete user.${response.status}`);
+          console.error(`Failed to delete user.Status code:${response.status}`);
         }
       })
       .catch((error) => {
         console.error(`Failed to delete user.${error}`);
       });
-
-    
   }
-
 
   function handlePopupBox(operation) {
     popupMessage = `User has been ${operation} . Redirecting to homepage...`;
@@ -149,7 +149,14 @@
     showPopupBox = true;
   }
 
-
+  function handleConfirmPopupBox() {
+    
+    console.log("-----handleConfirmPopupBox");
+    popupMessage = `Do you really want to delete this account?`;
+    redirectUrl = "/profile/edit";
+    showConfirmPopupBox = true;
+    confirmFunction = handleDelete;
+  }
 </script>
 
 <div class="page-container">
@@ -175,38 +182,35 @@
       />
     </div>
   </div>
-  <div class = "button_div" >
+  <div class="button_div">
+    <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
 
-  <button
-    class="deleteButton"
-    on:click={handleDelete}
-  >
-    Delete Account
-  </button>
-
-  <button
-    class="submitButton"
-    class:valid={allValid}
-    on:click={handleUpdate(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-  >
-    Confirm Edit
-  </button>
-</div>
+    <button
+      class="submitButton"
+      class:valid={allValid}
+      on:click={handleUpdate(
+        firstName,
+        lastName,
+        email,
+        dateOfBirth,
+        userName,
+        password,
+        description,
+        filesToUpload
+      )}
+    >
+      Confirm Edit
+    </button>
+  </div>
 </div>
 
 {#if showPopupBox}
   <PopupBox {popupMessage} {redirectUrl} />
 {/if}
 
+{#if showConfirmPopupBox}
+  <ConfirmPopupBox {popupMessage} {redirectUrl} {confirmFunction} operation="Deleted" bind:showConfirmPopupBox/>
+{/if}
 
 <style>
   .page-container {
@@ -236,7 +240,7 @@
       }
     }
 
-    & .button_div{
+    & .button_div {
       display: flex;
       flex-direction: row;
       align-content: center;
@@ -265,7 +269,5 @@
       color: white;
       font-size: 1.5em;
     }
-
   }
-  
 </style>
