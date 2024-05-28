@@ -101,7 +101,6 @@
     opacity: 1;
   }
   * {
-    background-color: #f0f0f0;
     margin: 10px auto;
     width: 100%;
   }

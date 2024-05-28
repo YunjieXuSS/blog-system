@@ -9,7 +9,7 @@
   $: if (isLoggedIn) {
     loginUser = data.user;
   }
- 
+
   export let avatarURL = "/userDefaultIcon.png";
   export let description =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ullamcorper dapibus leo vitae facilisis. Vestibulum nibh elit, varius a tellus quis, porta cursus lectus. Sed at pellentesque sapien.";
@@ -41,17 +41,16 @@
       <p>{description}</p>
     {/if}
   </div>
-
-
 </div>
 
 <style>
   .container {
-    margin: 50px 350px;
-    border: 1px solid black;
-    border-radius: 15px;
     display: flex;
+    margin: 50px;
     padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
+    max-width: 800px;
   }
 
   .settingsAndAvatar {
