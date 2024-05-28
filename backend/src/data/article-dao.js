@@ -309,6 +309,16 @@ export async function unlikeArticle(userId, articleId) {
     userId,
     articleId
   );
-
   return dbResult.changes > 0;
+}
+
+
+//Get numbers of likes of an article
+export async function getLikes(articleId) {
+  const db = await getDatabase();
+  const likes = await db.get(
+    "SELECT COUNT(*) as count FROM like WHERE articleId = ?",
+    articleId
+  );
+  return likes;
 }

@@ -98,6 +98,7 @@
     // by the multer middleware on our server.
     const response = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
       method: "POST",
+      credentials:"include",
       body: formData
     });
 
@@ -144,7 +145,7 @@
     </div>
   </div>
 
-  <!-- <button
+  <button
   class="submitButton"
   class:valid={allValid}
     on:click={handleRegister(
@@ -157,10 +158,11 @@
       description,
       filesToUpload
     )}
+    disabled="{!allValid}"
   >
     Create account
-  </button> -->
-
+  </button>
+<!-- 
   <ButtonText
     buttonFunction={handleRegister(
       firstName,
@@ -177,7 +179,7 @@
     bckgColour="#B5C0D0"
     txtColour="white"
     buttonWidth="140px"
-  />
+  /> -->
 </div>
 
 {#if showPopupBox}
@@ -214,7 +216,7 @@
         width: 20em;
       }
     }
-    /* & .submitButton {
+    & .submitButton {
       width: 200px;
       height: 80px;
       margin-top: 20px;
@@ -225,7 +227,7 @@
     }
     & .submitButton.valid {
       background-color: green;
-    } */
+    }
   }
 
   @media (max-width: 1000px) {

@@ -9,7 +9,6 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import ArticleCard from "./ArticleCard.svelte";
 
   export let firstName, lastName, userName;
   export let email;
@@ -47,7 +46,7 @@
     type="text"
     placeholder="Enter your first name"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
   />
@@ -56,7 +55,7 @@
     type="text"
     placeholder="Enter your surname"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
   />
@@ -65,7 +64,7 @@
     type="email"
     placeholder="Enter your email"
     validate={validateRegisterEmail}
-    maxlength="20"
+    maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
   />
@@ -85,7 +84,7 @@
     type="text"
     placeholder="Enter your username"
     validate={validateRegisterUserName}
-    maxlength="20"
+    maxlength="30"
     bind:value={userName}
     on:validation={handleValidation}
   />
@@ -94,7 +93,7 @@
     type="password"
     placeholder="Enter your password"
     validate={validateRegisterPassword}
-    maxlength="20"
+    maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
   />
@@ -103,7 +102,7 @@
     type="password"
     placeholder="Re-enter your password"
     validate={confirmPasswordValidator}
-    maxlength="20"
+    maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
   />
