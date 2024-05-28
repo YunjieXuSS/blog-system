@@ -1,14 +1,18 @@
 <script>
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
+  import { invalidateAll } from "$app/navigation";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
   import { searchArticles } from "../js/utils.js";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { USER_URL } from "../js/apiUrls.js";
+  import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
 
   export let data;
+
   let query = {};
   let selectedCategory = "title"; //  menu selection
   let searchTerm = "";
@@ -29,26 +33,41 @@
   }
 
   $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-
-  //The status of user
   $: isLoggedIn = data.isLoggedIn;
-
-  let userName;
-  $: if (isLoggedIn) {
-    userName = data.user.userName;
+  let loginUser;
+  $: if(isLoggedIn){
+    loginUser = data.user;
   }
 
-  function userLogout() {
-    //..
-    console.log("User logout Successfully!");
+  async function userLogout() {
+    try {
+      console.log("Processing logout start");
+
+      // Make the logout request to the server
+      const response = await fetch(`${USER_URL}/logout`, {
+        method: "POST",
+        credentials: "include"
+      });
+
+      // Check if the logout was successful
+      if (response.status === 204) {
+        await invalidateAll();
+        goto("/", { replaceState: true });
+      } else {
+        console.error("Logout failed with status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   }
+
+  async function userLogin() {
+    goto("/login", { replaceState: true , invalidateAll:true});
+  }
+
+
   async function handleSearch() {
     await searchArticles();
-  }
-
-  function loginButton() {
-    window.location = "/login";
   }
 </script>
 
@@ -58,21 +77,22 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
+      <span class="userName"> Hi!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText
-        buttonLabel="Login"
-        buttonFunction={loginButton}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
-      />
+      <ButtonText buttonLabel="Login" buttonFunction="{userLogin}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {userName}!</span>
+      <span class="userName"> Hi {loginUser.userName}!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
-      <button on:click={userLogout}>Logout</button>
+      <ButtonText
+        buttonLabel="Logout"
+        buttonFunction={userLogout}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 </div>

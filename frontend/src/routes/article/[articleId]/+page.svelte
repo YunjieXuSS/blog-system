@@ -1,19 +1,19 @@
 <script>
   import CommentList from "../../../lib/components/CommentList.svelte";
   import ArticleCard from "../../../lib/components/ArticleCard.svelte";
-  import{goto} from "$app/navigation";
+  import { goto } from "$app/navigation";
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
-
   import LikeButton from "./../../../lib/components/LikeButton.svelte";
   export let data;
+
   const article = data.article;
   const isLoggedIn = data.isLoggedIn;
   let loginUser = {};
   if (isLoggedIn) {
     loginUser = data.user;
   }
-  const authorId  = article.userId;
+  const authorId = article.userId;
   console.log("loginUser", loginUser);
   import { invalidate } from "$app/navigation";
 
@@ -48,18 +48,22 @@
 
 <main>
   <div class="articleDiv">
-    <button class = "edit" on:click={editArticle}> <img src="/icons/pencil-icon.png" alt="pencil"> </button>
-    <ArticleCard {article} />
-    <button class ="delete" on:click={deleteArticle}> <img src="/icons/delete-icon.png" alt = "trash-can"> </button>
+    {#if loginUser.userId === article.userId}
+      <button class="edit" on:click={editArticle}>
+        <img src="/icons/pencil-icon.png" alt="pencil" />
+      </button>
+      <button class="delete" on:click={deleteArticle}>
+        <img src="/icons/delete-icon.png" alt="trash-can" />
+      </button>
+    {/if}
   </div>
 
+  <ArticleCard {article} />
   <LikeButton />
-  <CommentList {authorId} loginUserId={loginUser.userId}/>
+  <div class="commentsDiv">
+  <CommentList {authorId} loginUserId={loginUser.userId} />
+</div>
 </main>
-
-
-
-
 
 <style>
   main {
@@ -70,8 +74,9 @@
   .articleDiv {
     position: relative;
   }
+  
 
-  .edit,.delete{
+  .edit{
     width: 22px;
     height: 22px;
     padding: 0;
@@ -80,12 +85,26 @@
     cursor: pointer;
     position: absolute;
     right: 0;
-    
 
-    & img{
+    & img {
       width: 100%;
       height: 100%;
     }
   }
 
+  .delete {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 22px;
+
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 </style>

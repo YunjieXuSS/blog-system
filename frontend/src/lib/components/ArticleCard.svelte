@@ -57,18 +57,17 @@
     text-align: center;
   }
 
+
   .user {
     font-size: 1em;
     color: #555;
-    margin-bottom: 5px;
   }
 
   .date {
     font-size: 0.9em;
     font-style: italic;
     color: #999;
-    margin-bottom: 10px;
-  }
+  } 
 
   .article-content {
     font-size: 1.2em;

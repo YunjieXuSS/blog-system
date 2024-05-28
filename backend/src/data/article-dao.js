@@ -72,7 +72,6 @@ export async function getArticlesByKeywords(query) {
 export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
-  console.log(222);
   const articles = await db.all(
     `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY a.createDate DESC 
     LIMIT ? OFFSET ?`,
@@ -88,7 +87,7 @@ export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
   const articles = await db.all(
-    "SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?",
+    "SSELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY updateDate ASC LIMIT ? OFFSET ?",
     pageSize,
     offset
   );
@@ -98,9 +97,7 @@ export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-     FROM article 
-     INNER JOIN user ON article.userId = user.userId WHERE userId = ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE userId = ?`,
     parseInt(userId)
   );
   return articlesOfUser;
@@ -110,9 +107,7 @@ export async function getArticlesByTitle(title) {
   const db = await getDatabase();
   const lowercaseTitle = title.toLowerCase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-     FROM article 
-     INNER JOIN user ON article.userId = user.userId WHERE title LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE title LIKE ?`,
     `%${lowercaseTitle}%`
   );
 
@@ -123,22 +118,18 @@ export async function getArticlesByContent(content) {
   const db = await getDatabase();
   const lowercaseContent = content.toLowerCase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-    FROM article 
-    INNER JOIN user ON article.userId = user.userId WHERE content LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE content LIKE ?`,
     `%${lowercaseContent}%`
   );
 
   return articles;
 }
 
-export async function getArticlesByDate(createDate) {
+export async function getArticlesByDate(updateDate) {
   const db = await getDatabase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-  FROM article 
-  INNER JOIN user ON article.userId = user.userId WHERE DATE(createDate) = ?`,
-    [createDate]
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE DATE(createDate) = ?`,
+    [updateDate]
   );
   return articles;
 }
@@ -151,9 +142,7 @@ export async function getArticlesByDate(createDate) {
 export async function getArticleById(articleId) {
   const db = await getDatabase();
   const article = await db.get(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-  FROM article 
-  INNER JOIN user ON article.userId = user.userId WHERE  articleId = ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE  articleId = ?`,
     parseInt(articleId)
   );
   return article;
@@ -165,9 +154,7 @@ export async function getArticlesByUserName(userName) {
   const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-    FROM article 
-    INNER JOIN user ON article.userId = user.userId WHERE LOWER(u.userName) LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE LOWER(u.userName) LIKE ?`,
     `%${lowercaseUserName}%`
   );
   return articles;
