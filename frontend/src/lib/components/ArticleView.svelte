@@ -30,7 +30,7 @@
   {#if imageLoaded}
     <img src={SERVER_URL + articleDetail.imgUrl} alt="" class="article-image" />
   {/if}
-  <p class="article-content" bind:innerHTML={articleDetail.content} contenteditable="true" />
+  <p class="article-content" >{@html articleDetail.content}</p>
 </article>
 
 <style>

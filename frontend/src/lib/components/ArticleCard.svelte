@@ -3,6 +3,7 @@
   import dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
   import { onMount } from "svelte";
+  import { browser } from "$app/environment";
 
   let imageLoaded = true;
   function handleImageError(event) {
@@ -19,6 +20,13 @@
       handleImageError();
     };
   });
+
+  function stripHtml(html) {
+    if (browser) {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.textContent || "";
+    }
+  }
 </script>
 
 <article class="article-container">
@@ -27,10 +35,10 @@
   {/if}
   <h1 class="article-title">{article.title}</h1>
   <div class="authorInfo">
-    <p class="user"><strong>@</strong>{article.userName}</p>
-    <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
-  </div>
-  <p class="article-content" bind:innerHTML={article.content} contenteditable="false" />
+  <p class="user"><strong>@Author: </strong>{article.userName}</p>
+  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+</div>
+  <p class="article-content">{stripHtml(article.content)}</p>
 </article>
 
 <style>

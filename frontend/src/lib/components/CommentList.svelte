@@ -21,20 +21,14 @@
 
   function generateCommentProps(comments, parentId = null) {
     if (!comments) return [];
-    const rootComments = comments.filter((comment) => comment.parentCommentId === parentId);
-    const childrenComments = comments.filter((comment) => comment.parentCommentId !== parentId);
-    rootComments.forEach((parentComment) => {
-      parentComment.children = generateCommentProps(
-        childrenComments,
-        parentComment.commentId
-      ).filter(
-        (comment) =>
-          comment.parentCommentId === parentComment.commentId &&
-          (!comment.isDeleted || (comment.isDeleted && comment.children?.length))
-      );
+    const currentComments = comments.filter((comment) => comment.parentCommentId === parentId);
+    const descendantsComments = comments.filter((comment) => comment.parentCommentId !== parentId);
+
+    currentComments.forEach((currentComment) => {
+      currentComment.children = generateCommentProps(descendantsComments, currentComment.commentId);
     });
 
-    return rootComments;
+    return currentComments;
   }
 
   // function removeParentCommentId(comments) {
@@ -103,7 +97,7 @@
     {#if !loadedComment}
       <p class="loading">loading...</p>
     {:else}
-      {#each commentProps as comment}
+      {#each commentProps as comment (comment.commentId)}
         <CommentCard {...comment} {refreshComments} {authorId} {loginUserId} />
       {/each}
     {/if}
