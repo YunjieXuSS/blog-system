@@ -34,7 +34,6 @@
 <style>
   .home-articles {
     padding: 0 20px;
-    width: 95vw;
   }
 
   .article-list {

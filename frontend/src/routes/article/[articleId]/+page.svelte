@@ -77,14 +77,15 @@
   
 
   .edit{
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
     padding: 0;
     background: none;
     border: none;
     cursor: pointer;
     position: absolute;
     right: 0;
+    top:60px;
 
     & img {
       width: 100%;
@@ -93,14 +94,15 @@
   }
 
   .delete {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
     padding: 0;
     background: none;
     border: none;
     cursor: pointer;
     position: absolute;
-    right: 22px;
+    top:120px;
+    right:0;
 
     & img {
       width: 100%;
