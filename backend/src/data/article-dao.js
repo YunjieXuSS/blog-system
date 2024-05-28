@@ -3,19 +3,22 @@
 import { start } from "repl";
 import { getDatabase } from "./database.js";
 import yup from "yup";
+import dayjs from "dayjs";
 
 const getArticleSchema = yup
   .object({
     title: yup.string().optional(),
     userName: yup.string().optional(),
-    startDate: yup.date().optional(),
-    endDate: yup.date().optional(),
+    startDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date(0)).optional(), // Unix epoch start date (0 milliseconds)
+    endDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date()).optional(), 
     sortBy: yup
       .string()
       .oneOf(["title", "userName", "createDate"])
       .default("createDate")
       .optional(),
-    sortOrder: yup.number().oneOf([0, 1]).default(1).optional()
+    sortOrder: yup.number().oneOf([0, 1]).default(1).optional(),
+    pageNumber: yup.number().default(1).optional(),
+    pageSize: yup.number().default(12).optional()
   })
   .required();
 export async function getArticlesByKeywords(query) {
@@ -24,7 +27,7 @@ export async function getArticlesByKeywords(query) {
     stripUnknown: true
   });
 
-  const { title, userName, startDate, endDate, sortBy, sortOrder } = validatedQuery;
+  const { title, userName, startDate, endDate, sortBy, sortOrder, pageNumber, pageSize } = validatedQuery;
   const values = [];
   let sql = "SELECT a.*, u.userName, u.avatar FROM article a JOIN user u WHERE a.userId = u.userId";
   if (title) {
@@ -45,11 +48,19 @@ export async function getArticlesByKeywords(query) {
     sql += " AND createDate <= ?";
     values.push(endDate);
   }
+
   sql += ` ORDER BY ${sortBy} ${sortOrder === 1 ? "DESC" : "ASC"}`;
-  console.log("sql", sql);
-  console.log("values", values);
+  sql += " LIMIT ? OFFSET ?";
+  const offset = (pageNumber - 1) * pageSize;
+  values.push(pageSize, offset);
+
+
   const db = await getDatabase();
-  const articles = await db.all(sql, values);
+  const articles = await db.all(sql, values)
+  articles.forEach((article) => {  
+    article.createDateFormatted = dayjs(article.createDate).format('YYYY/MM/DD HH:mm:ss');
+    article.updateDateFormatted = dayjs(article.updateDate).format('YYYY/MM/DD HH:mm:ss');
+  });
 
   return articles;
 }
@@ -61,7 +72,6 @@ export async function getArticlesByKeywords(query) {
 export async function getArticles(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
-  console.log(222);
   const articles = await db.all(
     `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY a.createDate DESC 
     LIMIT ? OFFSET ?`,
@@ -77,7 +87,7 @@ export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
   const db = await getDatabase();
   const offset = (pageNumber - 1) * pageSize;
   const articles = await db.all(
-    "SELECT * FROM article ORDER BY updateDate ASC LIMIT ? OFFSET ?",
+    "SSELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId ORDER BY updateDate ASC LIMIT ? OFFSET ?",
     pageSize,
     offset
   );
@@ -87,9 +97,7 @@ export async function sortArticlesAsce(pageSize = 10, pageNumber = 1) {
 export async function getArticlesByUserId(userId) {
   const db = await getDatabase();
   const articlesOfUser = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-     FROM article 
-     INNER JOIN user ON article.userId = user.userId WHERE userId = ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE userId = ?`,
     parseInt(userId)
   );
   return articlesOfUser;
@@ -99,9 +107,7 @@ export async function getArticlesByTitle(title) {
   const db = await getDatabase();
   const lowercaseTitle = title.toLowerCase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-     FROM article 
-     INNER JOIN user ON article.userId = user.userId WHERE title LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE title LIKE ?`,
     `%${lowercaseTitle}%`
   );
 
@@ -112,22 +118,18 @@ export async function getArticlesByContent(content) {
   const db = await getDatabase();
   const lowercaseContent = content.toLowerCase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-    FROM article 
-    INNER JOIN user ON article.userId = user.userId WHERE content LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE content LIKE ?`,
     `%${lowercaseContent}%`
   );
 
   return articles;
 }
 
-export async function getArticlesByDate(createDate) {
+export async function getArticlesByDate(updateDate) {
   const db = await getDatabase();
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-  FROM article 
-  INNER JOIN user ON article.userId = user.userId WHERE DATE(createDate) = ?`,
-    [createDate]
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE DATE(createDate) = ?`,
+    [updateDate]
   );
   return articles;
 }
@@ -140,9 +142,7 @@ export async function getArticlesByDate(createDate) {
 export async function getArticleById(articleId) {
   const db = await getDatabase();
   const article = await db.get(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-  FROM article 
-  INNER JOIN user ON article.userId = user.userId WHERE  articleId = ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE  articleId = ?`,
     parseInt(articleId)
   );
   return article;
@@ -154,9 +154,7 @@ export async function getArticlesByUserName(userName) {
   const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    `SELECT article.articleId, article.title, article.content, article.createDate, article.updateDate, article.imgUrl, user.userId, user.userName 
-    FROM article 
-    INNER JOIN user ON article.userId = user.userId WHERE LOWER(u.userName) LIKE ?`,
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE LOWER(u.userName) LIKE ?`,
     `%${lowercaseUserName}%`
   );
   return articles;
@@ -250,15 +248,15 @@ export async function updateArticle(articleId, updateData) {
   // that updates all three, if all three aren't used. We must consider each one one-by-one.
   const updateOperations = [];
   const updateParams = [];
-  if (validatedUpdateData.title) {
+  if (validatedUpdateData.title!==undefined) {
     updateOperations.push("title = ?");
     updateParams.push(validatedUpdateData.title);
   }
-  if (validatedUpdateData.content) {
+  if (validatedUpdateData.content!==undefined) {
     updateOperations.push("content = ?");
     updateParams.push(validatedUpdateData.content);
   }
-  if (validatedUpdateData.imgUrl) {
+  if (validatedUpdateData.imgUrl!==undefined) {
     updateOperations.push("imgUrl = ?");
     updateParams.push(validatedUpdateData.imgUrl);
   }

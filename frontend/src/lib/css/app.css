@@ -6,4 +6,10 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+body a {
+  color: #404040;
+  text-decoration: none;
 }

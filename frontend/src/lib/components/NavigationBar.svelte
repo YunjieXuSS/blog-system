@@ -2,40 +2,72 @@
   // import "$lib/css/app.css";
   import { page } from "$app/stores";
   import { invalidateAll } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
-  import { articleStore } from "../js/utils.js";
-  import { searchArticles, refreshPage } from "../js/utils.js";
-  import { onMount } from "svelte";
+  import { searchArticles } from "../js/utils.js";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { USER_URL } from "../js/apiUrls.js";
+  import { goto } from "$app/navigation";
+  import DateSearchBox from "./DateSearchBox.svelte";
+  import { queryStore } from "../js/store.js";
 
   export let data;
 
+  let query = {};
+  let selectedCategory = "title"; //  menu selection
+  let searchTerm = "";
+  let searchTermStart = "";
+  let searchTermEnd = "";
+  $: {
+    if (selectedCategory !== "date") {
+      searchTermStart = "";
+      searchTermEnd = "";
+      delete $queryStore.startDate;
+      delete $queryStore.endDate;
+      query = selectedCategory === "title" ? { title: searchTerm } : { userName: searchTerm };
+    } else {
+      query = { startDate: searchTermStart, endDate: searchTermEnd };
+    }
+    queryStore.update((current) => ({ ...current, ...query }));
+    console.log("i want to see my query now:", $queryStore);
+  }
 
   $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-  //The status of user
-  $: isLoggined = false;
-  // $:isLoggined = data.isLoggined;
-  //testing code
-
-  let userName = "userName";
-  let selectedCategory = "title"; //  menu selection
-
-  let searchTerm = "";
-
-  function userLogout() {
-    //..
-    console.log("User logout Successfully!");
+  $: isLoggedIn = data.isLoggedIn;
+  let loginUser;
+  $: if(isLoggedIn){
+    loginUser = data.user;
   }
+
+  async function userLogout() {
+    try {
+      console.log("Processing logout start");
+
+      // Make the logout request to the server
+      const response = await fetch(`${USER_URL}/logout`, {
+        method: "POST",
+        credentials: "include"
+      });
+
+      // Check if the logout was successful
+      if (response.status === 204) {
+        await invalidateAll();
+        goto("/", { replaceState: true });
+      } else {
+        console.error("Logout failed with status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+  async function userLogin() {
+    goto("/login", { replaceState: true , invalidateAll:true});
+  }
+
 
   async function handleSearch() {
-    await searchArticles(articleStore, selectedCategory, searchTerm);
-  }
-
-  function loginButton() {
-    window.location = "/login";
+    await searchArticles();
   }
 </script>
 
@@ -43,18 +75,24 @@
   <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
 
   <!-- show different content depends on the status of user -->
-  {#if isLoggined == false}
+  {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
+      <span class="userName"> Hi!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText buttonLabel="Login" buttonFunction="{userLogin}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
     </div>
   {/if}
 
-  {#if isLoggined == true}
+  {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {userName}!</span>
+      <span class="userName"> Hi {loginUser.userName}!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
-      <button on:click={userLogout}>Logout</button>
+      <ButtonText
+        buttonLabel="Logout"
+        buttonFunction={userLogout}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 </div>
@@ -62,18 +100,29 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
-      >
-    </li>
+    {#if isLoggedIn}
+      <li>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path === `/profile/${data.user.userName}/`}>Profile</a
+        >
+      </li>
+    {/if}
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
     <div class="searchSection">
       <SearchMenu bind:selectedCategory />
-      <SearchBox bind:searchTerm on:input={handleSearch} />
+      {#if selectedCategory === "date"}
+        <div class="date-search">
+          <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
+          <div style="color: #606060">to</div>
+          <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
+        </div>
+      {:else}
+        <SearchBox bind:searchTerm on:input={handleSearch} />
+      {/if}
     </div>
   {/if}
 </nav>
@@ -110,7 +159,6 @@
     align-items: center;
     background-color: #b5c0d0;
     box-shadow: 0 5px 3px lightgray;
-    height: 60px;
 
     & > ul {
       list-style: none;
@@ -158,9 +206,7 @@
 
     & .searchSection {
       margin: 0;
-      width: 400px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 8px;
 
@@ -168,5 +214,14 @@
         height: 20px;
       }
     }
+  }
+  @media (max-width: 600px) {
+    .navBar {
+      flex-direction: column;
+    }
+  }
+  .date-search {
+    display: flex;
+    align-items: center;
   }
 </style>

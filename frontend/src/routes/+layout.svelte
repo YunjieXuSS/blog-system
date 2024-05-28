@@ -8,8 +8,6 @@
   $: path = $page.url.pathname;
 
   export let data ;
-    // testing code
-  // $:console.log("layout",data.articles);
 
 
 </script>
@@ -18,3 +16,9 @@
 <div class="container">
   <slot />
 </div>
+
+<style>
+  .container {
+    margin: 0 auto;
+  }
+</style>
