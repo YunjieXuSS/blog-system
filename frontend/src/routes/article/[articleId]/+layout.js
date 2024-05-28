@@ -1,7 +1,6 @@
 import { ARTICLES_URL } from "../../../lib/js/apiUrls";
 // pre-load article data
 export async function load({ params, fetch }) {
-  console.log("i am here");
   const articleId  = params.articleId;
   async function getArticle() {
     const res = await fetch(`${ARTICLES_URL}/${articleId}`);
