@@ -104,7 +104,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path === `/profile/${data.user.userName}/`}>Profile</a
+          class:active={path === `/profile/${data.user.userName}`}>Profile</a
         >
       </li>
     {/if}
