@@ -65,7 +65,6 @@
     goto("/login", { replaceState: true , invalidateAll:true});
   }
 
-
   async function handleSearch() {
     await searchArticles();
   }
@@ -79,7 +78,12 @@
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi!</span>
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{userLogin}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
+      <ButtonText
+        buttonLabel="Login"
+        buttonFunction={userLogin}
+        bckgColour="#F5E8DD"
+        txtColour="#B5C0D0"
+      />
     </div>
   {/if}
 
@@ -139,6 +143,7 @@
 
     & .logo {
       max-width: 140px;
+      min-width: 80px;
       width: 100%;
     }
 

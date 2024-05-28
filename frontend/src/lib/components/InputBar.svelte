@@ -14,6 +14,7 @@
   let errorMsg = "";
   async function checkValue() {
     const validation = await validate(value);
+    console.log("validation",validation);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
     dispatch('validation', { validateResult, label });
@@ -92,6 +93,11 @@
     display: flex;
     align-items: center;
   }
+
+  .input-section > * {
+    margin: 0 0 15px 0;
+  }
+
   .input-bar {
     width: 350px;
     position: relative;
@@ -105,7 +111,6 @@
   }
   label {
     display: block;
-    margin-top: 1em;
     color:#808080;
   }
   input {

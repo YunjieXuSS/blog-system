@@ -10,5 +10,15 @@
   $: console.log("data", data.articlesOfUser);
 </script>
 
-<UserInfo {data} />
-<ArticleList articles={data.articlesOfUser} />
+<div class="profileDiv">
+  <UserInfo {data} />
+  <ArticleList articles={data.articlesOfUser} />
+</div>
+
+<style>
+  .profileDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>

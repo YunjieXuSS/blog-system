@@ -28,7 +28,7 @@ CREATE TABLE article(
     updateDate TIMESTAMP NOT NULL,
     imgUrl VARCHAR(100),
     userId INTEGER NOT NULL,
-    FOREIGN KEY (userId) REFERENCES user(userId)
+    FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE
 );
 
 CREATE TABLE comment(

@@ -1,9 +1,8 @@
 <script>
   export let article;
   import dayjs from "dayjs";
-  import {SERVER_URL} from "../js/apiUrls.js";
-  import {onMount} from "svelte";
-
+  import { SERVER_URL } from "../js/apiUrls.js";
+  import { onMount } from "svelte";
 
   let imageLoaded = true;
   function handleImageError(event) {
@@ -56,7 +55,6 @@
     text-align: center;
   }
 
-
   .user {
     font-size: 1em;
     color: #555;
@@ -66,7 +64,7 @@
     font-size: 0.9em;
     font-style: italic;
     color: #999;
-  } 
+  }
 
   .article-content {
     font-size: 1.2em;
