@@ -43,7 +43,7 @@
 
 <div class="table-container">
   <InputBar
-    label="FIRTST NAME:"
+    label="FIRST NAME:"
     type="text"
     placeholder="Enter your first name"
     validate={validateRegisterName}
@@ -54,7 +54,7 @@
   <InputBar
     label="LAST NAME:"
     type="text"
-    placeholder="Enter your second name"
+    placeholder="Enter your surname"
     validate={validateRegisterName}
     maxlength="20"
     bind:value={lastName}
@@ -63,7 +63,7 @@
   <InputBar
     label="EMAIL:"x
     type="email"
-    placeholder="Enter your user email"
+    placeholder="Enter your email"
     validate={validateRegisterEmail}
     maxlength="20"
     bind:value={email}
@@ -71,9 +71,9 @@
   />
 
   <InputBar
-    label="DAY OF BIRTH:"
+    label="DATE OF BIRTH:"
     type="date"
-    placeholder="Enter your user birthday"
+    placeholder="Enter your date of birth"
     validate={validateRegisterDate}
     maxlength="20"
     bind:value={dateOfBirth}
@@ -83,7 +83,7 @@
   <InputBar
     label="USERNAME:"
     type="text"
-    placeholder="Enter your user name"
+    placeholder="Enter your username"
     validate={validateRegisterUserName}
     maxlength="20"
     bind:value={userName}
@@ -114,7 +114,7 @@
 
 <style>
   .table-container {
-    width: 48%;
+    width: 22em;
 
     & label {
       display: block;

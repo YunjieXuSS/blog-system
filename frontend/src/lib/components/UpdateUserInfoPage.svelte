@@ -150,7 +150,6 @@
   }
 
   function handleConfirmPopupBox() {
-    
     console.log("-----handleConfirmPopupBox");
     popupMessage = `Do you really want to delete this account?`;
     redirectUrl = "/profile/edit";
@@ -209,7 +208,13 @@
 {/if}
 
 {#if showConfirmPopupBox}
-  <ConfirmPopupBox {popupMessage} {redirectUrl} {confirmFunction} operation="Deleted" bind:showConfirmPopupBox/>
+  <ConfirmPopupBox
+    {popupMessage}
+    {redirectUrl}
+    {confirmFunction}
+    operation="Deleted"
+    bind:showConfirmPopupBox
+  />
 {/if}
 
 <style>

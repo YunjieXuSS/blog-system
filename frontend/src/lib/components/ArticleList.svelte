@@ -5,12 +5,18 @@
   import { browser } from "$app/environment";
   export let articles;
   let sortingCategory = "dateDesc";
+  import {page} from "$app/stores";
+  $: path = $page.url.pathname;
 </script>
 
 <div class="home-articles">
   <div class="sort-bar">
+{#if path ==="/"}
     <p class="article-p">Articles by everyone</p>
     <div class="sortingSectionDiv"><p class="sort-p">Sort by:</p><SortingSection bind:sortingCategory /></div>
+{:else} 
+    <p class="article-p">Articles by you</p>
+{/if}
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>
@@ -30,6 +36,7 @@
     padding: 0 20px;
     width: 95vw;
   }
+
   .article-list {
     column-count: 3;
     column-gap: 30px;
@@ -38,14 +45,15 @@
   .article {
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
     box-sizing: border-box;
   }
+
   .article:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(56, 0, 18, 0.2), 0 6px 20px 0 rgba(89, 6, 42, 0.19);
     text-decoration: underline;
   }
 
@@ -54,21 +62,25 @@
     font-size: 1.5em;
     color: #555;
   }
+
   .sort-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 0;
   }
+
   .sortingSectionDiv {
     display: flex;
     align-items: center;
   }
-  .sort-p{
+
+  .sort-p {
     margin-right: 10px;
     margin-bottom: 5px;
     color: #606060;
   }
+
   .article-p {
     font-size: 1.5em;
     color: #555;
