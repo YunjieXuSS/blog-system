@@ -49,6 +49,6 @@
   }
 
   .disabled {
-    cursor: not-allowed;
+    cursor: not-allowed;  
   }
 </style>
