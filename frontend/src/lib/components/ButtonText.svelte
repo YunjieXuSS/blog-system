@@ -19,12 +19,15 @@
 </script>
 
 <button
-  on:click={handleClick} 
-  class="{buttonDisabled ? 'disabled' : ''}"
+  on:click={handleClick}
+  class={buttonDisabled ? "disabled" : ""}
   disabled={buttonDisabled}
-  style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; color:{buttonDisabled ? disabledTxtColour : txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
+  style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; 
+  color:{buttonDisabled ? disabledTxtColour : txtColour}; 
+  border-radius:{borderRadius}; width:{buttonWidth};
+  "
 >
-  {buttonLabel}
+  <span>{buttonLabel}</span>
 </button>
 
 <style>
@@ -46,10 +49,27 @@
     min-width: 100px;
     padding: 9px 20px 8px;
     position: relative;
+    overflow: hidden;
   }
 
-  button:hover:not(:disabled) {
-    opacity: 0.75;
+  button:hover:not(:disabled)::before {
+    content: '';
+    position: absolute;
+    left: -70%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: skew(-20deg);
+    animation: shine 0.85s forwards;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -70%;
+    }
+    100% {
+      left: 130%;
+    }
   }
 
   .disabled {

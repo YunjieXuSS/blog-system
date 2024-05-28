@@ -5,6 +5,7 @@
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
   import LikeButton from "./../../../lib/components/LikeButton.svelte";
+  import LikesCommentsDisplay from "$lib/components/LikesCommentsDisplay.svelte";
   export let data;
 
   const article = data.article;
@@ -59,7 +60,9 @@
   </div>
 
   <ArticleCard {article} />
-  <LikeButton />
+
+  <LikesCommentsDisplay />
+
   <div class="commentsDiv">
   <CommentList {authorId} loginUserId={loginUser.userId} />
 </div>

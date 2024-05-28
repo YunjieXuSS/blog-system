@@ -15,11 +15,16 @@
       goto("/login", { replaceState: true });
     }
   }
-
 </script>
 
 <div class="button-container">
-  <ButtonText buttonFunction="{handlePostNewArticle}" buttonLabel="✚ New article" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="8px 0 0 8px"/>
+  <ButtonText
+    buttonFunction={handlePostNewArticle}
+    buttonLabel="✚ New article"
+    bckgColour="#B5C0D0"
+    txtColour="#F5E8DD"
+    borderRadius="8px 0 0 8px"
+  />
 </div>
 
 <style>
