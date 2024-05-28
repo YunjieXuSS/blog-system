@@ -68,12 +68,22 @@
     } catch (error) {
       console.error(error);
     } finally {
-      endReply();
+      endReply();s
     }
+  }
+
+  function shouldDeleteCommentCard(comment) {
+    if (!comment.children.length) {
+      return comment.isDeleted;
+    }
+
+    const childrenShouldBeDeleted = comment.children.every(shouldDeleteCommentCard);
+    const shouldDelete = comment.isDeleted && childrenShouldBeDeleted;
+    return shouldDelete;
   }
 </script>
 
-<div class="comment-container" style="margin-left: {deep ? INTENT : 0}px;">
+<div class="comment-container" style="margin-left: {deep ? INTENT : 0}px; display:{shouldDeleteCommentCard({commentId, isDeleted, children})?'none':'block'}">
   <a class="author-info" href={authorLink}>
     <img
       class="avatar"
@@ -114,7 +124,7 @@
       {/if}
     </div>
 
-    {#each children as child}
+    {#each children as child (child.commentId)}
       <svelte:self {...child} deep={deep + 1} {refreshComments} {authorId} {loginUserId} />
     {/each}
   </div>
