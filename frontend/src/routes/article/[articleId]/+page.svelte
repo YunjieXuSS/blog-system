@@ -1,25 +1,25 @@
 <script>
   import CommentList from "../../../lib/components/CommentList.svelte";
-  import ArticleCard from "../../../lib/components/ArticleCard.svelte";
+ import ArticleView from "../../../lib/components/ArticleView.svelte";
   import { goto } from "$app/navigation";
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
   import LikeButton from "./../../../lib/components/LikeButton.svelte";
   export let data;
 
-  const article = data.article;
+  const articleDetail = data.article;
   const isLoggedIn = data.isLoggedIn;
   let loginUser = {};
   if (isLoggedIn) {
     loginUser = data.user;
   }
-  const authorId = article.userId;
+  const authorId = articleDetail.userId;
   console.log("loginUser", loginUser);
   import { invalidate } from "$app/navigation";
 
 
   async function editArticle() {
-    goto(`/article/${article.articleId}/edit`);
+    goto(`/article/${articleDetail.articleId}/edit`);
   }
 
   async function deleteArticle(e) {
@@ -48,7 +48,7 @@
 
 <main>
   <div class="articleDiv">
-    {#if loginUser.userId === article.userId}
+    {#if loginUser.userId === articleDetail.userId}
       <button class="edit" on:click={editArticle}>
         <img src="/icons/pencil-icon.png" alt="pencil" />
       </button>
@@ -58,7 +58,7 @@
     {/if}
   </div>
 
-  <ArticleCard {article} />
+  <ArticleView {articleDetail} />
   <LikeButton />
   <div class="commentsDiv">
   <CommentList {authorId} loginUserId={loginUser.userId} />
