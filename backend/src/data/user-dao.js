@@ -19,9 +19,8 @@ export async function getUserWithCredentials(username, password) {
   const db = await getDatabase();
   const user = await db.get("SELECT * from user WHERE username = ?", username);
   if (!user) return;
-  console.log("user: ", user);
+  user.isAdmin = !!user.isAdmin;
   const isValid = await bcrypt.compare(password, user.password);
-  console.log("isValid: ", isValid);
   return isValid ? user : undefined;
 }
 
@@ -92,7 +91,10 @@ export async function getUserWithUserName(username) {
  */
 export async function getUsers() {
   const db = await getDatabase();
-  const users = await db.all("SELECT * FROM user");
+  const users = await db.all("SELECT * FROM user WHERE isAdmin = FALSE");
+  users.forEach((user) => {
+    user.isAdmin = !!user.isAdmin;
+  });
   return users;
 }
 
@@ -141,6 +143,6 @@ export async function updateUser(userId, udpateData) {
  */
 export async function deleteUser(userId) {
   const db = await getDatabase();
-  const dbResult = await db.run("DELETE FROM user WHERE userId = ?", parseInt(userId));
+  const dbResult = await db.run("DELETE FROM user WHERE userId = ? AND isAdmin = FALSE", parseInt(userId));
   return dbResult.changes > 0;
 }

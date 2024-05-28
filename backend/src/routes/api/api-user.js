@@ -130,15 +130,6 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   }
 });
 
-// Get users
-router.get("/all", authenticateAdmin, async (req, res) => {
-  const users = await getUsers();
-  if (!users) return res.status(404).json({ error: "No users found." });
-  users.forEach((user) => {
-    delete user.password;
-  });
-  return res.status(200).json(users);
-});
 
 // Delete user
 router.delete("/", authenticateUser, async (req, res) => {
@@ -158,7 +149,7 @@ router.delete("/:userId", authenticateAdmin, async (req, res) => {
     if (result) return res.sendStatus(204);
     return res.status(404).json({ error: "User not found." });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(403).json({ error: "You can not delete a ADMIN!!!" });
   }
 });
 
