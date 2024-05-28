@@ -10,3 +10,4 @@ frontend/src/lib/components/AvatarUpload copy.svelte
 frontend/src/routes/edituser/+page.js
 frontend/src/routes/edituser/+page.svelte
 frontend/src/routes/test/+page.svelte
+.DS_Store

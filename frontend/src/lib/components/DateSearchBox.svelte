@@ -7,7 +7,7 @@
 
 <div id="search-input-cont">
   <input
-    type="text"
+    type="date"
     id="search-field"
     placeholder="Search"
     autocomplete="off"
@@ -20,10 +20,10 @@
 <style>
   #search-input-cont {
     height: 30px;
-    width: 100px;
+    width: 150px;
     display: flex;
     align-items: center;
-    margin: 0 40px 0 0;
+    margin: 5px 1px;
     background-color: white;
     border: 1px solid gray;
     border-radius: 5px;

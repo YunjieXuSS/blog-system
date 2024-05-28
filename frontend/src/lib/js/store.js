@@ -11,3 +11,4 @@ export const user = writable({
     avatar: '',
     isAdmin: 0
 });
+export let queryStore = writable({});

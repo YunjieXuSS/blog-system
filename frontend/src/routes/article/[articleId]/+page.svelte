@@ -18,22 +18,8 @@
   import { invalidate } from "$app/navigation";
 
 
-  async function editArticle(e) {
-    e.preventDefault();
-    console.log("editArticle");
-    const newArticle = e.detail;
-    const response = await fetch(`${ARTICLES_URL}/${data.articleId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newArticle)
-    });
-    if (response.ok) {
-      const newArticle = await response.json();
-      console.log("updatedArticle", newArticle);
-    }
-    if (response.status != 200) {
-      alert(`Unexpected status code received: ${response.status}`);
-    }
+  async function editArticle() {
+    goto(`/article/${article.articleId}/edit`);
   }
 
   async function deleteArticle(e) {
