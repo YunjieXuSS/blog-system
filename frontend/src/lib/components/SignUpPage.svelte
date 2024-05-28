@@ -95,7 +95,7 @@
     if (response.status === 201) {
       // Redirect to the login page if successful.
       console.log("User registered successfully.");
-      handlePopupBox("registered");
+      handlePopupBox();
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to register user.StatusCode: ${response.status}`);
@@ -109,8 +109,8 @@
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
 
-  function handlePopupBox(operation) {
-    popupMessage = `User has ${operation} . Redirecting to homepage...`;
+  function handlePopupBox() {
+    popupMessage = `User has registered. Redirecting to homepage...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
