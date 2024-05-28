@@ -10,7 +10,7 @@
   } from "../js/validation.js";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import Dayjs from "dayjs";
-  import { SERVER_URL } from "../js/apiUrls.js";
+  import { SERVER_URL, USER_URL } from "../js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
   import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
@@ -107,7 +107,7 @@
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+    const response = await fetch(USER_URL, {
       method: "PATCH",
       credentials: "include",
       body: formData
@@ -126,7 +126,7 @@
 
   function handleDelete() {
     console.log("-----handleDelete");
-    fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+    fetch(USER_URL, {
       method: "DELETE",
       credentials: "include"
     })

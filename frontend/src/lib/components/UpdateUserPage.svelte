@@ -115,7 +115,7 @@
       // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
       // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
       // by the multer middleware on our server.
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+      const response = await fetch(USER_URL, {
         method: "PATCH",
         credentials: "include",
         body: formData

@@ -10,7 +10,7 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
 
@@ -96,7 +96,7 @@
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
+    const response = await fetch(`${USER_URL}/register`, {
       method: "POST",
       body: formData
     });
@@ -121,6 +121,8 @@
     redirectUrl = "/";
     showPopupBox = true;
   }
+
+  $: console.log("allValid", allValid);
 </script>
 
 <div class="page-container">
@@ -162,7 +164,7 @@
   </button> -->
 
   <ButtonText
-    buttonFunction={handleRegister(
+    buttonFunction={() => handleRegister(
       firstName,
       lastName,
       email,
