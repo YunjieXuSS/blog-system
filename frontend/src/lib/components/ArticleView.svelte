@@ -1,5 +1,5 @@
 <script>
-  export let article;
+  export let articleDetail;
   import dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
   import { onMount } from "svelte";
@@ -11,7 +11,7 @@
 
   onMount(() => {
     const img = new Image();
-    img.src = SERVER_URL + article.imgUrl;
+    img.src = SERVER_URL + articleDetail.imgUrl;
     img.onload = () => {
       imageLoaded = true;
     };
@@ -22,13 +22,13 @@
 </script>
 
 <article class="article-container">
+  <h1 class="article-title">{articleDetail.title}</h1>
+  <p class="user"><strong>@Author: </strong>{articleDetail.userName}</p>
+  <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   {#if imageLoaded}
-    <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
+    <img src={SERVER_URL + articleDetail.imgUrl} alt="" class="article-image" />
   {/if}
-  <h1 class="article-title">{article.title}</h1>
-  <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
-  <p class="article-content" bind:innerHTML={article.content} contenteditable="false"></p>
+  <p class="article-content" bind:innerHTML={articleDetail.content} contenteditable="true" />
 </article>
 
 <style>
@@ -45,7 +45,7 @@
   }
 
   .article-image {
-    width: 250px;
+    width: 500px;
     margin-bottom: 5px;
   }
 
@@ -72,12 +72,11 @@
     color: #333;
     text-align: justify;
     width: 100%;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 7; /* numbed of lines */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.5;
-    max-height: calc(1.5em * 7); /* calculate from line-height */
+    /* display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.5;
+      max-height: calc(1.5em * 7);  */
   }
 </style>
