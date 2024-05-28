@@ -2,6 +2,7 @@
   /** This component is for the input bar that is used to input the text for username, password, etc.
    * It defines the layout of the input bar. It is used in the login page and signup page.
    **/
+  export let variableName = "";
   export let label = "";
   export let type = "text";
   export let value = "";
@@ -14,10 +15,9 @@
   let errorMsg = "";
   async function checkValue() {
     const validation = await validate(value);
-    console.log("validation",validation);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
-    dispatch('validation', { validateResult, label });
+    dispatch('validation', { variableName,validateResult });
   }
   function clearError() {
     errorMsg = "";

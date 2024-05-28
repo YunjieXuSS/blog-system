@@ -64,7 +64,7 @@ export async function validateUpdateUserName(userName) {
 export function validateRegisterEmail(email) {
   if (!email) {
     return { result: false, errorMsg: "Email cannot be empty." };
-  } else if (email.length > 50) {
+  } else if (email.length > 64) {
     return { result: false, errorMsg: "Email must be less than 50 characters." };
   } else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
     return { result: false, errorMsg: "Invalid email format." };
@@ -75,8 +75,8 @@ export function validateRegisterEmail(email) {
 export function validateRegisterDate(date) {
   if (!date) {
     return { result: false, errorMsg: "Date cannot be empty." };
-  } else if (date.length > 10) {
-    return { result: false, errorMsg: "Date must be less than 10 characters." };
+  } else if (date.length > 20) {
+    return { result: false, errorMsg: "Date must be less than 20 characters." };
   // } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
   //   return { result: false, errorMsg: "Invalid date format." };
   }

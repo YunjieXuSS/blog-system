@@ -13,7 +13,8 @@ import {
   updateArticle,
   likeArticle,
   unlikeArticle,
-  getArticlesByKeywords
+  getArticlesByKeywords,
+  getLikes
 } from "../../data/article-dao.js";
 import { imageUploader } from "../../middleware/image-middleware.js";
 import { getComments, createComment } from "../../data/comment-dao.js";
@@ -190,5 +191,18 @@ router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
   if (!result) return res.status(404).json("Article does not exist");
   return res.sendStatus(200);
 });
+
+
+//GET numbers of like by articleId
+router.get("/:articleId/like", async (req, res) => {
+  const articleId = req.params.articleId;
+  if (articleId) {
+    const likesCount = await getLikes(articleId);
+    return res.status(200).json(likesCount);
+  } else {
+    return res.status(404).json({ error: "Article does not exist." });
+  }
+});
+
 
 export default router;

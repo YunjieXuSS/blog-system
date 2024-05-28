@@ -32,6 +32,7 @@
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
   let showConfirmPopupBox = false;
+  let resultMsg = "";
   let confirmFunction = () => {};
 
   // define a function to get the first password.
@@ -116,7 +117,7 @@
     if (response.status === 200) {
       // Redirect to the login page if successful.
       console.log("User update successfully.");
-      handlePopupBox("updated");
+      handlePopupBox();
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to update user info.${response.status}`);
@@ -143,8 +144,8 @@
       });
   }
 
-  function handlePopupBox(operation) {
-    popupMessage = `User has been ${operation} . Redirecting to homepage...`;
+  function handlePopupBox() {
+    popupMessage = `User has been updated . Redirecting to homepage...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
@@ -152,6 +153,7 @@
   function handleConfirmPopupBox() {
     console.log("-----handleConfirmPopupBox");
     popupMessage = `Do you really want to delete this account?`;
+    resultMsg = "User has been deleted . Redirecting to homepage...";
     redirectUrl = "/profile/edit";
     showConfirmPopupBox = true;
     confirmFunction = handleDelete;
@@ -212,7 +214,7 @@
     {popupMessage}
     {redirectUrl}
     {confirmFunction}
-    operation="Deleted"
+    {resultMsg}
     bind:showConfirmPopupBox
   />
 {/if}
