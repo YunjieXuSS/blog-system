@@ -3,7 +3,6 @@
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
-  import { refreshPage } from "../js/utils.js";
   export let data;
 
   async function handlePostNewArticle() {
@@ -12,10 +11,8 @@
 
     if (isLoggedIn) {
       goto("/articles/create", { replaceState: true });
-      await refreshPage();
     } else {
       goto("/login", { replaceState: true });
-      await refreshPage();
     }
   }
 

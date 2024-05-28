@@ -1,17 +1,34 @@
 <script>
   export let article;
   import dayjs from "dayjs";
+  import {SERVER_URL} from "../js/apiUrls.js";
+  import {onMount} from "svelte";
+
+
+  let imageLoaded = true;
+  function handleImageError(event) {
+    imageLoaded = false;
+  }
+
+  onMount(() => {
+    const img = new Image();
+    img.src = SERVER_URL + article.imgUrl;
+    img.onload = () => {
+      imageLoaded = true;
+    };
+    img.onerror = () => {
+      handleImageError();
+    };
+  });
 </script>
 
 <article class="article-container">
-  {#if article.isImgExist===true}
-    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image"/>
+  {#if imageLoaded}
+    <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
   {/if}
   <h1 class="article-title">{article.title}</h1>
-  <div class ="authorInfo">
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD")}</p>
-  </div>
+  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   <p class="article-content">{article.content}</p>
 </article>
 
@@ -30,7 +47,7 @@
 
   .article-image {
     height: 150px;
-    width:200px;
+    width: 200px;
     margin-bottom: 5px;
   }
 
@@ -40,12 +57,6 @@
     text-align: center;
   }
 
-  .authorInfo{
-    width: 100%;
-    display: flex;
-    align-content:right;
-    margin-right: 10px;
-  }
 
   .user {
     font-size: 1em;
@@ -63,6 +74,13 @@
     line-height: 1.6;
     color: #333;
     text-align: justify;
-    width: 100%; /* Ensure content takes full width of container */
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7; /* numbed of lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    max-height: calc(1.5em * 7); /* calculate from line-height */
   }
 </style>
