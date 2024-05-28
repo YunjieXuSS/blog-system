@@ -2,14 +2,24 @@
 
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { goto } from "$app/navigation";
+  export let data;
 
-  function newPost() {
-    window.location = "/article/create"
+  async function handlePostNewArticle() {
+    console.log("post new article");
+    const isLoggedIn = data.isLoggedIn;
+
+    if (isLoggedIn) {
+      goto("/articles/create", { replaceState: true });
+    } else {
+      goto("/login", { replaceState: true });
+    }
   }
+
 </script>
 
 <div class="button-container">
-  <ButtonText buttonFunction="{newPost}" buttonLabel="✚ New article" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="8px 0 0 8px"/>
+  <ButtonText buttonFunction="{handlePostNewArticle}" buttonLabel="✚ New article" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="8px 0 0 8px"/>
 </div>
 
 <style>

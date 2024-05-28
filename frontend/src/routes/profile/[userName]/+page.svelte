@@ -3,16 +3,22 @@
 // API: PATCH /api/users/:userId -->
 
 <script>
-    import UserInfo from "$lib/components/UserInfo.svelte";
+  import UserInfo from "$lib/components/UserInfo.svelte";
+  import ArticleList from "$lib/components/ArticleList.svelte";
+
+  export let data;
+  $: console.log("data", data.articlesOfUser);
 </script>
 
 <div class="profileDiv">
-    <UserInfo />
+  <UserInfo {data} />
+  <ArticleList articles={data.articlesOfUser} />
 </div>
 
 <style>
-    .profileDiv {
-        display: flex;
-        justify-content: center;
-    }
+  .profileDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 </style>

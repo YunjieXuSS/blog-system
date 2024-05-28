@@ -1,5 +1,4 @@
 <script>
-  import InputBar from "./InputBar.svelte";
   import AvatarUpload from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
@@ -11,8 +10,9 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-  import SignUpSection from "./SignUpSection.svelte";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import AvatarChooser from "./AvatarChooser.svelte";
+  import PopupBox from "./PopupBox.svelte";
 
   let firstName, lastName, userName;
   let password;
@@ -20,6 +20,8 @@
   let dateOfBirth;
   let description;
   let filesToUpload;
+  let selectedImage = "";
+  let onMountTriggered = false;
 
   // define a function to get the first password.
   const getPassword = function () {
@@ -79,11 +81,16 @@
     formData.append("dateOfBirth", dateOfBirth);
     formData.append("userName", userName);
     formData.append("password", password);
+    formData.append("description", description);
     if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
       formData.append("avatar", userRegisterImage);
     } else {
       //if no image is uploaded, use the default image
-      formData.append("avatar", "/images/avatar-default.png");
+      if (selectedImage !== "") {
+        formData.append("avatar", `/images${selectedImage.substring(15)}`);
+      } else {
+        formData.append("avatar", "/images/avatar-default.png");
+      }
     }
 
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
@@ -94,7 +101,25 @@
       body: formData
     });
 
+    if (response.status === 201) {
+      // Redirect to the login page if successful.
+      console.log("User registered successfully.");
+      handlePopupBox("registered");
+    } else {
+      // If there was an error, log the error to the console.
+      console.error(`Failed to register user.${response.status}`);
+    }
+
     const serverResponse = await response.json();
+  }
+
+  let showPopupBox = false;
+  let popupMessage = "Mission Completed!";
+  let redirectUrl = "/";
+  function handlePopupBox(operation) {
+    popupMessage = `User has ${operation} . Redirecting to homepage...`;
+    redirectUrl = "/";
+    showPopupBox = true;
   }
 </script>
 
@@ -102,7 +127,8 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload />
+      <AvatarUpload bind:filesToUpload bind:selectedImage />
+      <AvatarChooser bind:selectedImage {onMountTriggered} />
     </div>
     <div>
       <SignUpTable
@@ -153,6 +179,10 @@
     buttonWidth="140px"
   />
 </div>
+
+{#if showPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} />
+{/if}
 
 <style>
   .page-container {

@@ -1,34 +1,31 @@
 <script>
-  import { articleStore } from "../js/utils.js";
+  import { searchArticles } from "../js/utils.js";
   export let sortingCategory;
+  import { queryStore } from "../js/store.js";
+  let sortQuery = {};
 
-  const articles = $articleStore;
-
-  function sortingArticles(sortingCategory) {
-    console.log(sortingCategory);
-    let newOrderArticles = "";
-    if (sortingCategory == "titleA-Z") {
-      newOrderArticles = articles.sort(function (a, b) {
-        return a.title > b.title ? 1 : -1;
-      });
-    } else if (sortingCategory == "titleZ-A") {
-      newOrderArticles = articles.sort(function (a, b) {
-        return b.title > a.title ? 1 : -1;
-      });
-    }else if (sortingCategory == "dateA-Z") {
-      newOrderArticles = articles.sort(function (a, b) {
-        return a.createDate > b.createDate ? 1 : -1;
-      });
-    }else if (sortingCategory == "dateZ-A") {
-      newOrderArticles = articles.sort(function (a, b) {
-        return b.createDate > a.createDate ? 1 : -1;
-      });
-    }
-
-    articleStore.set(newOrderArticles);
+  $: {
+    sortQuery = getSortQuery(sortingCategory);
+    queryStore.update((current) => ({ ...current, ...sortQuery }));
   }
 
-  $: console.log("+sorting", $articleStore);
+  function getSortQuery(sortingCategory) {
+    if (sortingCategory == "titleAsc") {
+      return { sortBy: "title", sortOrder: 0 };
+    } else if (sortingCategory == "titleDesc") {
+      return { sortBy: "title", sortOrder: 1 };
+    } else if (sortingCategory == "userNameAsc") {
+      return { sortBy: "userName", sortOrder: 0 };
+    } else if (sortingCategory == "userNameDesc") {
+      return { sortBy: "userName", sortOrder: 1 };
+    } else if (sortingCategory == "dateAsc") {
+      return { sortBy: "createDate", sortOrder: 0 };
+    } else if (sortingCategory == "dateDesc") {
+      return { sortBy: "createDate", sortOrder: 1 };
+    }
+  }
+
+  // $: console.log("+sorting", $articleStore);
 </script>
 
 <!-- svelte-ignore a11y-no-onchange -->
@@ -38,31 +35,31 @@
     name="menu"
     id="menu"
     bind:value={sortingCategory}
-    on:change={sortingArticles(sortingCategory)}
+    on:change={searchArticles}
   >
     <option disabled selected value="">Sort by</option>
-    <option value="titleA-Z">Title a-z</option>
-    <option value="titleZ-A">Title z-a</option>
-    <option value="usernameA-Z">Author a-z</option>
-    <option value="usernameZ-A">Author z-a</option>
-    <option value="dateA-Z">Newest</option>
-    <option value="dateZ-A">Oldest</option>
+    <option value="dateDesc">Newest</option>
+    <option value="dateAsc">Oldest</option>
+    <option value="titleDesc">Title z-a</option>
+    <option value="titleAsc">Title a-z</option>
+    <option value="userNameDesc">Author z-a</option>
+    <option value="userNameAsc">Author a-z</option>
   </select>
 </section>
 
 <style>
   .menu-cont {
-    height: 40px;
-    width: 200px;
+    height: 30px;
+    width: 100px;
     display: flex;
-    margin: 0 10px 0 0;
+    margin: 5px 10px 0 0;
   }
 
   select {
     /* REMOVE MARGIN 0 AND UNCOMMENT `margin: 50px 0 20px 0;` AFTER ARTICLE LIST IS DONE (otherwise it doesn't show) -jade */
-    margin: 0; 
+    margin: 0;
     /* margin: 50px 0 20px 0; */
-    font-family: 'Nunito', sans-serif;
+    font-family: "Nunito", sans-serif;
     font-size: 1rem;
     font-weight: 400;
     color: gray;

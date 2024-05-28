@@ -26,7 +26,13 @@ router.post("/register", avatarUploader, async (req, res) => {
     if (req.file) {
       await fsExtra.copy(req.file.path, "public" + newUser.avatar);
     }
-    return res.status(201).json(newUser);
+    return res
+      .status(201)
+      .cookie("authToken", createUserJWT(newUser.userName), {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        httpOnly: true
+      })
+      .json(newUser);
   } catch (err) {
     console.log(err);
     if (err.errors) return res.status(422).json({ error: err.errors });

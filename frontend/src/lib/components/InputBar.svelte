@@ -14,6 +14,7 @@
   let errorMsg = "";
   async function checkValue() {
     const validation = await validate(value);
+    console.log("validation",validation);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
     dispatch('validation', { validateResult, label });

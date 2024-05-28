@@ -7,8 +7,8 @@ export let selectedCategory;
 <!-- svelte-ignore a11y-no-onchange -->
 <section class="menu-cont">
   <select class="menu" name="menu" id="menu" bind:value={selectedCategory} >
-    <option disabled selected value="">Select</option>
-    <option value="title">Title</option>
+    <option disabled selected value="">Select Category</option>
+    <option selected value="title">Title</option>
     <option value="userName">Author</option>
     <option value="date">Date</option>
   </select>
@@ -17,7 +17,7 @@ export let selectedCategory;
 <style>
   .menu-cont {
     height: 40px;
-    width: 47%;
+    width: 80px;
     display: flex;
     margin: 0 10px 0 0;
   }

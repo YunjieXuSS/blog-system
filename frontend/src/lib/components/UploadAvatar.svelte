@@ -1,7 +1,10 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
+  import { onMount } from "svelte";
 
   export let filesToUpload = "";
+  export let selectedImage = "";
+
   let messageToSend;
 
   let serverResponse = null;
@@ -11,9 +14,13 @@
     if (file) {
       userIcon.src = URL.createObjectURL(file);
     } else {
-      userIcon.src = "userDefaultIcon.png";
+      userIcon.src = "/userDefaultIcon.png";
     }
   }
+
+  onMount(() => {
+    selectedImage = "/userDefaultIcon.png";
+  });
 </script>
 
 <form>
