@@ -15,7 +15,7 @@
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ullamcorper dapibus leo vitae facilisis. Vestibulum nibh elit, varius a tellus quis, porta cursus lectus. Sed at pellentesque sapien.";
 
   function settingsButton() {
-    window.location = "/users/";
+    window.location = "/profile/edit/";
   }
 </script>
 
