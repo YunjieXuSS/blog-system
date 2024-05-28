@@ -13,6 +13,8 @@
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
+  import { onMount } from "svelte";
+ 
 
   let firstName, lastName, userName;
   let password;
@@ -21,28 +23,22 @@
   let description;
   let filesToUpload;
   let selectedImage = "";
-  let onMountTriggered = false;
-
-  // define a function to get the first password.
-  const getPassword = function () {
-    return password;
-  };
-  // create closure function to validate two passwords.
-  const confirmPasswordValidator = validateConfirmPassword(getPassword);
+  let onMountTriggered = true;
 
   let validationResults = {
-    firstName: true,
-    lastName: true,
-    email: true,
-    dateOfBirth: true,
-    userName: true,
-    password: true,
-    confirmPassword: true
+    firstName: false,
+    lastName: false,
+    email: false,
+    dateOfBirth: false,
+    userName: false,
+    password: false,
+    confirmPassword: false
   };
 
+  //get all the validation results from the SignUpTable dispatch event
   function handleValidation(event) {
     //create a new array to store the validation results
-    validationResults[event.detail.label] = event.detail.validateResult;
+    validationResults[event.detail.variableName] = event.detail.validateResult;
   }
 
   //check if all the values are valid
@@ -50,6 +46,37 @@
   //Object.values(validationResults) means put all the values of the object into an array
   //every(Boolean) means check if all the values are true
   $: allValid = Object.values(validationResults).every(Boolean);
+
+  function createFormData() {
+    const userRegisterImage = filesToUpload[0];
+    const userRegisterData = {
+      firstName,
+      lastName,
+      email,
+      dateOfBirth,
+      userName,
+      password,
+      description,
+      avatar: userRegisterImage
+    };
+
+    //refactor the code to use the createAccount function
+    // Create a FormData object to send, rather than sending JSON as usual.
+    const body = new FormData();
+    Object.entries(userRegisterData).forEach(([key, value]) => {
+      if (key == "avatar" && filesToUpload.length > 0 && value !== undefined) {
+        body.set(key, value);
+      } else if (key == "avatar" && value == undefined) {
+        body.set(key, `/images${selectedImage.substring(15)}`);
+      } else if (key == "") {
+        console.log(`${key} is empty`);
+      } else {
+        body.set(key, value);
+      }
+    });
+
+    return body;
+  };
 
   async function handleRegister(
     firstName,
@@ -61,63 +88,36 @@
     description,
     filesToUpload
   ) {
-    const userRegisterData = {
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description
-    };
-    const userRegisterImage = filesToUpload[0];
-    // const userRegisterImage =events.target.files[0];
 
-    // Create a FormData object to send, rather than sending JSON as usual.
-    const formData = new FormData();
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("email", email);
-    formData.append("dateOfBirth", dateOfBirth);
-    formData.append("userName", userName);
-    formData.append("password", password);
-    formData.append("description", description);
-    if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
-      formData.append("avatar", userRegisterImage);
-    } else {
-      //if no image is uploaded, use the default image
-      if (selectedImage !== "") {
-        formData.append("avatar", `/images${selectedImage.substring(15)}`);
-      } else {
-        formData.append("avatar", "/images/avatar-default.png");
-      }
-    }
-
+    const body = createFormData();
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
     const response = await fetch(`${USER_URL}/register`, {
       method: "POST",
-      body: formData
+      credentials: "include",
+      body
     });
 
     if (response.status === 201) {
       // Redirect to the login page if successful.
       console.log("User registered successfully.");
-      handlePopupBox("registered");
+      handlePopupBox();
     } else {
       // If there was an error, log the error to the console.
-      console.error(`Failed to register user.${response.status}`);
+      console.error(`Failed to register user.StatusCode: ${response.status}`);
+    }}
+    catch (error) {
+      console.error(`Failed to register user.${error}`);
     }
-
-    const serverResponse = await response.json();
   }
 
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
-  function handlePopupBox(operation) {
-    popupMessage = `User has ${operation} . Redirecting to homepage...`;
+
+  function handlePopupBox() {
+    popupMessage = `User has registered. Redirecting to homepage...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
@@ -146,9 +146,9 @@
     </div>
   </div>
 
-  <!-- <button
-  class="submitButton"
-  class:valid={allValid}
+  <button
+    class="submitButton"
+    class:valid={allValid}
     on:click={handleRegister(
       firstName,
       lastName,
@@ -159,10 +159,11 @@
       description,
       filesToUpload
     )}
+    disabled={!allValid}
   >
     Create account
-  </button> -->
-
+  </button>
+  <!-- 
   <ButtonText
     buttonFunction={() => handleRegister(
       firstName,
@@ -179,7 +180,7 @@
     bckgColour="#B5C0D0"
     txtColour="white"
     buttonWidth="140px"
-  />
+  /> -->
 </div>
 
 {#if showPopupBox}
@@ -216,7 +217,7 @@
         width: 20em;
       }
     }
-    /* & .submitButton {
+    & .submitButton {
       width: 200px;
       height: 80px;
       margin-top: 20px;
@@ -227,7 +228,7 @@
     }
     & .submitButton.valid {
       background-color: green;
-    } */
+    }
   }
 
   @media (max-width: 1000px) {

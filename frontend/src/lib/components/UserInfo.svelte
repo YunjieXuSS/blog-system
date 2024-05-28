@@ -2,6 +2,7 @@
 
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import  {goto} from '$app/navigation';  
   export let data;
 
   $: isLoggedIn = data.isLoggedIn;
@@ -15,8 +16,9 @@
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ullamcorper dapibus leo vitae facilisis. Vestibulum nibh elit, varius a tellus quis, porta cursus lectus. Sed at pellentesque sapien.";
 
   function settingsButton() {
-    window.location = "/profile/edit/";
+    goto("/profile/edit/", { replace: true });
   }
+  
 </script>
 
 <div class="container">

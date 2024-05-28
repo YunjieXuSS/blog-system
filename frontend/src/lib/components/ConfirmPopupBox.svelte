@@ -5,7 +5,7 @@
   import PopupBox from "./PopupBox.svelte";
   export let popupMessage = "Mission Completed!";
   export let redirectUrl = "/";
-  export let operation = "deleted";
+  export let resultMsg = "Redirecting to homepage...";
   let showPopupBox = false;
   $: path = $page.url.pathname;
 
@@ -15,7 +15,7 @@
 
   function confirmAction() {
     confirmFunction();
-    handlePopupBox(operation);
+    handlePopupBox(resultMsg);
   }
 
   function closePopupBox() {
@@ -27,8 +27,8 @@
     closePopupBox();
   }
 
-  function handlePopupBox(operation) {
-    popupMessage = `User has been ${operation} . Redirecting to homepage...`;
+  function handlePopupBox(resultMsg) {
+    popupMessage = resultMsg;
     redirectUrl = "/";
     showPopupBox = true;
   }
