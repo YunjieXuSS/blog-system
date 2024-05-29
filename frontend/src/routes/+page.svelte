@@ -34,9 +34,12 @@
     };
   });
 
+  let hintShown = false;
+  
   onMount(() => {
     loadMore = () => {
-      if (loadingFlag || lastArticleAmount === $articleStore.length) return;
+      if (loadingFlag || lastArticleAmount === $articleStore.length) {hintShown = true;return}
+      hintShown = false;
       loadingFlag = true;
       setTimeout(() => {
         if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
@@ -67,6 +70,11 @@
   {#if loadingFlag}
     <div class="loader-container">
       <div class="loader" />
+    </div>
+  {/if}
+  {#if hintShown}
+    <div class="loader-container">
+      <p>There are no more articles to load</p>
     </div>
   {/if}
 </div>
