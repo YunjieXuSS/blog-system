@@ -312,7 +312,6 @@ export async function unlikeArticle(userId, articleId) {
   return dbResult.changes > 0;
 }
 
-
 //Get numbers of likes of an article
 export async function getLikes(articleId) {
   const db = await getDatabase();
@@ -323,6 +322,7 @@ export async function getLikes(articleId) {
   return likes;
 }
 
+//Check if article is liked by user
 export async function checkLikeStatus(articleId, userId){
   const db = await getDatabase();
   const isLiked = await db.get(

@@ -5,7 +5,6 @@
 
   export let data;
   export let articleId;
-  // export let numLikes = 0;
   export let numComments = 0;
   export let isLiked;
 
