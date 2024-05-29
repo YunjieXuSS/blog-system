@@ -14,6 +14,8 @@
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
   import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
+  import { page } from "$app/stores";
+  $: path = $page.url.pathname;
 
   export let user;
   let firstName = user.firstName;
@@ -30,6 +32,7 @@
   let userIconURL = `${SERVER_URL}${avatarURL}`;
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
+  let ConfirmPopupMessage = "";
   let redirectUrl = "/";
   let showConfirmPopupBox = false;
   let resultMsg = "";
@@ -87,8 +90,6 @@
     // Create a FormData object to send, rather than sending JSON as usual.
     const formData = new FormData();
 
-    console.log("selectedImage", selectedImage.substring(16));
-    console.log("userIconURL", userIconURL.substring(29));
     if (
       userRegisterImage == undefined &&
       selectedImage.substring(16) !== userIconURL.substring(29)
@@ -117,7 +118,7 @@
     if (response.status === 200) {
       // Redirect to the login page if successful.
       console.log("User update successfully.");
-      handlePopupBox();
+      handleUpdatePopupBox();
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to update user info.${response.status}`);
@@ -125,8 +126,8 @@
     const serverResponse = await response.json();
   }
 
-  function handleDelete() {
-    console.log("-----handleDelete");
+  async function handleDelete() {
+    console.log("-----handleDelete-----");
     fetch(USER_URL, {
       method: "DELETE",
       credentials: "include"
@@ -134,9 +135,13 @@
       .then((response) => {
         if (response.status === 204) {
           console.log("User deleted successfully.");
-          // handlePopupBox("deleted");
-        } else {
-          console.error(`Failed to delete user.Status code:${response.status}`);
+          handleDeletePopupBox();
+        }else if ( response.status === 404) {
+          console.log("User not authorized to delete this account.");
+          handleFailDeletePopupBox();
+        }
+        else {
+          console.error(`Failed to delete user.${response.error}.Status code:${response.status}`);
         }
       })
       .catch((error) => {
@@ -144,20 +149,31 @@
       });
   }
 
-  function handlePopupBox() {
-    popupMessage = `User has been updated . Redirecting to homepage...`;
-    redirectUrl = "/";
+  
+  function handleUpdatePopupBox() {
+    popupMessage = `User has been updated . Redirecting to profile page...`;
+    redirectUrl = `/profile/${userName}`;
     showPopupBox = true;
   }
-
   function handleConfirmPopupBox() {
-    console.log("-----handleConfirmPopupBox");
-    popupMessage = `Do you really want to delete this account?`;
-    resultMsg = "User has been deleted . Redirecting to homepage...";
+    ConfirmPopupMessage = `Do you really want to delete this account?`;
     redirectUrl = "/profile/edit";
     showConfirmPopupBox = true;
     confirmFunction = handleDelete;
   }
+  function handleDeletePopupBox() {
+    popupMessage = `User has been deleted . Redirecting to homepage...`;
+    redirectUrl = "/";
+    showPopupBox = true;
+  }
+  function handleFailDeletePopupBox() {
+    popupMessage = `User not authorized to delete this account.`;
+    redirectUrl = path;
+    showPopupBox = true;
+
+  }
+
+
 </script>
 
 <div class="page-container">
@@ -205,19 +221,16 @@
   </div>
 </div>
 
-{#if showPopupBox}
-  <PopupBox {popupMessage} {redirectUrl} />
-{/if}
 
-{#if showConfirmPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
+
   <ConfirmPopupBox
-    {popupMessage}
+    {ConfirmPopupMessage}
+    {resultMsg}
     {redirectUrl}
     {confirmFunction}
-    {resultMsg}
     bind:showConfirmPopupBox
   />
-{/if}
 
 <style>
   .page-container {

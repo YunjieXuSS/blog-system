@@ -40,6 +40,7 @@
 <style>
   .home-articles {
     padding: 0 20px;
+    width:95vw;
   }
 
   .article-list {
@@ -58,8 +59,9 @@
   }
 
   .article:hover {
-    box-shadow: 0 4px 8px 0 rgba(56, 0, 18, 0.2), 0 6px 20px 0 rgba(89, 6, 42, 0.19);
-    text-decoration: underline;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46);
+    transform: translateY(-5px);
+    transition: 0.3s;
   }
 
   .none-article {
@@ -97,13 +99,9 @@
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 750px) {
     .article-list {
       column-count: 1;
-    }
-    .sort-bar {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 </style>

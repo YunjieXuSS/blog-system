@@ -14,7 +14,6 @@
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
   import { onMount } from "svelte";
- 
 
   let firstName, lastName, userName;
   let password;
@@ -76,7 +75,7 @@
     });
 
     return body;
-  };
+  }
 
   async function handleRegister(
     firstName,
@@ -88,26 +87,29 @@
     description,
     filesToUpload
   ) {
+    try {
+      const body = createFormData();
+      // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
+      // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
+      // by the multer middleware on our server.
+      const response = await fetch(`${USER_URL}/register`, {
+        method: "POST",
+        credentials: "include",
+        body
+      });
 
-    const body = createFormData();
-    // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
-    // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
-    // by the multer middleware on our server.
-    const response = await fetch(`${USER_URL}/register`, {
-      method: "POST",
-      credentials: "include",
-      body
-    });
-
-    if (response.status === 201) {
-      // Redirect to the login page if successful.
-      console.log("User registered successfully.");
-      handlePopupBox();
-    } else {
-      // If there was an error, log the error to the console.
-      console.error(`Failed to register user.StatusCode: ${response.status}`);
-    }}
-  
+      if (response.status === 201) {
+        // Redirect to the login page if successful.
+        console.log("User registered successfully.");
+        handlePopupBox();
+      } else {
+        // If there was an error, log the error to the console.
+        console.error(`Failed to register user.StatusCode: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Failed to register user.${error}`);
+    }
+  }
 
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
@@ -119,7 +121,6 @@
     showPopupBox = true;
   }
 
-  $: console.log("allValid", allValid);
 </script>
 
 <div class="page-container">
@@ -180,9 +181,8 @@
   /> -->
 </div>
 
-{#if showPopupBox}
-  <PopupBox {popupMessage} {redirectUrl} />
-{/if}
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
+
 
 <style>
   .page-container {

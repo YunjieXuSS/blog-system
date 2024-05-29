@@ -1,7 +1,7 @@
 // ---/routes/+page.js
 // It requests the articles from the backend and returns them to the frontend.
 // API: Get /api/articles
-import { ARTICLES_URL } from "../lib/js/apiUrls.js";
+import { ARTICLES_URL, SERVER_URL } from "../lib/js/apiUrls.js";
 
 export async function load({ fetch }) {
     console.log("Start Searching Articles");
@@ -12,17 +12,17 @@ export async function load({ fetch }) {
       }
   
       const articles = await response.json();
-      await Promise.all(
-        articles.map(async (article) => {
-          try {
-            const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
-            article.isImgExist = res.ok;
-          } catch (error) {
-            console.error(`Error checking image for article ${article.id}:`, error);
-            article.isImgExist = false;
-          }
-        })
-      );
+      // await Promise.all(
+      //   articles.map(async (article) => {
+      //     try {
+      //       const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
+      //       article.isImgExist = res.ok;
+      //     } catch (error) {
+      //       console.error(`Error checking image for article ${article.id}:`, error);
+      //       article.isImgExist = false;
+      //     }
+      //   })
+      // );
   
       return { articles };
     } catch (error) {

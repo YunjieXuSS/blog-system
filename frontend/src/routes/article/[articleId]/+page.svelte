@@ -4,9 +4,9 @@
   import { goto } from "$app/navigation";
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
-  import LikeButton from "./../../../lib/components/LikeButton.svelte";
   import PopupBox from "../../../lib/components/PopupBox.svelte";
   import ConfirmPopupBox from "../../../lib/components/ConfirmPopupBox.svelte";
+  import LikeCommentButtons from "./../../../lib/components/LikeCommentButtons.svelte";
   export let data;
   let showPopupBox = false;
   let popupMessage = "";
@@ -67,7 +67,7 @@
   }
 </script>
 
-<PostArticleButton />
+<PostArticleButton data={data} />
 
 <main>
   <div class="articleDiv">
@@ -81,11 +81,9 @@
     {/if}
   </div>
 
-  {#if showPopupBox}
-    <PopupBox {popupMessage} {redirectUrl} />
-  {/if}
 
-  {#if showConfirmPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
+
     <ConfirmPopupBox
       {popupMessage}
       {redirectUrl}
@@ -93,10 +91,10 @@
       operation="Deleted"
       bind:showConfirmPopupBox
     />
-  {/if}
 
   <ArticleView {articleDetail} />
-  <LikeButton />
+  <LikeCommentButtons data={data}/>
+  
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} />
   </div>
@@ -111,10 +109,10 @@
   .articleDiv {
     position: relative;
   }
-
-  .edit {
-    width: 25px;
-    height: 25px;
+  
+  .edit{
+    width: 22px;
+    height: 22px;
     padding: 0;
     background: none;
     border: none;

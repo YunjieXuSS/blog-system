@@ -1,36 +1,48 @@
 <script>
-  import { onMount } from "svelte";
+
   import { goto } from "$app/navigation";
   export let popupMessage = "Mission Completed!";
   export let redirectUrl = "/";
-  let showPopupBox = true;
-
-  let countdown = 5;
+  export let countdown = 5;
+  export let showPopupBox = false;
+  let countdownTime;
+  let nIntervId = null;
 
   function handlecountdown() {
-    countdown -= 1;
+    countdownTime -= 1;
+    if (countdownTime <= 0) {
+      countdownTime = countdown;
+      clearInterval(nIntervId);
+      closePopupBox();
+    }
   }
 
   function closePopupBox() {
     showPopupBox = false;
+    clearInterval(nIntervId);
     goto(redirectUrl, { replaceState: true, invalidateAll: true });
   }
 
-  onMount(() => {
-    if (countdown != 0) {
-      let nIntervId = setInterval(handlecountdown, 1000);
-       setTimeout(() => {
+
+  $: if (showPopupBox) {
+    countdownTime = countdown;
+    if (nIntervId) {
+      clearInterval(nIntervId);
+    }
+    nIntervId = setInterval(handlecountdown, 1000);
+    setTimeout(() => {
       closePopupBox();
     }, countdown * 1000);
-    }
-  });
+  }
+
+
 </script>
 
 {#if showPopupBox}
-  <div class="container" >
-    <div class="content_container" >
+  <div class="container">
+    <div class="content_container">
       <p>{popupMessage}</p>
-      <div class="countdown_container" >{countdown} s</div>
+      <div class="countdown_container">{countdownTime} s</div>
       <button on:click={closePopupBox}>OK</button>
     </div>
   </div>

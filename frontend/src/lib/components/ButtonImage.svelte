@@ -7,22 +7,25 @@
   export let bckgColour = "transparent";
   export let buttonWidth = "100%";
   export let borderRadius = "4px";
+  export let imgButtonLabel = "";
 </script>
 
 <button
   on:click={buttonFunction}
   style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};">
-  <img src="{imgSrc}" alt="{imgAlt}" height="50px"/>
+  <img src="{imgSrc}" alt="{imgAlt}" height="50px"/><p>{imgButtonLabel}</p>
 </button>
 
 <style>
-  * {
-    /* border: black solid 1px; */
-  }
+  /* * {
+    border: black solid 1px;
+  } */
 
   button {
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
     border-style: none;
     box-sizing: border-box;
     cursor: pointer;
@@ -37,5 +40,12 @@
 
   button:hover {
     opacity: 0.75;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 20px;
+    font-size: 1.4em;
   }
 </style>
