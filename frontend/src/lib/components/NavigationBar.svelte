@@ -1,5 +1,4 @@
 <script>
-  // import "$lib/css/app.css";
   import { page } from "$app/stores";
   import { invalidateAll } from "$app/navigation";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
@@ -10,10 +9,11 @@
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
+  import { onMount } from "svelte";
   export let data;
 
   let query = {};
-  let selectedCategory = "title"; //  menu selection
+  let selectedCategory = "title"; // menu selection
   let searchTerm = "";
   let searchTermStart = "";
   let searchTermEnd = "";
@@ -67,6 +67,18 @@
   async function handleSearch() {
     await searchArticles();
   }
+
+  let imageLoaded = true;
+  function handleImageError(event) {
+    imageLoaded = false;
+  }
+
+  onMount(() => {
+    if (isLoggedIn === false) return;
+    const img = new Image();
+    img.src = SERVER_URL + loginUser.avatar;
+    img.onerror = handleImageError;
+  });
 </script>
 
 <div class="titleDiv">
@@ -89,7 +101,15 @@
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {loginUser.userName}!</span>
-      <img class="userIcon" src="{SERVER_URL}/{data.user.avatar}" alt="userIcon" />
+      {#if imageLoaded == false}
+        <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
+      {:else}
+        <img
+          class="userIcon"
+          src={SERVER_URL + data.user.avatar}
+          alt="userIcon"
+        />
+      {/if}
       <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
@@ -110,7 +130,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.includes(`/profile/${data.user.userName}`)}>Profile</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
         >
       </li>
     {/if}

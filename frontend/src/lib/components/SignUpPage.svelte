@@ -121,7 +121,6 @@
     showPopupBox = true;
   }
 
-  $: console.log("allValid", allValid);
 </script>
 
 <div class="page-container">
