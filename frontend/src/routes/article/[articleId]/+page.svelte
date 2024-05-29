@@ -6,7 +6,7 @@
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
   import PopupBox from "../../../lib/components/PopupBox.svelte";
   import ConfirmPopupBox from "../../../lib/components/ConfirmPopupBox.svelte";
-  import LikeCommentButtons from "./../../../lib/components/LikeCommentButtons.svelte";
+  import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
   export let data;
   let showPopupBox = false;
   let popupMessage = "";
@@ -93,7 +93,8 @@
     />
 
   <ArticleView {articleDetail} />
-  <LikeCommentButtons data={data}/>
+
+  <LikeCommentButtons data={data} articleId={articleDetail.articleId} isLiked={data.isLiked}/>
   
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} />
