@@ -6,11 +6,10 @@
   export let data;
 
   async function handlePostNewArticle() {
-    console.log("post new article");
     const isLoggedIn = data.isLoggedIn;
 
     if (isLoggedIn) {
-      goto("/articles/create", { replaceState: true });
+      goto("/article/create", { replaceState: true });
     } else {
       goto("/login", { replaceState: true });
     }

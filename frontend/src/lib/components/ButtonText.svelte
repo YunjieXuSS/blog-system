@@ -53,7 +53,8 @@
   }
 
   button:hover:not(:disabled)::before {
-    content: '';
+    content: "";
+    top: 0;
     position: absolute;
     left: -70%;
     width: 50%;

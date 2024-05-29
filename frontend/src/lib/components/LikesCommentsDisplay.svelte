@@ -2,6 +2,7 @@
 
 <script>
   import LikeButton from "$lib/components/LikeButton.svelte";
+  export let data;
 </script>
 
-<LikeButton />
+<LikeButton data={data} />

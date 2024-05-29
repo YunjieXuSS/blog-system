@@ -45,7 +45,7 @@
   }
 </script>
 
-<PostArticleButton />
+<PostArticleButton data={data} />
 
 <main>
   <div class="articleDiv">
@@ -61,7 +61,7 @@
 
   <ArticleCard {article} />
 
-  <LikesCommentsDisplay />
+  <LikesCommentsDisplay data={data} />
 
   <div class="commentsDiv">
   <CommentList {authorId} loginUserId={loginUser.userId} />

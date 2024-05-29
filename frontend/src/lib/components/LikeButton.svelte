@@ -1,13 +1,20 @@
 <script>
   import ButtonImage from "$lib/components/ButtonImage.svelte";
-
+  import { goto } from "$app/navigation";
+  export let data;
   let isLiked = false;
 
   const heartEmpty = '/heartEmpty.png';
   const heartFull = '/heartFull.png'
 
   function toggleLike() {
-    isLiked = !isLiked;
+    const isLoggedIn = data.isLoggedIn;
+
+    if (isLoggedIn) {
+      isLiked = !isLiked;
+    } else {
+      goto("/login", { replaceState: true });
+    }
   }
 </script>
 
