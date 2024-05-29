@@ -2,6 +2,8 @@
 
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { goto } from "$app/navigation";
+  import { SERVER_URL } from "../js/apiUrls";
   export let data;
 
   $: isLoggedIn = data.isLoggedIn;
@@ -10,16 +12,20 @@
     loginUser = data.user;
   }
 
-  export let avatarURL = "/userDefaultIcon.png";
-
+  $: avatarUrl = SERVER_URL + loginUser.avatar;
+  $: console.log(avatarUrl);
   function settingsButton() {
-    window.location = "/profile/edit/";
+    goto("/profile/edit/", { replaceState: true });
+  }
+
+  function changeImageUrl() {
+    avatarUrl = "/userDefaultIcon.png";
   }
 </script>
 
 <div class="container">
   <div class="settingsAndAvatar">
-    <img class="userAvatar" src={avatarURL} alt="User avatar" />
+    <img class="userAvatar" src={avatarUrl} alt="User avatar" on:error={changeImageUrl} />
 
     <div class="settings">
       <ButtonText
