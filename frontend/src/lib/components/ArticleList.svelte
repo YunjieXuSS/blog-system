@@ -7,6 +7,12 @@
   let sortingCategory = "dateDesc";
   import {page} from "$app/stores";
   $: path = $page.url.pathname;
+  import {articleInfo} from "$lib/js/store.js";
+  function handleClick(articleId) {
+    articleInfo.update(info => {
+      return { ...info, id: articleId };
+    });
+  }
 </script>
 
 <div class="home-articles">
@@ -23,7 +29,7 @@
   {:else}
     <div class="article-list">
       {#each articles as article (article.articleId)}
-        <a class="article" href="/article/{article.articleId}">
+        <a class="article" href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
           <ArticleCard {article} />
         </a>
       {/each}
