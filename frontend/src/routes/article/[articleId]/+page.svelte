@@ -96,7 +96,8 @@
   {/if}
 
   <ArticleView {articleDetail} />
-  <LikeCommentButtons />
+  <LikeCommentButtons data={data}/>
+  
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} />
   </div>
