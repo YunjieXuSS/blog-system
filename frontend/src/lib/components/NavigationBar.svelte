@@ -69,19 +69,16 @@
   }
 
   import { articleInfo } from "../js/store.js";
-  import { onDestroy } from 'svelte';
-
+  
   let showArticleLink = false;
   let articleId = null;
   let articlePath = '/article';
 
-  const unsubscribe = articleInfo.subscribe(value => {
+   articleInfo.subscribe(value => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
   });
-
-  onDestroy(unsubscribe);
 
 </script>
 
