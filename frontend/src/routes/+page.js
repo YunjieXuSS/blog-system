@@ -1,7 +1,7 @@
 // ---/routes/+page.js
 // It requests the articles from the backend and returns them to the frontend.
 // API: Get /api/articles
-import { ARTICLES_URL } from "../lib/js/apiUrls.js";
+import { ARTICLES_URL, SERVER_URL } from "../lib/js/apiUrls.js";
 
 export async function load({ fetch }) {
     console.log("Start Searching Articles");

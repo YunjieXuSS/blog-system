@@ -184,8 +184,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 60px;
     background-color: #b5c0d0;
-    box-shadow: 0 5px 3px lightgray;
 
     & > ul {
       list-style: none;
@@ -242,11 +242,7 @@
       }
     }
   }
-  @media (max-width: 600px) {
-    .navBar {
-      flex-direction: column;
-    }
-  }
+
   .date-search {
     display: flex;
     align-items: center;
