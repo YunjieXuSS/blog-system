@@ -14,7 +14,8 @@ import {
   likeArticle,
   unlikeArticle,
   getArticlesByKeywords,
-  getLikes
+  getLikes,
+  checkLikeStatus
 } from "../../data/article-dao.js";
 import { imageUploader } from "../../middleware/image-middleware.js";
 import { getComments, createComment } from "../../data/comment-dao.js";
@@ -181,7 +182,7 @@ router.post("/:articleId/like", authenticateUser, async (req, res) => {
     return res.sendStatus(200);
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error: "Article does not exist." });
+    return res.status(400).json({ error: "Article does not exist or user has liked it." });
   }
 });
 
@@ -190,6 +191,18 @@ router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
   const result = await unlikeArticle(req.user.userId, req.params.articleId);
   if (!result) return res.status(404).json("Article does not exist");
   return res.sendStatus(200);
+});
+
+router.get("/:articleId/likeStatus",authenticateUser, async (req, res) =>{
+  const articleId = req.params.articleId;
+  const userId = req.user.userId;
+  try {
+    const isLiked = await checkLikeStatus(articleId, userId);
+    return res.json({isLiked:isLiked});
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
 });
 
 

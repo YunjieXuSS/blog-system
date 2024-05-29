@@ -110,7 +110,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.includes(`/profile/${data.user.userName}`)}>Profile</a
+          class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
         >
       </li>
     {/if}

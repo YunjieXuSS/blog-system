@@ -4,6 +4,7 @@
   import { SERVER_URL } from "../js/apiUrls.js";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
+  import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
 
   let imageLoaded = true;
   function handleImageError(event) {
@@ -39,6 +40,7 @@
   <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
 </div>
   <p class="article-content">{stripHtml(article.content)}</p>
+  <!-- <LikeCommentButtons data={data} articleId={articleDetail.articleId} isLiked={data.isLiked} /> -->
 </article>
 
 <style>

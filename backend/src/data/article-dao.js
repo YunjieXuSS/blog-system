@@ -322,3 +322,12 @@ export async function getLikes(articleId) {
   );
   return likes;
 }
+
+export async function checkLikeStatus(articleId, userId){
+  const db = await getDatabase();
+  const isLiked = await db.get(
+    "SELECT * FROM like WHERE articleId = ? AND userId = ?",
+    articleId, userId
+  );
+  return !!isLiked;
+}
