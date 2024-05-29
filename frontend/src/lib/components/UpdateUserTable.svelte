@@ -68,7 +68,7 @@
     type="text"
     placeholder="Enter your first name"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
   />
@@ -77,7 +77,7 @@
     type="text"
     placeholder="Enter your second name"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
   />
@@ -86,7 +86,7 @@
     type="email"
     placeholder="Enter your user email"
     validate={validateRegisterEmail}
-    maxlength="20"
+    maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
   />
@@ -106,7 +106,7 @@
     type="text"
     placeholder="Enter your user name"
     validate={handleUserNameValidation}
-    maxlength="20"
+    maxlength="30"
     bind:value={userName}
     on:validation={handleValidation}
   />
@@ -116,7 +116,7 @@
     type="password"
     placeholder="Enter your password"
     validate={handlePasswordValidation}
-    maxlength="20"
+    maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
   />
@@ -125,7 +125,7 @@
     type="password"
     placeholder="Re-enter your password"
     validate={handleConfirmedPasswordValidation}
-    maxlength="20"
+    maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
   />
