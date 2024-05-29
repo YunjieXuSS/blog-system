@@ -14,27 +14,26 @@ import {
   likeArticle,
   unlikeArticle,
   getArticlesByKeywords,
-  getLikes
+  getLikes,
+  checkLikeStatus
 } from "../../data/article-dao.js";
 import { imageUploader } from "../../middleware/image-middleware.js";
-import { getComments, createComment } from "../../data/comment-dao.js";
+import { getComments, createComment, getNumComments } from "../../data/comment-dao.js";
 import fsExtra from "fs-extra";
 const router = express.Router();
 
 // Articles' API
 router.get("/", async (req, res) => {
-  console.log("------start getArticlesByKeywords------");
   try {
     const articles = await getArticlesByKeywords(req.query);
     return res.json(articles);
   } catch (err) {
     console.error(err);
-    if(err.errors) return res.status(422).json({error: err.errors});
+    if (err.errors) return res.status(422).json({ error: err.errors });
   }
 });
 
 router.get("/search", async (req, res) => {
-  console.log(req.query);
   try {
     if (req.query.userId) {
       const articlesOfUser = await getArticlesByUserId(req.query.userId);
@@ -137,22 +136,22 @@ router.delete("/:articleId", async (req, res) => {
 // Get articles' comments
 router.get("/:articleId/comments", async (req, res) => {
   const article = await getArticleById(req.params.articleId);
+  if (article) {
+    const article = await getArticleById(req.params.articleId);
     if (article) {
-      const article = await getArticleById(req.params.articleId);
-      if (article) {
-        const comments = await getComments(req.params.articleId);
-        return res.status(200).json(comments);
-      } else {
-        return res.status(404).json({ error: "Article does not exist." });
-      }
+      const comments = await getComments(req.params.articleId);
+      return res.status(200).json(comments);
+    } else {
+      return res.status(404).json({ error: "Article does not exist." });
     }
-  });
+  }
+});
 
-  //Create a new comment on an article
-  router.post("/:articleId/comment", authenticateUser, async (req, res) => {
-    const comment = req.body;
-    comment.articleId = req.params.articleId;
-    comment.userId = req.user.userId;
+//Create a new comment on an article
+router.post("/:articleId/comment", authenticateUser, async (req, res) => {
+  const comment = req.body;
+  comment.articleId = req.params.articleId;
+  comment.userId = req.user.userId;
   try {
     const newComment = await createComment(comment);
     return res.status(201).json(newComment);
@@ -174,6 +173,17 @@ router.post("/:articleId/comment", authenticateUser, async (req, res) => {
   }
 });
 
+//GET number of comments by articleId
+router.get("/:articleId/comments", async (req, res) => {
+  const articleId = req.params.articleId;
+  if (articleId) {
+    const commentsCount = await getNumComments(articleId);
+    return res.status(200).json(commentsCount);
+  } else {
+    return res.status(404).json({ error: "Article does not exist." });
+  }
+});
+
 // Like article
 router.post("/:articleId/like", authenticateUser, async (req, res) => {
   try {
@@ -181,7 +191,7 @@ router.post("/:articleId/like", authenticateUser, async (req, res) => {
     return res.sendStatus(200);
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error: "Article does not exist." });
+    return res.status(400).json({ error: "Article does not exist or user has liked it." });
   }
 });
 
@@ -192,6 +202,17 @@ router.post("/:articleId/unlike", authenticateUser, async (req, res) => {
   return res.sendStatus(200);
 });
 
+router.get("/:articleId/likeStatus", authenticateUser, async (req, res) => {
+  const articleId = req.params.articleId;
+  const userId = req.user.userId;
+  try {
+    const isLiked = await checkLikeStatus(articleId, userId);
+    return res.json({ isLiked: isLiked });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+});
 
 //GET numbers of like by articleId
 router.get("/:articleId/like", async (req, res) => {
