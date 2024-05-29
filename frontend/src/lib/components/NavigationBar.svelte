@@ -6,11 +6,10 @@
   import SearchBox from "./SearchBox.svelte";
   import { searchArticles } from "../js/utils.js";
   import ButtonText from "$lib/components/ButtonText.svelte";
-  import { USER_URL } from "../js/apiUrls.js";
+  import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
-
   export let data;
 
   let query = {};
@@ -35,7 +34,7 @@
   $: path = $page.url.pathname;
   $: isLoggedIn = data.isLoggedIn;
   let loginUser;
-  $: if(isLoggedIn){
+  $: if (isLoggedIn) {
     loginUser = data.user;
   }
 
@@ -62,7 +61,7 @@
   }
 
   async function userLogin() {
-    goto("/login", { replaceState: true , invalidateAll:true});
+    goto("/login", { replaceState: true, invalidateAll: true });
   }
 
   async function handleSearch() {
@@ -90,7 +89,7 @@
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {loginUser.userName}!</span>
-      <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
+      <img class="userIcon" src="{SERVER_URL}/{data.user.avatar}" alt="userIcon" />
       <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
@@ -104,11 +103,14 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
+    <li>
+      <a href="/articles" class:active={path.startsWith("/article")}>Article</a>
+    </li>
     {#if isLoggedIn}
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path === `/profile/${data.user.userName}/`}>Profile</a
+          class:active= {path.includes(`/profile/${data.user.userName}`)}>Profile</a
         >
       </li>
     {/if}

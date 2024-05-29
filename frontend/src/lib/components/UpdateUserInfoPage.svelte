@@ -10,7 +10,7 @@
   } from "../js/validation.js";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import Dayjs from "dayjs";
-  import { SERVER_URL } from "../js/apiUrls.js";
+  import { SERVER_URL, USER_URL } from "../js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
   import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
@@ -32,6 +32,7 @@
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
   let showConfirmPopupBox = false;
+  let resultMsg = "";
   let confirmFunction = () => {};
 
   // define a function to get the first password.
@@ -107,7 +108,7 @@
     // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
     // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
     // by the multer middleware on our server.
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+    const response = await fetch(USER_URL, {
       method: "PATCH",
       credentials: "include",
       body: formData
@@ -116,7 +117,7 @@
     if (response.status === 200) {
       // Redirect to the login page if successful.
       console.log("User update successfully.");
-      handlePopupBox("updated");
+      handlePopupBox();
     } else {
       // If there was an error, log the error to the console.
       console.error(`Failed to update user info.${response.status}`);
@@ -126,7 +127,7 @@
 
   function handleDelete() {
     console.log("-----handleDelete");
-    fetch(`${PUBLIC_API_BASE_URL}/users/`, {
+    fetch(USER_URL, {
       method: "DELETE",
       credentials: "include"
     })
@@ -143,8 +144,8 @@
       });
   }
 
-  function handlePopupBox(operation) {
-    popupMessage = `User has been ${operation} . Redirecting to homepage...`;
+  function handlePopupBox() {
+    popupMessage = `User has been updated . Redirecting to homepage...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
@@ -152,6 +153,7 @@
   function handleConfirmPopupBox() {
     console.log("-----handleConfirmPopupBox");
     popupMessage = `Do you really want to delete this account?`;
+    resultMsg = "User has been deleted . Redirecting to homepage...";
     redirectUrl = "/profile/edit";
     showConfirmPopupBox = true;
     confirmFunction = handleDelete;
@@ -212,7 +214,7 @@
     {popupMessage}
     {redirectUrl}
     {confirmFunction}
-    operation="Deleted"
+    {resultMsg}
     bind:showConfirmPopupBox
   />
 {/if}

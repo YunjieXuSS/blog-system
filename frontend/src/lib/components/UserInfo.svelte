@@ -21,6 +21,7 @@
   function changeImageUrl() {
     avatarUrl = "/userDefaultIcon.png";
   }
+  
 </script>
 
 <div class="container">

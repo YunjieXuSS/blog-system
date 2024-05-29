@@ -5,15 +5,18 @@
   import { browser } from "$app/environment";
   export let articles;
   let sortingCategory = "dateDesc";
+  import {page} from "$app/stores";
+  $: path = $page.url.pathname;
 </script>
 
 <div class="home-articles">
   <div class="sort-bar">
+{#if path ==="/"}
     <p class="article-p">Articles by everyone</p>
-    <div class="sortingSectionDiv">
-      <p class="sort-p">Sort by:</p>
-      <SortingSection bind:sortingCategory />
-    </div>
+    <div class="sortingSectionDiv"><p class="sort-p">Sort by:</p><SortingSection bind:sortingCategory /></div>
+{:else} 
+    <p class="article-p">Articles by you</p>
+{/if}
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>

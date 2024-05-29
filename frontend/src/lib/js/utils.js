@@ -3,12 +3,13 @@ import { writable, get} from "svelte/store";
 export const articles = [];
 export const articleStore = writable(articles);
 import {queryStore} from "./store.js";
+import {USER_URL} from "./apiUrls.js";
 
 
 export async function checkUserIsRegisterd(userName) {
     //test code
     //get password from argument,pass it in POST Fetch method, and get the result back
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/${userName}`, {
+    const response = await fetch(`${USER_URL}/${userName}`, {
         method: "GET",
     })
     const result = await response.json();
@@ -44,7 +45,7 @@ export async function searchArticles() {
 export async function createAccount(user) {
     //test code
     //get password from argument,pass it in POST Fetch method, and get the result back
-    const result = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
+    const result = await fetch(`${USER_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user)

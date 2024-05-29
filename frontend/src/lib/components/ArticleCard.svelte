@@ -3,6 +3,7 @@
   import dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
   import { onMount } from "svelte";
+  import { browser } from "$app/environment";
 
   let imageLoaded = true;
   function handleImageError(event) {
@@ -19,6 +20,13 @@
       handleImageError();
     };
   });
+
+  function stripHtml(html) {
+    if (browser) {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.textContent || "";
+    }
+  }
 </script>
 
 <article class="article-container">
@@ -26,9 +34,11 @@
     <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
   {/if}
   <h1 class="article-title">{article.title}</h1>
+  <div class="authorInfo">
   <p class="user"><strong>@Author: </strong>{article.userName}</p>
   <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
-  <p class="article-content">{article.content}</p>
+</div>
+  <p class="article-content">{stripHtml(article.content)}</p>
 </article>
 
 <style>
@@ -45,24 +55,34 @@
   }
 
   .article-image {
-    height: 150px;
-    width: 200px;
+    width: 250px;
     margin-bottom: 5px;
   }
 
   .article-title {
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 5px;
-    text-align: center;
+    text-align: left;
+  }
+
+  .authorInfo{
+    display: flex;
+    flex-direction: row;
+    margin:0;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
   }
 
   .user {
     font-size: 1em;
     color: #555;
+    margin-right: 20px;
   }
 
   .date {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-style: italic;
     color: #999;
   }

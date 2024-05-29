@@ -21,20 +21,14 @@
 
   function generateCommentProps(comments, parentId = null) {
     if (!comments) return [];
-    const rootComments = comments.filter((comment) => comment.parentCommentId === parentId);
-    const childrenComments = comments.filter((comment) => comment.parentCommentId !== parentId);
-    rootComments.forEach((parentComment) => {
-      parentComment.children = generateCommentProps(
-        childrenComments,
-        parentComment.commentId
-      ).filter(
-        (comment) =>
-          comment.parentCommentId === parentComment.commentId &&
-          (!comment.isDeleted || (comment.isDeleted && comment.children?.length))
-      );
+    const currentComments = comments.filter((comment) => comment.parentCommentId === parentId);
+    const descendantsComments = comments.filter((comment) => comment.parentCommentId !== parentId);
+
+    currentComments.forEach((currentComment) => {
+      currentComment.children = generateCommentProps(descendantsComments, currentComment.commentId);
     });
 
-    return rootComments;
+    return currentComments;
   }
 
   // function removeParentCommentId(comments) {
@@ -94,15 +88,16 @@
     disabled={sending}
     bind:value={commentToArticle}
   />
-  <button on:click={postCommentToArticle} disabled={sending}>reply</button><button
-    on:click={clearTextarea}>clear</button
-  >
+  <div class= "operations" >
+  <button on:click={postCommentToArticle} disabled={sending}>reply</button>
+  <button on:click={clearTextarea}>clear</button>
+  </div>
 
   <div class="list" style="display: {showComments ? '' : 'none'};">
     {#if !loadedComment}
       <p class="loading">loading...</p>
     {:else}
-      {#each commentProps as comment}
+      {#each commentProps as comment (comment.commentId)}
         <CommentCard {...comment} {refreshComments} {authorId} {loginUserId} />
       {/each}
     {/if}
@@ -130,13 +125,20 @@
       width: 100%;
       height: 100px;
       box-sizing: border-box;
-      margin: 16px 0;
+      margin:0;
       padding: 8px;
       resize: vertical;
     }
 
+    & .operations {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-bottom:20px;
+    }
+
     & button {
-      margin: 8px 16px 0 0;
+      margin: 0 16px 0 0;
       background: transparent;
       border: none;
       outline: none;
