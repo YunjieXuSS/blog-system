@@ -105,11 +105,11 @@
       handlePopupBox();
     } else {
       // If there was an error, log the error to the console.
-      console.error(`Failed to register user.StatusCode: ${response.status}`);
-    }}
-    catch (error) {
-      console.error(`Failed to register user.${error}`);
-    }
+      console.error(`Failed to register user.StatusCode: ${response.status}`);}
+    // }}
+    // catch (error) {
+    //   console.error(`Failed to register user.${error}`);
+    // }
   }
 
   let showPopupBox = false;
@@ -122,7 +122,6 @@
     showPopupBox = true;
   }
 
-  $: console.log("allValid", allValid);
 </script>
 
 <div class="page-container">

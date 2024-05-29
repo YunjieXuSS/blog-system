@@ -12,17 +12,17 @@ export async function load({ fetch }) {
       }
   
       const articles = await response.json();
-      await Promise.all(
-        articles.map(async (article) => {
-          try {
-            const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
-            article.isImgExist = res.ok;
-          } catch (error) {
-            console.error(`Error checking image for article ${article.id}:`, error);
-            article.isImgExist = false;
-          }
-        })
-      );
+      // await Promise.all(
+      //   articles.map(async (article) => {
+      //     try {
+      //       const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
+      //       article.isImgExist = res.ok;
+      //     } catch (error) {
+      //       console.error(`Error checking image for article ${article.id}:`, error);
+      //       article.isImgExist = false;
+      //     }
+      //   })
+      // );
   
       return { articles };
     } catch (error) {
