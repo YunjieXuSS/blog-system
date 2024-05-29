@@ -15,7 +15,8 @@ export async function load({ fetch }) {
       await Promise.all(
         articles.map(async (article) => {
           try {
-            const res = await fetch(`http://localhost:3000/images/${article.imgUrl}`);
+            const res = await fetch(`http://localhost:3000${article.imgUrl}`);
+            console.log("http://localhost:3000${article.imgUrl}",`http://localhost:3000${article.imgUrl}`)
             article.isImgExist = res.ok;
           } catch (error) {
             console.error(`Error checking image for article ${article.id}:`, error);
