@@ -4,8 +4,7 @@
   import { goto } from "$app/navigation";
   import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
   import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
-  import LikeButton from "./../../../lib/components/LikeButton.svelte";
-  import LikesCommentsDisplay from "$lib/components/LikesCommentsDisplay.svelte";
+  import LikeCommentButtons from "./../../../lib/components/LikeCommentButtons.svelte";
   export let data;
 
   const article = data.article;
@@ -61,7 +60,7 @@
 
   <ArticleCard {article} />
 
-  <LikesCommentsDisplay data={data} />
+  <LikeCommentButtons data={data} />
 
   <div class="commentsDiv">
   <CommentList {authorId} loginUserId={loginUser.userId} />
@@ -78,7 +77,6 @@
     position: relative;
   }
   
-
   .edit{
     width: 22px;
     height: 22px;
