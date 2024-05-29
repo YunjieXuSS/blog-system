@@ -51,6 +51,7 @@ export async function getCommentById(commentId) {
   return comment;
 }
 
+//Get comments
 export async function getComments(articleId) {
   const db = await getDatabase();
   const comments = await db.all(
@@ -82,4 +83,14 @@ export async function deleteComment(commentId, userId) {
     dbResult = await db.run("DELETE FROM comment WHERE commentId = ?", commentId);
   }
   return dbResult.changes > 0;
+}
+
+//Get num of comments on a given article
+export async function getNumComments() {
+  const db = await getDatabase();
+  const comments = await db.get(
+    "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ?",
+    articleId
+  );
+  return comments;
 }
