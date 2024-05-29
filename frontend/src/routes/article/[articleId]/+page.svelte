@@ -81,11 +81,9 @@
     {/if}
   </div>
 
-  {#if showPopupBox}
-    <PopupBox {popupMessage} {redirectUrl} />
-  {/if}
 
-  {#if showConfirmPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
+
     <ConfirmPopupBox
       {popupMessage}
       {redirectUrl}
@@ -93,7 +91,6 @@
       operation="Deleted"
       bind:showConfirmPopupBox
     />
-  {/if}
 
   <ArticleView {articleDetail} />
   <LikeCommentButtons data={data}/>

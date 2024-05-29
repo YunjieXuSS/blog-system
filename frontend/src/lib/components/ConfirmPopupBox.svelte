@@ -1,53 +1,32 @@
 <script>
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import PopupBox from "./PopupBox.svelte";
-  export let popupMessage = "Mission Completed!";
-  export let redirectUrl = "/";
-  export let resultMsg = "Redirecting to homepage...";
-  let showPopupBox = false;
+  export let ConfirmPopupMessage = "Mission Completed!";
   $: path = $page.url.pathname;
-
-  export let confirmFunction = () => {};
-
+  export let confirmFunction = async () => {};
   export let showConfirmPopupBox = true;
 
-  function confirmAction() {
-    confirmFunction();
-    handlePopupBox(resultMsg);
+  async function confirmAction() {
+    await confirmFunction();
+    showConfirmPopupBox = false;
   }
 
   function closePopupBox() {
     showConfirmPopupBox = false;
     goto(path, { replaceState: true, invalidateAll: true });
   }
-
-  function cancelAction() {
-    closePopupBox();
-  }
-
-  function handlePopupBox(resultMsg) {
-    popupMessage = resultMsg;
-    redirectUrl = "/";
-    showPopupBox = true;
-  }
 </script>
 
 {#if showConfirmPopupBox}
   <div class="container">
     <div class="content_container">
-      <p>{popupMessage}</p>
+      <p>{ConfirmPopupMessage}</p>
       <div class="buttonDiv">
-        <button class="cancelButton" on:click={cancelAction}>Cancel</button>
+        <button class="cancelButton" on:click={closePopupBox}>Cancel</button>
         <button on:click={confirmAction}>Confirm</button>
       </div>
     </div>
   </div>
-{/if}
-
-{#if showPopupBox}
-  <PopupBox {popupMessage} {redirectUrl} />
 {/if}
 
 <style>
