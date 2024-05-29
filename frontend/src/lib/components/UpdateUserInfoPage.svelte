@@ -117,7 +117,6 @@
 
     if (response.status === 200) {
       // Redirect to the login page if successful.
-      console.log("User update successfully.");
       handleUpdatePopupBox();
     } else {
       // If there was an error, log the error to the console.
@@ -127,17 +126,14 @@
   }
 
   async function handleDelete() {
-    console.log("-----handleDelete-----");
     fetch(USER_URL, {
       method: "DELETE",
       credentials: "include"
     })
       .then((response) => {
         if (response.status === 204) {
-          console.log("User deleted successfully.");
           handleDeletePopupBox();
         }else if ( response.status === 404) {
-          console.log("User not authorized to delete this account.");
           handleFailDeletePopupBox();
         }
         else {

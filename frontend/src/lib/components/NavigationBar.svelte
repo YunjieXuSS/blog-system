@@ -28,7 +28,6 @@
       query = { startDate: searchTermStart, endDate: searchTermEnd };
     }
     queryStore.update((current) => ({ ...current, ...query }));
-    console.log("i want to see my query now:", $queryStore);
   }
 
   $: path = $page.url.pathname;
@@ -40,7 +39,6 @@
 
   async function userLogout() {
     try {
-      console.log("Processing logout start");
 
       // Make the logout request to the server
       const response = await fetch(`${USER_URL}/logout`, {
@@ -104,15 +102,17 @@
       <ButtonText
         buttonLabel="Login"
         buttonFunction={userLogin}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#AAB3A4"
+        txtColour="white"
+        buttonWidth="70px"
+        buttonHeight="38px"
       />
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {loginUser.userName}!</span>
+      <span class="userName"> Hi, {loginUser.userName} !</span>
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
@@ -121,8 +121,10 @@
       <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#AAB3A4"
+        txtColour="white"
+        buttonWidth="80px"
+        buttonHeight="38px"
       />
     </div>
   {/if}
@@ -169,7 +171,7 @@
   .titleDiv {
     margin: 0 30px 0 25px;
     height: 100px;
-    background-color: white;
+    /* background-color: white; */
     padding: 0 20px 0 20px;
     display: flex;
     justify-content: space-between;
@@ -188,7 +190,9 @@
     }
 
     & .userIcon {
-      width: 50px;
+        width: 50px;
+        border-radius: 50%; 
+        border: 2px solid #B5C0D0; 
     }
   }
 
@@ -198,6 +202,9 @@
     align-items: center;
     height: 60px;
     background-color: #b5c0d0;
+    /* background-color: #AAB3A4; */
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     & > ul {
       list-style: none;

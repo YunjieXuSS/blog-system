@@ -11,6 +11,9 @@
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
 
+  let numLikes;
+  getNumLikes().then((res) => numLikes = res);
+
   async function toggleLike() {
     const isLoggedIn = data.isLoggedIn;
     if (isLoggedIn && !isLiked) {
@@ -20,7 +23,7 @@
       });
       if (response.status === 200) {
       isLiked = !isLiked;
-      numLikes = getNumLikes().then((res) => numLikes = res);
+      getNumLikes().then((res) => numLikes = res);
       }
     } else if(isLoggedIn && isLiked){
       const response = await fetch(ARTICLES_URL+"/"+articleId+"/unlike", { 
@@ -29,7 +32,7 @@
       });
       if (response.status === 200) {
       isLiked = !isLiked;
-      numLikes = getNumLikes().then((res) => numLikes = res);
+      getNumLikes().then((res) => numLikes = res);
       }
     }
     else {
@@ -38,8 +41,8 @@
   }
 
   function goToComments() {
-    const comments = document.querySelector(".commentButton");
-    comments.scrollIntoView({ behavior: 'smooth'});
+    // const comments = document.querySelector(".commentButton");
+    // comments.scrollIntoView({ behavior: 'smooth'});
   }
 
   async function getNumLikes(){
@@ -54,9 +57,6 @@
   async function getNumComments() {
   }
 
-  let numLikes;
-  $:numLikes = getNumLikes().then((res) => numLikes = res);
-
 </script>
 
 <div class="likeCommentContainer">
@@ -67,7 +67,7 @@
       imgSrc={isLiked ? heartFull : heartEmpty}
       imgAlt={isLiked ? "Unlike" : "Like"}
       imgButtonLabel={numLikes}
-      buttonWidth="10px"
+      buttonWidth="5px"
     />
   </div>
 
@@ -77,7 +77,7 @@
       imgSrc="/icons/comment.png"
       imgAlt="Comments"
       imgButtonLabel={numComments}
-      buttonWidth="10px"
+      buttonWidth="5px"
     />
   </div>
 
@@ -87,6 +87,9 @@
   .likeCommentContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    width:150px;
+    margin-bottom: 10px;
+    float: right;
   }
 </style>

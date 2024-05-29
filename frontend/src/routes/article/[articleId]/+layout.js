@@ -6,7 +6,6 @@ export async function load({ params, fetch }) {
     const res = await fetch(`${ARTICLES_URL}/${articleId}`);
     if (res.status === 200) {
       const data = await res.json();
-      console.log("check article",data);
       return data;
       
     } else {
@@ -20,6 +19,5 @@ export async function load({ params, fetch }) {
   } catch (error) {
     console.error(error);
   }
-  console.log("article", article);
   return { article };
 }
