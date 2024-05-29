@@ -81,17 +81,16 @@
   });
 
   import { articleInfo } from "../js/store.js";
-  
+
   let showArticleLink = false;
   let articleId = null;
-  let articlePath = '/article';
+  let articlePath = "/article";
 
-   articleInfo.subscribe(value => {
+  articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
   });
-
 </script>
 
 <div class="titleDiv">
@@ -100,8 +99,10 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi!</span>
-      <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
+      <a href="/login"> <span class="userName"> Hi!</span></a>
+      <a href="/login">
+        <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
+      </a>
       <ButtonText
         buttonLabel="Login"
         buttonFunction={userLogin}
@@ -113,15 +114,15 @@
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {loginUser.userName}!</span>
+      <a href="/profile/{loginUser.userName}/">
+        <span class="userName"> Hi {loginUser.userName}!</span>
+      </a>
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
-        <img
-          class="userIcon"
-          src={SERVER_URL + data.user.avatar}
-          alt="userIcon"
-        />
+        <a href="/profile/edit">
+          <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
+        </a>
       {/if}
       <ButtonText
         buttonLabel="Logout"
@@ -137,14 +138,18 @@
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if showArticleLink && articleId}
-      <li><a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}>Article</a></li>
+      <li>
+        <a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}
+          >Article</a
+        >
+      </li>
     {/if}
 
     {#if isLoggedIn}
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
         >
       </li>
     {/if}
