@@ -81,17 +81,16 @@
   });
 
   import { articleInfo } from "../js/store.js";
-  
+
   let showArticleLink = false;
   let articleId = null;
-  let articlePath = '/article';
+  let articlePath = "/article";
 
-   articleInfo.subscribe(value => {
+  articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
   });
-
 </script>
 
 <div class="titleDiv">
@@ -117,11 +116,7 @@
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
-        <img
-          class="userIcon"
-          src={SERVER_URL + data.user.avatar}
-          alt="userIcon"
-        />
+        <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
       {/if}
       <ButtonText
         buttonLabel="Logout"
@@ -136,18 +131,24 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    {#if showArticleLink && articleId}
-      <li><a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}>Article</a></li>
-    {/if}
 
     {#if isLoggedIn}
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
         >
       </li>
     {/if}
+
+    {#if showArticleLink && articleId}
+      <li>
+        <a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}
+          >Article</a
+        >
+      </li>
+    {/if}
+
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
