@@ -1,12 +1,13 @@
 <script>
-
   import { goto } from "$app/navigation";
   export let popupMessage = "Mission Completed!";
   export let redirectUrl = "/";
   export let countdown = 5;
   export let showPopupBox = false;
+
   let countdownTime;
   let nIntervId = null;
+  let nTimeoutId = null;
 
   function handlecountdown() {
     countdownTime -= 1;
@@ -20,6 +21,7 @@
   function closePopupBox() {
     showPopupBox = false;
     clearInterval(nIntervId);
+    clearTimeout(nTimeoutId);
     goto(redirectUrl, { replaceState: true, invalidateAll: true });
   }
 
@@ -29,8 +31,11 @@
     if (nIntervId) {
       clearInterval(nIntervId);
     }
+    if (nTimeoutId) {
+      clearTimeout(nTimeoutId);
+    }
     nIntervId = setInterval(handlecountdown, 1000);
-    setTimeout(() => {
+    nTimeoutId = setTimeout(() => {
       closePopupBox();
     }, countdown * 1000);
   }
