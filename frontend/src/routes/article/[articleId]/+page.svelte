@@ -9,6 +9,8 @@
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
   export let data;
   let showPopupBox = false;
+  let ConfirmPopupMessage = "";
+  let resultMsg = "";
   let popupMessage = "";
   let redirectUrl = "/";
   let showConfirmPopupBox = false;
@@ -24,26 +26,21 @@
   console.log("loginUser", loginUser);
   import { invalidate } from "$app/navigation";
 
-  function handlePopupBox(operation) {
-    popupMessage = `Article has been ${operation} . Redirecting to your profile page...`;
-    redirectUrl = "/profile";
-    showPopupBox = true;
-  }
-
- 
-
   async function editArticle() {
     goto(`/article/${articleDetail.articleId}/edit`);
   }
 
-
-
   function handleConfirmPopupBox() {
-    popupMessage = `Are you sure you want to delete this article?`;
+    ConfirmPopupMessage = `Are you sure you want to delete this article?`;
     redirectUrl = "/article/edit";
     showConfirmPopupBox = true;
     confirmFunction = deleteArticle;
-    handlePopupBox("deleted");
+  }
+
+  function handleDeletePopupBox() {
+    popupMessage = `Article has been deleted. Redirecting to your profile page...`;
+    redirectUrl = `/profile/${loginUser.userName}`;
+    showPopupBox = true;
   }
 
   async function deleteArticle() {
@@ -61,13 +58,15 @@
        * them to be reloaded.
        */
       invalidate(ARTICLES_URL);
+      console.log("Article deleted successfully.");
+      handleDeletePopupBox();
     } else {
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
 </script>
 
-<PostArticleButton data={data} />
+<PostArticleButton {data} />
 
 <main>
   <div class="articleDiv">
@@ -81,21 +80,20 @@
     {/if}
   </div>
 
+  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
-  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
-
-    <ConfirmPopupBox
-      {popupMessage}
-      {redirectUrl}
-      {confirmFunction}
-      operation="Deleted"
-      bind:showConfirmPopupBox
-    />
+  <ConfirmPopupBox
+    {ConfirmPopupMessage}
+    {resultMsg}
+    {redirectUrl}
+    {confirmFunction}
+    bind:showConfirmPopupBox
+  />
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons data={data} articleId={articleDetail.articleId} isLiked={data.isLiked}/>
-  
+  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} />
+
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} />
   </div>
@@ -110,8 +108,8 @@
   .articleDiv {
     position: relative;
   }
-  
-  .edit{
+
+  .edit {
     width: 22px;
     height: 22px;
     padding: 0;
