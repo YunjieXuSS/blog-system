@@ -58,7 +58,7 @@
   });
 </script>
 
-<PostArticleButton  {data}/>
+<PostArticleButton data={data}/>
 
 <div class="mainBodyDiv">
   <div class="articleDiv">

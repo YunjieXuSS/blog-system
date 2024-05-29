@@ -91,13 +91,9 @@
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 750px) {
     .article-list {
       column-count: 1;
-    }
-    .sort-bar {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 </style>
