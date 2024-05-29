@@ -67,6 +67,22 @@
   async function handleSearch() {
     await searchArticles();
   }
+
+  import { articleInfo } from "../js/store.js";
+  import { onDestroy } from 'svelte';
+
+  let showArticleLink = false;
+  let articleId = null;
+  let articlePath = '/article';
+
+  const unsubscribe = articleInfo.subscribe(value => {
+    showArticleLink = value.id !== null;
+    articleId = value.id;
+    articlePath = value.path;
+  });
+
+  onDestroy(unsubscribe);
+
 </script>
 
 <div class="titleDiv">
@@ -103,9 +119,10 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/articles" class:active={path.startsWith("/article")}>Article</a>
-    </li>
+    {#if showArticleLink && articleId}
+      <li><a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}>Article</a></li>
+    {/if}
+
     {#if isLoggedIn}
       <li>
         <a
