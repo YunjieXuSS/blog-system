@@ -3,10 +3,11 @@
 <script>
   export let buttonFunction = () => {};
   export let buttonDisabled = false;
-  export let buttonDisabledClass = "";
   export let buttonLabel;
   export let bckgColour;
+  export let disabledBckgColour = "gray";
   export let txtColour = "white";
+  export let disabledTxtColour = "white";
   export let buttonWidth = "100%";
   export let borderRadius = "8px";
 
@@ -18,9 +19,15 @@
 </script>
 
 <button
-  on:click={handleClick} class="{buttonDisabled ? 'disabled' + buttonDisabledClass : buttonDisabledClass}" {buttonDisabled}
-  style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}; width:{buttonWidth};"
-  >{buttonLabel}
+  on:click={handleClick}
+  class={buttonDisabled ? "disabled" : ""}
+  disabled={buttonDisabled}
+  style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; 
+  color:{buttonDisabled ? disabledTxtColour : txtColour}; 
+  border-radius:{borderRadius}; width:{buttonWidth};
+  "
+>
+  <span>{buttonLabel}</span>
 </button>
 
 <style>
@@ -42,13 +49,32 @@
     min-width: 100px;
     padding: 9px 20px 8px;
     position: relative;
+    overflow: hidden;
   }
 
-  button:hover {
-    opacity: 0.75;
+  button:hover:not(:disabled)::before {
+    content: "";
+    top: 0;
+    position: absolute;
+    left: -70%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: skew(-20deg);
+    animation: shine 0.85s forwards;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -70%;
+    }
+    100% {
+      left: 130%;
+    }
   }
 
   .disabled {
-    cursor: not-allowed;  
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 </style>
