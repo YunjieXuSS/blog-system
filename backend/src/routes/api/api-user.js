@@ -136,7 +136,7 @@ router.delete("/", authenticateUser, async (req, res) => {
   try {
     const result = await deleteUser(req.user.userId);
     if (result) return res.sendStatus(204);
-    return res.status(404).json({ error: "User not found." });
+    return res.status(404).json({ error: "User not found or is an admin." });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
