@@ -7,6 +7,12 @@
   let sortingCategory = "dateDesc";
   import {page} from "$app/stores";
   $: path = $page.url.pathname;
+  import {articleInfo} from "$lib/js/store.js";
+  function handleClick(articleId) {
+    articleInfo.update(info => {
+      return { ...info, id: articleId };
+    });
+  }
 </script>
 
 <div class="home-articles">
@@ -23,7 +29,7 @@
   {:else}
     <div class="article-list">
       {#each articles as article (article.articleId)}
-        <a class="article" href="/article/{article.articleId}">
+        <a class="article" href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
           <ArticleCard {article} />
         </a>
       {/each}
@@ -34,6 +40,7 @@
 <style>
   .home-articles {
     padding: 0 20px;
+    width:95vw;
   }
 
   .article-list {
@@ -52,8 +59,9 @@
   }
 
   .article:hover {
-    box-shadow: 0 4px 8px 0 rgba(56, 0, 18, 0.2), 0 6px 20px 0 rgba(89, 6, 42, 0.19);
-    text-decoration: underline;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46);
+    transform: translateY(-5px);
+    transition: 0.3s;
   }
 
   .none-article {

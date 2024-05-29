@@ -12,3 +12,5 @@ export const user = writable({
     isAdmin: 0
 });
 export let queryStore = writable({});
+
+export const articleInfo = writable({ articleId: null, path: '/article' });

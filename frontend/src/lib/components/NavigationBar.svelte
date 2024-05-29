@@ -1,5 +1,4 @@
 <script>
-  // import "$lib/css/app.css";
   import { page } from "$app/stores";
   import { invalidateAll } from "$app/navigation";
   import SearchMenu from "$lib/components/SearchMenu.svelte";
@@ -10,10 +9,11 @@
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
+  import { onMount } from "svelte";
   export let data;
 
   let query = {};
-  let selectedCategory = "title"; //  menu selection
+  let selectedCategory = "title"; // menu selection
   let searchTerm = "";
   let searchTermStart = "";
   let searchTermEnd = "";
@@ -67,6 +67,31 @@
   async function handleSearch() {
     await searchArticles();
   }
+
+  let imageLoaded = true;
+  function handleImageError(event) {
+    imageLoaded = false;
+  }
+
+  onMount(() => {
+    if (isLoggedIn === false) return;
+    const img = new Image();
+    img.src = SERVER_URL + loginUser.avatar;
+    img.onerror = handleImageError;
+  });
+
+  import { articleInfo } from "../js/store.js";
+  
+  let showArticleLink = false;
+  let articleId = null;
+  let articlePath = '/article';
+
+   articleInfo.subscribe(value => {
+    showArticleLink = value.id !== null;
+    articleId = value.id;
+    articlePath = value.path;
+  });
+
 </script>
 
 <div class="titleDiv">
@@ -89,7 +114,15 @@
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
       <span class="userName"> Hi {loginUser.userName}!</span>
-      <img class="userIcon" src="{SERVER_URL}/{data.user.avatar}" alt="userIcon" />
+      {#if imageLoaded == false}
+        <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
+      {:else}
+        <img
+          class="userIcon"
+          src={SERVER_URL + data.user.avatar}
+          alt="userIcon"
+        />
+      {/if}
       <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
@@ -103,9 +136,10 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/articles" class:active={path.startsWith("/article")}>Article</a>
-    </li>
+    {#if showArticleLink && articleId}
+      <li><a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}>Article</a></li>
+    {/if}
+
     {#if isLoggedIn}
       <li>
         <a

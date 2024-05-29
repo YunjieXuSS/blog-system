@@ -121,7 +121,6 @@
     showPopupBox = true;
   }
 
-  $: console.log("allValid", allValid);
 </script>
 
 <div class="page-container">
@@ -182,9 +181,8 @@
   /> -->
 </div>
 
-{#if showPopupBox}
-  <PopupBox {popupMessage} {redirectUrl} />
-{/if}
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
+
 
 <style>
   .page-container {

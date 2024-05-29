@@ -14,9 +14,6 @@
   onMount(() => {
     const img = new Image();
     img.src = SERVER_URL + article.imgUrl;
-    img.onload = () => {
-      imageLoaded = true;
-    };
     img.onerror = () => {
       handleImageError();
     };
