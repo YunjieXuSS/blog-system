@@ -7,11 +7,6 @@
   let popupMessage = "";
   let redirectUrl = "/";
 
-  function handleUpdatePopupBox() {
-    popupMessage = "Article has been created successfully.";
-    showPopupBox = true;
-    redirectUrl = `/article/${newArticle.articleId}`;
-  }
 
   let value = "";
   let title = "";
