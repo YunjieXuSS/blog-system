@@ -9,7 +9,7 @@
 
   export let data ;
 
-  let backgroundColor = '#f0f8ff'; 
+  let backgroundColor = '#f0fff0'; 
 </script>
 
 <div class="background" style="--background-color: {backgroundColor}">
@@ -99,9 +99,10 @@
             transform: translateY(0) translateX(0) rotate(0deg);
         }
     }
-  /* .navBar {
-    position: fixed;
+  .navBar {
+    position: sticky;
     width: 100%;
-    z-index: 1000;
-  } */
+    z-index: 1005;
+    top: 0;
+  }
 </style>

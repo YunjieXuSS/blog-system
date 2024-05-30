@@ -76,7 +76,7 @@ router.post("/logout", (_, res) => {
   }
 }); */
 
-// Get user Info
+// Get user Info by cookie
 router.get("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
   const user = await getUserById(userId);
@@ -99,6 +99,17 @@ router.get("/:userName", async (req, res) => {
   }
 });
 
+// Get user Info by username
+router.get("/:userName/info", async (req, res) => {
+  const userName = req.params.userName;
+  const user = await getUserWithUserName(userName);
+  if (user) {
+    return res.json(user);
+  } else {
+    return res.status(404).json({ error: "User not found." });
+  }
+});
+
 // Update user
 router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   try {
@@ -108,7 +119,7 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
       req.body.avatar = "/images/" + req.file.filename;
     }
     const newUser = await updateUser(userId, req.body);
-    if (!newUser) return res.status(404).json({ error: "User not found." });
+    if (!newUser) return res.status(400).json({ error: "User not found Or No updates" });
     delete newUser.password;
     if (req.file) {
       await fsExtra.copy(req.file.path, "public" + newUser.avatar);

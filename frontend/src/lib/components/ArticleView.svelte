@@ -2,35 +2,29 @@
   export let articleDetail;
   import dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
-  import { onMount } from "svelte";
 
-  let imageLoaded = true;
-  function handleImageError(event) {
-    imageLoaded = false;
+  function goToAuthorPage() {
+    window.location.href = "/profile/" + articleDetail.userName;
   }
-
-  onMount(() => {
-    const img = new Image();
-    img.src = SERVER_URL + articleDetail.imgUrl;
-    img.onload = () => {
-      imageLoaded = true;
-    };
-    img.onerror = () => {
-      handleImageError();
-    };
-  });
 </script>
 
 <article class="article-container">
   <h1 class="article-title">{articleDetail.title}</h1>
   <div class="authorInfo">
-    <p class="user"><strong>@</strong>{articleDetail.userName}</p>
+    <button class="author-button" on:click={goToAuthorPage}
+      ><p class="user"><strong>@</strong>{articleDetail.userName}</p></button
+    >
     <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   </div>
-  {#if imageLoaded}
-    <img src={SERVER_URL + articleDetail.imgUrl} alt="" class="article-image" />
-  {/if}
-  <p class="article-content" >{@html articleDetail.content}</p>
+  <img
+    src={SERVER_URL + articleDetail.imgUrl}
+    alt=""
+    class="article-image"
+    on:error={(e) => {
+      e.target.style.display = "none";
+    }}
+  />
+  <p class="article-content">{@html articleDetail.content}</p>
 </article>
 
 <style>
@@ -44,11 +38,18 @@
     padding: 20px;
     background-color: #fff;
     box-sizing: border-box; /* Ensure padding is included in the width */
+    margin-bottom:10px;
   }
 
   .article-image {
     width: 500px;
     margin-bottom: 5px;
+  }
+
+  @media (max-width: 600px) {
+    .article-image {
+      width: 100%;
+    }
   }
 
   .article-title {
@@ -91,5 +92,14 @@
       text-overflow: ellipsis;
       line-height: 1.5;
       max-height: calc(1.5em * 7);  */
+  }
+  .author-button {
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 </style>

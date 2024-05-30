@@ -3,6 +3,12 @@
   import { page } from "$app/stores";
   import { getComments, postComment } from "../js/comments";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import Modal from "./Modal.svelte";
+  let redirectUrl = "/login";
+  let showPopupBox = false;
+
+  export let numComments = 0;
 
   export let authorId;
   export let loginUserId = 0;
@@ -40,6 +46,7 @@
   onMount(async () => {
     try {
       comments = await getComments({ articleId });
+      numComments = comments.length;
       // comments = removeParentCommentId(comments);
       loadedComment = true;
     } catch (error) {
@@ -50,10 +57,15 @@
   $: commentProps = generateCommentProps(comments);
 
   async function postCommentToArticle() {
+    if (loginUserId === 0) { 
+      showPopupBox=true;
+      return;
+    }
     sending = true;
     try {
       await postComment({ content: commentToArticle, articleId });
       comments = await getComments({ articleId });
+      numComments = comments.length;
       // comments = removeParentCommentId(comments);
       clearTextarea();
     } catch (error) {
@@ -69,6 +81,7 @@
 
   async function refreshComments() {
     comments = await getComments({ articleId });
+    numComments = comments.length;
     // comments = removeParentCommentId(comments);
   }
 </script>
@@ -76,9 +89,10 @@
 <section class="comments">
   <div class="title-area">
     <h2>Comments</h2>
-    <button class="title-button" on:click={toggleComments}
-      ><h2>{showComments ? "Hide Comments" : "Show Comments"}</h2></button
-    >
+    <!-- <button class="title-button" on:click={toggleComments}>
+      <h2>{showComments ? "Hide Comments" : "Show Comments"}</h2></button> -->
+      <button class="title-button" on:click={toggleComments}>
+        <img class="comment-view-control" src = {showComments ? "/icons/up-arrow.png" : "/icons/down-arrow.png"} alt=""></button>
   </div>
 
   <textarea
@@ -89,7 +103,7 @@
     bind:value={commentToArticle}
   />
   <div class= "operations" >
-  <button on:click={postCommentToArticle} disabled={sending}>reply</button>
+  <button on:click={postCommentToArticle} disabled={sending}>post</button>
   <button on:click={clearTextarea}>clear</button>
   </div>
 
@@ -104,6 +118,26 @@
   </div>
 </section>
 <div class="comments-container" />
+{#if showPopupBox}
+<Modal
+  bind:showPopupBox
+  description={"You should login to reply."}
+  buttons={[
+    {
+      text: "Log in",
+      onClick: () => {
+        goto(redirectUrl);
+      }
+    }
+  ]}
+  countdown={10}
+  countdownCallback={() => {
+    goto(redirectUrl);
+  }}
+  countdownMessage={"Redirecting"}
+/>
+<!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
+{/if}
 
 <style>
   .comments {
@@ -113,7 +147,7 @@
 
     & .title-area {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
     & .loading {
@@ -134,7 +168,7 @@
     & .operations {
       display: flex;
       justify-content: flex-end;
-      gap: 16px;
+      gap: 10px;
       margin-bottom:20px;
     }
 
@@ -147,6 +181,15 @@
       font-size: 0.8em;
       font-weight: 700;
       padding: 2px 4px;
+      &:hover {
+        cursor: pointer;
+        color: #9EB384;
+        text-decoration: underline;
+      }
     }
+  }
+  .comment-view-control {
+    width: 20px;
+    margin-left:10px;
   }
 </style>

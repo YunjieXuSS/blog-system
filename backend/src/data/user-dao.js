@@ -81,7 +81,9 @@ export async function getUserById(userId) {
  */
 export async function getUserWithUserName(username) {
   const db = await getDatabase();
-  return await db.get("SELECT * from user WHERE userName = ?", username);
+  const user = await db.get("SELECT * from user WHERE userName = ?", username);
+  if (user) delete user.password;
+  return user;
 }
 
 /**
@@ -125,6 +127,7 @@ export async function updateUser(userId, udpateData) {
   if(parsedUpdateData.password) parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
 
   // Do the update
+  if(!parsedUpdateData) return;
   const setStatement = Object.keys(parsedUpdateData)
     .map((key) => `${key} = ?`)
     .join(", ");

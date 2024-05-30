@@ -60,6 +60,9 @@
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
+  let numComments = 0;
+
+  $: console.log("numComments", numComments);
 </script>
 
 <PostArticleButton {data} />
@@ -88,10 +91,11 @@
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} />
+  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} {numComments} />
+
 
   <div class="commentsDiv">
-    <CommentList {authorId} loginUserId={loginUser.userId} />
+    <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
   </div>
 </main>
 
@@ -101,6 +105,14 @@
     width: 900px;
     margin: 0 auto;
   }
+
+  @media (max-width: 600px) {
+    main {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
   .articleDiv {
     position: relative;
   }

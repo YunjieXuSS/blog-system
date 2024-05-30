@@ -2,8 +2,16 @@
   import { user } from "./../js/store.js";
   // import userDefaultIcon from "../images/userDefaultIcon.png";
   import { deleteComment, postComment } from "../js/comments";
-  import {SERVER_URL} from "$lib/js/apiUrls";
+  import { SERVER_URL } from "$lib/js/apiUrls";
   import dayjs from "dayjs";
+  import PopupBox from "./PopupBox.svelte";
+  import { goto } from "$app/navigation";
+  import Modal from "./Modal.svelte";
+  let popupMessage = "";
+  let redirectUrl = "/";
+  let showPopupBox = false;
+  let showDeletePopupBox = false;
+
   export let articleId = "";
   export let userId = "";
   export let userName = "";
@@ -32,7 +40,13 @@
   }
 
   function startReply() {
-    replying = true;
+    if (!loginUserId) {
+      popupMessage = "Please login to reply.";
+      showPopupBox = true;
+      redirectUrl = "/login";
+    } else {
+      replying = true;
+    }
   }
 
   function endReply() {
@@ -51,6 +65,7 @@
       await refreshComments();
       replying = false;
       errorMessage = "";
+      reply = "";
       endReply();
     } catch (error) {
       console.error(error);
@@ -68,7 +83,7 @@
     } catch (error) {
       console.error(error);
     } finally {
-      endReply();s
+      endReply();
     }
   }
 
@@ -83,11 +98,20 @@
   }
 </script>
 
-<div class="comment-container" style="margin-left: {deep ? INTENT : 0}px; display:{shouldDeleteCommentCard({commentId, isDeleted, children})?'none':'block'}">
+<div
+  class="comment-container"
+  style="margin-left: {deep ? INTENT : 0}px; display:{shouldDeleteCommentCard({
+    commentId,
+    isDeleted,
+    children
+  })
+    ? 'none'
+    : 'block'}"
+>
   <a class="author-info" href={authorLink}>
     <img
       class="avatar"
-      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL+"/"+avatar}
+      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL + "/" + avatar}
       alt=""
       bind:this={avatarImage}
       on:error={useFallbackAvatar}
@@ -100,11 +124,11 @@
 
   <div class="main-content">
     <p class="content {isDeleted ? 'deleted' : ''}">{content}</p>
-    {#if deep < 3 && !replying && !isDeleted}
+    {#if deep < 15 && !replying && !isDeleted}
       <button class="edit-button" on:click={startReply}>reply</button>
     {/if}
     {#if allowDelete}
-      <button on:click={deleteReply} class="edit-button">delete</button>
+      <button on:click={()=>{console.log("delete");showDeletePopupBox=true}} class="edit-button">delete</button>
     {/if}
     <div class="edit">
       {#if replying}
@@ -120,8 +144,41 @@
           <p class="error">{errorMessage}</p>
         {/if}
         <button on:click={postReply} disabled={sending}>send</button>
-        <button on:click={endReply}>abort</button>
+        <button on:click={endReply}>cancel</button>
       {/if}
+      {#if showPopupBox}
+        <Modal
+          bind:showPopupBox
+          description={"You should login to reply."}
+          buttons={[
+            {
+              text: "Log in",
+              onClick: () => {
+                goto(redirectUrl);
+              }
+            }
+          ]}
+          countdown={10}
+          countdownCallback={() => {
+            goto(redirectUrl);
+          }}
+          countdownMessage={"Redirecting"}
+        />
+        <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
+      {/if}
+      {#if showDeletePopupBox}
+      <Modal
+        bind:showPopupBox={showDeletePopupBox}
+        description={"Are you sure you want to delete this comment?"}
+        buttons={[
+          {
+            text: "Confirm",
+            onClick: deleteReply
+          }
+        ]}
+      />
+      <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
+    {/if}
     </div>
 
     {#each children as child (child.commentId)}
@@ -133,7 +190,7 @@
 <style>
   .comment-container {
     padding-top: 24px;
-    border-left: 1px solid #555555;
+    border-left: 1px solid #ababab;
 
     & a.author-info {
       display: flex;
@@ -149,6 +206,7 @@
         padding: 2px 8px;
         width: 32px;
         height: 32px;
+        border-radius: 50%;
       }
 
       & .date {
