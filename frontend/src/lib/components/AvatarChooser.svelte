@@ -65,7 +65,7 @@
   }
   .image-item img.selected {
     border-width: 3px;
-    border-color: rgb(255, 72, 0);
-    border-radius: 10px;
+    border-color: #9EB384;
+    border-radius: 50%;
   }
 </style>

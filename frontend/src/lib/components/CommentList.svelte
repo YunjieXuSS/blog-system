@@ -89,7 +89,7 @@
     bind:value={commentToArticle}
   />
   <div class= "operations" >
-  <button on:click={postCommentToArticle} disabled={sending}>reply</button>
+  <button on:click={postCommentToArticle} disabled={sending}>post</button>
   <button on:click={clearTextarea}>clear</button>
   </div>
 
