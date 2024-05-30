@@ -20,9 +20,10 @@
   <ButtonText
     buttonFunction={handlePostNewArticle}
     buttonLabel="✚ New article"
-    bckgColour="#8FA48E"
+    bckgColour="#9EB384"
     txtColour="white"
     borderRadius="8px 0 0 8px"
+    buttonHeight="55px"
   />
 </div>
 

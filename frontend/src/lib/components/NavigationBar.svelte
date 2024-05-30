@@ -5,6 +5,7 @@
   import SearchBox from "./SearchBox.svelte";
   import { searchArticles } from "../js/utils.js";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import ButtonImage from "$lib/components/ButtonImage.svelte";
   import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
@@ -80,9 +81,12 @@
 
   import { articleInfo } from "../js/store.js";
 
+
+
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
+
 
   articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
@@ -97,35 +101,39 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi!</span>
+      <!-- <span class="userName"> Hi!</span> -->
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
+
       <ButtonText
         buttonLabel="Login"
         buttonFunction={userLogin}
-        bckgColour="#AAB3A4"
-        txtColour="white"
-        buttonWidth="70px"
-        buttonHeight="38px"
+        bckgColour="#9EB384"
+        txtColour="#435334"
+        buttonWidth="80px"
+        buttonHeight="42px"
       />
+      
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi, {loginUser.userName} !</span>
+      <!-- <span class="userName"> Hi {loginUser.userName}!</span> -->
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
-        <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
+        <a href="/profile/edit">
+          <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
+        </a>
       {/if}
-      <ButtonText
-        buttonLabel="Logout"
-        buttonFunction={userLogout}
-        bckgColour="#AAB3A4"
-        txtColour="white"
-        buttonWidth="80px"
-        buttonHeight="38px"
+
+      <ButtonImage
+      buttonFunction={userLogout}
+      imgSrc="/icons/logout.png"
+      imgAlt="Logout"
+      imgWidth="35px"
       />
+
     </div>
   {/if}
 </div>
@@ -137,17 +145,19 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Blog</a
         >
       </li>
     {/if}
+
     {#if showArticleLink && articleId}
       <li>
-        <a href={`${articlePath}/${articleId}`} class:active={path.startsWith("/article")}
+        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}
           >Article</a
         >
       </li>
     {/if}
+    
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
@@ -169,10 +179,10 @@
 
 <style>
   .titleDiv {
-    margin: 0 30px 0 25px;
+    margin: 0;
     height: 100px;
-    /* background-color: white; */
-    padding: 0 20px 0 20px;
+    background-color: white;
+    padding: 0 50px 0 45px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -192,7 +202,7 @@
     & .userIcon {
         width: 50px;
         border-radius: 50%; 
-        border: 2px solid #B5C0D0; 
+        border: 2px solid #9EB384; 
     }
   }
 
@@ -201,8 +211,7 @@
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    background-color: #b5c0d0;
-    /* background-color: #AAB3A4; */
+    background-color: #435334;
     opacity: 0.9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -227,8 +236,8 @@
         content: "";
         display: block;
         height: 5px;
-        background-color: #f5e8dd;
-
+        background-color: #CEDEBD;
+        /* background-color: #fad094; */
         bottom: 0;
         width: 100%;
       }
@@ -238,7 +247,7 @@
       content: "";
       display: block;
       height: 5px;
-      background-color: #f5e8dd;
+      background-color: #CEDEBD;
 
       bottom: 0;
       width: 0%;

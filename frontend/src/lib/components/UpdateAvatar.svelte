@@ -70,7 +70,7 @@
       & .img-bg-container {
         width: 300px;
         height: 300px;
-        background-color: rgb(155, 155, 155);
+        background-color: transparent;
         display: flex;
         justify-items: center;
         align-items: center;

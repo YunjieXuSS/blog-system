@@ -49,8 +49,11 @@
   }
 
   .article-list {
+    /* margin: 0 auto; */
     column-count: 3;
     column-gap: 30px;
+    /* max-width: 1260px; */
+    /* border: solid black 1px; */
   }
 
   .article {
@@ -60,6 +63,8 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
+    /* min-width: 340px;
+    max-width: 400px; */
     box-sizing: border-box;
   }
 
@@ -79,7 +84,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0;
+    margin: 0 auto;
+    width: 1260px;
   }
 
   .sortingSectionDiv {
@@ -88,8 +94,7 @@
   }
 
   .sort-p {
-    margin-right: 10px;
-    margin-bottom: 5px;
+    margin: auto 10px;
     color: #606060;
   }
 

@@ -176,7 +176,7 @@ router.post("/:articleId/comment", authenticateUser, async (req, res) => {
 });
 
 //GET number of comments by articleId
-router.get("/:articleId/comments", async (req, res) => {
+router.get("/:articleId/commentsCount", async (req, res) => {
   const articleId = req.params.articleId;
   if (articleId) {
     const commentsCount = await getNumComments(articleId);

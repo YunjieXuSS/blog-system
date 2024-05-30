@@ -5,7 +5,6 @@
 
   export let data;
   export let articleId;
-  export let numComments = 0;
   export let isLiked;
 
   const heartEmpty = "/heartEmpty.png";
@@ -49,12 +48,21 @@
     const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
     if (response.status === 200) {
       const body = await response.json();
-      const numLikes = await body.likesCount
+      const numLikes = await body.likesCount;
       return numLikes;
     }
   }
 
+  let numComments;
+  $: getNumComments().then((res) => numComments = res);
+
   async function getNumComments() {
+    const response = await fetch(ARTICLES_URL+"/"+articleId+"/commentsCount", { credentials: "include" });
+    if (response.status === 200) {
+      const body = await response.json();
+      const numComments = await body.commentsCount;
+      return numComments;
+    }
   }
 
 </script>
@@ -67,7 +75,7 @@
       imgSrc={isLiked ? heartFull : heartEmpty}
       imgAlt={isLiked ? "Unlike" : "Like"}
       imgButtonLabel={numLikes}
-      buttonWidth="5px"
+      imgWidth="25px"
     />
   </div>
 
@@ -77,7 +85,7 @@
       imgSrc="/icons/comment.png"
       imgAlt="Comments"
       imgButtonLabel={numComments}
-      buttonWidth="5px"
+      imgWidth="25px"
     />
   </div>
 

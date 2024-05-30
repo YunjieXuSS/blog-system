@@ -14,8 +14,8 @@
   <ButtonText
     buttonFunction={openSignUpPage}
     buttonLabel="Create Account"
-    txtColour="#B5C0D0"
-    bckgColour="#F5E8DD"
+    txtColour="#435334"
+    bckgColour="white"
     buttonWidth="165px"
   />
 </div>
@@ -30,8 +30,8 @@
     padding: 40px;
     height: 35em;
     width: 19em;
-    background-color: #B5C0D0;
-    border: 10px solid #B5C0D0;
+    background-color: #9EB384;
+    border: 10px solid #9EB384;
     color: white;
 
     & h1 {
