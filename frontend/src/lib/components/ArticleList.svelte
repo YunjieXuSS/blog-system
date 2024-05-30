@@ -49,10 +49,10 @@
   }
 
   .article-list {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     column-count: 3;
     column-gap: 30px;
-    max-width: 1260px;
+    /* max-width: 1260px; */
     /* border: solid black 1px; */
   }
 
@@ -63,8 +63,8 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
-    min-width: 340px;
-    max-width: 400px;
+    /* min-width: 340px;
+    max-width: 400px; */
     box-sizing: border-box;
   }
 

@@ -59,6 +59,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
   }
   .content_container {
     background: white;
@@ -67,10 +68,10 @@
     box-shadow: 0 2px 10px #2d2d2d;
     text-align: center;
     width: 400px;
-    height: 130px;
+    height: 150px;
   }
   .content_container button {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px 20px;
     border: none;
     background-color: #268600;

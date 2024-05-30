@@ -81,6 +81,7 @@
 
   import { articleInfo } from "../js/store.js";
 
+
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
@@ -140,17 +141,19 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Blog</a
         >
       </li>
     {/if}
+
     {#if showArticleLink && articleId}
       <li>
-        <a href={`${articlePath}/${articleId}`} class:active={path.startsWith("/article")}
+        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}
           >Article</a
         >
       </li>
     {/if}
+    
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
