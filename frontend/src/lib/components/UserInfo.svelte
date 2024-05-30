@@ -13,7 +13,6 @@
   }
 
   $: avatarUrl = SERVER_URL + loginUser.avatar;
-  $: console.log(avatarUrl);
   function settingsButton() {
     goto("/profile/edit/", { replaceState: true });
   }

@@ -19,13 +19,16 @@ import {
 } from "../../data/article-dao.js";
 import { imageUploader } from "../../middleware/image-middleware.js";
 import { getComments, createComment, getNumComments } from "../../data/comment-dao.js";
+import { getUserIdByCookie } from "../../middleware/cookie-middleware.js";
 import fsExtra from "fs-extra";
 const router = express.Router();
 
 // Articles' API
-router.get("/", async (req, res) => {
+router.get("/", getUserIdByCookie, async (req, res) => {
+  let userId;
+  if(req.user) userId = req.user.userId;
   try {
-    const articles = await getArticlesByKeywords(req.query);
+    const articles = await getArticlesByKeywords(req.query,userId);
     return res.json(articles);
   } catch (err) {
     console.error(err);
@@ -103,7 +106,6 @@ router.post("/", authenticateUser, imageUploader, async (req, res) => {
 //update an existing article
 //PATCH /api/:articleId - Updates the article with the given id.
 router.patch("/:articleId", authenticateUser, imageUploader, async (req, res) => {
-  console.log(req.body);
   const articleId = req.params.articleId;
   const articleData = req.body;
   articleData.userId = req.user.userId;

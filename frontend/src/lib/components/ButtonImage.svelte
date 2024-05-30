@@ -13,7 +13,7 @@
 <button
   on:click={buttonFunction}
   style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};">
-  <img src="{imgSrc}" alt="{imgAlt}" height="50px"/><p>{imgButtonLabel}</p>
+  <img src="{imgSrc}" alt="{imgAlt}" height="30px"/><p>{imgButtonLabel}</p>
 </button>
 
 <style>
@@ -45,7 +45,7 @@
   p {
     display: flex;
     align-items: center;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     font-size: 1.4em;
   }
 </style>

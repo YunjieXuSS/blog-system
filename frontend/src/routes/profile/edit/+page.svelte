@@ -4,7 +4,6 @@
   import UpdateUserInfoPage from "../../../lib/components/UpdateUserInfoPage.svelte";
   import { goto } from "$app/navigation";
   export let data;
-  console.log("data", data);
   onMount(() => {
     if (!data.user) {
       goto("/login", { replace: true });

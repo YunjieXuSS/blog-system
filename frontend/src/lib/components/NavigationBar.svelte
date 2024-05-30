@@ -28,7 +28,6 @@
       query = { startDate: searchTermStart, endDate: searchTermEnd };
     }
     queryStore.update((current) => ({ ...current, ...query }));
-    console.log("i want to see my query now:", $queryStore);
   }
 
   $: path = $page.url.pathname;
@@ -40,7 +39,6 @@
 
   async function userLogout() {
     try {
-      console.log("Processing logout start");
 
       // Make the logout request to the server
       const response = await fetch(`${USER_URL}/logout`, {
@@ -81,17 +79,16 @@
   });
 
   import { articleInfo } from "../js/store.js";
-  
+
   let showArticleLink = false;
   let articleId = null;
-  let articlePath = '/article';
+  let articlePath = "/article";
 
-   articleInfo.subscribe(value => {
+  articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
   });
-
 </script>
 
 <div class="titleDiv">
@@ -105,29 +102,29 @@
       <ButtonText
         buttonLabel="Login"
         buttonFunction={userLogin}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#AAB3A4"
+        txtColour="white"
+        buttonWidth="70px"
+        buttonHeight="38px"
       />
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {loginUser.userName}!</span>
+      <span class="userName"> Hi, {loginUser.userName} !</span>
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
-        <img
-          class="userIcon"
-          src={SERVER_URL + data.user.avatar}
-          alt="userIcon"
-        />
+        <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
       {/if}
       <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#AAB3A4"
+        txtColour="white"
+        buttonWidth="80px"
+        buttonHeight="38px"
       />
     </div>
   {/if}
@@ -136,15 +133,18 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    {#if showArticleLink && articleId}
-      <li><a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}>Article</a></li>
-    {/if}
-
     {#if isLoggedIn}
       <li>
         <a
           href="/profile/{data.user.userName}"
           class:active= {path.startsWith(`/profile/${data.user.userName}`)}>Profile</a
+        >
+      </li>
+    {/if}
+    {#if showArticleLink && articleId}
+      <li>
+        <a href={`${articlePath}/${articleId}`} class:active={path.startsWith("/article")}
+          >Article</a
         >
       </li>
     {/if}
@@ -171,7 +171,7 @@
   .titleDiv {
     margin: 0 30px 0 25px;
     height: 100px;
-    background-color: white;
+    /* background-color: white; */
     padding: 0 20px 0 20px;
     display: flex;
     justify-content: space-between;
@@ -190,7 +190,9 @@
     }
 
     & .userIcon {
-      width: 50px;
+        width: 50px;
+        border-radius: 50%; 
+        border: 2px solid #B5C0D0; 
     }
   }
 
@@ -200,6 +202,9 @@
     align-items: center;
     height: 60px;
     background-color: #b5c0d0;
+    /* background-color: #AAB3A4; */
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     & > ul {
       list-style: none;

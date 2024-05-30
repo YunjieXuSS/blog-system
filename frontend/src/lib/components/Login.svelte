@@ -9,7 +9,6 @@
   let loginFailed = false;
   $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
   async function processLogin() {
-    console.log("Processing login start");
     const response = await fetch(`${USER_URL}/login`, {
       method: "POST",
       credentials: "include",
@@ -38,12 +37,6 @@
     }
     return { result: true, errorMsg: "" };
   }
-  async function validateUserNameTest(value) {
-    const response = await fetch(`${USER_URL}/username/${value}`);
-    if (response.status === 200) {
-      return { result: false, errorMsg: "Username already exists" };
-    }
-  }
 </script>
 
 <div class="login-container">
@@ -54,7 +47,7 @@
       label="USERNAME:"
       type="text"
       placeholder="Enter your username"
-      validate={validateUserNameTest}
+      validate={validateUserName}
       maxlength="20"
       bind:value={userName}
     />
