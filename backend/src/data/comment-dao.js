@@ -86,7 +86,7 @@ export async function deleteComment(commentId, userId) {
 }
 
 //Get num of comments on a given article
-export async function getNumComments() {
+export async function getNumComments(articleId) {
   const db = await getDatabase();
   const comments = await db.get(
     "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ?",

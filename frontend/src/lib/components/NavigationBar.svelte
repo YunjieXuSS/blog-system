@@ -106,8 +106,8 @@
         buttonFunction={userLogin}
         bckgColour="#9EB384"
         txtColour="#435334"
-        buttonWidth="70px"
-        buttonHeight="38px"
+        buttonWidth="80px"
+        buttonHeight="42px"
       />
       
     </div>

@@ -48,20 +48,20 @@
     const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
     if (response.status === 200) {
       const body = await response.json();
-      const numLikes = await body.likesCount
+      const numLikes = await body.likesCount;
       return numLikes;
     }
   }
 
   let numComments;
-  $:numComments = getNumComments().then((res) => numComments = res);
+  $: getNumComments().then((res) => numComments = res);
 
   async function getNumComments() {
-    const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
+    const response = await fetch(ARTICLES_URL+"/"+articleId+"/commentsCount", { credentials: "include" });
     if (response.status === 200) {
       const body = await response.json();
-      const numLikes = await body.likesCount
-      return numLikes;
+      const numComments = await body.commentsCount;
+      return numComments;
     }
   }
 
