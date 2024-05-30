@@ -71,7 +71,7 @@
     height: 130px;
   }
   .content_container button {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px 20px;
     border: none;
     background-color: #268600;
