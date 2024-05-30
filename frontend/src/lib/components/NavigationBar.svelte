@@ -82,9 +82,11 @@
   import { articleInfo } from "../js/store.js";
 
 
+
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
+
 
   articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
@@ -120,7 +122,9 @@
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
-        <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
+        <a href="/profile/edit">
+          <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
+        </a>
       {/if}
 
       <ButtonImage
