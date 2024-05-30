@@ -60,6 +60,11 @@
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
+
+  function goToComments() {
+    const comments = document.querySelector(".commentButton");
+    comments.scrollIntoView({ behavior: 'smooth'});
+  }
 </script>
 
 <PostArticleButton {data} />
@@ -88,7 +93,7 @@
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} />
+  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} commentButtonFunction={goToComments} />
 
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} />

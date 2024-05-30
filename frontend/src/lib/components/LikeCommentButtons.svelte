@@ -6,6 +6,7 @@
   export let data;
   export let articleId;
   export let isLiked;
+  export let commentButtonFunction = () => {};
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
@@ -37,11 +38,6 @@
     else {
       goto("/login", { replaceState: true });
     }
-  }
-
-  function goToComments() {
-    // const comments = document.querySelector(".commentButton");
-    // comments.scrollIntoView({ behavior: 'smooth'});
   }
 
   async function getNumLikes(){
@@ -81,7 +77,7 @@
 
   <div class="commentButton">
     <ButtonImage
-      buttonFunction={goToComments}
+      buttonFunction={commentButtonFunction}
       imgSrc="/icons/comment.png"
       imgAlt="Comments"
       imgButtonLabel={numComments}
