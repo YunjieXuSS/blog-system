@@ -1,6 +1,5 @@
 <script>
 export let selectedCategory;
-//   $: console.log(selectedCategory);
 
 </script>
 

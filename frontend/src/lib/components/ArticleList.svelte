@@ -1,8 +1,8 @@
 <script>
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
-  import { goto } from "$app/navigation";
-  import { browser } from "$app/environment";
+  import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  export let data;
   export let articles;
   let sortingCategory = "dateDesc";
   import {page} from "$app/stores";
@@ -29,9 +29,14 @@
   {:else}
     <div class="article-list">
       {#each articles as article (article.articleId)}
-        <a class="article" href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
-          <ArticleCard {article} />
+      <div class="article">
+        <a  href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
+          <ArticleCard {data} {article} />
         </a>
+        
+        <LikeCommentButtons {data} articleId={article.articleId} isLiked={article.isLiked} />
+      </div>
+        
       {/each}
     </div>
   {/if}
@@ -40,12 +45,15 @@
 <style>
   .home-articles {
     padding: 0 20px;
-    width:95vw;
+    width:90vw;
   }
 
   .article-list {
+    margin: 0 auto;
     column-count: 3;
     column-gap: 30px;
+    max-width: 1260px;
+    /* border: solid black 1px; */
   }
 
   .article {
@@ -55,6 +63,8 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
+    min-width: 340px;
+    max-width: 400px;
     box-sizing: border-box;
   }
 
@@ -74,7 +84,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0;
+    margin: 0 auto;
+    width: 1260px;
   }
 
   .sortingSectionDiv {
@@ -83,8 +94,7 @@
   }
 
   .sort-p {
-    margin-right: 10px;
-    margin-bottom: 5px;
+    margin: auto 10px;
     color: #606060;
   }
 

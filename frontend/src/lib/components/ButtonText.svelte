@@ -9,6 +9,7 @@
   export let txtColour = "white";
   export let disabledTxtColour = "white";
   export let buttonWidth = "100%";
+  export let buttonHeight = "45px";
   export let borderRadius = "8px";
 
   function handleClick() {
@@ -24,7 +25,7 @@
   disabled={buttonDisabled}
   style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; 
   color:{buttonDisabled ? disabledTxtColour : txtColour}; 
-  border-radius:{borderRadius}; width:{buttonWidth};
+  border-radius:{borderRadius}; width:{buttonWidth}; height:{buttonHeight};
   "
 >
   <span>{buttonLabel}</span>
@@ -45,8 +46,8 @@
     line-height: 1.5;
     margin: 0;
     max-width: 200px;
-    min-height: 45px;
-    min-width: 100px;
+    min-height: 35px;
+    min-width: 70px;
     padding: 9px 20px 8px;
     position: relative;
     overflow: hidden;

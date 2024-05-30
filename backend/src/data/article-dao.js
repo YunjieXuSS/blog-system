@@ -21,7 +21,7 @@ const getArticleSchema = yup
     pageSize: yup.number().default(12).optional()
   })
   .required();
-export async function getArticlesByKeywords(query) {
+export async function getArticlesByKeywords(query, userId) {
   const validatedQuery = getArticleSchema.validateSync(query, {
     abortEarly: false,
     stripUnknown: true
@@ -61,6 +61,14 @@ export async function getArticlesByKeywords(query) {
     article.createDateFormatted = dayjs(article.createDate).format('YYYY/MM/DD HH:mm:ss');
     article.updateDateFormatted = dayjs(article.updateDate).format('YYYY/MM/DD HH:mm:ss');
   });
+
+  for(let i = 0; i < articles.length; i++) {
+    const article = articles[i];
+    const likes = await getLikes(article.articleId);
+    article.likes = likes.likesCount;
+    if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
+    else article.isLiked = false;
+  }
 
   return articles;
 }

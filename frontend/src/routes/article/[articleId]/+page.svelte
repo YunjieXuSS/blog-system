@@ -23,7 +23,6 @@
     loginUser = data.user;
   }
   const authorId = articleDetail.userId;
-  console.log("loginUser", loginUser);
   import { invalidate } from "$app/navigation";
 
   async function editArticle() {
@@ -44,12 +43,9 @@
   }
 
   async function deleteArticle() {
-    console.log("deleteArticle");
     const response = await fetch(`${ARTICLES_URL}/${articleDetail.articleId}`, {
       method: "DELETE"
     });
-
-    console.log(response.status);
     if (response.status === 204) {
       // Invalidating this URL will cause our +page.js load() function to rerun, because that load() function
       // depends on this URL.

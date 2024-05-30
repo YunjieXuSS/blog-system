@@ -5,14 +5,15 @@
 <script>
   import UserInfo from "$lib/components/UserInfo.svelte";
   import ArticleList from "$lib/components/ArticleList.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
   export let data;
-  $: console.log("data", data.articlesOfUser);
 </script>
 
 <div class="profileDiv">
   <UserInfo {data} />
   <ArticleList articles={data.articlesOfUser} />
+  <PostArticleButton {data} />
 </div>
 
 <style>

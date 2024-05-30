@@ -69,8 +69,6 @@
       "undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist",
     menubar: "favxs file edit view insert format tools table help"
   };
-
-  $: console.log({ imgSrc, fileToUpload });
 </script>
 
 <main>
