@@ -2,8 +2,13 @@
   import { user } from "./../js/store.js";
   // import userDefaultIcon from "../images/userDefaultIcon.png";
   import { deleteComment, postComment } from "../js/comments";
-  import {SERVER_URL} from "$lib/js/apiUrls";
+  import { SERVER_URL } from "$lib/js/apiUrls";
   import dayjs from "dayjs";
+  import PopupBox from "./PopupBox.svelte";
+  let popupMessage = "";
+  let redirectUrl = "/";
+  let showPopupBox = false;
+
   export let articleId = "";
   export let userId = "";
   export let userName = "";
@@ -32,7 +37,13 @@
   }
 
   function startReply() {
-    replying = true;
+    if (!(loginUserId === userId)) {
+      popupMessage = "Please login to reply.";
+      showPopupBox = true;
+      redirectUrl = "/login";
+    } else {
+      replying = true;
+    }
   }
 
   function endReply() {
@@ -68,7 +79,7 @@
     } catch (error) {
       console.error(error);
     } finally {
-      endReply();s
+      endReply();
     }
   }
 
@@ -83,11 +94,20 @@
   }
 </script>
 
-<div class="comment-container" style="margin-left: {deep ? INTENT : 0}px; display:{shouldDeleteCommentCard({commentId, isDeleted, children})?'none':'block'}">
+<div
+  class="comment-container"
+  style="margin-left: {deep ? INTENT : 0}px; display:{shouldDeleteCommentCard({
+    commentId,
+    isDeleted,
+    children
+  })
+    ? 'none'
+    : 'block'}"
+>
   <a class="author-info" href={authorLink}>
     <img
       class="avatar"
-      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL+"/"+avatar}
+      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL + "/" + avatar}
       alt=""
       bind:this={avatarImage}
       on:error={useFallbackAvatar}
@@ -121,6 +141,9 @@
         {/if}
         <button on:click={postReply} disabled={sending}>send</button>
         <button on:click={endReply}>abort</button>
+      {/if}
+      {#if showPopupBox}
+        <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
       {/if}
     </div>
 

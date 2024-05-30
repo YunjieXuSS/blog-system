@@ -3,6 +3,10 @@
   import { page } from "$app/stores";
   import { getComments, postComment } from "../js/comments";
   import { onMount } from "svelte";
+  import PopupBox from "./PopupBox.svelte";
+  let popupMessage = "";
+  let redirectUrl = "/";
+  let showPopupBox = false;
 
   export let authorId;
   export let loginUserId = 0;
@@ -50,6 +54,12 @@
   $: commentProps = generateCommentProps(comments);
 
   async function postCommentToArticle() {
+    if (loginUserId === 0) { 
+      popupMessage = "Please login to comment.";
+      redirectUrl = "/login";
+      showPopupBox = true;
+      return;
+    }
     sending = true;
     try {
       await postComment({ content: commentToArticle, articleId });
@@ -104,6 +114,9 @@
   </div>
 </section>
 <div class="comments-container" />
+{#if showPopupBox}
+  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
+{/if}
 
 <style>
   .comments {
