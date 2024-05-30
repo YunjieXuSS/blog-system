@@ -89,7 +89,7 @@ export async function deleteComment(commentId, userId) {
 export async function getNumComments(articleId) {
   const db = await getDatabase();
   const comments = await db.get(
-    "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ?",
+    "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ? AND isDeleted = FALSE",
     articleId
   );
   return comments;
