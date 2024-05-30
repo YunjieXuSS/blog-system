@@ -109,6 +109,7 @@
   .comments {
     min-height: 400px;
     flex: 1;
+    margin:50px;
 
     & .title-area {
       display: flex;

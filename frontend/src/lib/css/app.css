@@ -13,3 +13,9 @@ body a {
   color: #404040;
   text-decoration: none;
 }
+body {
+  margin: 0;
+  padding: 0;
+  background: #f0f8ffa9;
+  overflow-x: hidden;
+}

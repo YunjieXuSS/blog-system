@@ -24,6 +24,5 @@ export async function load({ params, fetch }) {
     } catch (error) {
       console.error(error);
     }
-    console.log("articles", articlesOfUser);
     return { articlesOfUser};
   }

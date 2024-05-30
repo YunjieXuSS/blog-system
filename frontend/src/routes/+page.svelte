@@ -3,18 +3,19 @@
   import ArticleList from "../lib/components/ArticleList.svelte";
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
   import { queryStore } from "../lib/js/store.js";
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
+  import { get } from "svelte/store";
 
   export let data;
   articleStore.set(data.articles);
 
   let count = 2;
-
   let loadMore;
   let loadingFlag = false;
-  let lastArticleAmount = 0;
+  let lastArticleAmount = data.articles.length;
 
   let isVisible = false;
+  let hintShown = false;
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -27,45 +28,48 @@
       isVisible = false;
     }
   }
+
   onMount(() => {
     window.addEventListener("scroll", checkScrollPosition);
+    window.addEventListener("scroll", loadMore);
     return () => {
       window.removeEventListener("scroll", checkScrollPosition);
+      window.removeEventListener("scroll", loadMore);
     };
   });
 
-  let hintShown = false;
-  
-  onMount(() => {
-    loadMore = () => {
-      if (loadingFlag || lastArticleAmount === $articleStore.length) {hintShown = true;return}
-      hintShown = false;
+  loadMore = () => {
+    if (loadingFlag || hintShown) {
+      return;
+    }
+
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
       loadingFlag = true;
-      setTimeout(() => {
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-          queryStore.update((current) => ({ ...current, ...{ pageSize: 12 * count } }));
-          searchArticles();
-          lastArticleAmount = $articleStore.length;
+      setTimeout(async () => {
+        const previousLength = get(articleStore).length;
+
+        queryStore.update(current => ({ ...current, pageSize: 12 * count }));
+        await searchArticles();
+
+        const newLength = get(articleStore).length;
+        if (newLength === previousLength) {
+          hintShown = true;
+        } else {
+          lastArticleAmount = newLength;
           count++;
         }
+
         loadingFlag = false;
       }, 2000);
-    };
-    window.addEventListener("scroll", loadMore);
-  });
-
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("scroll", loadMore);
     }
-  });
+  };
 </script>
 
-<PostArticleButton data={data}/>
+<PostArticleButton data={data} />
 
 <div class="mainBodyDiv">
   <div class="articleDiv">
-    <ArticleList articles={$articleStore} />
+    <ArticleList {data} articles={$articleStore} />
   </div>
   {#if loadingFlag}
     <div class="loader-container">
@@ -73,8 +77,8 @@
     </div>
   {/if}
   {#if hintShown}
-    <div class="loader-container">
-      <p>There are no more articles to load</p>
+    <div class="hint-container">
+      <p>----That's all----</p>
     </div>
   {/if}
 </div>
@@ -87,7 +91,7 @@
     right: 40px;
     width: 50px;
     height: 50px;
-    background-color: #bbb;
+    background-color: #CCD3CA;
     color: white;
     border: none;
     border-radius: 50%;
@@ -102,7 +106,7 @@
   }
 
   .back-to-top:hover {
-    background-color: #606060;
+    background-color: #AAB3A4;
   }
 
   .back-to-top.isVisible {
@@ -124,6 +128,12 @@
     height: 20px;
     animation: spin 2s linear infinite;
     margin: 50px auto;
+  }
+
+  .hint-container{
+    text-align: center;
+    color:#AAB3A4;
+    font-size: 1.3em;
   }
 
   @keyframes spin {
