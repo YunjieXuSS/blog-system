@@ -51,13 +51,11 @@
     height: 30px;
     width: 100px;
     display: flex;
-    margin: 5px 10px 0 0;
+    margin: 0;
   }
 
   select {
-    /* REMOVE MARGIN 0 AND UNCOMMENT `margin: 50px 0 20px 0;` AFTER ARTICLE LIST IS DONE (otherwise it doesn't show) -jade */
     margin: 0;
-    /* margin: 50px 0 20px 0; */
     font-family: "Nunito", sans-serif;
     font-size: 1rem;
     font-weight: 400;

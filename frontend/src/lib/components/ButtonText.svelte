@@ -46,8 +46,8 @@
     line-height: 1.5;
     margin: 0;
     max-width: 200px;
-    min-height: 45px;
-    min-width: 100px;
+    min-height: 35px;
+    min-width: 70px;
     padding: 9px 20px 8px;
     position: relative;
     overflow: hidden;

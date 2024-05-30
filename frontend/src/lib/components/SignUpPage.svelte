@@ -68,7 +68,6 @@
       } else if (key == "avatar" && value == undefined) {
         body.set(key, `/images${selectedImage.substring(15)}`);
       } else if (key == "") {
-        console.log(`${key} is empty`);
       } else {
         body.set(key, value);
       }
@@ -100,7 +99,6 @@
 
       if (response.status === 201) {
         // Redirect to the login page if successful.
-        console.log("User registered successfully.");
         handlePopupBox();
       } else {
         // If there was an error, log the error to the console.

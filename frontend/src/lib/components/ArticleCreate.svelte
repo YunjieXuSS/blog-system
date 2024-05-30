@@ -46,7 +46,7 @@
     if (res.ok) {
       goto(`/article/${newArticle.articleId}`, { invalidateAll: true });
     } else {
-      console.log("error", `Create article failed! ${res.status} ${res.statusText}`);
+      console.error("Failed to create article");
     }
   }
 
@@ -63,8 +63,6 @@
     menubar: "favxs file edit view insert format tools table help",
     placeholder: "Start writing something...👩‍💻🧑‍💻"
   };
-
-  $: console.log({ imgSrc, fileToUpload });
 </script>
 
 <main>

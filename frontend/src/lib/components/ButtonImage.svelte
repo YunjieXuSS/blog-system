@@ -46,7 +46,7 @@
   p {
     display: flex;
     align-items: center;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     font-size: 1.4em;
   }
 </style>

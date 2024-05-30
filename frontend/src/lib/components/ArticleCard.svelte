@@ -4,7 +4,6 @@
   import { SERVER_URL } from "../js/apiUrls.js";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
 
   let imageLoaded = true;
   function handleImageError(event) {
@@ -29,15 +28,16 @@
 
 <article class="article-container">
   {#if imageLoaded}
+  <div class="image-container">
     <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
-  {/if}
+</div>
+{/if}
   <h1 class="article-title">{article.title}</h1>
   <div class="authorInfo">
-  <p class="user"><strong>@Author: </strong>{article.userName}</p>
+  <p class="user"><strong>@ </strong>{article.userName}</p>
   <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
 </div>
   <p class="article-content">{stripHtml(article.content)}</p>
-  <!-- <LikeCommentButtons data={data} articleId={articleDetail.articleId} isLiked={data.isLiked} /> -->
 </article>
 
 <style>
@@ -48,20 +48,29 @@
     width: 100%;
     max-width: 800px;
     margin: auto;
-    padding: 20px;
+    padding: 20px 20px 0;
     background-color: #fff;
     box-sizing: border-box; /* Ensure padding is included in the width */
   }
 
+  .image-container {
+    width: 400px; 
+    height: 300px; 
+    overflow: hidden; 
+    position: relative;
+}
+
   .article-image {
-    width: 250px;
+    width: 100%;
     margin-bottom: 5px;
+    object-fit: cover; 
+    object-position: center; 
   }
 
   .article-title {
     font-size: 1.5em;
     margin-bottom: 5px;
-    text-align: left;
+    text-align: center;
   }
 
   .authorInfo{
@@ -69,7 +78,7 @@
     flex-direction: row;
     margin:0;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     padding: 0;
   }

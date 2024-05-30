@@ -1,7 +1,8 @@
 <script>
   import { user } from "./../js/store.js";
-  import userDefaultIcon from "../images/userDefaultIcon.png";
+  // import userDefaultIcon from "../images/userDefaultIcon.png";
   import { deleteComment, postComment } from "../js/comments";
+  import {SERVER_URL} from "$lib/js/apiUrls";
   import dayjs from "dayjs";
   export let articleId = "";
   export let userId = "";
@@ -13,7 +14,7 @@
   export let isDeleted = false;
   export let createDate = "now";
   export let authorId = "";
-  export let avatar = userDefaultIcon;
+  export let avatar = "";
   export let refreshComments = async () => {};
 
   const INTENT = 24;
@@ -25,7 +26,6 @@
   export let loginUserId = 0;
 
   $: allowDelete = (loginUserId === userId || authorId === loginUserId) && !isDeleted;
-  $: console.log(loginUserId, authorId);
   $: authorLink = `/profile/${userName}`;
   $: {
     if (!replying) errorMessage = "";
@@ -40,7 +40,7 @@
   }
 
   function useFallbackAvatar() {
-    if (avatarImage) avatarImage.src = userDefaultIcon;
+    if (avatarImage) avatarImage.src = "/userDefaultIcon.png";
   }
 
   async function postReply() {
@@ -87,7 +87,7 @@
   <a class="author-info" href={authorLink}>
     <img
       class="avatar"
-      src={isDeleted ? userDefaultIcon : "http://localhost:3000" + avatar}
+      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL+"/"+avatar}
       alt=""
       bind:this={avatarImage}
       on:error={useFallbackAvatar}
