@@ -125,8 +125,9 @@
     }
   }
   .img {
-    width: 100%;
+    width: 70%;
     height: auto;
+    margin:10px;
   }
   .title {
     margin: 8px 0;

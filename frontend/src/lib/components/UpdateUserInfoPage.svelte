@@ -25,11 +25,11 @@
   let email = user.email;
   let dateOfBirth = Dayjs(user.dateOfBirth).format("YYYY-MM-DD");
   let description = user.description;
-  let filesToUpload;
-  let avatarURL = user.avatar;
-  let selectedImage = "";
+  let filesToUpload = [];
+  let avatar = user.avatar;
+  let selectedImage = user.avatar;
   let onMountTriggered = false;
-  let userIconURL = `${SERVER_URL}${avatarURL}`;
+  let userIconURL = `${SERVER_URL}${avatar}`;
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
   let ConfirmPopupMessage = "";
@@ -65,7 +65,13 @@
   //Object.values(validationResults) means put all the values of the object into an array
   //every(Boolean) means check if all the values are true
   $: allValid = Object.values(validationResults).every(Boolean);
-
+  $:{
+    if(selectedImage){
+      filesToUpload = [];
+    }
+  }
+  $: userUpdateImage = filesToUpload[0];
+  $: avatar =userUpdateImage || (selectedImage ? `/images${selectedImage.substring(7)}`: user.avatar);
   async function handleUpdate(
     firstName,
     lastName,
@@ -74,35 +80,35 @@
     userName,
     password,
     description,
-    filesToUpload
+    filesToUpload,
+    avatar
   ) {
-    const userRegisterData = {
+    const userUpdateData = {
       firstName,
       lastName,
       email,
       dateOfBirth,
       userName,
       password,
-      description
+      description,
+      avatar
     };
-    const userRegisterImage = filesToUpload[0];
+
+    
     // const userRegisterImage =events.target.files[0];
     // Create a FormData object to send, rather than sending JSON as usual.
+  
+    console.log(userUpdateImage, selectedImage, userUpdateData.avatar, user.avatar);
     const formData = new FormData();
-
-    if (
-      userRegisterImage == undefined &&
-      selectedImage.substring(16) !== userIconURL.substring(29)
-    ) {
-      formData.append("avatar", `/images${selectedImage.substring(15)}`);
-    } else if (userRegisterImage && filesToUpload.length > 0) {
-      formData.append("avatar", userRegisterImage);
-    }
-
-    Object.keys(user).forEach((key) => {
-      if (key === "userId") return;
-      if (userRegisterData[key] !== user[key] && userRegisterData[key] !== undefined) {
-        formData.append(key, userRegisterData[key]);
+    Object.keys(userUpdateData).forEach((key) => {
+      if (userUpdateData[key] !== undefined && userUpdateData[key] !== user[key]) {
+        if (key === "password" && userUpdateData[key] !== "") {
+          formData.append(key, userUpdateData[key]);
+        } else if (key === "avatar") {
+          formData.append("avatar", userUpdateImage || userUpdateData[key]);
+        } else if (userUpdateData[key]) {
+          formData.append(key, userUpdateData[key]);
+        }
       }
     });
 
@@ -120,7 +126,8 @@
       handleUpdatePopupBox();
     } else {
       // If there was an error, log the error to the console.
-      console.error(`Failed to update user info.${response.status}`);
+      popupMessage = `Update failed. Please try again.`;
+      showPopupBox = true;
     }
     const serverResponse = await response.json();
   }
@@ -133,10 +140,9 @@
       .then((response) => {
         if (response.status === 204) {
           handleDeletePopupBox();
-        }else if ( response.status === 404) {
+        } else if (response.status === 404) {
           handleFailDeletePopupBox();
-        }
-        else {
+        } else {
           console.error(`Failed to delete user.${response.error}.Status code:${response.status}`);
         }
       })
@@ -145,7 +151,6 @@
       });
   }
 
-  
   function handleUpdatePopupBox() {
     popupMessage = `User has been updated . Redirecting to profile page...`;
     redirectUrl = `/profile/${userName}`;
@@ -166,10 +171,7 @@
     popupMessage = `User not authorized to delete this account.`;
     redirectUrl = path;
     showPopupBox = true;
-
   }
-
-
 </script>
 
 <div class="page-container">
@@ -177,7 +179,7 @@
   <div class="content-container">
     <div class="avatar-container">
       <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
-      <UpdateAvatar bind:filesToUpload bind:selectedImage {userIconURL} />
+      <UpdateAvatar bind:filesToUpload {selectedImage} {userIconURL} />
       <AvatarChooser bind:selectedImage {onMountTriggered} />
       <!-- /userDefaultIcon.png -->
     </div>
@@ -209,7 +211,8 @@
         userName,
         password,
         description,
-        filesToUpload
+        filesToUpload,
+        avatar
       )}
     >
       Confirm Edit
@@ -217,16 +220,15 @@
   </div>
 </div>
 
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
-  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
-
-  <ConfirmPopupBox
-    {ConfirmPopupMessage}
-    {resultMsg}
-    {redirectUrl}
-    {confirmFunction}
-    bind:showConfirmPopupBox
-  />
+<ConfirmPopupBox
+  {ConfirmPopupMessage}
+  {resultMsg}
+  {redirectUrl}
+  {confirmFunction}
+  bind:showConfirmPopupBox
+/>
 
 <style>
   .page-container {

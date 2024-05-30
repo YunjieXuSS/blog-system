@@ -1,13 +1,14 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
   import { onMount } from "svelte";
+  import { SERVER_URL } from "../js/apiUrls";
 
   export let filesToUpload = "";
   let messageToSend;
 
   let serverResponse = null;
 
-  export let userIconURL ;
+  // export let userIconURL ;
   export let selectedImage = "/userDefaultIcon1.png";
 
 
@@ -20,10 +21,10 @@
     }
   }
 
-  onMount(() => {
-    selectedImage=userIconURL;
-  });
-  
+  // onMount(() => {
+  //   selectedImage=userIconURL;
+  // });
+  $: console.log(selectedImage);
 
 
 
@@ -33,7 +34,7 @@
 <form>
   <div class="img-container">
     <div class="img-bg-container"> 
-      <img id="userIcon" src={selectedImage} alt="userDefaultIcon" />   
+      <img id="userIcon" src={SERVER_URL+selectedImage} alt="userDefaultIcon" />   
     </div>
   
   </div>
@@ -70,7 +71,7 @@
       & .img-bg-container {
         width: 300px;
         height: 300px;
-        background-color: rgb(155, 155, 155);
+        background-color: transparent;
         display: flex;
         justify-items: center;
         align-items: center;
@@ -84,6 +85,7 @@
         height: 95%;
         margin: 0 auto;
         display: block;
+        border-radius: 50%;
       }
     }
 

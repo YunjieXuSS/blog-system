@@ -4,46 +4,44 @@
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
   import { SERVER_URL } from "../js/apiUrls";
+
   export let data;
 
-  $: isLoggedIn = data.isLoggedIn;
-  let loginUser = {};
-  $: if (isLoggedIn) {
-    loginUser = data.user;
-  }
+  let hoster = {};
+  hoster = data.userInfo;
 
-  $: avatarUrl = SERVER_URL + loginUser.avatar;
+  $: avatarUrl = SERVER_URL + hoster.avatar;
   function settingsButton() {
     goto("/profile/edit/", { replaceState: true });
   }
-
-  function changeImageUrl() {
-    avatarUrl = "/userDefaultIcon.png";
-  }
-  
 </script>
 
 <div class="container">
   <div class="settingsAndAvatar">
-    <img class="userAvatar" src={avatarUrl} alt="User avatar" on:error={changeImageUrl} />
+    <img
+      class="userAvatar"
+      src={avatarUrl}
+      alt="User avatar"
+      on:error={(e) => {
+        e.target.src = "/userDefaultIcon.png";
+      }}
+    />
 
     <div class="settings">
       <ButtonText
         buttonLabel="Settings"
         buttonFunction={settingsButton}
-        bckgColour="lightgray"
-        txtColour="gray"
+        bckgColour="#9EB384"
+        txtColour="white"
         buttonWidth="110px"
       />
     </div>
   </div>
 
   <div class="profileInfo">
-    {#if isLoggedIn}
-      <h1>{loginUser.userName}</h1>
-      <h3>{loginUser.firstName} {loginUser.lastName}</h3>
-      <p>{loginUser.description}</p>
-    {/if}
+    <h1>{hoster.userName}</h1>
+    <h3>{hoster.firstName} {hoster.lastName}</h3>
+    <p>{hoster.description}</p>
   </div>
 </div>
 
@@ -60,6 +58,15 @@
     gap: 30px;
   }
 
+  @media (max-width: 600px) {
+    .container {
+      width: 100%;
+      padding: 16px;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+    }
+  }
+
   .settingsAndAvatar {
     align-content: center;
     justify-content: center;
@@ -74,6 +81,7 @@
     max-width: 150px;
     width: 100%;
     margin-bottom: 10px;
+    border-radius: 50%;
   }
 
   .profileInfo {

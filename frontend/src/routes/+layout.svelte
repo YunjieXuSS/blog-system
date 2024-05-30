@@ -9,7 +9,7 @@
 
   export let data ;
 
-  let backgroundColor = '#f0f8ff'; 
+  let backgroundColor = '#f0fff0'; 
 </script>
 
 <div class="background" style="--background-color: {backgroundColor}">
@@ -100,14 +100,9 @@
         }
     }
   .navBar {
-    position: -webkit-sticky; /* For Safari */
     position: sticky;
-    top: 0;
-    color: white;
-    padding: 10px 0;
     width: 100%;
-    z-index: 1000;
-}
-
-  
+    z-index: 1005;
+    top: 0;
+  }
 </style>
