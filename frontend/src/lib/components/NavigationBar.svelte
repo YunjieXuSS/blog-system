@@ -87,7 +87,6 @@
   let articlePath = "/article";
 
   articleInfo.subscribe((value) => {
-  articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
