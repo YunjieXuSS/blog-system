@@ -7,7 +7,6 @@
   let popupMessage = "";
   let redirectUrl = "/";
 
-
   let value = "";
   let title = "";
   const articleId = "";
@@ -62,6 +61,10 @@
   function removeImage() {
     imgSrc = "";
     fileToUpload = [];
+  }
+
+  function handleCancel() {
+    history.back();
   }
 
   // /** @type {import('tinymce').RawEditorOptions} */
@@ -121,6 +124,7 @@
       </div>
     {/if}
     <button class="submit" on:click={handleSubmit}>Submit</button>
+    <button class="Cancel" on:click={handleCancel}>Cancel</button>
   </form>
 </main>
 <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
