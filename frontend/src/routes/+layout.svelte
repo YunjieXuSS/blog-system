@@ -99,9 +99,15 @@
             transform: translateY(0) translateX(0) rotate(0deg);
         }
     }
-  /* .navBar {
-    position: fixed;
+  .navBar {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    color: white;
+    padding: 10px 0;
     width: 100%;
     z-index: 1000;
-  } */
+}
+
+  
 </style>

@@ -40,7 +40,6 @@
 
   async function userLogout() {
     try {
-
       // Make the logout request to the server
       const response = await fetch(`${USER_URL}/logout`, {
         method: "POST",
@@ -81,7 +80,6 @@
 
   import { articleInfo } from "../js/store.js";
 
-
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
@@ -110,7 +108,6 @@
         buttonWidth="80px"
         buttonHeight="42px"
       />
-      
     </div>
   {/if}
 
@@ -124,12 +121,11 @@
       {/if}
 
       <ButtonImage
-      buttonFunction={userLogout}
-      imgSrc="/icons/logout.png"
-      imgAlt="Logout"
-      imgWidth="35px"
+        buttonFunction={userLogout}
+        imgSrc="/icons/logout.png"
+        imgAlt="Logout"
+        imgWidth="35px"
       />
-
     </div>
   {/if}
 </div>
@@ -153,9 +149,6 @@
         >
       </li>
     {/if}
-    
-    <!-- browsing here to see the default Svelte 404 page. -->
-    <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
     <div class="searchSection">
@@ -196,9 +189,9 @@
     }
 
     & .userIcon {
-        width: 50px;
-        border-radius: 50%; 
-        border: 2px solid #9EB384; 
+      width: 50px;
+      border-radius: 50%;
+      border: 2px solid #9eb384;
     }
   }
 
@@ -208,8 +201,14 @@
     align-items: center;
     height: 60px;
     background-color: #435334;
-    opacity: 0.9;
+    /* opacity: 0.9; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    padding: 10px 0;
+    width: 100%;
+    z-index: 1000;
 
     & > ul {
       list-style: none;
@@ -232,7 +231,7 @@
         content: "";
         display: block;
         height: 5px;
-        background-color: #CEDEBD;
+        background-color: #cedebd;
         /* background-color: #fad094; */
         bottom: 0;
         width: 100%;
@@ -243,7 +242,7 @@
       content: "";
       display: block;
       height: 5px;
-      background-color: #CEDEBD;
+      background-color: #cedebd;
 
       bottom: 0;
       width: 0%;
