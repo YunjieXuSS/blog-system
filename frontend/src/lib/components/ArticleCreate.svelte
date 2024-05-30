@@ -2,6 +2,16 @@
   import { goto } from "$app/navigation";
   import { ARTICLES_URL, BASE_URL } from "../js/apiUrls.js";
   import Editor from "@tinymce/tinymce-svelte";
+  import PopupBox from "./PopupBox.svelte";
+  let showPopupBox = false;
+  let popupMessage = "";
+  let redirectUrl = "/";
+
+  function handleUpdatePopupBox() {
+    popupMessage = "Article has been created successfully.";
+    showPopupBox = true;
+    redirectUrl = `/article/${newArticle.articleId}`;
+  }
 
   let value = "";
   let title = "";
@@ -44,7 +54,11 @@
     const newArticle = await res.json();
 
     if (res.ok) {
-      goto(`/article/${newArticle.articleId}`, { invalidateAll: true });
+      popupMessage = "Article has been created successfully.";
+      showPopupBox = true;
+      redirectUrl = `/article/${newArticle.articleId}`;
+      invalidate(ARTICLES_URL);
+      // goto(`/article/${newArticle.articleId}`, { invalidateAll: true });
     } else {
       console.log("error", `Create article failed! ${res.status} ${res.statusText}`);
     }
@@ -114,6 +128,7 @@
     <button class="submit" on:click={handleSubmit}>Submit</button>
   </form>
 </main>
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
 <style>
   .hidden {

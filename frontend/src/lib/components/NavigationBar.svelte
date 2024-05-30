@@ -143,7 +143,7 @@
 
     {#if showArticleLink && articleId}
       <li>
-        <a href={`${articlePath}/${articleId}`} class:active={path === `/article/${articleId}/`}
+        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}
           >Article</a
         >
       </li>
