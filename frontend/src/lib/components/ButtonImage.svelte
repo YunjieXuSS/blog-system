@@ -8,12 +8,13 @@
   export let buttonWidth = "100%";
   export let borderRadius = "4px";
   export let imgButtonLabel = "";
+  export let imgWidth = "50px";
 </script>
 
 <button
   on:click={buttonFunction}
   style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};">
-  <img src="{imgSrc}" alt="{imgAlt}" height="30px"/><p>{imgButtonLabel}</p>
+  <img src="{imgSrc}" alt="{imgAlt}" height="{imgWidth}"/><p>{imgButtonLabel}</p>
 </button>
 
 <style>
@@ -27,13 +28,13 @@
     justify-content: center;
     align-items: center;
     border-style: none;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     cursor: pointer;
     margin: 0;
+    padding: 0;
     max-width: 200px;
-    min-height: 50px;
-    min-width: 50px;
-    padding: 9px 20px 8px;
+    min-height: 20px;
+    min-width: 20px;
     position: relative;
     text-align: center;
   }

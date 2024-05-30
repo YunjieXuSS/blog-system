@@ -64,9 +64,9 @@
       <ButtonText
         buttonFunction={processLogin}
         buttonDisabled={!isvalidation}
-        buttonLabel="Log in"
-        bckgColour="#B5C0D0"
-        txtColour="#F5E8DD"
+        buttonLabel="Login"
+        txtColour="white"
+        bckgColour="#435334"
         buttonWidth="140px"
       />
     </div>
@@ -84,6 +84,7 @@
     justify-content: center;
     margin: 0;
     border: 10px solid white;
+    background-color: white;
     padding: 40px;
     height: 35em;
     width: 32em;
