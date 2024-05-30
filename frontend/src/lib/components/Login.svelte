@@ -71,9 +71,9 @@
       <ButtonText
         buttonFunction={processLogin}
         buttonDisabled={!isvalidation}
-        buttonLabel="Log in"
-        bckgColour="#B5C0D0"
-        txtColour="#F5E8DD"
+        buttonLabel="Login"
+        txtColour="white"
+        bckgColour="#435334"
         buttonWidth="140px"
       />
     </div>

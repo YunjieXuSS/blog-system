@@ -44,8 +44,11 @@
   }
 
   .article-list {
+    margin: 0 auto;
     column-count: 3;
     column-gap: 30px;
+    max-width: 1260px;
+    /* border: solid black 1px; */
   }
 
   .article {
@@ -55,6 +58,8 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
+    min-width: 340px;
+    max-width: 400px;
     box-sizing: border-box;
   }
 
@@ -75,6 +80,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 0;
+    max-width: 1260px;
   }
 
   .sortingSectionDiv {
@@ -93,7 +99,7 @@
     color: #555;
   }
 
-  @media (max-width: 1200px) {
+  /* @media (max-width: 1200px) {
     .article-list {
       column-count: 2;
     }
@@ -103,5 +109,5 @@
     .article-list {
       column-count: 1;
     }
-  }
+  } */
 </style>

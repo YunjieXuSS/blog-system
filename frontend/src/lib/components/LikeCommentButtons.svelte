@@ -5,7 +5,7 @@
 
   export let data;
   export let articleId;
-  export let numComments = 0;
+  // export let numComments = 0;
   export let isLiked;
 
   const heartEmpty = "/heartEmpty.png";
@@ -42,6 +42,9 @@
     comments.scrollIntoView({ behavior: 'smooth'});
   }
 
+  let numLikes;
+  $:numLikes = getNumLikes().then((res) => numLikes = res);
+
   async function getNumLikes(){
     const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
     if (response.status === 200) {
@@ -51,11 +54,17 @@
     }
   }
 
-  async function getNumComments() {
-  }
+  let numComments;
+  $:numComments = getNumComments().then((res) => numComments = res);
 
-  let numLikes;
-  $:numLikes = getNumLikes().then((res) => numLikes = res);
+  async function getNumComments() {
+    const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
+    if (response.status === 200) {
+      const body = await response.json();
+      const numLikes = await body.likesCount
+      return numLikes;
+    }
+  }
 
 </script>
 

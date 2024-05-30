@@ -5,6 +5,7 @@
   import SearchBox from "./SearchBox.svelte";
   import { searchArticles } from "../js/utils.js";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import ButtonImage from "$lib/components/ButtonImage.svelte";
   import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
@@ -100,20 +101,21 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi!</span>
+      <!-- <span class="userName"> Hi!</span> -->
       <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       <ButtonText
         buttonLabel="Login"
         buttonFunction={userLogin}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#9EB384"
+        txtColour="#435334"
+        buttonWidth="100px"
       />
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {loginUser.userName}!</span>
+      <!-- <span class="userName"> Hi {loginUser.userName}!</span> -->
       {#if imageLoaded == false}
         <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
       {:else}
@@ -123,11 +125,18 @@
           alt="userIcon"
         />
       {/if}
-      <ButtonText
+      <!-- <ButtonText
         buttonLabel="Logout"
         buttonFunction={userLogout}
-        bckgColour="#F5E8DD"
-        txtColour="#B5C0D0"
+        bckgColour="#FFC5C5"
+        txtColour="#526146"
+        buttonWidth="100px"
+      /> -->
+      <ButtonImage
+      buttonFunction={userLogout}
+      imgSrc="/icons/logout.png"
+      imgAlt="Logout"
+      imgWidth="35px"
       />
     </div>
   {/if}
@@ -169,10 +178,11 @@
 
 <style>
   .titleDiv {
-    margin: 0 30px 0 25px;
+    margin: 0;
     height: 100px;
+    /* background-color: #ebf2e3; */
     background-color: white;
-    padding: 0 20px 0 20px;
+    padding: 0 50px 0 45px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -199,7 +209,7 @@
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    background-color: #b5c0d0;
+    background-color: #435334;
 
     & > ul {
       list-style: none;
@@ -222,7 +232,8 @@
         content: "";
         display: block;
         height: 5px;
-        background-color: #f5e8dd;
+        background-color: #CEDEBD;
+        /* background-color: #fad094; */
 
         bottom: 0;
         width: 100%;
@@ -233,7 +244,7 @@
       content: "";
       display: block;
       height: 5px;
-      background-color: #f5e8dd;
+      background-color: #CEDEBD;
 
       bottom: 0;
       width: 0%;
