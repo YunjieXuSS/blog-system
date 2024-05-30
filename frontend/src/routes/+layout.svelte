@@ -10,7 +10,6 @@
   export let data ;
 
   let backgroundColor = '#f0f8ff'; 
-  let backgroundColor = '#f0f8ff'; 
 </script>
 
 <div class="background" style="--background-color: {backgroundColor}">
