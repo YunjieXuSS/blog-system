@@ -10,7 +10,16 @@
   export let data ;
 
   let backgroundColor = '#f0f8ff'; 
+  let backgroundColor = '#f0f8ff'; 
 </script>
+
+<div class="background" style="--background-color: {backgroundColor}">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
 
 <div class="background" style="--background-color: {backgroundColor}">
   <div class="shape"></div>
