@@ -1,12 +1,13 @@
 <script>
-
   import { goto } from "$app/navigation";
   export let popupMessage = "Mission Completed!";
   export let redirectUrl = "/";
   export let countdown = 5;
   export let showPopupBox = false;
+
   let countdownTime;
   let nIntervId = null;
+  let nTimeoutId = null;
 
   function handlecountdown() {
     countdownTime -= 1;
@@ -20,6 +21,7 @@
   function closePopupBox() {
     showPopupBox = false;
     clearInterval(nIntervId);
+    clearTimeout(nTimeoutId);
     goto(redirectUrl, { replaceState: true, invalidateAll: true });
   }
 
@@ -29,8 +31,11 @@
     if (nIntervId) {
       clearInterval(nIntervId);
     }
+    if (nTimeoutId) {
+      clearTimeout(nTimeoutId);
+    }
     nIntervId = setInterval(handlecountdown, 1000);
-    setTimeout(() => {
+    nTimeoutId = setTimeout(() => {
       closePopupBox();
     }, countdown * 1000);
   }
@@ -59,6 +64,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
   }
   .content_container {
     background: white;
@@ -67,10 +73,10 @@
     box-shadow: 0 2px 10px #2d2d2d;
     text-align: center;
     width: 400px;
-    height: 130px;
+    height: 150px;
   }
   .content_container button {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px 20px;
     border: none;
     background-color: #268600;
