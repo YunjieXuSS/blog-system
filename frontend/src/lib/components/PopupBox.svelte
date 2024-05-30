@@ -68,7 +68,7 @@
     box-shadow: 0 2px 10px #2d2d2d;
     text-align: center;
     width: 400px;
-    height: 130px;
+    height: 150px;
   }
   .content_container button {
     margin-top: 10px;
