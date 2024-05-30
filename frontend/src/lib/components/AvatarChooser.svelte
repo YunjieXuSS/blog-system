@@ -3,15 +3,15 @@
   import { onMount } from "svelte";
   export let onMountTriggered = true;
   let images = [
-    "/defaultAvatars/userDefaultIcon1.png",
-    "/defaultAvatars/userDefaultIcon2.png",
-    "/defaultAvatars/userDefaultIcon3.png",
-    "/defaultAvatars/userDefaultIcon4.png",
-    "/defaultAvatars/userDefaultIcon5.png",
-    "/defaultAvatars/userDefaultIcon6.png",
-    "/defaultAvatars/userDefaultIcon7.png",
-    "/defaultAvatars/userDefaultIcon8.png",
-    "/defaultAvatars/userDefaultIcon9.png",
+    "/images/userDefaultIcon1.png",
+    "/images/userDefaultIcon2.png",
+    "/images/userDefaultIcon3.png",
+    "/images/userDefaultIcon4.png",
+    "/images/userDefaultIcon5.png",
+    "/images/userDefaultIcon6.png",
+    "/images/userDefaultIcon7.png",
+    "/images/userDefaultIcon8.png",
+    "/images/userDefaultIcon9.png",
   ];
   //update the path of images
   function selectImage(image) {

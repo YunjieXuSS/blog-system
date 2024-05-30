@@ -60,7 +60,7 @@
         }
 
         loadingFlag = false;
-      }, 2000);
+      }, 1500);
     }
   };
 </script>

@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   export let data;
   onMount(() => {
+    console.log(data.user);
     if (!data.user) {
       goto("/login", { replace: true });
     }

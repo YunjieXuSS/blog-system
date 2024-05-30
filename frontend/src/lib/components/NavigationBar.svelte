@@ -40,7 +40,6 @@
 
   async function userLogout() {
     try {
-
       // Make the logout request to the server
       const response = await fetch(`${USER_URL}/logout`, {
         method: "POST",
@@ -67,26 +66,11 @@
     await searchArticles();
   }
 
-  let imageLoaded = true;
-  function handleImageError(event) {
-    imageLoaded = false;
-  }
-
-  onMount(() => {
-    if (isLoggedIn === false) return;
-    const img = new Image();
-    img.src = SERVER_URL + loginUser.avatar;
-    img.onerror = handleImageError;
-  });
-
   import { articleInfo } from "../js/store.js";
-
-
 
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
-
 
   articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
@@ -101,39 +85,36 @@
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
-      <!-- <span class="userName"> Hi!</span> -->
-      <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-
-      <ButtonText
-        buttonLabel="Login"
-        buttonFunction={userLogin}
-        bckgColour="#9EB384"
-        txtColour="#435334"
-        buttonWidth="80px"
-        buttonHeight="42px"
-      />
-      
+      <button class="login-button" on:click={userLogin}
+        ><img class="login" src="/icons/login.png" alt="userDefaultIcon" /></button
+      >
     </div>
   {/if}
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
       <!-- <span class="userName"> Hi {loginUser.userName}!</span> -->
-      {#if imageLoaded == false}
-        <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      {:else}
-        <a href="/profile/edit">
-          <img class="userIcon" src={SERVER_URL + data.user.avatar} alt="userIcon" />
-        </a>
-      {/if}
+      <a href="/profile/edit">
+        <img
+          class="userIcon"
+          src={SERVER_URL + data.user.avatar}
+          alt="userIcon"
+          on:load={ (event) => {
+            console.log("loaded");
+          }}
+          on:error={ (event) => {
+            event.target.src = "/userDefaultIcon.png";
+          }}
+        />
+      </a>
 
       <ButtonImage
-      buttonFunction={userLogout}
-      imgSrc="/icons/logout.png"
-      imgAlt="Logout"
-      imgWidth="35px"
+        buttonFunction={userLogout}
+        imgSrc="/icons/logout.png"
+        imgAlt="Logout"
+        imgWidth="35px"
+        buttonWidth="40px"
       />
-
     </div>
   {/if}
 </div>
@@ -145,7 +126,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path.startsWith(`/profile/${data.user.userName}`)}>Blog</a
+          class:active={path.startsWith("/profile/")}>Blog</a
         >
       </li>
     {/if}
@@ -157,7 +138,7 @@
         >
       </li>
     {/if}
-    
+
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
@@ -182,6 +163,7 @@
     margin: 0;
     height: 100px;
     background-color: white;
+    opacity: 0.9;
     padding: 0 50px 0 45px;
     display: flex;
     justify-content: space-between;
@@ -200,9 +182,11 @@
     }
 
     & .userIcon {
-        width: 50px;
-        border-radius: 50%; 
-        border: 2px solid #9EB384; 
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #9eb384;
+      display: block;
     }
   }
 
@@ -210,10 +194,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    min-height: 60px;
     background-color: #435334;
     opacity: 0.9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 
     & > ul {
       list-style: none;
@@ -236,7 +221,7 @@
         content: "";
         display: block;
         height: 5px;
-        background-color: #CEDEBD;
+        background-color: #cedebd;
         /* background-color: #fad094; */
         bottom: 0;
         width: 100%;
@@ -247,7 +232,7 @@
       content: "";
       display: block;
       height: 5px;
-      background-color: #CEDEBD;
+      background-color: #cedebd;
 
       bottom: 0;
       width: 0%;
@@ -274,5 +259,16 @@
   .date-search {
     display: flex;
     align-items: center;
+  }
+
+  .login {
+    width: 50px;
+  }
+
+  .login-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
 </style>
