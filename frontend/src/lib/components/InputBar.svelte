@@ -120,7 +120,7 @@
     margin-top: 0.5em;
     margin-bottom: 1em;
     border: 1px solid #ddd;
-    background-color: #ddd;
+    background-color: "white";
     color: #606060;
     &::placeholder {
       color: #909090;

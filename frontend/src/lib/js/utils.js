@@ -25,8 +25,7 @@ export async function searchArticles() {
         if(query[key]!==undefined) queryList.push(`${key}=${query[key]}`);
     });
     const queryStatement = queryList.join("&");
-    console.log("my final query statement",queryStatement);
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles?${queryStatement}`);
+    const response = await fetch(`${PUBLIC_API_BASE_URL}/articles?${queryStatement}`, {credentials: "include"});
     if(response.status=== 200) {
         const articles = await response.json();
         articleStore.set(articles);

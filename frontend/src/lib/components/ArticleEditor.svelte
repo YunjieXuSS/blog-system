@@ -2,6 +2,11 @@
   import { goto } from "$app/navigation";
   import { ARTICLES_URL, BASE_URL } from "./../js/apiUrls.js";
   import Editor from "@tinymce/tinymce-svelte";
+  import PopupBox from "./PopupBox.svelte";
+  let showPopupBox = false;
+  let popupMessage = "";
+  let redirectUrl = "/";
+
   export let article;
   let value = article.content;
   let title = article.title;
@@ -27,6 +32,12 @@
     body.set("title", title);
   }
 
+  function handleUpdatePopupBox() {
+    popupMessage = "Article has been updated.";
+    showPopupBox = true;
+    redirectUrl = `/article/${articleId}`
+  }
+
   async function handleSubmit() {
     if (onTitleError || onValueError) return;
     if (fileToUpload.length) {
@@ -40,7 +51,9 @@
       body
     });
     if (res.ok) {
-      goto(`/article/${articleId}`, { invalidateAll: true });
+      handleUpdatePopupBox();
+      invalidate(ARTICLES_URL);
+      // goto(`/article/${articleId}`, { invalidateAll: true });
     }
   }
 
@@ -56,8 +69,6 @@
       "undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist",
     menubar: "favxs file edit view insert format tools table help"
   };
-
-  $: console.log({ imgSrc, fileToUpload });
 </script>
 
 <main>
@@ -100,6 +111,7 @@
     <button class="submit" on:click={handleSubmit}>Submit</button>
   </form>
 </main>
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
 
 <style>
   .hidden {

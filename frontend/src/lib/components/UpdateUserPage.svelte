@@ -81,11 +81,7 @@
   
       // Create a FormData object to send, rather than sending JSON as usual.
       const formData = new FormData();
-      console.log("firstName", firstName);
-      console.log("user.firstName", user.firstName);
       if (firstName !== user.firstName) {
-        console.log("firstName", firstName);
-        console.log("user.firstName", user.firstName);
         formData.append("firstName", firstName);
       }
       if (lastName !== user.lastName) {
