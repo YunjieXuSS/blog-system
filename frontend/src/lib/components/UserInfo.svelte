@@ -15,7 +15,8 @@
     goto("/profile/edit/", { replaceState: true });
   }
 
-  let showSettings = hoster===data.user;
+  $: showSettings = hoster.userId===data.user.userId;
+  
 </script>
 
 <div class="container">

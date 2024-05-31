@@ -131,7 +131,7 @@
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if isLoggedIn}
       <li>
-        <a href="/profile/{data.user.userName}" class:active={path.startsWith("/profile/")}>Blog</a>
+        <a href="/profile/{data.user.userName}" class:active={path === `/profile/${data.user.userName}`}>My Blog</a>
       </li>
     {/if}
 
