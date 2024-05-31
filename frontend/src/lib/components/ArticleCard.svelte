@@ -5,19 +5,6 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
 
-  let imageLoaded = true;
-  function handleImageError(event) {
-    imageLoaded = false;
-  }
-
-  onMount(() => {
-    const img = new Image();
-    img.src = SERVER_URL + article.imgUrl;
-    img.onerror = () => {
-      handleImageError();
-    };
-  });
-
   function stripHtml(html) {
     if (browser) {
       const doc = new DOMParser().parseFromString(html, "text/html");
@@ -27,11 +14,9 @@
 </script>
 
 <article class="article-container">
-  {#if imageLoaded}
-    <div class="image-container">
-      <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" />
-    </div>
-  {/if}
+  <div class="image-container">
+    <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" on:error={(e)=>{e.target.style.display="none"}} />
+</div>
   <h1 class="article-title">{article.title}</h1>
   <div class="authorInfo">
     <p class="user"><strong>@ </strong>{article.userName}</p>

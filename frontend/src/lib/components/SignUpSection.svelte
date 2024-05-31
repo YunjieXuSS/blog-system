@@ -30,8 +30,8 @@
     padding: 40px;
     height: 35em;
     width: 19em;
-    background-color: #9EB384;
-    border: 10px solid #9EB384;
+    background-color: #9eb384;
+    border: 10px solid #9eb384;
     color: white;
 
     & h1 {
@@ -50,5 +50,11 @@
     .newHere {
       width: 25em;
     }
-}
+  }
+
+  @media (max-width: 600px) {
+    .newHere {
+      width: 100%;
+    }
+  }
 </style>

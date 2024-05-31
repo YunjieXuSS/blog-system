@@ -34,6 +34,8 @@
     confirmPassword: false
   };
 
+
+
   //get all the validation results from the SignUpTable dispatch event
   function handleValidation(event) {
     //create a new array to store the validation results
@@ -66,7 +68,7 @@
       if (key == "avatar" && filesToUpload.length > 0 && value !== undefined) {
         body.set(key, value);
       } else if (key == "avatar" && value == undefined) {
-        body.set(key, `/images${selectedImage.substring(15)}`);
+        body.set(key, `/images${selectedImage.substring(7)}`);
       } else if (key == "") {
       } else {
         body.set(key, value);
@@ -210,6 +212,7 @@
 
       & > .avatar-container {
         width: 20em;
+        margin: 0 30px;
       }
     }
     & .submitButton {
@@ -246,5 +249,18 @@
     /* .avatar-container {
       padding: 0 auto;
     } */
+
+    @media (max-width: 600px) {
+    .page-container {
+      width: 100%;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+  }
   }
 </style>

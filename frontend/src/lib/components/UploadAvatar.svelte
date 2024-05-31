@@ -1,6 +1,7 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
   import { onMount } from "svelte";
+  import { SERVER_URL } from "../js/apiUrls";
 
   export let filesToUpload = "";
   export let selectedImage = "";
@@ -21,12 +22,14 @@
   onMount(() => {
     selectedImage = "/userDefaultIcon.png";
   });
+
+  $: console.log(selectedImage);
 </script>
 
 <form>
   <div class="img-container">
     <!-- <div class="img-bg-container">  -->
-    <img id="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />
+    <img id="userIcon" src={selectedImage} alt="userDefaultIcon" />
     <!-- </div> -->
   </div>
   <div class="upload">
@@ -93,6 +96,19 @@
     width: 100%;
     margin: 0;
     display: block;
+    border-radius: 50%;
+  }
+
+  @media (max-width: 600px) {
+    #userIcon {
+    display: flex;
+    justify-content: center;
+    width: 250px;
+    height: 250px;
+
+    margin: 0 auto;
+    display: block;
+  }
   }
 
   .upload {

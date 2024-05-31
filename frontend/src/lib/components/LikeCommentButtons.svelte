@@ -2,17 +2,28 @@
   import ButtonImage from "$lib/components/ButtonImage.svelte";
   import { goto } from "$app/navigation";
   import { ARTICLES_URL } from "$lib/js/apiUrls.js";
+  import { onMount } from "svelte";
+  import Modal from "$lib/components/Modal.svelte";
+  import { page } from "$app/stores";
 
   export let data;
   export let articleId;
   export let isLiked;
   export let commentButtonFunction = async () => {};
+  export let numComments;
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
+  const redirectUrl = "/login";
 
   let numLikes;
-  getNumLikes().then((res) => numLikes = res);
+  let showPopupBox = false;
+  $: path = $page.url.pathname;
+
+  onMount(() => {
+    getNumLikes().then((res) => numLikes = res);
+  });
+  
 
   async function toggleLike() {
     const isLoggedIn = data.isLoggedIn;
@@ -35,8 +46,8 @@
       getNumLikes().then((res) => numLikes = res);
       }
     }
-    else {
-      goto("/login", { replaceState: true });
+    else if(path.startsWith("/article")){
+      showPopupBox = true;
     }
   }
 
@@ -49,7 +60,7 @@
     }
   }
 
-  let numComments;
+  // let numComments;
   $: getNumComments().then((res) => numComments = res);
 
   async function getNumComments() {
@@ -84,6 +95,27 @@
       imgWidth="25px"
     />
   </div>
+
+  {#if showPopupBox}
+<Modal
+  bind:showPopupBox
+  description={"Login to like the article ~"}
+  buttons={[
+    {
+      text: "Log in",
+      onClick: () => {
+        goto(redirectUrl);
+      }
+    }
+  ]}
+  countdown={100000}
+  countdownCallback={() => {
+    goto(redirectUrl);
+  }}
+  countdownMessage={"Redirecting"}
+/>
+<!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
+{/if}
 
 </div>
 

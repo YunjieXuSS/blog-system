@@ -27,15 +27,12 @@
 
 <div class="home-articles">
   <div class="sort-bar">
-    {#if path === "/"}
-      <p class="article-p">Articles by everyone</p>
-      <div class="sortingSectionDiv">
-        <p class="sort-p">Sort by:</p>
-        <SortingSection bind:sortingCategory />
-      </div>
-    {:else}
-      <p class="article-p">Articles by you</p>
-    {/if}
+{#if path ==="/"}
+    <p class="article-p">Articles by everyone</p>
+    <div class="sortingSectionDiv"><p class="sort-p">Sort by:</p><SortingSection bind:sortingCategory /></div>
+{:else} 
+    <p class="article-p">Articles <strong>@{path.substring(9).includes("/")?path.substring(9):path.substring(9)}</strong></p>
+{/if}
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>
@@ -80,11 +77,13 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
     margin-bottom: 20px;
+    padding-bottom: 10px;
     display: inline-block;
     width: 100%;
     min-width: 340px;
     max-width: 400px;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .article:hover {

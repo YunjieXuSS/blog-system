@@ -60,6 +60,7 @@
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
+  let numComments = 0;
 
   function goToComments() {
     const comments = document.querySelector(".commentsDiv");
@@ -93,10 +94,11 @@
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} commentButtonFunction={goToComments} />
+  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} {numComments} commentButtonFunction={goToComments} />
+
 
   <div class="commentsDiv">
-    <CommentList {authorId} loginUserId={loginUser.userId} />
+    <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
   </div>
 </main>
 
@@ -106,6 +108,14 @@
     width: 900px;
     margin: 0 auto;
   }
+
+  @media (max-width: 600px) {
+    main {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
   .articleDiv {
     position: relative;
   }
