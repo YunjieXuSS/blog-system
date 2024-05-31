@@ -2,18 +2,11 @@
   import AvatarUpload from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
-  import { createAccount } from "../js/utils.js";
-  import {
-    validateRegisterUserName,
-    validateRegisterPassword,
-    validateConfirmPassword,
-    validateRegisterEmail,
-    validateRegisterDate
-  } from "../js/validation.js";
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
-  import { onMount } from "svelte";
+
+  
 
   let firstName, lastName, userName;
   let password;
@@ -23,6 +16,8 @@
   let filesToUpload;
   let selectedImage = "";
   let onMountTriggered = true;
+  let imgInput;
+  let isSelectedDefaultImg = true;
 
   let validationResults = {
     firstName: false,
@@ -33,7 +28,6 @@
     password: false,
     confirmPassword: false
   };
-
 
 
   //get all the validation results from the SignUpTable dispatch event
@@ -60,6 +54,7 @@
       description,
       avatar: userRegisterImage
     };
+    console.log("userRegisterData", userRegisterData);  
 
     //refactor the code to use the createAccount function
     // Create a FormData object to send, rather than sending JSON as usual.
@@ -78,16 +73,7 @@
     return body;
   }
 
-  async function handleRegister(
-    firstName,
-    lastName,
-    email,
-    dateOfBirth,
-    userName,
-    password,
-    description,
-    filesToUpload
-  ) {
+  async function handleRegister() {
     try {
       const body = createFormData();
       // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
@@ -121,14 +107,19 @@
     showPopupBox = true;
   }
 
+  function handleSelectDefaultImg() {
+   imgInput.value = '';
+   isSelectedDefaultImg=true;
+  }
+
 </script>
 
 <div class="page-container">
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload bind:selectedImage />
-      <AvatarChooser bind:selectedImage {onMountTriggered} />
+      <AvatarUpload bind:filesToUpload bind:selectedImage   bind:imgInput bind:isSelectedDefaultImg/>
+      <AvatarChooser bind:selectedImage {onMountTriggered}  on:selectedImage={handleSelectDefaultImg} />
     </div>
     <div>
       <SignUpTable
@@ -147,16 +138,7 @@
   <button
     class="submitButton"
     class:valid={allValid}
-    on:click={handleRegister(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
+    on:click={handleRegister}
     disabled={!allValid}
   >
     Create account

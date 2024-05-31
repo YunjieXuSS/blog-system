@@ -1,29 +1,34 @@
 <script>
-  import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
-  import { onMount } from "svelte";
-  import { SERVER_URL } from "../js/apiUrls";
-
   export let filesToUpload = "";
   export let selectedImage = "";
+  export let isSelectedDefaultImg = true;
+  export let imgInput;
 
-  let messageToSend;
+  let isImgSizeLarge = false;
+  let warnMessage = "";
 
-  let serverResponse = null;
-
-  function previewImage(event) {
-    const [file] = imgInp.files;
-    if (file) {
-      userIcon.src = URL.createObjectURL(file);
+  $: {
+    if (filesToUpload && filesToUpload.length > 0) {
+      isImgSizeLarge = filesToUpload[0].size > 8388608 ? true : false;
+      const [file] = imgInp.files;
+      selectedImage =
+        filesToUpload.length > 0 ? URL.createObjectURL(file) : "/images/userDefaultIcon1.png";
+      warnMessage = isImgSizeLarge
+        ? "The image size is Larger than 8MB. Please choose a smaller image."
+        : "The image size is right.";
+      isSelectedDefaultImg = false;
     } else {
-      userIcon.src = "/userDefaultIcon.png";
+      selectedImage = "/images/userDefaultIcon1.png";
+      isImgSizeLarge = false;
     }
   }
 
-  onMount(() => {
-    selectedImage = "/userDefaultIcon.png";
-  });
-
-  $: console.log(selectedImage);
+  $: AllValid =
+    (!isImgSizeLarge && filesToUpload.length > 0) ||
+    (!isImgSizeLarge && filesToUpload.length < 1 && isSelectedDefaultImg == true);
+  $: filesToUpload.length > 0 ? (isSelectedDefaultImg = false) : (isSelectedDefaultImg = true);
+  $: isSelectedDefaultImg ? (warnMessage = "The image size should be less than 8MB") : "";
+  $: isSelectedDefaultImg ? (isImgSizeLarge = false) : "";
 </script>
 
 <form>
@@ -34,16 +39,21 @@
   </div>
   <div class="upload">
     <label for="imageFile">Choose a PNG or JPG to upload:</label>
-    <input
-      id="imgInp"
-      type="file"
-      multiple={false}
-      name="image-file"
-      accept="image/png, image/jpeg"
-      bind:files={filesToUpload}
-      on:change={previewImage}
-      required
-    />
+    <div>
+      <p class="LargePicWarn" class:active={!AllValid}>{warnMessage}</p>
+      <div>
+        <input
+          id="imgInp"
+          type="file"
+          multiple={false}
+          name="image-file"
+          accept="image/png, image/jpeg"
+          bind:files={filesToUpload}
+          bind:this={imgInput}
+          required
+        />
+      </div>
+    </div>
   </div>
 </form>
 
@@ -54,12 +64,16 @@
     padding-top: 45px;
 
     & .img-container {
-      max-width: 20em;
+      max-width: 18em;
       width: 100%;
-      height: 100%;
-      display: block;
+      height: 18em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 10px;
-
+      background-color: rgb(155, 155, 155);
+      border-radius: 50%;
+      overflow: hidden;
       /* & .img-bg-container {
         width: 300px;
         height: 300px;
@@ -99,16 +113,24 @@
     border-radius: 50%;
   }
 
+  .LargePicWarn {
+    white-space: normal;
+    width: 100%;
+  }
+  .active {
+    color: red;
+  }
+
   @media (max-width: 600px) {
     #userIcon {
-    display: flex;
-    justify-content: center;
-    width: 250px;
-    height: 250px;
+      display: flex;
+      justify-content: center;
+      width: 250px;
+      height: 250px;
 
-    margin: 0 auto;
-    display: block;
-  }
+      margin: 0 auto;
+      display: block;
+    }
   }
 
   .upload {

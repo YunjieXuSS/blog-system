@@ -179,7 +179,7 @@
   <div class="content-container">
     <div class="avatar-container">
       <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
-      <UpdateAvatar bind:filesToUpload {selectedImage} {userIconURL} />
+      <UpdateAvatar bind:filesToUpload {selectedImage}  />
       <AvatarChooser bind:selectedImage {onMountTriggered} />
       <!-- /userDefaultIcon.png -->
     </div>
@@ -224,8 +224,6 @@
 
 <ConfirmPopupBox
   {ConfirmPopupMessage}
-  {resultMsg}
-  {redirectUrl}
   {confirmFunction}
   bind:showConfirmPopupBox
 />

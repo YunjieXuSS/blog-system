@@ -11,6 +11,10 @@
   export let validate = async (value) => {
     return { result: true, errorMsg: "" };
   };
+  //create a dispatcher to send the validation result to the SignUpTable.svelte
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+  
   export let validateResult = true;
   let errorMsg = "";
   async function checkValue() {
@@ -23,9 +27,7 @@
     errorMsg = "";
     validateResult = true;
   }
-  //create a dispatcher to send the validation result to the SignUpTable.svelte
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  
 </script>
 
 <div class="input-bar">
