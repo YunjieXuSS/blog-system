@@ -41,7 +41,7 @@
         {placeholder}
         {maxlength}
         bind:value
-        on:blur={checkValue}
+        on:input={checkValue}
         on:focus={clearError}
       />
     {:else if type === "email"}

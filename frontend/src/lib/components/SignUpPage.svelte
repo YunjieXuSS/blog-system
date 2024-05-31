@@ -1,12 +1,11 @@
 <script>
-  import AvatarUpload from "./UploadAvatar.svelte";
+  import UploadAvatar from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
 
-  
 
   let firstName, lastName, userName;
   let password;
@@ -18,6 +17,8 @@
   let onMountTriggered = true;
   let imgInput;
   let isSelectedDefaultImg = true;
+  let imageIsLegal = false;
+ 
 
   let validationResults = {
     firstName: false,
@@ -29,7 +30,6 @@
     confirmPassword: false
   };
 
-
   //get all the validation results from the SignUpTable dispatch event
   function handleValidation(event) {
     //create a new array to store the validation results
@@ -40,7 +40,7 @@
   //add a new property to the object to store the result
   //Object.values(validationResults) means put all the values of the object into an array
   //every(Boolean) means check if all the values are true
-  $: allValid = Object.values(validationResults).every(Boolean);
+  $: allValid = Object.values(validationResults).every(Boolean)&&imageIsLegal;
 
   function createFormData() {
     const userRegisterImage = filesToUpload[0];
@@ -54,7 +54,6 @@
       description,
       avatar: userRegisterImage
     };
-    console.log("userRegisterData", userRegisterData);  
 
     //refactor the code to use the createAccount function
     // Create a FormData object to send, rather than sending JSON as usual.
@@ -88,7 +87,11 @@
       if (response.status === 201) {
         // Redirect to the login page if successful.
         handlePopupBox();
-      } else {
+      } else if( response.status === 413){
+        handleImagePopupBox();
+        imgInput.value = '';
+      }
+      else {
         // If there was an error, log the error to the console.
         console.error(`Failed to register user.StatusCode: ${response.status}`);
       }
@@ -107,6 +110,13 @@
     showPopupBox = true;
   }
 
+  function handleImagePopupBox() {
+    popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
+    redirectUrl = "/signup";
+    imageIsLegal = false;
+    showPopupBox = true;
+  }
+
   function handleSelectDefaultImg() {
    imgInput.value = '';
    isSelectedDefaultImg=true;
@@ -118,7 +128,7 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload bind:selectedImage   bind:imgInput bind:isSelectedDefaultImg/>
+      <UploadAvatar bind:filesToUpload bind:selectedImage   bind:imgInput bind:isSelectedDefaultImg bind:imageIsLegal/>
       <AvatarChooser bind:selectedImage {onMountTriggered}  on:selectedImage={handleSelectDefaultImg} />
     </div>
     <div>

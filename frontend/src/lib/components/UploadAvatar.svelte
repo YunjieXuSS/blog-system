@@ -4,17 +4,18 @@
   export let isSelectedDefaultImg = true;
   export let imgInput;
 
-  let isImgSizeLarge = false;
+  export let isImgSizeLarge = false;
   let warnMessage = "";
+  export let imageIsLegal = false;
 
   $: {
     if (filesToUpload && filesToUpload.length > 0) {
-      isImgSizeLarge = filesToUpload[0].size > 8388608 ? true : false;
+      isImgSizeLarge = filesToUpload[0].size > 2097152 ? true : false;
       const [file] = imgInp.files;
       selectedImage =
         filesToUpload.length > 0 ? URL.createObjectURL(file) : "/images/userDefaultIcon1.png";
       warnMessage = isImgSizeLarge
-        ? "The image size is Larger than 8MB. Please choose a smaller image."
+        ? "The image size is Larger than 2MB. Please choose a smaller image."
         : "The image size is right.";
       isSelectedDefaultImg = false;
     } else {
@@ -23,12 +24,12 @@
     }
   }
 
-  $: AllValid =
+  $: imageIsLegal =
     (!isImgSizeLarge && filesToUpload.length > 0) ||
     (!isImgSizeLarge && filesToUpload.length < 1 && isSelectedDefaultImg == true);
   $: filesToUpload.length > 0 ? (isSelectedDefaultImg = false) : (isSelectedDefaultImg = true);
-  $: isSelectedDefaultImg ? (warnMessage = "The image size should be less than 8MB") : "";
-  $: isSelectedDefaultImg ? (isImgSizeLarge = false) : "";
+  $: isSelectedDefaultImg ? (warnMessage = "The image size should be less than 2MB") : "";
+  $: imageIsLegal ? "": (warnMessage = "The image size is Larger than 2MB. Please choose a smaller image.") ;
 </script>
 
 <form>
@@ -40,7 +41,7 @@
   <div class="upload">
     <label for="imageFile">Choose a PNG or JPG to upload:</label>
     <div>
-      <p class="LargePicWarn" class:active={!AllValid}>{warnMessage}</p>
+      <p class="LargePicWarn" class:active={!imageIsLegal}>{warnMessage}</p>
       <div>
         <input
           id="imgInp"
