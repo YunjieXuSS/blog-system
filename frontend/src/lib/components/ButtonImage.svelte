@@ -3,7 +3,7 @@
 <script>
   export let imgSrc;
   export let imgAlt;
-  export let buttonFunction = () => {};
+  export let buttonFunction = async () => {};
   export let bckgColour = "transparent";
   export let buttonWidth = "100%";
   export let borderRadius = "4px";

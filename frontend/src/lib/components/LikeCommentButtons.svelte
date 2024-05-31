@@ -6,7 +6,7 @@
   export let data;
   export let articleId;
   export let isLiked;
-  export let commentButtonFunction = () => {};
+  export let commentButtonFunction = async () => {};
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";

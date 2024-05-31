@@ -62,7 +62,7 @@
   }
 
   function goToComments() {
-    const comments = document.querySelector(".commentButton");
+    const comments = document.querySelector(".commentsDiv");
     comments.scrollIntoView({ behavior: 'smooth'});
   }
 </script>

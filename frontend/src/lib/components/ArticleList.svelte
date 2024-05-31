@@ -2,16 +2,26 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+  import { articleInfo } from "$lib/js/store.js";
+
   export let data;
   export let articles;
+
   let sortingCategory = "dateDesc";
-  import { page } from "$app/stores";
   $: path = $page.url.pathname;
-  import { articleInfo } from "$lib/js/store.js";
+
   function handleClick(articleId) {
     articleInfo.update((info) => {
       return { ...info, id: articleId };
     });
+  }
+
+  async function handleCommentButton(articleId) {
+    await goto(`/article/${articleId}`)
+    const comments = document.querySelector(".commentsDiv");
+    comments.scrollIntoView({ behavior: 'smooth'});
   }
 </script>
 
@@ -37,7 +47,14 @@
             <ArticleCard {data} {article} />
           </a>
 
-          <LikeCommentButtons {data} articleId={article.articleId} isLiked={article.isLiked} />
+          <LikeCommentButtons
+            {data}
+            articleId={article.articleId}
+            isLiked={article.isLiked}
+            commentButtonFunction={() => {
+              handleCommentButton(article.articleId)
+            }}
+          />
         </div>
       {/each}
     </div>
