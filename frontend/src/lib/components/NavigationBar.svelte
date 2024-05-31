@@ -4,7 +4,6 @@
   import SearchMenu from "$lib/components/SearchMenu.svelte";
   import SearchBox from "./SearchBox.svelte";
   import { searchArticles } from "../js/utils.js";
-  import ButtonText from "$lib/components/ButtonText.svelte";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
   import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";

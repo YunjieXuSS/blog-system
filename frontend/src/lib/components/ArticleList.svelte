@@ -2,6 +2,7 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  import SearchBar from "$lib/components/SearchBar.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
@@ -28,6 +29,11 @@
 </script>
 
 <div class="home-articles">
+
+  <div class="search-menu-container">
+    <SearchBar />
+  </div>
+
   <div class="sort-bar">
 {#if path ==="/"}
     <p class="article-p">Articles by everyone</p>
@@ -62,6 +68,16 @@
 </div>
 
 <style>
+  /* .search-menu-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+  } */
+
   .home-articles {
     padding: 0 20px;
     width: 90vw;
