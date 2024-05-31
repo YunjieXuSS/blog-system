@@ -14,6 +14,8 @@
   function settingsButton() {
     goto("/profile/edit/", { replaceState: true });
   }
+
+  let showSettings = hoster===data.user;
 </script>
 
 <div class="container">
@@ -28,13 +30,15 @@
     />
 
     <div class="settings">
-      <ButtonText
-        buttonLabel="Settings"
-        buttonFunction={settingsButton}
-        bckgColour="#9EB384"
-        txtColour="white"
-        buttonWidth="110px"
-      />
+     {#if showSettings}
+        <ButtonText
+          buttonLabel="Settings"
+          buttonFunction={settingsButton}
+          bckgColour="#9EB384"
+          txtColour="white"
+          buttonWidth="110px"
+        />
+     {/if}
     </div>
   </div>
 

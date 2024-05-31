@@ -71,11 +71,18 @@
   let showArticleLink = false;
   let articleId = null;
   let articlePath = "/article";
+  let onArticlePage = false;
 
   articleInfo.subscribe((value) => {
     showArticleLink = value.id !== null;
     articleId = value.id;
     articlePath = value.path;
+    onArticlePage = value.onArticlePage;
+  });
+  $: onArticlePage = path.startsWith(`/article/${articleId}`);
+  $: articleInfo.update((value) => {
+    value.onArticlePage = onArticlePage;
+    return value;
   });
 </script>
 
@@ -99,10 +106,10 @@
           class="userIcon"
           src={SERVER_URL + data.user.avatar}
           alt="userIcon"
-          on:load={ (event) => {
+          on:load={(event) => {
             console.log("loaded");
           }}
-          on:error={ (event) => {
+          on:error={(event) => {
             event.target.src = "/userDefaultIcon.png";
           }}
         />
@@ -124,18 +131,19 @@
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if isLoggedIn}
       <li>
-        <a
-          href="/profile/{data.user.userName}"
-          class:active={path.startsWith("/profile/")}>Blog</a
-        >
+        <a href="/profile/{data.user.userName}" class:active={path.startsWith("/profile/")}>Blog</a>
       </li>
     {/if}
 
     {#if showArticleLink && articleId}
       <li>
-        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}
-          >Article</a
-        >
+        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}>
+          {#if onArticlePage}
+            Current
+          {:else}
+            Previous
+          {/if}
+        </a>
       </li>
     {/if}
 
@@ -196,7 +204,7 @@
     align-items: center;
     min-height: 60px;
     background-color: #435334;
-    opacity: 0.9;
+    /* opacity: 0.9; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
 
