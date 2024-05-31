@@ -8,7 +8,7 @@
   export let value = "";
   export let placeholder = "";
   export let maxlength = "100";
-  export let validate = async(value) => {
+  export let validate = async (value) => {
     return { result: true, errorMsg: "" };
   };
   export let validateResult = true;
@@ -17,24 +17,21 @@
     const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
-    dispatch('validation', { variableName,validateResult });
+    dispatch("validation", { variableName, validateResult });
   }
   function clearError() {
     errorMsg = "";
     validateResult = true;
   }
-//create a dispatcher to send the validation result to the SignUpTable.svelte
-  import { createEventDispatcher } from 'svelte';
+  //create a dispatcher to send the validation result to the SignUpTable.svelte
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 </script>
-
-
 
 <div class="input-bar">
   <label for={label}>{label}</label>
   <div class="input-section">
     {#if type === "password"}
-    
       <input
         class:active={!validateResult}
         id={label}
@@ -80,7 +77,11 @@
       />
     {/if}
     {#if !validateResult}
-      <p class="error">{errorMsg}</p>
+      {#if (type === "password")}
+        <p class="errorPassword">{errorMsg}</p>
+      {:else}
+        <p class="error">{errorMsg}</p>
+      {/if}
     {/if}
   </div>
 </div>
@@ -109,9 +110,18 @@
     right: 0px;
     font-size: 0.8em;
   }
+
+  .errorPassword {
+    color: rgba(255, 0, 0, 0.837);
+    position:absolute;
+    bottom: -2.8em;
+    right: 0px;
+    font-size: 0.8em;
+    white-space: normal;
+  }
   label {
     display: block;
-    color:#808080;
+    color: #808080;
   }
   input {
     outline: none;
@@ -134,8 +144,8 @@
     input {
       width: 100%;
     }
-    .error{
-      bottom:-2.2em;
+    .error {
+      bottom: -2.2em;
     }
   }
 </style>

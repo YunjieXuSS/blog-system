@@ -6,14 +6,17 @@ export function validateRegisterPassword(password) {
   if (password.length < 8) {
     return { result: false, errorMsg: "Password must be at least 8 characters" };
   } else if (password.includes(" ")) {
-    return { result: false, errorMsg: "Password cannot contain spaces." };
-  } else if (!/[!@#$%^&*_-]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one special character." };
-  } else if (!/[0-9]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one number." };
-  } else if (!/[A-Za-z]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one letter." };
+    return { result: false, errorMsg: "Password cannot contain spaces." }; 
+  } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+    return { result: false, errorMsg: "Min. 8 characters, 1 uppercase, 1 lowercase, 1 number. ONLY the following special characters are allowed: @$!%*?&." };
   }
+  // else if (!/[!@#$%^&*_-]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one special character." };
+  // } else if (!/[0-9]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one number." };
+  // } else if (!/[A-Za-z]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one letter." };
+  // }
   return { result: true, errorMsg: "" };
 }
 

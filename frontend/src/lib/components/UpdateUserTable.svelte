@@ -120,6 +120,7 @@
     bind:value={password}
     on:validation={handleValidation}
   />
+  <br>
   <InputBar
     label="CONFIRM PASSWORD:"
     type="password"
@@ -129,7 +130,7 @@
     bind:value={confirmPassword}
     on:validation={handleValidation}
   />
-
+  <br>
   <label for="description">DESCRIPTION:</label>
   <textarea
     class="description-textarea"
