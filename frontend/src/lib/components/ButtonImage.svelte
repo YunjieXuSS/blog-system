@@ -3,7 +3,7 @@
 <script>
   export let imgSrc;
   export let imgAlt;
-  export let buttonFunction = () => {};
+  export let buttonFunction = async () => {};
   export let bckgColour = "transparent";
   export let buttonWidth = "100%";
   export let borderRadius = "4px";
@@ -18,17 +18,13 @@
 </button>
 
 <style>
-  /* * {
-    border: black solid 1px;
-  } */
-
   button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     border-style: none;
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     cursor: pointer;
     margin: 0;
     padding: 0;
@@ -40,7 +36,8 @@
   }
 
   button:hover {
-    opacity: 0.75;
+    transform: translateY(-3px);
+    transition: 0.3s;
   }
 
   p {

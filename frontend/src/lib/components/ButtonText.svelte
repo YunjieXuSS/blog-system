@@ -53,6 +53,11 @@
     overflow: hidden;
   }
 
+  button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    transition: 0.3s;
+  }
+
   button:hover:not(:disabled)::before {
     content: "";
     top: 0;
