@@ -9,6 +9,7 @@
   export let data;
   export let articleId;
   export let isLiked;
+  export let commentButtonFunction = async () => {};
   export let numComments;
 
   const heartEmpty = "/heartEmpty.png";
@@ -49,10 +50,6 @@
       showPopupBox = true;
     }
   }
-  function goToComments() {
-    // const comments = document.querySelector(".commentButton");
-    // comments.scrollIntoView({ behavior: 'smooth'});
-  }
 
   async function getNumLikes(){
     const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
@@ -91,7 +88,7 @@
 
   <div class="commentButton">
     <ButtonImage
-      buttonFunction={goToComments}
+      buttonFunction={commentButtonFunction}
       imgSrc="/icons/comment.png"
       imgAlt="Comments"
       imgButtonLabel={numComments}

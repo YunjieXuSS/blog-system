@@ -19,9 +19,9 @@
 </div>
   <h1 class="article-title">{article.title}</h1>
   <div class="authorInfo">
-  <p class="user"><strong>@ </strong>{article.userName}</p>
-  <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
-</div>
+    <p class="user"><strong>@ </strong>{article.userName}</p>
+    <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+  </div>
   <p class="article-content">{stripHtml(article.content)}</p>
 </article>
 
@@ -35,22 +35,22 @@
     margin: auto;
     padding: 20px 20px 0;
     background-color: #fff;
-    box-sizing: border-box; /* Ensure padding is included in the width */
+    box-sizing: border-box;
   }
 
   .image-container {
-    max-width: 400px; 
-    max-height: 300px; 
     width: 100%;
-    overflow: hidden; 
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
     position: relative;
-}
+  }
 
   .article-image {
     width: 100%;
-    margin-bottom: 5px;
-    object-fit: cover; 
-    object-position: center; 
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .article-title {
@@ -59,10 +59,10 @@
     text-align: center;
   }
 
-  .authorInfo{
+  .authorInfo {
     display: flex;
     flex-direction: row;
-    margin:0;
+    margin: 0;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -89,10 +89,11 @@
     width: 100%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 7; /* numbed of lines */
+    -webkit-line-clamp: 7; /* number of lines */
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.5;
     max-height: calc(1.5em * 7); /* calculate from line-height */
   }
+
 </style>

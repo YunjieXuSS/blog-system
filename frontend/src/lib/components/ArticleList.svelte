@@ -2,16 +2,26 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+  import { articleInfo } from "$lib/js/store.js";
+
   export let data;
   export let articles;
+
   let sortingCategory = "dateDesc";
-  import {page} from "$app/stores";
   $: path = $page.url.pathname;
-  import {articleInfo} from "$lib/js/store.js";
+
   function handleClick(articleId) {
-    articleInfo.update(info => {
+    articleInfo.update((info) => {
       return { ...info, id: articleId };
     });
+  }
+
+  async function handleCommentButton(articleId) {
+    await goto(`/article/${articleId}`)
+    const comments = document.querySelector(".commentsDiv");
+    comments.scrollIntoView({ behavior: 'smooth'});
   }
 </script>
 
@@ -29,14 +39,20 @@
   {:else}
     <div class="article-list">
       {#each articles as article (article.articleId)}
-      <div class="article">
-        <a  href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
-          <ArticleCard {data} {article} />
-        </a>
-        
-        <LikeCommentButtons {data} articleId={article.articleId} isLiked={article.isLiked} />
-      </div>
-        
+        <div class="article">
+          <a href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
+            <ArticleCard {data} {article} />
+          </a>
+
+          <LikeCommentButtons
+            {data}
+            articleId={article.articleId}
+            isLiked={article.isLiked}
+            commentButtonFunction={() => {
+              handleCommentButton(article.articleId)
+            }}
+          />
+        </div>
       {/each}
     </div>
   {/if}
@@ -45,14 +61,14 @@
 <style>
   .home-articles {
     padding: 0 20px;
-    width:90vw;
+    width: 90vw;
   }
 
   .article-list {
-    /* margin: 0 auto; */
+    margin: 0 auto;
     column-count: 3;
     column-gap: 30px;
-    /* max-width: 1260px; */
+    max-width: 1260px;
     /* border: solid black 1px; */
   }
 
@@ -64,8 +80,8 @@
     padding-bottom: 10px;
     display: inline-block;
     width: 100%;
-    /* min-width: 340px;
-    max-width: 400px; */
+    min-width: 340px;
+    max-width: 400px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -88,6 +104,7 @@
     align-items: center;
     margin: 0 auto;
     max-width: 1260px;
+    width: 100%;
   }
 
   .sortingSectionDiv {
@@ -108,12 +125,28 @@
   @media (max-width: 1200px) {
     .article-list {
       column-count: 2;
+      max-width: 800px;
+    }
+    .sort-bar {
+      max-width: 800px;
     }
   }
 
-  @media (max-width: 750px) {
+  @media (max-width: 790px) {
     .article-list {
       column-count: 1;
+      max-width: 400px;
+    }
+    .sort-bar {
+      max-width: 400px;
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
+    .article-p {
+      margin-bottom: 10px;
+    }
+    .sort-p {
+      margin-left: 0;
     }
   }
 </style>

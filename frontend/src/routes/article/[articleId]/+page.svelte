@@ -62,7 +62,10 @@
   }
   let numComments = 0;
 
-  $: console.log("numComments", numComments);
+  function goToComments() {
+    const comments = document.querySelector(".commentsDiv");
+    comments.scrollIntoView({ behavior: 'smooth'});
+  }
 </script>
 
 <PostArticleButton {data} />
@@ -91,7 +94,7 @@
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} {numComments} />
+  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} {numComments} commentButtonFunction={goToComments} />
 
 
   <div class="commentsDiv">
