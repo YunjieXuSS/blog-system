@@ -129,11 +129,9 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    {#if isLoggedIn}
       <li>
         <a href="/profile/{data.user.userName}" class:active={path === `/profile/${data.user.userName}`}>My Blog</a>
       </li>
-    {/if}
 
     {#if showArticleLink && articleId}
       <li>
