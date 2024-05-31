@@ -51,10 +51,4 @@
       width: 25em;
     }
   }
-
-  @media (max-width: 600px) {
-    .newHere {
-      width: 100%;
-    }
-  }
 </style>

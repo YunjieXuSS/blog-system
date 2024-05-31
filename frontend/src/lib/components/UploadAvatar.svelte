@@ -51,7 +51,6 @@
   form {
     display: block;
     align-items: center;
-    padding-top: 45px;
 
     & .img-container {
       max-width: 20em;
@@ -59,18 +58,6 @@
       height: 100%;
       display: block;
       margin-bottom: 10px;
-
-      /* & .img-bg-container {
-        width: 300px;
-        height: 300px;
-        background-color: rgb(155, 155, 155);
-        display: flex;
-        justify-items: center;
-        align-items: center;
-        margin: 0;
-        margin-bottom: 10px;
-        border-radius: 10px;
-      } */
     }
 
     & label {
@@ -99,30 +86,22 @@
     border-radius: 50%;
   }
 
-  @media (max-width: 600px) {
-    #userIcon {
-    display: flex;
-    justify-content: center;
-    width: 250px;
-    height: 250px;
-
-    margin: 0 auto;
-    display: block;
-  }
-  }
-
   .upload {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0 40px 0;
   }
 
   @media (max-width: 800px) {
-    /* .img-container {
+    #userIcon {
       display: flex;
-      align-items: center;
       justify-content: center;
+      width: 250px;
+      height: 250px;
+
       margin: 0 auto;
-    } */
+      display: block;
+    }
   }
 </style>

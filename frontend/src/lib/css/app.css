@@ -7,13 +7,13 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: rgb(241, 241, 241);
 }
 
 body a {
   color: #404040;
   text-decoration: none;
 }
+
 body {
   margin: 0;
   padding: 0;

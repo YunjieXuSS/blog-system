@@ -124,12 +124,6 @@
     }
   }
 
-  @media (max-width: 600px) {
-    .login-container {
-      width: 100%;
-    }
-  }
-
   .loginBtn {
     margin: 30px 0 0 0;
   }

@@ -15,7 +15,7 @@
     goto("/profile/edit/", { replaceState: true });
   }
 
-  let showSettings = hoster===data.user;
+  let showSettings = hoster === data.user;
 </script>
 
 <div class="container">
@@ -30,7 +30,7 @@
     />
 
     <div class="settings">
-     {#if showSettings}
+      {#if showSettings}
         <ButtonText
           buttonLabel="Settings"
           buttonFunction={settingsButton}
@@ -38,7 +38,7 @@
           txtColour="white"
           buttonWidth="110px"
         />
-     {/if}
+      {/if}
     </div>
   </div>
 
@@ -57,21 +57,12 @@
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
-    max-width: 50em;
-    width: 100%;
+    max-width: 60em;
     gap: 30px;
   }
 
-  @media (max-width: 600px) {
-    .container {
-      width: 100%;
-      padding: 16px;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-    }
-  }
-
   .settingsAndAvatar {
+    min-width: 10em;
     align-content: center;
     justify-content: center;
   }
@@ -92,26 +83,43 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    & h1,
-    h3 {
-      margin: 0 0 10px 0;
-    }
-
-    & p {
-      margin: 15px 0 0 0;
-    }
+    padding-right: 20px;
   }
 
-  @media (max-width: 950px) {
+  .profileInfo > h1,
+  h3 {
+    margin: 0 0 10px 0;
+  }
+
+  .profileInfo > p {
+    margin: 15px 0 0 0;
+  }
+
+  @media (max-width: 1200px) {
     .container {
-      max-width: 35em;
+      max-width: 40em;
     }
   }
 
-  @media (max-width: 690px) {
+  @media (max-width: 790px) {
     .container {
       max-width: 25em;
+      width: 100%;
+      padding: 16px;
+      box-sizing: border-box;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
     }
+
+    .profileInfo {
+      padding-right: 0;
+    }
+
+    .profileInfo > h1, h3, p {
+      text-align: center;
+  }
+
   }
 </style>

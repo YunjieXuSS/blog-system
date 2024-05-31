@@ -1,5 +1,5 @@
 <script>
-  import AvatarUpload from "./UploadAvatar.svelte";
+  import UploadAvatar from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { createAccount } from "../js/utils.js";
@@ -33,8 +33,6 @@
     password: false,
     confirmPassword: false
   };
-
-
 
   //get all the validation results from the SignUpTable dispatch event
   function handleValidation(event) {
@@ -120,14 +118,13 @@
     redirectUrl = "/";
     showPopupBox = true;
   }
-
 </script>
 
 <div class="page-container">
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload bind:selectedImage />
+      <UploadAvatar bind:filesToUpload bind:selectedImage />
       <AvatarChooser bind:selectedImage {onMountTriggered} />
     </div>
     <div>
@@ -144,45 +141,27 @@
     </div>
   </div>
 
-  <button
-    class="submitButton"
-    class:valid={allValid}
-    on:click={handleRegister(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-    disabled={!allValid}
-  >
-    Create account
-  </button>
-  <!-- 
   <ButtonText
-    buttonFunction={() => handleRegister(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-    buttonDisabled={allValid}
+    buttonFunction={() =>
+      handleRegister(
+        firstName,
+        lastName,
+        email,
+        dateOfBirth,
+        userName,
+        password,
+        description,
+        filesToUpload
+      )}
+    buttonDisabled={!allValid}
     buttonLabel="Sign up"
-    bckgColour="#B5C0D0"
+    bckgColour="#9EB384"
     txtColour="white"
     buttonWidth="140px"
-  /> -->
+  />
 </div>
 
-<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
-
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
 <style>
   .page-container {
@@ -194,6 +173,7 @@
     width: 60em;
     gap: 30px;
     color: #505050;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
 
     & .page-title {
@@ -206,26 +186,15 @@
 
     & > .content-container {
       display: flex;
-      /* flex-direction: row; */
       align-content: center;
-      gap: 4l0px;
+      gap: 30px;
 
       & > .avatar-container {
         width: 20em;
-        margin: 0 30px;
+        margin: 1em 0;
+        padding: 40px 20px;
+        background-color: #f0f8ffa9;
       }
-    }
-    & .submitButton {
-      width: 200px;
-      height: 80px;
-      margin-top: 20px;
-      background-color: grey;
-      border-radius: 15px;
-      color: white;
-      font-size: 1.5em;
-    }
-    & .submitButton.valid {
-      background-color: green;
     }
   }
 
@@ -243,24 +212,8 @@
     .content-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 0;
     }
-
-    /* .avatar-container {
-      padding: 0 auto;
-    } */
-
-    @media (max-width: 600px) {
-    .page-container {
-      width: 100%;
-    }
-
-    .content-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-  }
   }
 </style>

@@ -18,6 +18,8 @@
     });
   }
 
+  let numComments = 0;
+
   async function handleCommentButton(articleId) {
     await goto(`/article/${articleId}`)
     const comments = document.querySelector(".commentsDiv");
@@ -48,6 +50,7 @@
             {data}
             articleId={article.articleId}
             isLiked={article.isLiked}
+            {numComments}
             commentButtonFunction={() => {
               handleCommentButton(article.articleId)
             }}
