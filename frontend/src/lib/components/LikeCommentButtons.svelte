@@ -19,6 +19,7 @@
   let numLikes;
   let showPopupBox = false;
   $: path = $page.url.pathname;
+  $:console.log("here",isLiked)
 
   onMount(() => {
     getNumLikes().then((res) => numLikes = res);
@@ -48,6 +49,8 @@
     }
     else if(path.startsWith("/article")){
       showPopupBox = true;
+    }else{
+      goto("login")
     }
   }
 
@@ -108,11 +111,6 @@
       }
     }
   ]}
-  countdown={100000}
-  countdownCallback={() => {
-    goto(redirectUrl);
-  }}
-  countdownMessage={"Redirecting"}
 />
 <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
 {/if}

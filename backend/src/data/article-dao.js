@@ -159,12 +159,18 @@ export async function getArticleById(articleId) {
 export async function getArticlesByUserName(userName) {
   console.log("dao-username", userName);
   const db = await getDatabase();
-  const lowercaseUserName = userName.toLowerCase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE LOWER(u.userName) LIKE ?`,
-    `%${lowercaseUserName}%`
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE u.userName= ?`,userName
   );
+  for(let i = 0; i < articles.length; i++) {
+    const article = articles[i];
+    const likes = await getLikes(article.articleId);
+    article.likes = likes.likesCount;
+    const {userId} = await db.get("SELECT userId FROM user WHERE userName = ?", userName);
+    if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
+    else article.isLiked = false;
+  }
   return articles;
 }
 

@@ -3,11 +3,12 @@
   // import userDefaultIcon from "../images/userDefaultIcon.png";
   import { deleteComment, postComment } from "../js/comments";
   import { SERVER_URL } from "$lib/js/apiUrls";
+  import { browser } from "$app/environment";
   import dayjs from "dayjs";
   import PopupBox from "./PopupBox.svelte";
   import { goto } from "$app/navigation";
   import Modal from "./Modal.svelte";
-  let popupMessage = "";
+
   let redirectUrl = "/";
   let showPopupBox = false;
   let showDeletePopupBox = false;
@@ -41,7 +42,6 @@
 
   function startReply() {
     if (!loginUserId) {
-      popupMessage = "Please login to reply.";
       showPopupBox = true;
       redirectUrl = "/login";
     } else {
@@ -80,6 +80,7 @@
       await deleteComment({ commentId });
 
       await refreshComments();
+      showDeletePopupBox = false;
     } catch (error) {
       console.error(error);
     } finally {
@@ -109,6 +110,7 @@
     : 'block'}"
 >
   <a class="author-info" href={authorLink}>
+    {#if browser}
     <img
       class="avatar"
       src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL + "/" + avatar}
@@ -116,6 +118,7 @@
       bind:this={avatarImage}
       on:error={useFallbackAvatar}
     />
+    {/if}
     {#if !isDeleted}
       <div class="author">{userName}</div>
       <div class="date">{dayjs(createDate).format("YYYY-MM-DD hh:mm:ss")}</div>
@@ -124,32 +127,32 @@
 
   <div class="main-content">
     <p class="content {isDeleted ? 'deleted' : ''}">{content}</p>
-    {#if deep < 15 && !replying && !isDeleted}
+    {#if deep < 5 && !replying && !isDeleted}
       <button class="edit-button" on:click={startReply}>reply</button>
     {/if}
     {#if allowDelete}
-      <button on:click={()=>{console.log("delete");showDeletePopupBox=true}} class="edit-button">delete</button>
+      <button on:click={()=>{showDeletePopupBox=true}} class="edit-button">delete</button>
     {/if}
     <div class="edit">
       {#if replying}
         <textarea
           disabled={sending}
           class="reply-input"
-          rows="4"
-          maxlength="500"
+          rows = "4"
+          maxlength="300"
           bind:value={reply}
           placeholder="Please be nice and kind."
         />
         {#if errorMessage}
           <p class="error">{errorMessage}</p>
         {/if}
-        <button on:click={postReply} disabled={sending}>send</button>
+        <button on:click={postReply} disabled={sending}>post</button>
         <button on:click={endReply}>cancel</button>
       {/if}
       {#if showPopupBox}
         <Modal
           bind:showPopupBox
-          description={"You should login to reply."}
+          description={"Login to reply :)"}
           buttons={[
             {
               text: "Log in",
@@ -158,13 +161,7 @@
               }
             }
           ]}
-          countdown={10}
-          countdownCallback={() => {
-            goto(redirectUrl);
-          }}
-          countdownMessage={"Redirecting"}
         />
-        <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
       {/if}
       {#if showDeletePopupBox}
       <Modal
@@ -177,7 +174,6 @@
           }
         ]}
       />
-      <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
     {/if}
     </div>
 

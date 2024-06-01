@@ -79,9 +79,14 @@ export async function getUserById(userId) {
  * @param {string} userName the username to search
  * @returns the user with the matching username, or undefined.
  */
-export async function getUserWithUserName(username) {
+export async function getUserWithUserName(userName) {
   const db = await getDatabase();
-  const user = await db.get("SELECT * from user WHERE userName = ?", username);
+  let user = await db.get("SELECT * from user WHERE userName = ?", userName);
+  if(user){
+  const numOfPosts = await db.get("SELECT COUNT(*) as numOfPosts FROM article WHERE userId = ?", user.userId);
+  const numOfLikes = await db.get("SELECT COUNT(*) as numOfLikes FROM like WHERE articleId IN (SELECT articleId FROM article WHERE userId =?)", user.userId);
+  user = {...user, ...numOfPosts, ...numOfLikes};
+}
   if (user) delete user.password;
   return user;
 }

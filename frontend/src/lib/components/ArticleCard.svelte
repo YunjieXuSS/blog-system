@@ -11,12 +11,17 @@
       return doc.body.textContent || "";
     }
   }
+  function imgOnError(event) {
+    event.target.style.display = "none";
+  }
 </script>
 
 <article class="article-container">
   <div class="image-container">
-    <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" on:error={(e)=>{e.target.style.display="none"}} />
-</div>
+    {#if browser}
+      <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" on:error={imgOnError} />
+    {/if}
+  </div>
   <h1 class="article-title">{article.title}</h1>
   <div class="authorInfo">
     <p class="user"><strong>@ </strong>{article.userName}</p>
@@ -95,5 +100,4 @@
     line-height: 1.5;
     max-height: calc(1.5em * 7); /* calculate from line-height */
   }
-
 </style>
