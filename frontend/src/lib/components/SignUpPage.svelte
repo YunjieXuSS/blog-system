@@ -6,9 +6,9 @@
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
 
-
   let firstName, lastName, userName;
   let password;
+  let confirmPassword;
   let email;
   let dateOfBirth;
   let description;
@@ -18,7 +18,6 @@
   let imgInput;
   let isSelectedDefaultImg = true;
   let imageIsLegal = false;
- 
 
   let validationResults = {
     firstName: false,
@@ -40,7 +39,7 @@
   //add a new property to the object to store the result
   //Object.values(validationResults) means put all the values of the object into an array
   //every(Boolean) means check if all the values are true
-  $: allValid = Object.values(validationResults).every(Boolean)&&imageIsLegal;
+  $: allValid = Object.values(validationResults).every(Boolean) && imageIsLegal;
 
   function createFormData() {
     const userRegisterImage = filesToUpload[0];
@@ -87,11 +86,10 @@
       if (response.status === 201) {
         // Redirect to the login page if successful.
         handlePopupBox();
-      } else if( response.status === 413){
+      } else if (response.status === 413) {
         handleImagePopupBox();
-        imgInput.value = '';
-      }
-      else {
+        imgInput.value = "";
+      } else {
         // If there was an error, log the error to the console.
         console.error(`Failed to register user.StatusCode: ${response.status}`);
       }
@@ -118,18 +116,27 @@
   }
 
   function handleSelectDefaultImg() {
-   imgInput.value = '';
-   isSelectedDefaultImg=true;
+    imgInput.value = "";
+    isSelectedDefaultImg = true;
   }
-
 </script>
 
 <div class="page-container">
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <UploadAvatar bind:filesToUpload bind:selectedImage   bind:imgInput bind:isSelectedDefaultImg bind:imageIsLegal/>
-      <AvatarChooser bind:selectedImage {onMountTriggered}  on:selectedImage={handleSelectDefaultImg} />
+      <UploadAvatar
+        bind:filesToUpload
+        bind:selectedImage
+        bind:imgInput
+        bind:isSelectedDefaultImg
+        bind:imageIsLegal
+      />
+      <AvatarChooser
+        bind:selectedImage
+        {onMountTriggered}
+        on:selectedImage={handleSelectDefaultImg}
+      />
     </div>
     <div>
       <SignUpTable
@@ -140,6 +147,7 @@
         bind:userName
         bind:password
         bind:description
+        bind:confirmPassword
         on:validation={handleValidation}
       />
     </div>
@@ -173,8 +181,7 @@
   /> -->
 </div>
 
-<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox/>
-
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
 <style>
   .page-container {
@@ -215,6 +222,7 @@
       border-radius: 15px;
       color: white;
       font-size: 1.5em;
+      cursor: not-allowed;
     }
     & .submitButton.valid {
       background-color: green;
@@ -243,16 +251,15 @@
     } */
 
     @media (max-width: 600px) {
-    .page-container {
-      width: 100%;
-    }
+      .page-container {
+        width: 100%;
+      }
 
-    .content-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+      .content-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
     }
-
-  }
   }
 </style>

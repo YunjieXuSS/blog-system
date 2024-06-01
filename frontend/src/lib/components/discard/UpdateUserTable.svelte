@@ -18,7 +18,7 @@
   import { createEventDispatcher } from "svelte";
 
   // export let validateResult;
-  let confirmPassword;
+  export let confirmPassword;
   // define a function to get the first password.
   const getPassword = function () {
     return password;
@@ -33,8 +33,9 @@
   //Get validateResult, label from the event.detail (CustomEvent)
   //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
-    const { validateResult, label } = event.detail;
-    dispatch("validation", { validateResult, label });
+    const { variableName, validateResult } = event.detail;
+    dispatch("validation", { variableName, validateResult });
+    console.log("event.detail", event.detail);
   }
 
   function handleUserNameValidation(event) {
@@ -71,6 +72,7 @@
     maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
+    variableName="firstName"
   />
   <InputBar
     label="LAST NAME:"
@@ -80,6 +82,7 @@
     maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
+    variableName="lastName"
   />
   <InputBar
     label="EMAIL:"
@@ -89,6 +92,7 @@
     maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
+    variableName="email"
   />
 
   <InputBar
@@ -99,6 +103,7 @@
     maxlength="20"
     bind:value={dateOfBirth}
     on:validation={handleValidation}
+    variableName="dateOfBirth"
   />
 
   <InputBar
@@ -109,6 +114,7 @@
     maxlength="30"
     bind:value={userName}
     on:validation={handleValidation}
+    variableName="userName"
   />
 
   <InputBar
@@ -119,8 +125,9 @@
     maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
+    variableName="password"
   />
-  <br>
+  <br />
   <InputBar
     label="CONFIRM PASSWORD:"
     type="password"
@@ -129,8 +136,9 @@
     maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
+    variableName="confirmPassword"
   />
-  <br>
+  <br />
   <label for="description">DESCRIPTION:</label>
   <textarea
     class="description-textarea"

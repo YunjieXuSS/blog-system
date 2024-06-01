@@ -1,9 +1,10 @@
 <script>
+   import { SERVER_URL } from "../js/apiUrls";
   export let filesToUpload = "";
   export let selectedImage = "";
   export let isSelectedDefaultImg = true;
   export let imgInput;
-
+  let showImage;
   export let isImgSizeLarge = false;
   let warnMessage = "";
   export let imageIsLegal = false;
@@ -12,30 +13,38 @@
     if (filesToUpload && filesToUpload.length > 0) {
       isImgSizeLarge = filesToUpload[0].size > 2097152 ? true : false;
       const [file] = imgInp.files;
-      selectedImage =
-        filesToUpload.length > 0 ? URL.createObjectURL(file) : "/images/userDefaultIcon1.png";
+      // userIcon.src = URL.createObjectURL(file);
+      showImage = URL.createObjectURL(file);
       warnMessage = isImgSizeLarge
         ? "The image size is Larger than 2MB. Please choose a smaller image."
         : "The image size is right.";
       isSelectedDefaultImg = false;
     } else {
-      selectedImage = "/images/userDefaultIcon1.png";
+      showImage=SERVER_URL+selectedImage;
       isImgSizeLarge = false;
     }
   }
 
-  $: imageIsLegal =
-    (!isImgSizeLarge && filesToUpload.length > 0) ||
-    (!isImgSizeLarge && filesToUpload.length < 1 && isSelectedDefaultImg == true);
+  $: {
+    if (filesToUpload.length == 0) {
+      //default image when the page is loaded
+      // selectedImage = "/images/userDefaultIcon2.png";
+      isImgSizeLarge = false;
+    }
+  }
+
+  $: imageIsLegal = (!isImgSizeLarge && filesToUpload.length > 0) || isSelectedDefaultImg == true;
   $: filesToUpload.length > 0 ? (isSelectedDefaultImg = false) : (isSelectedDefaultImg = true);
   $: isSelectedDefaultImg ? (warnMessage = "The image size should be less than 2MB") : "";
-  $: imageIsLegal ? "": (warnMessage = "The image size is Larger than 2MB. Please choose a smaller image.") ;
+  $: imageIsLegal
+    ? ""
+    : (warnMessage = "The image size is Larger than 2MB. Please choose a smaller image.");
 </script>
 
 <form>
   <div class="img-container">
     <!-- <div class="img-bg-container">  -->
-    <img id="userIcon" src={selectedImage} alt="userDefaultIcon" />
+    <img id="userIcon" src={showImage} alt="userDefaultIcon" />
     <!-- </div> -->
   </div>
   <div class="upload">

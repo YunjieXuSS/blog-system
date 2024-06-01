@@ -1,7 +1,7 @@
 <script>
   import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
   import { onMount } from "svelte";
-  import { SERVER_URL } from "../js/apiUrls";
+  import { SERVER_URL } from "../../js/apiUrls";
 
   export let filesToUpload = "";
   let messageToSend;
