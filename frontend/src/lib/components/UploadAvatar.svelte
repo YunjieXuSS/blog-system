@@ -1,5 +1,5 @@
 <script>
-   import { SERVER_URL } from "../js/apiUrls";
+  import { SERVER_URL } from "../js/apiUrls";
   export let filesToUpload = "";
   export let selectedImage = "";
   export let isSelectedDefaultImg = true;
@@ -20,7 +20,7 @@
         : "The image size is right.";
       isSelectedDefaultImg = false;
     } else {
-      showImage=SERVER_URL+selectedImage;
+      showImage = SERVER_URL + selectedImage;
       isImgSizeLarge = false;
     }
   }
@@ -43,9 +43,9 @@
 
 <form>
   <div class="img-container">
-    <!-- <div class="img-bg-container">  -->
-    <img id="userIcon" src={showImage} alt="userDefaultIcon" />
-    <!-- </div> -->
+    <div class="img-bg-container">
+      <img id="userIcon" src={showImage} alt="userDefaultIcon" />
+    </div>
   </div>
   <div class="upload">
     <label for="imageFile">Choose a PNG or JPG to upload:</label>
@@ -73,28 +73,24 @@
     align-items: center;
     padding-top: 45px;
 
-    & .img-container {
-      max-width: 18em;
+  & .img-container {
+      
       width: 100%;
-      height: 18em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      height: 100%;
+      display: block;
       margin-bottom: 10px;
-      background-color: rgb(155, 155, 155);
-      border-radius: 50%;
-      overflow: hidden;
-      /* & .img-bg-container {
+
+      & .img-bg-container {
         width: 300px;
         height: 300px;
-        background-color: rgb(155, 155, 155);
+        background-color: gray;
         display: flex;
         justify-items: center;
         align-items: center;
-        margin: 0;
+        margin: 0 auto;
         margin-bottom: 10px;
-        border-radius: 10px;
-      } */
+        border-radius: 50%;
+      }
     }
 
     & label {
@@ -115,10 +111,9 @@
   }
 
   #userIcon {
-    display: flex;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    height: 100%;
+    margin: 0 auto;
     display: block;
     border-radius: 50%;
   }
