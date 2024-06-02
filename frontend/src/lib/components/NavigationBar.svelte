@@ -1,10 +1,10 @@
 <script>
   import SearchAndSortTool from "./SearchAndSortTool.svelte";
   import { page } from "$app/stores";
-  import { invalidateAll } from "$app/navigation";
+  import { invalidate} from "$app/navigation";
   import { searchArticles } from "../js/utils.js";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
-  import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
+  import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
   import { queryStore } from "../js/store.js";
   import { browser } from "$app/environment";
@@ -68,8 +68,9 @@
 
       // Check if the logout was successful
       if (response.status === 204) {
-        await invalidateAll();
-        goto("/", { replaceState: true });
+        await invalidate(ARTICLES_URL);
+        await goto("/", { replaceState: true, invalidateAll: true});
+        // window.location.reload();
       } else {
         console.error("Logout failed with status:", response.status);
       }

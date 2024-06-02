@@ -6,8 +6,8 @@
     { name: "Date", value: "date" }
   ];
   const sortByValues = [
-    { name: "Newest", value: "dateAsc" },
-    { name: "Oldest", value: "dateDesc" },
+    { name: "Newest", value: "dateDesc" },
+    { name: "Oldest", value: "dateAsc" },
     { name: "Title a-z", value: "titleAsc" },
     { name: "Title z-a", value: "titleDesc" },
     { name: "Author a-z", value: "userNameAsc" },

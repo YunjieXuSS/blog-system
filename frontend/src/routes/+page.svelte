@@ -7,7 +7,7 @@
   import { get } from "svelte/store";
 
   export let data;
-  articleStore.set(data.articles);
+  $:articleStore.set(data.articles);
 
   let count = 2;
   let loadMore;

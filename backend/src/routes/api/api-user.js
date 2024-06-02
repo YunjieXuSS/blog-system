@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
 
 // User logout
 router.post("/logout", (_, res) => {
-  return res.clearCookie("authToken").sendStatus(204);
+  return res.cookie('authToken', '', { expires: new Date(0), path: '/' }).status(204).send();
 });
 
 // Get user by username ---- Not used

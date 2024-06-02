@@ -10,7 +10,6 @@
 
   export let data;
   export let articles;
-  $: console.log("articleList",articles)
 
   let sortingCategory = "dateDesc";
   $: path = $page.url.pathname;

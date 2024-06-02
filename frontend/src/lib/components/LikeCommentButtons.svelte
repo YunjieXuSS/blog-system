@@ -50,7 +50,7 @@
     else if(path.startsWith("/article")){
       showPopupBox = true;
     }else{
-      goto("login")
+      goto("/login")
     }
   }
 

@@ -156,12 +156,11 @@ export async function getArticleById(articleId) {
   return article;
 }
 
-export async function getArticlesByUserName(userName) {
-  console.log("dao-username", userName);
+export async function getArticlesByUserName(userName,userId) {
   const db = await getDatabase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE u.userName= ?`,userName
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE u.userName= ? ORDER BY a.createDate DESC`,userName
   );
   for(let i = 0; i < articles.length; i++) {
     const article = articles[i];
@@ -171,6 +170,7 @@ export async function getArticlesByUserName(userName) {
     if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
     else article.isLiked = false;
   }
+  console.log(articles);
   return articles;
 }
 
