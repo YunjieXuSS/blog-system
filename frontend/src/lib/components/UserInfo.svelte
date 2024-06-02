@@ -91,9 +91,11 @@
 
   .userAvatar {
     max-width: 150px;
-    width: 100%;
+    height: 150px;
+    width: 150px;
     margin-bottom: 10px;
     border-radius: 50%;
+    object-fit: cover;
   }
 
   .profileInfo {

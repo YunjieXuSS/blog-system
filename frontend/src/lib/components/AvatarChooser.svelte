@@ -1,7 +1,8 @@
 <script>
-  export let selectedImage = "";
   import { onMount } from "svelte";
+  export let selectedImage = "";
   export let onMountTriggered = true;
+  export let isSelectedDefaultImg = true;
   let images = [
     "/images/userDefaultIcon1.png",
     "/images/userDefaultIcon2.png",
@@ -13,9 +14,14 @@
     "/images/userDefaultIcon8.png",
     "/images/userDefaultIcon9.png",
   ];
+
+  import {createEventDispatcher} from "svelte";
+  const dispatch = createEventDispatcher();
   //update the path of images
   function selectImage(image) {
     selectedImage = image;
+    isSelectedDefaultImg = true;
+    dispatch("selectedImage", { isSelectedDefaultImg : true});
   }
 
   if (onMountTriggered) {
@@ -44,7 +50,7 @@
 <style>
   .image-grid {
     display: grid;
-    grid-template-columns: repeat(3, 0.2fr);
+    grid-template-columns: repeat(3, 0.3fr);
     justify-content: center;
     gap: 10px;
     width: 100%;
