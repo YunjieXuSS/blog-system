@@ -7,6 +7,7 @@
   export let countdown;
   export let countdownCallback = () => {};
   export let cancellable = true;
+  export let lightText = "Cancel";
 
   let countdownInterval;
   let timeLeft = countdown;
@@ -40,7 +41,7 @@
             cancellCallback();
             if (countdownInterval) clearInterval(countdownInterval);
             showPopupBox = false;
-          }}>Cancel</button
+          }}>{lightText}</button
         >
       {/if}
       {#each buttons as { text, onClick }}
@@ -69,7 +70,7 @@
     transform: translate(-50%, -50%);
     width: 320px;
     padding: 10px;
-    min-height: 100px;
+    min-height: 70px;
     background: #fff;
     text-align: center;
   }
@@ -78,8 +79,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8px 0;
-    min-width: 20px;
     min-width: 10px;
 
     & .modal-button {
@@ -122,5 +121,6 @@
     font-size: 1.2rem;
     font-weight: 600;
     color: #3e3e3e;
+    margin-bottom: 10px;
   }
 </style>

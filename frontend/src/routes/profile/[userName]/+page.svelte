@@ -12,7 +12,7 @@
 
 <div class="profileDiv">
   <UserInfo {data} />
-  <ArticleList articles={data.articlesOfUser} />
+  <ArticleList {data} articles={data.articlesOfUser} />
   <PostArticleButton {data} />
 </div>
 
