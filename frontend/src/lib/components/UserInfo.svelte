@@ -4,6 +4,7 @@
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
   import { SERVER_URL } from "../js/apiUrls";
+  import { browser } from "$app/environment";
 
   export let data;
 
@@ -15,22 +16,24 @@
     goto("/profile/edit/", { replaceState: true });
   }
 
-  let showSettings = hoster===data.user;
+  $: showSettings = hoster.userId === data?.user?.userId;
 </script>
 
 <div class="container">
   <div class="settingsAndAvatar">
-    <img
-      class="userAvatar"
-      src={avatarUrl}
-      alt="User avatar"
-      on:error={(e) => {
-        e.target.src = "/userDefaultIcon.png";
-      }}
-    />
+    {#if browser}
+      <img
+        class="userAvatar"
+        src={avatarUrl}
+        alt="User avatar"
+        on:error={(e) => {
+          e.target.src = "/userDefaultIcon.png";
+        }}
+      />
+    {/if}
 
     <div class="settings">
-     {#if showSettings}
+      {#if showSettings}
         <ButtonText
           buttonLabel="Settings"
           buttonFunction={settingsButton}
@@ -38,7 +41,7 @@
           txtColour="white"
           buttonWidth="110px"
         />
-     {/if}
+      {/if}
     </div>
   </div>
 
@@ -46,6 +49,11 @@
     <h1>{hoster.userName}</h1>
     <h3>{hoster.firstName} {hoster.lastName}</h3>
     <p>{hoster.description}</p>
+    <div class="user-detail">
+      <strong>{hoster.numOfLikes}</strong><strong>{hoster.numOfPosts}</strong><span>Likes</span><span
+        >Posts</span
+      >
+    </div>
   </div>
 </div>
 
@@ -101,6 +109,12 @@
     & p {
       margin: 15px 0 0 0;
     }
+  }
+  .user-detail {
+    margin-top:40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
   }
 
   @media (max-width: 950px) {

@@ -1,15 +1,20 @@
 <script>
   import { goto } from "$app/navigation";
-  import { ARTICLES_URL, BASE_URL } from "../js/apiUrls.js";
+  import { ARTICLES_URL, SERVER_URL } from "../js/apiUrls.js";
+  import Modal from "./Modal.svelte";
   import Editor from "@tinymce/tinymce-svelte";
   import PopupBox from "./PopupBox.svelte";
   let showPopupBox = false;
+  let showCreatePopupBox = false;
   let popupMessage = "";
   let redirectUrl = "/";
+  let errorMsg = "";
+  let isSubmitError = false;
+  let isDisabled = false;
+  $: isDisabled = !value || !title;
 
   let value = "";
   let title = "";
-  const articleId = "";
   let imgSrc = "";
   let onValueError = false;
   let onTitleError = false;
@@ -45,16 +50,17 @@
       body
     });
 
-    const newArticle = await res.json();
-
     if (res.ok) {
+      const newArticle = await res.json();
       popupMessage = "Article has been created successfully.";
       showPopupBox = true;
       redirectUrl = `/article/${newArticle.articleId}`;
       invalidate(ARTICLES_URL);
       // goto(`/article/${newArticle.articleId}`, { invalidateAll: true });
-    } else {
-      console.error("Failed to create article");
+    } else{
+      isSubmitError = true;
+      const resBody = await res.json();
+      if(resBody.error)errorMsg = resBody.error
     }
   }
 
@@ -84,6 +90,7 @@
       <input
         id="title"
         type="text"
+        maxlength="60"
         bind:value={title}
         style="border: {onTitleError ? 'solid 1px red' : ''}"
         placeholder="Enter your title here...👾"
@@ -91,39 +98,75 @@
       />
     </div>
     <article class="edit-area" style="border-color: {onValueError ? 'red' : ''}">
-      <Editor
-        apiKey="sra0m68u1hvp9tgk2ggky0dmfdf5yvr27x5x543k7ga6he82"
-        bind:value
-        {conf}
-        on:blur={() => (touchedArticleInputBox = true)}
-      />
+      <Editor apiKey="sra0m68u1hvp9tgk2ggky0dmfdf5yvr27x5x543k7ga6he82" bind:value {conf} />
     </article>
-    {#if imgSrc !== ""}
-      <img
-        src={!fileToUpload.length ? `http://localhost:3000${imgSrc}` : imgSrc}
-        alt="failed to load"
-        class="img"
-      />
-    {/if}
-    {#if imgSrc || fileToUpload.length}
-      <button class="remove" on:click={removeImage}>Remove Image</button>
-    {:else}
-      <div>
-        <input
-          type="file"
-          id="files"
-          class="hidden"
-          multiple={false}
-          name="image-file"
-          accept="image/png, image/jpeg"
-          bind:files={fileToUpload}
+    <div class="img-controller">
+      {#if imgSrc !== ""}
+        <img
+          src={!fileToUpload.length ? SERVER_URL + imgSrc : imgSrc}
+          alt="failed to load"
+          class="img"
         />
-        <label class="upload-image" for="files">Add/Update image</label>
-      </div>
-    {/if}
-    <button class="submit" on:click={handleSubmit}>Submit</button>
-    <button class="Cancel" on:click={handleCancel}>Cancel</button>
+      {/if}
+      {#if imgSrc || fileToUpload.length}
+        <button class="remove" on:click={removeImage}>Remove Image</button>
+      {:else}
+        <div>
+          <input
+            type="file"
+            id="files"
+            class="hidden"
+            multiple={false}
+            name="image-file"
+            accept="image/png, image/jpeg"
+            bind:files={fileToUpload}
+          />
+          <label class="upload-image" for="files">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-photo-plus"
+              width="150"
+              height="150"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#435334"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 8h.01" />
+              <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+              <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
+              <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
+              <path d="M16 19h6" />
+              <path d="M19 16v6" />
+            </svg></label
+          >
+        </div>
+      {/if}
+    </div>
+    <br />
+    <div class="submit-controller">
+      <button class="submit" disabled={isDisabled} on:click={handleSubmit}
+        >Submit</button
+      >
+      <button class="cancel-edit" on:click={() => (showCreatePopupBox = true)}>Cancel</button>
+    </div>
   </form>
+  <div class= "error" style="display:{isSubmitError? '':'none'}">{errorMsg}</div>
+  {#if showCreatePopupBox}
+    <Modal showPopupBox={showCreatePopupBox} description="Do you want to abort your editing?"         
+    buttons={[
+      {
+        text: "Continue Editing",
+        onClick: ()=>{showCreatePopupBox=false}
+      }
+    ]}
+    cancellCallback={()=>{goto("/")}}
+    lightText="Yes"
+    />
+  {/if}
 </main>
 <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
@@ -139,56 +182,90 @@
     }
   }
   .img {
-    width: 60%;
+    width: 70%;
     height: auto;
+    margin: 10px;
   }
   .title {
-    margin: 8px 0;
+    margin: 20px 0;
     display: flex;
     align-items: center;
-    & label {
-      font-weight: 700;
-    }
-
-    & #title {
-      margin-left: 8px;
-      padding: 4px;
-      flex: 1;
-    }
+  }
+  .title > label {
+    font-weight: 700;
+  }
+  #title {
+    margin-left: 8px;
+    padding: 4px;
+    border: none;
+    border-bottom: 2px solid #252525;
+    width: 390px;
+    background-color: transparent;
+  }
+  #title:focus {
+    outline: none;
   }
 
   button.submit {
     display: block;
-    margin: 16px 0;
+    font-size: 1.5em;
+    width: 200px;
+    margin: 16px 20px;
     padding: 8px;
-    border-radius: 4px;
-    background: #444;
+    border-radius: 10px;
+    background: #435334;
     color: #eee;
     border: none;
   }
 
   .upload-image {
     display: block;
-    text-align: center;
-    background: #eee;
+    /* background: #9eb384; */
     padding: 16px 0;
     color: #252525;
   }
 
   button.remove {
-    margin: 16px 0;
+    margin: 30px auto;
     padding: 8px;
     border-radius: 4px;
-    background: #444;
+    background: lightcoral;
     color: #eee;
     border: none;
     display: block;
+  }
+  button.submit:disabled {
+    background: #909090;
+    color: white;
   }
 
   .edit-area {
     border: #252525 solid 1px;
   }
 
+  .img-controller {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .submit-controller {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  button.cancel-edit {
+    background-color: transparent;
+    border: none;
+  }
+  .cancel-edit:hover {
+    color: #435334;
+    text-decoration: underline;
+  }
+  .error{
+    color: red;
+    text-align: center;
+  }
   @media screen and (max-width: 600px) {
     main {
       width: 300px;

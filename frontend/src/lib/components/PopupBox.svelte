@@ -47,7 +47,7 @@
   <div class="container">
     <div class="content_container">
       <p>{popupMessage}</p>
-      <div class="countdown_container">{countdownTime} s</div>
+      <div class="countdown_container">{countdownTime} </div>
       <button on:click={closePopupBox}>OK</button>
     </div>
   </div>

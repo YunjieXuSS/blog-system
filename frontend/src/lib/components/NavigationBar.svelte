@@ -1,17 +1,13 @@
 <script>
+  import SearchAndSortTool from "./SearchAndSortTool.svelte";
   import { page } from "$app/stores";
-  import { invalidateAll } from "$app/navigation";
-  import SearchMenu from "$lib/components/SearchMenu.svelte";
-  import SearchBox from "./SearchBox.svelte";
+  import { invalidate } from "$app/navigation";
   import { searchArticles } from "../js/utils.js";
-  import ButtonText from "$lib/components/ButtonText.svelte";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
-  import { USER_URL, SERVER_URL } from "../js/apiUrls.js";
+  import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
-  import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
-  import { onMount } from "svelte";
-  import viewBox from "../"
+  import { browser } from "$app/environment";
   export let data;
   let searchTimeout;
   let isSearching = false;
@@ -20,19 +16,42 @@
   let query = {};
   let selectedCategory = "title"; // menu selection
   let searchTerm = "";
+  let sortByCategory = "titleAsc";
   let searchTermStart = "";
   let searchTermEnd = "";
+  function getSortQuery(sortingCategory) {
+    if (sortingCategory == "titleAsc") {
+      return { sortBy: "title", sortOrder: 0 };
+    } else if (sortingCategory == "titleDesc") {
+      return { sortBy: "title", sortOrder: 1 };
+    } else if (sortingCategory == "userNameAsc") {
+      return { sortBy: "userName", sortOrder: 0 };
+    } else if (sortingCategory == "userNameDesc") {
+      return { sortBy: "userName", sortOrder: 1 };
+    } else if (sortingCategory == "dateAsc") {
+      return { sortBy: "createDate", sortOrder: 0 };
+    } else if (sortingCategory == "dateDesc") {
+      return { sortBy: "createDate", sortOrder: 1 };
+    }
+  }
+
   $: {
+    delete $queryStore.title;
+    delete $queryStore.userName;
+    delete $queryStore.startDate;
+    delete $queryStore.endDate;
     if (selectedCategory !== "date") {
       searchTermStart = "";
       searchTermEnd = "";
-      delete $queryStore.startDate;
-      delete $queryStore.endDate;
       query = selectedCategory === "title" ? { title: searchTerm } : { userName: searchTerm };
     } else {
       query = { startDate: searchTermStart, endDate: searchTermEnd };
     }
+    const sortQuery = getSortQuery(sortByCategory) || {};
+    query = { ...query, ...sortQuery };
+    console.log(query);
     queryStore.update((current) => ({ ...current, ...query }));
+    handleSearch();
   }
 
   $: path = $page.url.pathname;
@@ -52,8 +71,9 @@
 
       // Check if the logout was successful
       if (response.status === 204) {
-        await invalidateAll();
-        goto("/", { replaceState: true });
+        await invalidate(ARTICLES_URL);
+        await goto("/", { replaceState: true, invalidateAll: true });
+        // window.location.reload();
       } else {
         console.error("Logout failed with status:", response.status);
       }
@@ -110,17 +130,19 @@
     <div class="userNameLogoutDiv">
       <!-- <span class="userName"> Hi {loginUser.userName}!</span> -->
       <a href="/profile/edit">
-        <img
-          class="userIcon"
-          src={SERVER_URL + data.user.avatar}
-          alt="userIcon"
-          on:load={(event) => {
-            console.log("loaded");
-          }}
-          on:error={(event) => {
-            event.target.src = "/userDefaultIcon.png";
-          }}
-        />
+        {#if browser}
+          <img
+            class="userIcon"
+            src={SERVER_URL + data.user.avatar}
+            alt="userIcon"
+            on:load={(event) => {
+              console.log("loaded");
+            }}
+            on:error={(event) => {
+              event.target.src = "/userDefaultIcon.png";
+            }}
+          />
+        {/if}
       </a>
 
       <ButtonImage
@@ -139,7 +161,10 @@
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if isLoggedIn}
       <li>
-        <a href="/profile/{data.user.userName}" class:active={path.startsWith("/profile/")}>Blog</a>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path === `/profile/${data.user.userName}`}>My Blog</a
+        >
       </li>
     {/if}
 
@@ -159,7 +184,7 @@
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
-    <div class="searchSection">
+    <!-- <div class="searchSection">
       {#if isSearching}
         <svg class="loader"
           version="1.1"
@@ -213,7 +238,14 @@
       {:else}
         <SearchBox bind:searchTerm on:input={handleSearch} />
       {/if}
-    </div>
+    </div> -->
+    <SearchAndSortTool
+      bind:selectedCategory
+      bind:searchTerm
+      bind:sortByCategory
+      bind:searchTermStart
+      bind:searchTermEnd
+    />
   {/if}
 </nav>
 
@@ -318,11 +350,6 @@
         height: 20px;
       }
     }
-  }
-
-  .date-search {
-    display: flex;
-    align-items: center;
   }
 
   .login {
