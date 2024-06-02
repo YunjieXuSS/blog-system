@@ -14,9 +14,7 @@
   <ButtonText
     buttonFunction={openSignUpPage}
     buttonLabel="Create Account"
-    txtColour="#435334"
-    bckgColour="white"
-    buttonWidth="165px"
+    buttonClass="createAccountButton"
   />
 </div>
 

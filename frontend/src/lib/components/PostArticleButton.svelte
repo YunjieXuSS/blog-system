@@ -1,6 +1,7 @@
 <!-- Button to post new articles -->
 
 <script>
+  import "$lib/css/button.css";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
   export let data;
@@ -20,10 +21,7 @@
   <ButtonText
     buttonFunction={handlePostNewArticle}
     buttonLabel="✚ New article"
-    bckgColour="#9EB384"
-    txtColour="white"
-    borderRadius="8px 0 0 8px"
-    buttonHeight="55px"
+    buttonClass="postButton"
   />
 </div>
 

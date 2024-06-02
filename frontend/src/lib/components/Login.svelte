@@ -65,9 +65,7 @@
         buttonFunction={processLogin}
         buttonDisabled={!isvalidation}
         buttonLabel="Login"
-        txtColour="white"
-        bckgColour="#435334"
-        buttonWidth="140px"
+        buttonClass="confirmButton"
       />
     </div>
   </div>

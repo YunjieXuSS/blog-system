@@ -9,6 +9,7 @@
   import { goto } from "$app/navigation";
   import DateSearchBox from "./DateSearchBox.svelte";
   import { queryStore } from "../js/store.js";
+  import "$lib/css/button.css";
   import { onMount } from "svelte";
   export let data;
 
@@ -124,7 +125,7 @@
     </div>
   {/if}
 </div>
-<nav class="navBar">
+<nav class="navBar darkGreen">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
@@ -202,8 +203,6 @@
     justify-content: space-between;
     align-items: center;
     min-height: 60px;
-    background-color: #435334;
-    /* opacity: 0.9; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
 

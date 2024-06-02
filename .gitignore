@@ -12,3 +12,4 @@ frontend/src/routes/edituser/+page.svelte
 frontend/src/routes/test/+page.svelte
 .DS_Store
 desktop-client
+frontend/src/lib/components/test.svelte
