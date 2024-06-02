@@ -9,7 +9,7 @@
   export let data;
 
   let hoster = {};
-  hoster = data.userInfo;
+  $:hoster = data.userInfo;
 
   $: avatarUrl = SERVER_URL + hoster.avatar;
   function settingsButton() {
