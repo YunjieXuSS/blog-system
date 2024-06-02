@@ -14,7 +14,7 @@
   //create a dispatcher to send the validation result to the SignUpTable.svelte
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  
+
   export let validateResult = true;
   let errorMsg = "";
   async function checkValue() {
@@ -27,7 +27,6 @@
     errorMsg = "";
     validateResult = true;
   }
-  
 </script>
 
 <div class="input-bar">
@@ -82,7 +81,7 @@
       <!-- {#if (type === "password")}
         <p class="errorPassword">{errorMsg}</p>
       {:else} -->
-        <p class="error">{errorMsg}</p>
+      <p class="error">{errorMsg}</p>
       <!-- {/if} -->
     {/if}
   </div>

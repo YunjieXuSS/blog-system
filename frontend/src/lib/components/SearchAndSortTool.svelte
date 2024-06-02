@@ -258,7 +258,7 @@
     justify-content: center;
     align-items: center;
     width: 600px;
-    min-height: 60px;
+    min-height: 100%;
 
     @media screen and (max: 600px) {
       width: 100%;

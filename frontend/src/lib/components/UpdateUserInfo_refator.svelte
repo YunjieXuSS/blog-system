@@ -4,11 +4,10 @@
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
-  import ConfirmPopupBox from "./ConfirmPopupBox.svelte"
+  import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
   import Dayjs from "dayjs";
   import "$lib/css/button.css";
   import ButtonText from "$lib/components/ButtonText.svelte";
-
 
   export let user;
 
@@ -59,20 +58,20 @@
   }
 
   $: allValid = Object.values(validationResults).every(Boolean);
-  $: hasChanges = ( 
-      firstName !== originalUserData.firstName ||
-      lastName !== originalUserData.lastName ||
-      userName !== originalUserData.userName ||
-      email !== originalUserData.email ||
-      dateOfBirth !== originalUserData.dateOfBirth ||
-      description !== originalUserData.description ||
-      selectedImage !== originalUserData.avatar ||
-      filesToUpload.length > 0 || (password!=="" && confirmPassword!=="")
-    );
-  
+  $: hasChanges =
+    firstName !== originalUserData.firstName ||
+    lastName !== originalUserData.lastName ||
+    userName !== originalUserData.userName ||
+    email !== originalUserData.email ||
+    dateOfBirth !== originalUserData.dateOfBirth ||
+    description !== originalUserData.description ||
+    selectedImage !== originalUserData.avatar ||
+    filesToUpload.length > 0 ||
+    (password !== "" && confirmPassword !== "");
+
   $: userNamehasChanges = userName !== originalUserData.userName;
   $: passwordValid = !password || (password && password === confirmPassword);
-  $: buttonEnabled = allValid && hasChanges && passwordValid &&imageIsLegal;
+  $: buttonEnabled = allValid && hasChanges && passwordValid && imageIsLegal;
 
   function createFormData() {
     const userRegisterImage = filesToUpload[0];
@@ -141,15 +140,14 @@
       });
   }
 
-
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
 
   function handlePopupBox() {
     popupMessage = `User info updated. Redirecting to homepage...`;
-    console.log(" redirectUrl = `/profile/${userName}`",  `/profile/${userName}`);
-    redirectUrl =  `/profile/${userName}`;
+    console.log(" redirectUrl = `/profile/${userName}`", `/profile/${userName}`);
+    redirectUrl = `/profile/${userName}`;
     showPopupBox = true;
   }
 
@@ -178,8 +176,6 @@
     redirectUrl = "/";
     showPopupBox = true;
   }
-
-
 </script>
 
 <div class="page-container">
@@ -227,17 +223,17 @@
     </button> -->
 
     <ButtonText
-    buttonFunction={handleConfirmPopupBox}
-    buttonLabel="Delete Account"
-    buttonClass="deleteButton"
-  />
+      buttonFunction={handleConfirmPopupBox}
+      buttonLabel="Delete Account"
+      buttonClass="deleteButton"
+    />
 
     <ButtonText
-    buttonFunction={handleUpdate}
-    buttonLabel="Update Info"
-    buttonClass="confirmButton"
-    buttonDisabled={!buttonEnabled}
-  />
+      buttonFunction={handleUpdate}
+      buttonLabel="Update Info"
+      buttonClass="confirmButton"
+      buttonDisabled={!buttonEnabled}
+    />
   </div>
 </div>
 

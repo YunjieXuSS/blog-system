@@ -11,7 +11,6 @@
   let errorMsg = "";
   let isSubmitError = false;
 
-
   export let article;
   let value = article.content;
   let title = article.title;
@@ -59,10 +58,10 @@
       handleUpdatePopupBox();
       invalidate(ARTICLES_URL);
       // goto(`/article/${articleId}`, { invalidateAll: true });
-    }else{
+    } else {
       isSubmitError = true;
       const resBody = await res.json();
-      if(resBody.error)errorMsg = resBody.error
+      if (resBody.error) errorMsg = resBody.error;
     }
   }
 
@@ -149,17 +148,23 @@
       <button class="cancel-edit" on:click={() => (showEditPopupBox = true)}>Cancel</button>
     </div>
   </form>
-  <div class= "error" style="display:{isSubmitError? '':'none'}">{errorMsg}</div>
+  <div class="error" style="display:{isSubmitError ? '' : 'none'}">{errorMsg}</div>
   {#if showEditPopupBox}
-    <Modal showPopupBox={showEditPopupBox} description="Do you want to abort your editing?"         
-    buttons={[
-      {
-        text: "Continue Editing",
-        onClick: ()=>{showEditPopupBox=false}
-      }
-    ]}
-    cancellCallback={()=>{goto(`/article/${articleId}`)}}
-    lightText="Yes"
+    <Modal
+      showPopupBox={showEditPopupBox}
+      description="Do you want to abort your editing?"
+      buttons={[
+        {
+          text: "Continue Editing",
+          onClick: () => {
+            showEditPopupBox = false;
+          }
+        }
+      ]}
+      cancellCallback={() => {
+        goto(`/article/${articleId}`);
+      }}
+      lightText="Yes"
     />
   {/if}
 </main>
@@ -257,7 +262,7 @@
     color: #435334;
     text-decoration: underline;
   }
-  .error{
+  .error {
     color: red;
     text-align: center;
   }
