@@ -79,11 +79,11 @@
       />
     {/if}
     {#if !validateResult}
-      {#if (type === "password")}
+      <!-- {#if (type === "password")}
         <p class="errorPassword">{errorMsg}</p>
-      {:else}
+      {:else} -->
         <p class="error">{errorMsg}</p>
-      {/if}
+      <!-- {/if} -->
     {/if}
   </div>
 </div>
@@ -108,19 +108,20 @@
   .error {
     color: rgba(255, 0, 0, 0.837);
     position: absolute;
-    bottom: -1.3em;
-    right: 0px;
-    font-size: 0.8em;
-  }
-
-  .errorPassword {
-    color: rgba(255, 0, 0, 0.837);
-    position:absolute;
-    bottom: -2.8em;
+    top: +5.1em;
     right: 0px;
     font-size: 0.8em;
     white-space: normal;
   }
+
+  /* .errorPassword {
+    color: rgba(255, 0, 0, 0.837);
+    position:absolute;
+    top: +5.2em;
+    right: 0px;
+    font-size: 0.8em;
+    white-space: normal;
+  } */
   label {
     display: block;
     color: #808080;

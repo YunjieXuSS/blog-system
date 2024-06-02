@@ -49,7 +49,7 @@
     }
     const sortQuery = getSortQuery(sortByCategory) || {};
     query = { ...query, ...sortQuery };
-    console.log(query);
+    // console.log(query);
     queryStore.update((current) => ({ ...current, ...query }));
     handleSearch();
   }
@@ -136,7 +136,7 @@
             src={SERVER_URL + data.user.avatar}
             alt="userIcon"
             on:load={(event) => {
-              console.log("loaded");
+              // console.log("loaded");
             }}
             on:error={(event) => {
               event.target.src = "/userDefaultIcon.png";
@@ -163,7 +163,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path === `/profile/${data.user.userName}`}>My Blog</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>My Blog</a
         >
       </li>
     {/if}
@@ -184,61 +184,6 @@
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
-    <!-- <div class="searchSection">
-      {#if isSearching}
-        <svg class="loader"
-          version="1.1"
-          id="L4"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          viewBox="0 0 100 100"
-          enable-background="new 0 0 0 0"
-          xml:space="preserve"
-        >
-          <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
-            <animate
-              attributeName="opacity"
-              dur="1s"
-              values="0;1;0"
-              repeatCount="indefinite"
-              begin="0.1"
-            />
-          </circle>
-          <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
-            <animate
-              attributeName="opacity"
-              dur="1s"
-              values="0;1;0"
-              repeatCount="indefinite"
-              begin="0.2"
-            />
-          </circle>
-          <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
-            <animate
-              attributeName="opacity"
-              dur="1s"
-              values="0;1;0"
-              repeatCount="indefinite"
-              begin="0.3"
-            />
-          </circle>
-        </svg>
-
-        <!-- <div class="loader" /> -->
-      {/if}
-      <SearchMenu bind:selectedCategory />
-      {#if selectedCategory === "date"}
-        <div class="date-search">
-          <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
-          <div style="color: #606060">to</div>
-          <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
-        </div>
-      {:else}
-        <SearchBox bind:searchTerm on:input={handleSearch} />
-      {/if}
-    </div> -->
     <SearchAndSortTool
       bind:selectedCategory
       bind:searchTerm
@@ -283,6 +228,7 @@
       border-radius: 50%;
       border: 2px solid #9eb384;
       display: block;
+      object-fit: cover;
     }
   }
 

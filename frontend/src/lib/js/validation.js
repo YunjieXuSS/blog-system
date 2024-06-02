@@ -24,8 +24,8 @@ export function validateRegisterPassword(password) {
 
 
 export async function validateRegisterName(name) {
-  if (name.length < 3 || name.length > 20) {
-    return { result: false, errorMsg: "This name must be between 3 and 20 characters." };
+  if (name.length < 1 || name.length > 30) {
+    return { result: false, errorMsg: "This name must be between 1 and 30 characters." };
   } else if (name.includes(" ")) {
     return { result: false, errorMsg: "This name cannot contain spaces." };
   } else if (!/^[a-zA-Z0-9_]+$/.test(name)) {
@@ -36,7 +36,7 @@ export async function validateRegisterName(name) {
 
 export async function validateRegisterUserName(userName) {
   const userIsExisted = await checkUserIsRegisterd(userName);
-  if (userName.length < 3 || userName.length > 30) {
+  if (userName.length < 3 || userName.length > 20) {
     return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
   } else if (userName.includes(" ")) {
     return { result: false, errorMsg: "Username cannot contain spaces." };
@@ -51,7 +51,7 @@ export async function validateRegisterUserName(userName) {
 
 export async function validateUpdateUserName(userName) {
   const userIsExisted = await checkUserIsRegisterd(userName);
-  if (userName.length < 3 || userName.length > 30) {
+  if (userName.length < 3 || userName.length > 20) {
     return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
   } else if (userName.includes(" ")) {
     return { result: false, errorMsg: "Username cannot contain spaces." };

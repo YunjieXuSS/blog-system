@@ -22,7 +22,7 @@
   let onMountTriggered = false;
   let imgInput;
   let isSelectedDefaultImg = true;
-  let imageIsLegal = true;
+  let imageIsLegal = false;
   // let hasChanges;
   let userNamehasChanges = false;
   let isUpdateMode = true;
@@ -64,12 +64,12 @@
       dateOfBirth !== originalUserData.dateOfBirth ||
       description !== originalUserData.description ||
       selectedImage !== originalUserData.avatar ||
-      filesToUpload.length > 0
+      filesToUpload.length > 0 || (password!=="" && confirmPassword!=="")
     );
   
   $: userNamehasChanges = userName !== originalUserData.userName;
   $: passwordValid = !password || (password && password === confirmPassword);
-  $: buttonEnabled = allValid && hasChanges && passwordValid;
+  $: buttonEnabled = allValid && hasChanges && passwordValid &&imageIsLegal;
 
   function createFormData() {
     const userRegisterImage = filesToUpload[0];
@@ -145,13 +145,14 @@
 
   function handlePopupBox() {
     popupMessage = `User info updated. Redirecting to homepage...`;
-    redirectUrl = "/";
+    console.log(" redirectUrl = `/profile/${userName}`",  `/profile/${userName}`);
+    redirectUrl =  `/profile/${userName}`;
     showPopupBox = true;
   }
 
   function handleImagePopupBox() {
     popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
-    redirectUrl = "/signup";
+    redirectUrl = "/profile/edit";
     imageIsLegal = false;
     showPopupBox = true;
   }
@@ -164,7 +165,7 @@
 
   function handleConfirmPopupBox() {
     ConfirmPopupMessage = `Do you really want to delete this account?`;
-    redirectUrl = "/profile/edit";
+    redirectUrl = "/";
     showConfirmPopupBox = true;
     confirmFunction = handleDelete;
   }
@@ -266,7 +267,6 @@
       border-radius: 15px;
       color: white;
       font-size: 1.5em;
-      cursor: not-allowed;
     }
     & .submitButton.valid {
       background-color: green;

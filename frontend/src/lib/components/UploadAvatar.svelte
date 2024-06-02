@@ -15,6 +15,7 @@
       const [file] = imgInp.files;
       // userIcon.src = URL.createObjectURL(file);
       showImage = URL.createObjectURL(file);
+      selectedImage="";
       warnMessage = isImgSizeLarge
         ? "The image size is Larger than 2MB. Please choose a smaller image."
         : "The image size is right.";
@@ -83,7 +84,7 @@
       & .img-bg-container {
         width: 300px;
         height: 300px;
-        background-color: gray;
+        background-color: transparent;
         display: flex;
         justify-items: center;
         align-items: center;
@@ -116,6 +117,7 @@
     margin: 0 auto;
     display: block;
     border-radius: 50%;
+    object-fit: cover;
   }
 
   .LargePicWarn {
@@ -132,7 +134,6 @@
       justify-content: center;
       width: 250px;
       height: 250px;
-
       margin: 0 auto;
       display: block;
     }
