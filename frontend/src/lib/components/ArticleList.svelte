@@ -88,7 +88,7 @@
                 href="/article/{article.articleId}"
                 on:click={() => handleClick(article.articleId)}
               >
-                <ArticleCard {data} {article} />
+                <ArticleCard  {article} />
               </a>
               <LikeCommentButtons
                 {data}

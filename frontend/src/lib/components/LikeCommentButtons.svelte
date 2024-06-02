@@ -10,7 +10,7 @@
   export let articleId;
   export let isLiked;
   export let commentButtonFunction = async () => {};
-  export let numComments;
+  export let numComments =0 ;
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
@@ -19,7 +19,6 @@
   let numLikes;
   let showPopupBox = false;
   $: path = $page.url.pathname;
-  $:console.log("here",isLiked)
 
   onMount(() => {
     getNumLikes().then((res) => numLikes = res);

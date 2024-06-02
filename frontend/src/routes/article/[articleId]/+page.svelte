@@ -87,8 +87,6 @@
 
   <ConfirmPopupBox
     {ConfirmPopupMessage}
-    {resultMsg}
-    {redirectUrl}
     {confirmFunction}
     bind:showConfirmPopupBox
   />

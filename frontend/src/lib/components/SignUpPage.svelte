@@ -2,27 +2,23 @@
   import UploadAvatar from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
-  import { createAccount } from "../js/utils.js";
-  import {
-    validateRegisterUserName,
-    validateRegisterPassword,
-    validateConfirmPassword,
-    validateRegisterEmail,
-    validateRegisterDate
-  } from "../js/validation.js";
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
-  import { onMount } from "svelte";
+  import "$lib/css/button.css";
 
   let firstName, lastName, userName;
   let password;
+  let confirmPassword;
   let email;
   let dateOfBirth;
   let description;
   let filesToUpload;
   let selectedImage = "";
   let onMountTriggered = true;
+  let imgInput;
+  let isSelectedDefaultImg = true;
+  let imageIsLegal = false;
 
   let validationResults = {
     firstName: false,
@@ -44,7 +40,7 @@
   //add a new property to the object to store the result
   //Object.values(validationResults) means put all the values of the object into an array
   //every(Boolean) means check if all the values are true
-  $: allValid = Object.values(validationResults).every(Boolean);
+  $: allValid = Object.values(validationResults).every(Boolean) && imageIsLegal;
 
   function createFormData() {
     const userRegisterImage = filesToUpload[0];
@@ -76,16 +72,7 @@
     return body;
   }
 
-  async function handleRegister(
-    firstName,
-    lastName,
-    email,
-    dateOfBirth,
-    userName,
-    password,
-    description,
-    filesToUpload
-  ) {
+  async function handleRegister() {
     try {
       const body = createFormData();
       // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
@@ -100,6 +87,9 @@
       if (response.status === 201) {
         // Redirect to the login page if successful.
         handlePopupBox();
+      } else if (response.status === 413) {
+        handleImagePopupBox();
+        imgInput.value = "";
       } else {
         // If there was an error, log the error to the console.
         console.error(`Failed to register user.StatusCode: ${response.status}`);
@@ -114,9 +104,21 @@
   let redirectUrl = "/";
 
   function handlePopupBox() {
-    popupMessage = `User has registered. Redirecting to homepage...`;
+    popupMessage = `User has registered. Redirecting ...`;
     redirectUrl = "/";
     showPopupBox = true;
+  }
+
+  function handleImagePopupBox() {
+    popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
+    redirectUrl = "/signup";
+    imageIsLegal = false;
+    showPopupBox = true;
+  }
+
+  function handleSelectDefaultImg() {
+    imgInput.value = "";
+    isSelectedDefaultImg = true;
   }
 </script>
 
@@ -124,8 +126,18 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <UploadAvatar bind:filesToUpload bind:selectedImage />
-      <AvatarChooser bind:selectedImage {onMountTriggered} />
+      <UploadAvatar
+        bind:filesToUpload
+        bind:selectedImage
+        bind:imgInput
+        bind:isSelectedDefaultImg
+        bind:imageIsLegal
+      />
+      <AvatarChooser
+        bind:selectedImage
+        {onMountTriggered}
+        on:selectedImage={handleSelectDefaultImg}
+      />
     </div>
     <div>
       <SignUpTable
@@ -136,28 +148,26 @@
         bind:userName
         bind:password
         bind:description
+        bind:confirmPassword
         on:validation={handleValidation}
       />
     </div>
   </div>
 
+  <!-- <button
+    class="submitButton"
+    class:valid={allValid}
+    on:click={handleRegister}
+    disabled={!allValid}
+  >
+    Create account
+  </button> -->
+  
   <ButtonText
-    buttonFunction={() =>
-      handleRegister(
-        firstName,
-        lastName,
-        email,
-        dateOfBirth,
-        userName,
-        password,
-        description,
-        filesToUpload
-      )}
-    buttonDisabled={!allValid}
+    buttonFunction={handleRegister}
     buttonLabel="Sign up"
-    bckgColour="#9EB384"
-    txtColour="white"
-    buttonWidth="140px"
+    buttonClass="confirmButton"
+    buttonDisabled={!allValid}
   />
 </div>
 
@@ -212,8 +222,24 @@
     .content-container {
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 0;
+    }
+
+    /* .avatar-container {
+      padding: 0 auto;
+    } */
+
+    @media (max-width: 600px) {
+      .page-container {
+        width: 100%;
+      }
+
+      .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
     }
   }
 </style>

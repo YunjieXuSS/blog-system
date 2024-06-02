@@ -127,7 +127,7 @@
     <div class="content-container">
       <div class="avatar-container">
         <!-- <UpdateAvatar bind:filesToUpload userIconURL={"localhost:3000/images/img2.jpg"}/> -->
-        <UpdateAvatar bind:filesToUpload userIconURL={`${SERVER_URL}/${avatarURL}`} />
+        <UpdateAvatar bind:filesToUpload  />
   
         <!-- /userDefaultIcon.png -->
       </div>

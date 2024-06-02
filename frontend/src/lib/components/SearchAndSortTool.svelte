@@ -11,13 +11,14 @@
     { name: "Title a-z", value: "titleAsc" },
     { name: "Title z-a", value: "titleDesc" },
     { name: "Author a-z", value: "userNameAsc" },
-    { name: "Author z-a", value: "userNameDesc" },
+    { name: "Author z-a", value: "userNameDesc" }
   ];
 
   let showSearchBy = false;
   let showSortBy = false;
   let searchedBy = searchByValues[0];
   let sortedBy = sortByValues[0];
+  let isSearching = false;
 
   export let searchTerm = "";
 
@@ -73,8 +74,10 @@
       }
 
       function addTimer() {
+        isSearching = true;
         timer = setTimeout(() => {
           invokeFunc();
+          isSearching = false;
           clearTimer();
         }, wait);
       }
@@ -124,6 +127,51 @@
 </script>
 
 <div class="search-sort">
+  <div class="loadingAnimate">
+    {#if isSearching}
+      <svg
+        class="loader"
+        version="1.1"
+        id="L4"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enable-background="new 0 0 0 0"
+        xml:space="preserve"
+      >
+        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.1"
+          />
+        </circle>
+        <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.2"
+          />
+        </circle>
+        <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.3"
+          />
+        </circle>
+      </svg>
+    {/if}
+  </div>
+
   <div class="select search-by select-toggle keep-list">
     <button class="keep-list" on:click={showSearchByList}>
       <div class="search-by-name keep-list">
@@ -298,5 +346,14 @@
     width: 22px;
     height: 22px;
     filter: invert(0.9);
+  }
+
+  .loadingAnimate {
+    width: 5%;
+    height: 100%;
+  }
+  .loader {
+    width: 45x;
+    height: 45px;
   }
 </style>
