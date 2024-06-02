@@ -14,9 +14,7 @@
   <ButtonText
     buttonFunction={openSignUpPage}
     buttonLabel="Create Account"
-    txtColour="#435334"
-    bckgColour="white"
-    buttonWidth="165px"
+    buttonClass="createAccountButton"
   />
 </div>
 
@@ -49,12 +47,6 @@
   @media (max-width: 1035px) {
     .newHere {
       width: 25em;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .newHere {
-      width: 100%;
     }
   }
 </style>

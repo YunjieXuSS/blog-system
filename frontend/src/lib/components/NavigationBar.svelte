@@ -1,13 +1,15 @@
 <script>
-  import SearchAndSortTool from "./SearchAndSortTool.svelte";
+  import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
   import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
   import { searchArticles } from "../js/utils.js";
-  import ButtonImage from "$lib/components/ButtonImage.svelte";
-  import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
   import { goto } from "$app/navigation";
   import { queryStore } from "../js/store.js";
   import { browser } from "$app/environment";
+  import SearchAndSortTool from "./SearchAndSortTool.svelte";
+  import ButtonImage from "$lib/components/ButtonImage.svelte";
+  import "$lib/css/button.css";
+  
   export let data;
   let searchTimeout;
   let isSearching = false;
@@ -19,6 +21,7 @@
   let sortByCategory = "titleAsc";
   let searchTermStart = "";
   let searchTermEnd = "";
+
   function getSortQuery(sortingCategory) {
     if (sortingCategory == "titleAsc") {
       return { sortBy: "title", sortOrder: 0 };
@@ -155,7 +158,7 @@
     </div>
   {/if}
 </div>
-<nav class="navBar">
+<nav class="navBar darkGreen">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
@@ -237,8 +240,6 @@
     justify-content: space-between;
     align-items: center;
     min-height: 60px;
-    background-color: #435334;
-    /* opacity: 0.9; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
 

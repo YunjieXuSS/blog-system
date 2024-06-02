@@ -72,7 +72,6 @@
   form {
     display: block;
     align-items: center;
-    padding-top: 45px;
 
   & .img-container {
       
@@ -128,29 +127,21 @@
     color: red;
   }
 
-  @media (max-width: 600px) {
-    #userIcon {
-      display: flex;
-      justify-content: center;
-      width: 250px;
-      height: 250px;
-      margin: 0 auto;
-      display: block;
-    }
-  }
-
   .upload {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0 40px 0;
   }
 
   @media (max-width: 800px) {
-    /* .img-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-    } */
+    #userIcon {
+        display: flex;
+        justify-content: center;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto;
+        display: block;
+      }
   }
 </style>

@@ -6,6 +6,9 @@
   import PopupBox from "./PopupBox.svelte";
   import ConfirmPopupBox from "./ConfirmPopupBox.svelte"
   import Dayjs from "dayjs";
+  import "$lib/css/button.css";
+  import ButtonText from "$lib/components/ButtonText.svelte";
+
 
   export let user;
 
@@ -213,7 +216,7 @@
     </div>
   </div>
   <div class="button_div">
-    <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
+    <!-- <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
     <button
       class="submitButton"
       class:valid={buttonEnabled}
@@ -221,7 +224,20 @@
       disabled={!buttonEnabled}
     >
       Update Info
-    </button>
+    </button> -->
+
+    <ButtonText
+    buttonFunction={handleConfirmPopupBox}
+    buttonLabel="Delete Account"
+    buttonClass="deleteButton"
+  />
+
+    <ButtonText
+    buttonFunction={handleUpdate}
+    buttonLabel="Update Info"
+    buttonClass="confirmButton"
+    buttonDisabled={!buttonEnabled}
+  />
   </div>
 </div>
 

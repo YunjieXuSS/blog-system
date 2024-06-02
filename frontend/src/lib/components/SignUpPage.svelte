@@ -5,6 +5,7 @@
   import { USER_URL } from "$lib/js/apiUrls.js";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
+  import "$lib/css/button.css";
 
   let firstName, lastName, userName;
   let password;
@@ -103,7 +104,7 @@
   let redirectUrl = "/";
 
   function handlePopupBox() {
-    popupMessage = `User has registered. Redirecting to homepage...`;
+    popupMessage = `User has registered. Redirecting ...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
@@ -153,32 +154,21 @@
     </div>
   </div>
 
-  <button
+  <!-- <button
     class="submitButton"
     class:valid={allValid}
     on:click={handleRegister}
     disabled={!allValid}
   >
     Create account
-  </button>
-  <!-- 
+  </button> -->
+  
   <ButtonText
-    buttonFunction={() => handleRegister(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-    buttonDisabled={allValid}
+    buttonFunction={handleRegister}
     buttonLabel="Sign up"
-    bckgColour="#B5C0D0"
-    txtColour="white"
-    buttonWidth="140px"
-  /> -->
+    buttonClass="confirmButton"
+    buttonDisabled={!allValid}
+  />
 </div>
 
 <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
@@ -193,6 +183,7 @@
     width: 60em;
     gap: 30px;
     color: #505050;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
 
     & .page-title {
@@ -205,27 +196,15 @@
 
     & > .content-container {
       display: flex;
-      /* flex-direction: row; */
       align-content: center;
-      gap: 4l0px;
+      gap: 30px;
 
       & > .avatar-container {
         width: 20em;
-        margin: 0 30px;
+        margin: 1em 0;
+        padding: 40px 20px;
+        background-color: #f0f8ffa9;
       }
-    }
-    & .submitButton {
-      width: 200px;
-      height: 80px;
-      margin-top: 20px;
-      background-color: grey;
-      border-radius: 15px;
-      color: white;
-      font-size: 1.5em;
-      cursor: not-allowed;
-    }
-    & .submitButton.valid {
-      background-color: green;
     }
   }
 
@@ -258,6 +237,7 @@
       .content-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 0;
       }
     }
