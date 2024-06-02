@@ -2,7 +2,6 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
-  import SearchBar from "$lib/components/SearchBar.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
@@ -54,24 +53,21 @@
     return () => window.removeEventListener("resize", handleResize);
   });
 
-  afterUpdate(() => { 
+  afterUpdate(() => {
     handleResize();
   });
 </script>
 
 <div class="home-articles">
-
-  <div class="search-menu-container">
-    <SearchBar />
-  </div>
-
   <div class="sort-bar">
     {#if path === "/"}
       <p class="article-p">Articles by everyone</p>
     {:else}
       <p class="article-p">
         Articles <strong
-          >@{path.substring(9).includes("/") ? path.substring(9,path.length-1) : path.substring(9)}</strong
+          >@{path.substring(9).includes("/")
+            ? path.substring(9, path.length - 1)
+            : path.substring(9)}</strong
         >
       </p>
     {/if}
@@ -88,7 +84,7 @@
                 href="/article/{article.articleId}"
                 on:click={() => handleClick(article.articleId)}
               >
-                <ArticleCard  {article} />
+                <ArticleCard {article} />
               </a>
               <LikeCommentButtons
                 {data}
