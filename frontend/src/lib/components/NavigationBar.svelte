@@ -1,7 +1,7 @@
 <script>
   import SearchAndSortTool from "./SearchAndSortTool.svelte";
   import { page } from "$app/stores";
-  import { invalidate} from "$app/navigation";
+  import { invalidate } from "$app/navigation";
   import { searchArticles } from "../js/utils.js";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
   import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
@@ -69,7 +69,7 @@
       // Check if the logout was successful
       if (response.status === 204) {
         await invalidate(ARTICLES_URL);
-        await goto("/", { replaceState: true, invalidateAll: true});
+        await goto("/", { replaceState: true, invalidateAll: true });
         // window.location.reload();
       } else {
         console.error("Logout failed with status:", response.status);
@@ -152,9 +152,14 @@
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
+    {#if isLoggedIn}
       <li>
-        <a href="/profile/{data.user.userName}" class:active={path === `/profile/${data.user.userName}`}>My Blog</a>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path === `/profile/${data.user.userName}`}>My Blog</a
+        >
       </li>
+    {/if}
 
     {#if showArticleLink && articleId}
       <li>
