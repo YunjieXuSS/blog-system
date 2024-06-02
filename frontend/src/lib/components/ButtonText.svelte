@@ -1,12 +1,12 @@
-<!-- A button component to be altered as needed -->
+<!-- A universal button component -->
 
 <script>
   import "$lib/css/button.css";
-  export let buttonFunction = () => {};
-  export let buttonClass;
-  export let buttonLabel;
-  export let buttonDisabled = false;
 
+  export let buttonFunction = () => {};
+  export let buttonLabel;
+  export let buttonClass;
+  export let buttonDisabled = false;
 
   function handleClick() {
     if (!buttonDisabled) {
@@ -18,18 +18,7 @@
 <button
   on:click={handleClick}
   class={buttonDisabled ? "disabledButton" : buttonClass}
-  disabled={buttonDisabled}>
-  <span>{buttonLabel}</span>
-</button>
-
-<!-- <button
-  on:click={handleClick}
-  class={buttonDisabled ? "disabledButton" : buttonClass}
   disabled={buttonDisabled}
-  style="background-color:{buttonDisabled ? disabledBckgColour : bckgColour}; 
-  color:{buttonDisabled ? disabledTxtColour : txtColour}; 
-  border-radius:{borderRadius}; width:{buttonWidth}; height:{buttonHeight};
-  "
 >
   <span>{buttonLabel}</span>
-</button> -->
+</button>

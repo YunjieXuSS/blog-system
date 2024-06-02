@@ -20,7 +20,6 @@ export async function load({ fetch }) {
     //     const isLiked = body.isLiked;
     //     articles[i].isLiked = isLiked;
     //   }
-
       return { articles };
     // }
   } catch (error) {

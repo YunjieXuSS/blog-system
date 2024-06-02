@@ -6,6 +6,8 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
+  import { onMount } from "svelte";
+  import { afterUpdate } from "svelte";
 
   export let data;
   export let articles;
@@ -22,10 +24,39 @@
   let numComments = 0;
 
   async function handleCommentButton(articleId) {
-    await goto(`/article/${articleId}`)
+    await goto(`/article/${articleId}`);
     const comments = document.querySelector(".commentsDiv");
-    comments.scrollIntoView({ behavior: 'smooth'});
+    comments.scrollIntoView({ behavior: "smooth" });
   }
+  let columns = [];
+
+  function distributeArticles(columnCount) {
+    columns = Array.from({ length: columnCount }, () => []);
+    articles.forEach((article, index) => {
+      columns[index % columnCount].push(article);
+    });
+  }
+
+  function getColumnCount() {
+    const width = window.innerWidth;
+    if (width < 600) return 1;
+    if (width < 900) return 2;
+    return 3;
+  }
+
+  function handleResize() {
+    distributeArticles(getColumnCount());
+  }
+
+  onMount(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
+
+  afterUpdate(() => { 
+    handleResize();
+  });
 </script>
 
 <div class="home-articles">
@@ -35,32 +66,40 @@
   </div>
 
   <div class="sort-bar">
-{#if path ==="/"}
-    <p class="article-p">Articles by everyone</p>
-    <div class="sortingSectionDiv"><p class="sort-p">Sort by:</p><SortingSection bind:sortingCategory /></div>
-{:else} 
-    <p class="article-p">Articles <strong>@{path.substring(9).includes("/")?path.substring(9):path.substring(9)}</strong></p>
-{/if}
+    {#if path === "/"}
+      <p class="article-p">Articles by everyone</p>
+    {:else}
+      <p class="article-p">
+        Articles <strong
+          >@{path.substring(9).includes("/") ? path.substring(9,path.length-1) : path.substring(9)}</strong
+        >
+      </p>
+    {/if}
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>
   {:else}
     <div class="article-list">
-      {#each articles as article (article.articleId)}
-        <div class="article">
-          <a href="/article/{article.articleId}" on:click={() => handleClick(article.articleId)}>
-            <ArticleCard {data} {article} />
-          </a>
-
-          <LikeCommentButtons
-            {data}
-            articleId={article.articleId}
-            isLiked={article.isLiked}
-            {numComments}
-            commentButtonFunction={() => {
-              handleCommentButton(article.articleId)
-            }}
-          />
+      {#each columns as column}
+        <div class="column">
+          {#each column as article (article.articleId)}
+            <div class="article">
+              <a
+                href="/article/{article.articleId}"
+                on:click={() => handleClick(article.articleId)}
+              >
+                <ArticleCard {data} {article} />
+              </a>
+              <LikeCommentButtons
+                {data}
+                articleId={article.articleId}
+                isLiked={article.isLiked}
+                commentButtonFunction={() => {
+                  handleCommentButton(article.articleId);
+                }}
+              />
+            </div>
+          {/each}
         </div>
       {/each}
     </div>
@@ -81,14 +120,20 @@
   .home-articles {
     padding: 0 20px;
     width: 90vw;
+    margin: 0 auto;
   }
 
   .article-list {
+    display: flex;
+    gap: 10px;
     margin: 0 auto;
-    column-count: 3;
-    column-gap: 30px;
-    max-width: 1260px;
-    /* border: solid black 1px; */
+    justify-content: center;
+  }
+  .column {
+    margin: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .article {
@@ -126,16 +171,6 @@
     width: 100%;
   }
 
-  .sortingSectionDiv {
-    display: flex;
-    align-items: center;
-  }
-
-  .sort-p {
-    margin: auto 10px;
-    color: #606060;
-  }
-
   .article-p {
     font-size: 1.5em;
     color: #555;
@@ -163,9 +198,6 @@
     }
     .article-p {
       margin-bottom: 10px;
-    }
-    .sort-p {
-      margin-left: 0;
     }
   }
 </style>

@@ -1,13 +1,16 @@
 <script>
   import { goto } from "$app/navigation";
-  import InputBar from "./InputBar.svelte";
   import { USER_URL } from "../js/apiUrls.js";
+  import InputBar from "./InputBar.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
+
   let userName;
   let password;
   let isvalidation = false;
   let loginFailed = false;
+
   $: isvalidation = validatePassword(password).result && validateUserName(userName).result;
+
   async function processLogin() {
     const response = await fetch(`${USER_URL}/login`, {
       method: "POST",
@@ -19,10 +22,11 @@
     });
     if (response.status === 200) {
       goto("/", { replaceState: true, invalidateAll: true });
-    }else {
-    loginFailed = true;
+    } else {
+      loginFailed = true;
+    }
   }
-  }
+
   function validateUserName(value) {
     if (!value) return { result: false, errorMsg: "Username cannot be empty" };
     if (value.length < 3) {
@@ -30,6 +34,7 @@
     }
     return { result: true, errorMsg: "" };
   }
+
   function validatePassword(value) {
     if (!value) return { result: false, errorMsg: "Password cannot be empty" };
     if (value.length < 8) {
@@ -60,15 +65,16 @@
       bind:value={password}
     />
 
-    <div class="loginBtn">
+    <div class="loginButtonContainer">
       <ButtonText
         buttonFunction={processLogin}
-        buttonDisabled={!isvalidation}
         buttonLabel="Login"
         buttonClass="confirmButton"
+        buttonDisabled={!isvalidation}
       />
     </div>
   </div>
+  
   <div class="login-error" style="display:{loginFailed ? 'block' : 'none'}">
     Invalid password or username. Try again.
   </div>
@@ -122,7 +128,7 @@
     }
   }
 
-  .loginBtn {
+  .loginButtonContainer {
     margin: 30px 0 0 0;
   }
 </style>

@@ -76,8 +76,8 @@
 
   .cancelButton {
     color: white;
-    background-color: var(--disabledGrey);
-    width: 150px;
+    background-color: var(--lightGreen);
+    width: 100px;
     height: 45px;
     border-radius: 8px;
   }

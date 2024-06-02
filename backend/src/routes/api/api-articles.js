@@ -36,7 +36,9 @@ router.get("/", getUserIdByCookie, async (req, res) => {
   }
 });
 
-router.get("/search", async (req, res) => {
+router.get("/search",getUserIdByCookie, async (req, res) => {
+  let userId;
+  if(req.user) userId = req.user.userId;
   try {
     if (req.query.userId) {
       const articlesOfUser = await getArticlesByUserId(req.query.userId);
@@ -51,7 +53,7 @@ router.get("/search", async (req, res) => {
       const articlesOfDate = await getArticlesByDate(req.query.updateDate);
       return res.status(200).json(articlesOfDate);
     } else if (req.query.userName) {
-      const articlesOfUser = await getArticlesByUserName(req.query.userName);
+      const articlesOfUser = await getArticlesByUserName(req.query.userName,userId);
       return res.status(200).json(articlesOfUser);
     }
   } catch (error) {
