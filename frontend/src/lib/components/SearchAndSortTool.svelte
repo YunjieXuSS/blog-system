@@ -253,7 +253,6 @@
 
   .search-sort {
     display: flex;
-    padding: 8px;
     background: #435334;
     justify-content: center;
     align-items: center;
