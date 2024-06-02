@@ -98,7 +98,7 @@ export async function getUserWithUserName(userName) {
  */
 export async function getUsers() {
   const db = await getDatabase();
-  const users = await db.all("SELECT * FROM user WHERE isAdmin = FALSE");
+  const users = await db.all("SELECT * FROM user");
   users.forEach((user) => {
     user.isAdmin = !!user.isAdmin;
   });

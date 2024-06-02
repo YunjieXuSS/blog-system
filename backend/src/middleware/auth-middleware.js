@@ -16,7 +16,7 @@ export async function authenticateUser(req, res, next) {
 }
 
 export async function authenticateAdmin(req, res, next) {
-  if (!req.cookies.authToken) return res.sendStatus(401).json({ error: "Not login" });
+  if (!req.cookies.authToken) return res.status(401).json({ error: "Not login" });
   try {
     const userName = getUsernameFromJWT(req.cookies.authToken);
     const user = await getUserWithUserName(userName);

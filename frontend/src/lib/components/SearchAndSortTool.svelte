@@ -6,12 +6,12 @@
     { name: "Date", value: "date" }
   ];
   const sortByValues = [
+    { name: "Newest", value: "dateAsc" },
+    { name: "Oldest", value: "dateDesc" },
     { name: "Title a-z", value: "titleAsc" },
     { name: "Title z-a", value: "titleDesc" },
     { name: "Author a-z", value: "userNameAsc" },
     { name: "Author z-a", value: "userNameDesc" },
-    { name: "Newest", value: "dateAsc" },
-    { name: "Oldest", value: "dateDesc" }
   ];
 
   let showSearchBy = false;
@@ -219,7 +219,7 @@
 
   .search-sort .search-by,
   .sort-by {
-    width: 60px;
+    width: 80px;
     position: relative;
   }
 
@@ -236,7 +236,7 @@
     font-size: 1.2em;
     text-align: left;
     text-align: center;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     font-family: Nunito, sans-serif;
   }
 
@@ -271,7 +271,7 @@
   }
 
   .sort-by {
-    width: 60px;
+    width: 100px;
     text-align: center;
   }
 
