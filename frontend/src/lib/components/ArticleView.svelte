@@ -2,6 +2,7 @@
   export let articleDetail;
   import dayjs from "dayjs";
   import { SERVER_URL } from "../js/apiUrls.js";
+  import { browser } from "$app/environment";
 
   function goToAuthorPage() {
     window.location.href = "/profile/" + articleDetail.userName;
@@ -16,6 +17,7 @@
     >
     <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   </div>
+  {#if browser}
   <img
     src={SERVER_URL + articleDetail.imgUrl}
     alt=""
@@ -23,7 +25,7 @@
     on:error={(e) => {
       e.target.style.display = "none";
     }}
-  />
+  />{/if}
   <p class="article-content">{@html articleDetail.content}</p>
 </article>
 

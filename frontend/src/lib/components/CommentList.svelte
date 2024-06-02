@@ -68,6 +68,9 @@
       numComments = comments.length;
       // comments = removeParentCommentId(comments);
       clearTextarea();
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 100);
     } catch (error) {
       console.error(error);
     } finally {
@@ -98,7 +101,7 @@
   <textarea
     class="comment-input"
     placeholder="Write your comment here!"
-    maxlength="500"
+    maxlength="300"
     disabled={sending}
     bind:value={commentToArticle}
   />
@@ -121,7 +124,7 @@
 {#if showPopupBox}
 <Modal
   bind:showPopupBox
-  description={"You should login to reply."}
+  description={"Login to reply :)"}
   buttons={[
     {
       text: "Log in",
@@ -130,11 +133,6 @@
       }
     }
   ]}
-  countdown={10}
-  countdownCallback={() => {
-    goto(redirectUrl);
-  }}
-  countdownMessage={"Redirecting"}
 />
 <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
 {/if}
