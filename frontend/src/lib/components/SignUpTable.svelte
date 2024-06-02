@@ -1,6 +1,5 @@
 <script>
   import InputBar from "./InputBar.svelte";
-  import { createAccount } from "../js/utils.js";
   import {
     validateRegisterName,
     validateRegisterUserName,
@@ -9,14 +8,16 @@
     validateRegisterEmail,
     validateRegisterDate
   } from "../js/validation.js";
-
+  export let userNamehasChanges=false;
+  export let isUpdateMode = false;
   export let firstName, lastName, userName;
   export let email;
   export let dateOfBirth;
   export let password;
+  
   export let description = "I know myself so well.";
   // export let validateResult;
-  let confirmPassword;
+  export let confirmPassword;
   // define a function to get the first password.
   const getPassword = function () {
     return password;
@@ -35,6 +36,16 @@
     const { variableName,validateResult } = event.detail;
     dispatch('validation', { variableName,validateResult });
   }
+
+  function handleUserNameValidation(){
+   if(isUpdateMode&&userNamehasChanges){
+    console.log("reach here2222~~~`")//why this line is not printed out?
+   return validateRegisterUserName(userName);
+   }else if(!isUpdateMode){
+   return validateRegisterUserName(userName);
+   }else if(isUpdateMode&&!userNamehasChanges){
+    return { result: true, errorMsg: "user hasn't been changed" };
+  }}
 
 
 </script>
@@ -61,7 +72,7 @@
     variableName="lastName"
   />
   <InputBar
-    label="EMAIL:"x
+    label="EMAIL:"
     type="email"
     placeholder="Enter your email"
     validate={validateRegisterEmail}
@@ -86,8 +97,8 @@
     label="USERNAME:"
     type="text"
     placeholder="Enter your username"
-    validate={validateRegisterUserName}
-    maxlength="30"
+    validate={handleUserNameValidation}
+    maxlength="20"
     bind:value={userName}
     on:validation={handleValidation}
     variableName="userName"

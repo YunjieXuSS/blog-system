@@ -9,6 +9,9 @@
   import { queryStore } from "../js/store.js";
   import { browser } from "$app/environment";
   export let data;
+  let searchTimeout;
+  let isSearching = false;
+
 
   let query = {};
   let selectedCategory = "title"; // menu selection
@@ -46,7 +49,7 @@
     }
     const sortQuery = getSortQuery(sortByCategory) || {};
     query = { ...query, ...sortQuery };
-    console.log(query);
+    // console.log(query);
     queryStore.update((current) => ({ ...current, ...query }));
     handleSearch();
   }
@@ -82,9 +85,13 @@
   async function userLogin() {
     goto("/login", { replaceState: true, invalidateAll: true });
   }
-
   async function handleSearch() {
-    await searchArticles();
+    clearTimeout(searchTimeout);
+    isSearching = true;
+    searchTimeout = setTimeout(async () => {
+      await searchArticles();
+      isSearching = false;
+    }, 500);
   }
 
   import { articleInfo } from "../js/store.js";
@@ -129,7 +136,7 @@
             src={SERVER_URL + data.user.avatar}
             alt="userIcon"
             on:load={(event) => {
-              console.log("loaded");
+              // console.log("loaded");
             }}
             on:error={(event) => {
               event.target.src = "/userDefaultIcon.png";
@@ -156,7 +163,7 @@
       <li>
         <a
           href="/profile/{data.user.userName}"
-          class:active={path === `/profile/${data.user.userName}`}>My Blog</a
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>My Blog</a
         >
       </li>
     {/if}
@@ -177,18 +184,6 @@
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
-    <!-- <div class="searchSection">
-      <SearchMenu bind:selectedCategory />
-      {#if selectedCategory === "date"}
-        <div class="date-search">
-          <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
-          <div style="color: #606060">to</div>
-          <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
-        </div>
-      {:else}
-        <SearchBox bind:searchTerm on:input={handleSearch} />
-      {/if}
-    </div> -->
     <SearchAndSortTool
       bind:selectedCategory
       bind:searchTerm
@@ -200,6 +195,11 @@
 </nav>
 
 <style>
+  .loader {
+    width: 40px;
+    height: 40px;
+  }
+
   .titleDiv {
     margin: 0;
     height: 100px;
@@ -228,6 +228,7 @@
       border-radius: 50%;
       border: 2px solid #9eb384;
       display: block;
+      object-fit: cover;
     }
   }
 
@@ -307,4 +308,10 @@
     outline: none;
     cursor: pointer;
   }
+
+  .loader {
+    width: 45x;
+    height: 45px;
+  }
+  
 </style>
