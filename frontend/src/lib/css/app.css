@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  background: #f0f8ffa9;
+  background: var(--bckGrey);
   overflow-x: hidden;
 }
 
@@ -31,6 +31,14 @@ body a {
   background-color: var(--lightGreen);
 }
 
+.bckgGrey {
+  background-color: var(--bckGrey);
+}
+
+.disabledGrey {
+  background-color: var(--disabledGrey);
+}
+
 .deleteRed {
-  background-color: rgb(228, 100, 100);
+  background-color: var(--deleteRed);
 }
