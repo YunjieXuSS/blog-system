@@ -10,7 +10,7 @@
   export let articleId;
   export let isLiked;
   export let commentButtonFunction = async () => {};
-  export let numComments;
+  export let numComments = 0;
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
