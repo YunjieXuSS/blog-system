@@ -27,11 +27,6 @@ public class UserList {
         return userList.get(index);
     }
 
-    public int getIndex(User user) {
-        return userList.indexOf(user);
-    }
-
-
     public void addListener(UserListener listener) {
         listeners.add(listener);
     }
