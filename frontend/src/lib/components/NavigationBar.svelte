@@ -117,7 +117,7 @@
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
-  {#if path === "/"}
+  <!-- {#if path === "/"}
     <SearchAndSortTool
       bind:selectedCategory
       bind:searchTerm
@@ -125,7 +125,7 @@
       bind:searchTermStart
       bind:searchTermEnd
     />
-  {/if}
+  {/if} -->
 </nav>
 
 <div class="search-menu-container">
@@ -137,7 +137,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 100%;
+    height: 65px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
     position: sticky;

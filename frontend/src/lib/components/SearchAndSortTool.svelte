@@ -1,6 +1,7 @@
 <script>
   import { onDestroy, onMount } from "svelte";
-  const searchByValues = [
+  import "$lib/css/app.css";
+    const searchByValues = [
     { name: "Title", value: "title" },
     { name: "Author", value: "userName" },
     { name: "Date", value: "date" }
@@ -214,6 +215,22 @@
         placeholder="Search keywords..."
       />
     {/if}
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon icon-tabler icon-tabler-search"
+    width="28"
+    height="28"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="#9e9e9e"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+    <path d="M21 21l-6 -6" />
+  </svg>
   </div>
 
   <div class="select sort-by keep-list">
@@ -253,10 +270,9 @@
 
   .search-sort {
     display: flex;
-    background: #435334;
     justify-content: center;
     align-items: center;
-    width: 600px;
+    width: 900px;
     min-height: 100%;
 
     @media screen and (max: 600px) {
@@ -277,29 +293,31 @@
   }
 
   .search-by-value,
-  .search-by-values,
-  .sort-by-value,
-  .sort-by-values {
-    font-size: 1.2em;
+  .sort-by-value {
+    font-size: 0.8em;
     text-align: left;
     text-align: center;
     border-radius: 0 0 8px 8px;
     font-family: Nunito, sans-serif;
+    font-weight: 500;
   }
 
   .search-by-values,
   .sort-by-values {
+    font-size: 1.3em;
+    font-weight: 400;
     width: 100%;
     position: absolute;
     background: #435334;
     top: 45px;
     left: 0;
+    z-index: 9999;
   }
   .search-by-value {
-    color: white;
+    color: var(--darkGrey);
   }
   .sort-by-value {
-    color: white;
+    color: var(--darkGrey);
   }
 
   .list-value {
@@ -312,7 +330,7 @@
   }
 
   input.keyword {
-    width: 100%;
+    /* width: 100%; */
     padding: 4px 6px;
     height: 28px;
     border: transparent;
@@ -334,10 +352,12 @@
     flex: 1;
     box-sizing: border-box;
     margin: 0 4px;
-    justify-content: center;
+    padding: 0 10px;
+    justify-content: space-between;
     flex-wrap: wrap;
     border: 1px solid gray;
     border-radius: 30px;
+    background-color: white;
   }
 
   .to {

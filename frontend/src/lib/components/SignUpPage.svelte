@@ -153,15 +153,6 @@
       />
     </div>
   </div>
-
-  <!-- <button
-    class="submitButton"
-    class:valid={allValid}
-    on:click={handleRegister}
-    disabled={!allValid}
-  >
-    Create account
-  </button> -->
   
   <ButtonText
     buttonFunction={handleRegister}
@@ -225,11 +216,7 @@
       gap: 0;
     }
 
-    /* .avatar-container {
-      padding: 0 auto;
-    } */
-
-    @media (max-width: 600px) {
+    /* @media (max-width: 600px) {
       .page-container {
         width: 100%;
       }
@@ -240,6 +227,6 @@
         align-items: center;
         gap: 0;
       }
-    }
+    } */
   }
 </style>

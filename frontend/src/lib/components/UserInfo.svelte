@@ -67,7 +67,7 @@
   .container {
     display: flex;
     justify-content: center;
-    margin: 50px;
+    margin: 100px 0 50px 0;
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);

@@ -2,6 +2,7 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
@@ -10,6 +11,16 @@
 
   export let data;
   export let articles;
+
+
+
+  let selectedCategory = "title"; // menu selection
+  let searchTerm = "";
+  let sortByCategory = "titleAsc";
+  let searchTermStart = "";
+  let searchTermEnd = "";
+
+
 
   let sortingCategory = "dateDesc";
   $: path = $page.url.pathname;
@@ -64,13 +75,20 @@
       <p class="article-p">Articles by everyone</p>
     {:else}
       <p class="article-p">
-        Articles <strong
+        Articles by <strong
           >@{path.substring(9).includes("/")
             ? path.substring(9, path.length - 1)
             : path.substring(9)}</strong
         >
       </p>
     {/if}
+    <SearchAndSortTool
+    bind:selectedCategory
+    bind:searchTerm
+    bind:sortByCategory
+    bind:searchTermStart
+    bind:searchTermEnd
+  />
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>
@@ -162,7 +180,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
+    flex-direction: column;
+    margin: 40px auto 20px auto;
     max-width: 1260px;
     width: 100%;
   }
@@ -170,6 +189,8 @@
   .article-p {
     font-size: 1.5em;
     color: #555;
+    min-width: 225px;
+    margin: 20px 0;
   }
 
   @media (max-width: 1200px) {
