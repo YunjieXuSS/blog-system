@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { searchArticles } from "../js/utils.js";
   import { queryStore } from "../js/store.js";
+  import { articleInfo } from "../js/store.js";
   import { browser } from "$app/environment";
   import SearchAndSortTool from "./SearchAndSortTool.svelte";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
@@ -69,8 +70,6 @@
       isSearching = false;
     }, 500);
   }
-
-  import { articleInfo } from "../js/store.js";
 
   let showArticleLink = false;
   let articleId = null;

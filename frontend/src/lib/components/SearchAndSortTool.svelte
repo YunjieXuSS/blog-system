@@ -315,6 +315,12 @@
     width: 100%;
     padding: 4px 6px;
     height: 28px;
+    border: transparent;
+    border-radius: 30px;
+  }
+
+  input.keyword:focus {
+    outline: none;
   }
 
   .sort-by {
@@ -330,6 +336,8 @@
     margin: 0 4px;
     justify-content: center;
     flex-wrap: wrap;
+    border: 1px solid gray;
+    border-radius: 30px;
   }
 
   .to {
