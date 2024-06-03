@@ -19,43 +19,42 @@
   let numLikes;
   let showPopupBox = false;
   $: path = $page.url.pathname;
-  $:console.log("here",isLiked)
 
   onMount(() => {
-    getNumLikes().then((res) => numLikes = res);
+    getNumLikes().then((res) => (numLikes = res));
   });
-  
 
   async function toggleLike() {
     const isLoggedIn = data.isLoggedIn;
     if (isLoggedIn && !isLiked) {
-      const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { 
+      const response = await fetch(ARTICLES_URL + "/" + articleId + "/like", {
         method: "POST",
-        credentials: "include" 
+        credentials: "include"
       });
       if (response.status === 200) {
-      isLiked = !isLiked;
-      getNumLikes().then((res) => numLikes = res);
+        isLiked = !isLiked;
+        getNumLikes().then((res) => (numLikes = res));
       }
-    } else if(isLoggedIn && isLiked){
-      const response = await fetch(ARTICLES_URL+"/"+articleId+"/unlike", { 
+    } else if (isLoggedIn && isLiked) {
+      const response = await fetch(ARTICLES_URL + "/" + articleId + "/unlike", {
         method: "POST",
-        credentials: "include" 
+        credentials: "include"
       });
       if (response.status === 200) {
-      isLiked = !isLiked;
-      getNumLikes().then((res) => numLikes = res);
+        isLiked = !isLiked;
+        getNumLikes().then((res) => (numLikes = res));
       }
-    }
-    else if(path.startsWith("/article")){
+    } else if (path.startsWith("/article")) {
       showPopupBox = true;
-    }else{
-      goto("/login")
+    } else {
+      goto("/login");
     }
   }
 
-  async function getNumLikes(){
-    const response = await fetch(ARTICLES_URL+"/"+articleId+"/like", { credentials: "include" });
+  async function getNumLikes() {
+    const response = await fetch(ARTICLES_URL + "/" + articleId + "/like", {
+      credentials: "include"
+    });
     if (response.status === 200) {
       const body = await response.json();
       const numLikes = await body.likesCount;
@@ -64,21 +63,21 @@
   }
 
   // let numComments;
-  $: getNumComments().then((res) => numComments = res);
+  $: getNumComments().then((res) => (numComments = res));
 
   async function getNumComments() {
-    const response = await fetch(ARTICLES_URL+"/"+articleId+"/commentsCount", { credentials: "include" });
+    const response = await fetch(ARTICLES_URL + "/" + articleId + "/commentsCount", {
+      credentials: "include"
+    });
     if (response.status === 200) {
       const body = await response.json();
       const numComments = await body.commentsCount;
       return numComments;
     }
   }
-
 </script>
 
 <div class="likeCommentContainer">
-
   <div class="likeButton">
     <ButtonImage
       buttonFunction={toggleLike}
@@ -100,21 +99,20 @@
   </div>
 
   {#if showPopupBox}
-<Modal
-  bind:showPopupBox
-  description={"Login to like the article ~"}
-  buttons={[
-    {
-      text: "Log in",
-      onClick: () => {
-        goto(redirectUrl);
-      }
-    }
-  ]}
-/>
-<!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
-{/if}
-
+    <Modal
+      bind:showPopupBox
+      description={"Login to like the article ~"}
+      buttons={[
+        {
+          text: "Log in",
+          onClick: () => {
+            goto(redirectUrl);
+          }
+        }
+      ]}
+    />
+    <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
+  {/if}
 </div>
 
 <style>
@@ -122,7 +120,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width:150px;
+    width: 150px;
     margin-bottom: 10px;
     float: right;
   }

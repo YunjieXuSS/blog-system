@@ -12,3 +12,6 @@ frontend/src/routes/edituser/+page.svelte
 frontend/src/routes/test/+page.svelte
 .DS_Store
 desktop-client/.idea/workspace.xml
+frontend/src/lib/components/UpdateUserInfoPage.svelte
+frontend/src/lib/components/UpdateUserTable.svelte
+frontend/src/lib/components/UpdateAvatar.svelte

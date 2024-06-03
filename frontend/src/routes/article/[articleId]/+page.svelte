@@ -60,6 +60,7 @@
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
+  
   let numComments = 0;
 
   function goToComments() {
@@ -86,8 +87,6 @@
 
   <ConfirmPopupBox
     {ConfirmPopupMessage}
-    {resultMsg}
-    {redirectUrl}
     {confirmFunction}
     bind:showConfirmPopupBox
   />

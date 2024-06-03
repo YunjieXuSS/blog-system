@@ -1,22 +1,36 @@
-/* System Fonts as used by GitHub */
+:root {
+  --darkGreen: #435334;
+  --lightGreen: #9EB384;
+  --bckgGrey: #f0f8ffa9;
+  --disabledGrey: grey;
+  --deleteRed: rgb(228, 100, 100);
+}
+
 body {
   font-family: 'Nunito', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
   width: 100%;
-  background-color: rgb(241, 241, 241);
+  background: #f0f8ffa9;
+  overflow-x: hidden;
 }
 
 body a {
   color: #404040;
   text-decoration: none;
 }
-body {
-  margin: 0;
-  padding: 0;
-  background: #f0f8ffa9;
-  overflow-x: hidden;
+
+.darkGreen {
+  background-color: var(--darkGreen);
+}
+
+.lightGreen {
+  background-color: var(--lightGreen);
+}
+
+.deleteRed {
+  background-color: rgb(228, 100, 100);
 }

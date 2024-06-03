@@ -25,7 +25,6 @@
     goto(redirectUrl, { replaceState: true, invalidateAll: true });
   }
 
-
   $: if (showPopupBox) {
     countdownTime = countdown;
     if (nIntervId) {
@@ -39,15 +38,13 @@
       closePopupBox();
     }, countdown * 1000);
   }
-
-
 </script>
 
 {#if showPopupBox}
   <div class="container">
     <div class="content_container">
       <p>{popupMessage}</p>
-      <div class="countdown_container">{countdownTime} </div>
+      <div class="countdown_container">{countdownTime}</div>
       <button on:click={closePopupBox}>OK</button>
     </div>
   </div>

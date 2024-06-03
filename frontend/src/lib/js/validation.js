@@ -5,27 +5,32 @@ import { checkUserIsRegisterd } from "../js/utils.js";
 export function validateRegisterPassword(password) {
   if (password.length < 8) {
     return { result: false, errorMsg: "Password must be at least 8 characters" };
+  } else if (password.length > 30) {
+    return { result: false, errorMsg: "Password must be less than 30 characters" };
   } else if (password.includes(" ")) {
     return { result: false, errorMsg: "Password cannot contain spaces." };
-  } else if (!/[!@#$%^&*_-]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one special character." };
-  } else if (!/[0-9]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one number." };
-  } else if (!/[A-Za-z]/.test(password)) {
-    return { result: false, errorMsg: "Password must contain at least one letter." };
+  } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+    return { result: false, errorMsg: "Min. 8 characters, 1 uppercase, 1 lowercase, 1 number. ONLY the following special characters are allowed: @$!%*?&." };
   }
+  // else if (!/[!@#$%^&*_-]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one special character." };
+  // } else if (!/[0-9]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one number." };
+  // } else if (!/[A-Za-z]/.test(password)) {
+  //   return { result: false, errorMsg: "Password must contain at least one letter." };
+  // }
   return { result: true, errorMsg: "" };
 }
 
 
 export async function validateRegisterName(name) {
-  if (name.length < 3 || name.length > 20) {
-    return { result: false, errorMsg: "This name must be between 3 and 20 characters." };
+  if (name.length < 1 || name.length > 30) {
+    return { result: false, errorMsg: "This name must be between 1 and 30 characters." };
   } else if (name.includes(" ")) {
     return { result: false, errorMsg: "This name cannot contain spaces." };
   } else if (!/^[a-zA-Z0-9_]+$/.test(name)) {
     return { result: false, errorMsg: "This name can only contain underscore, letters and numbers." };
-  } 
+  }
   return { result: true, errorMsg: "" };
 }
 
@@ -45,17 +50,17 @@ export async function validateRegisterUserName(userName) {
 
 
 export async function validateUpdateUserName(userName) {
-    const userIsExisted = await checkUserIsRegisterd(userName);
-    if (userName.length < 3 || userName.length > 20) {
-      return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
-    } else if (userName.includes(" ")) {
-      return { result: false, errorMsg: "Username cannot contain spaces." };
-    } else if (!/^[a-zA-Z0-9_]+$/.test(userName)) {
-      return { result: false, errorMsg: "Username can only contain underscore, letters and numbers." };
-    } else if (userIsExisted.exists) {
-      return { result: false, errorMsg: "Username already exists." };
-    }
-    return { result: true, errorMsg: "" };
+  const userIsExisted = await checkUserIsRegisterd(userName);
+  if (userName.length < 3 || userName.length > 20) {
+    return { result: false, errorMsg: "Username must be between 3 and 20 characters." };
+  } else if (userName.includes(" ")) {
+    return { result: false, errorMsg: "Username cannot contain spaces." };
+  } else if (!/^[a-zA-Z0-9_]+$/.test(userName)) {
+    return { result: false, errorMsg: "Username can only contain underscore, letters and numbers." };
+  } else if (userIsExisted.exists) {
+    return { result: false, errorMsg: "Username already exists." };
+  }
+  return { result: true, errorMsg: "" };
   // }
 }
 
@@ -77,8 +82,8 @@ export function validateRegisterDate(date) {
     return { result: false, errorMsg: "Date cannot be empty." };
   } else if (date.length > 20) {
     return { result: false, errorMsg: "Date must be less than 20 characters." };
-  // } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
-  //   return { result: false, errorMsg: "Invalid date format." };
+    // } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
+    //   return { result: false, errorMsg: "Invalid date format." };
   }
   return { result: true, errorMsg: "" };
 }

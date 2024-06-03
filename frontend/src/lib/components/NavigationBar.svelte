@@ -1,14 +1,16 @@
 <script>
-  import SearchAndSortTool from "./SearchAndSortTool.svelte";
   import { page } from "$app/stores";
-  import { invalidate} from "$app/navigation";
   import { searchArticles } from "../js/utils.js";
-  import ButtonImage from "$lib/components/ButtonImage.svelte";
-  import { USER_URL, SERVER_URL, ARTICLES_URL } from "../js/apiUrls.js";
-  import { goto } from "$app/navigation";
   import { queryStore } from "../js/store.js";
   import { browser } from "$app/environment";
+  import SearchAndSortTool from "./SearchAndSortTool.svelte";
+  import ButtonImage from "$lib/components/ButtonImage.svelte";
+  import "$lib/css/button.css";
+  import SearchBar from "$lib/components/SearchBar.svelte";
+
   export let data;
+  let searchTimeout;
+  let isSearching = false;
 
   let query = {};
   let selectedCategory = "title"; // menu selection
@@ -16,6 +18,7 @@
   let sortByCategory = "titleAsc";
   let searchTermStart = "";
   let searchTermEnd = "";
+
   function getSortQuery(sortingCategory) {
     if (sortingCategory == "titleAsc") {
       return { sortBy: "title", sortOrder: 0 };
@@ -46,7 +49,7 @@
     }
     const sortQuery = getSortQuery(sortByCategory) || {};
     query = { ...query, ...sortQuery };
-    console.log(query);
+    // console.log(query);
     queryStore.update((current) => ({ ...current, ...query }));
     handleSearch();
   }
@@ -58,33 +61,13 @@
     loginUser = data.user;
   }
 
-  async function userLogout() {
-    try {
-      // Make the logout request to the server
-      const response = await fetch(`${USER_URL}/logout`, {
-        method: "POST",
-        credentials: "include"
-      });
-
-      // Check if the logout was successful
-      if (response.status === 204) {
-        await invalidate(ARTICLES_URL);
-        await goto("/", { replaceState: true, invalidateAll: true});
-        // window.location.reload();
-      } else {
-        console.error("Logout failed with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  }
-
-  async function userLogin() {
-    goto("/login", { replaceState: true, invalidateAll: true });
-  }
-
   async function handleSearch() {
-    await searchArticles();
+    clearTimeout(searchTimeout);
+    isSearching = true;
+    searchTimeout = setTimeout(async () => {
+      await searchArticles();
+      isSearching = false;
+    }, 500);
   }
 
   import { articleInfo } from "../js/store.js";
@@ -107,54 +90,16 @@
   });
 </script>
 
-<div class="titleDiv">
-  <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
-
-  <!-- show different content depends on the status of user -->
-  {#if isLoggedIn == false}
-    <div class="userNameLogoutDiv">
-      <button class="login-button" on:click={userLogin}
-        ><img class="login" src="/icons/login.png" alt="userDefaultIcon" /></button
-      >
-    </div>
-  {/if}
-
-  {#if isLoggedIn == true}
-    <div class="userNameLogoutDiv">
-      <!-- <span class="userName"> Hi {loginUser.userName}!</span> -->
-      <a href="/profile/edit">
-        {#if browser}
-          <img
-            class="userIcon"
-            src={SERVER_URL + data.user.avatar}
-            alt="userIcon"
-            on:load={(event) => {
-              console.log("loaded");
-            }}
-            on:error={(event) => {
-              event.target.src = "/userDefaultIcon.png";
-            }}
-          />
-        {/if}
-      </a>
-
-      <ButtonImage
-        buttonFunction={userLogout}
-        imgSrc="/icons/logout.png"
-        imgAlt="Logout"
-        imgWidth="35px"
-        buttonWidth="40px"
-      />
-    </div>
-  {/if}
-</div>
-<nav class="navBar">
+<nav class="navBar darkGreen">
   <ul>
     <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if isLoggedIn}
       <li>
-        <a href="/profile/{data.user.userName}" class:active={path.startsWith("/profile/")}>Blog</a>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>My Blog</a
+        >
       </li>
     {/if}
 
@@ -174,18 +119,6 @@
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
   {#if path === "/"}
-    <!-- <div class="searchSection">
-      <SearchMenu bind:selectedCategory />
-      {#if selectedCategory === "date"}
-        <div class="date-search">
-          <DateSearchBox bind:searchTerm={searchTermStart} on:input={handleSearch} />
-          <div style="color: #606060">to</div>
-          <DateSearchBox bind:searchTerm={searchTermEnd} on:input={handleSearch} />
-        </div>
-      {:else}
-        <SearchBox bind:searchTerm on:input={handleSearch} />
-      {/if}
-    </div> -->
     <SearchAndSortTool
       bind:selectedCategory
       bind:searchTerm
@@ -196,47 +129,19 @@
   {/if}
 </nav>
 
+<div class="search-menu-container">
+  <SearchBar />
+</div>
+
 <style>
-  .titleDiv {
-    margin: 0;
-    height: 100px;
-    background-color: white;
-    opacity: 0.9;
-    padding: 0 50px 0 45px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & .logo {
-      max-width: 140px;
-      min-width: 80px;
-      width: 100%;
-    }
-
-    & .userNameLogoutDiv {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    & .userIcon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid #9eb384;
-      display: block;
-    }
-  }
-
   .navBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 60px;
-    background-color: #435334;
-    /* opacity: 0.9; */
+    min-height: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
+    position: sticky;
 
     & > ul {
       list-style: none;
@@ -292,16 +197,5 @@
         height: 20px;
       }
     }
-  }
-
-  .login {
-    width: 50px;
-  }
-
-  .login-button {
-    background: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
   }
 </style>
