@@ -7,7 +7,6 @@ import program.demo.web.API;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
@@ -26,7 +25,6 @@ public class AdministratorApp extends JFrame {
     private UserList userList = new UserList( new ArrayList<>() );
 
 
-    JScrollPane scrollPane;
     JPanel userInfoPanel;
     JScrollPane userInfoScrollPane;
     private JLabel imgUserInfo;
@@ -86,6 +84,7 @@ public class AdministratorApp extends JFrame {
         panel.add( btnLogout );
 
         getContentPane().add( panel, BorderLayout.NORTH );
+
         setVisible( true );
     }
 
@@ -183,11 +182,8 @@ public class AdministratorApp extends JFrame {
             btnLogout.setEnabled( false );
             txtUsername.setEnabled( true );
             txtPassword.setEnabled( true );
-
-            //clean  userInfoPanel data
             userInfoPanel.removeAll();
             userInfoPanel.repaint();
-            userInfoPanel.revalidate();
             clearTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog( this, "Logout failed!", "Error", JOptionPane.ERROR_MESSAGE );
@@ -246,8 +242,6 @@ public class AdministratorApp extends JFrame {
     }
 
     private void clearTable() {
-        scrollPane.removeAll();
-        scrollPane.repaint();
         btnDeleteUser.setEnabled( false );
     }
 
@@ -379,7 +373,7 @@ public class AdministratorApp extends JFrame {
         selectionModel.addListSelectionListener( new UserTableSelectionListener() );
 
 
-        scrollPane = new JScrollPane( userTable );
+        JScrollPane scrollPane = new JScrollPane( userTable );
         getContentPane().add( scrollPane, BorderLayout.CENTER );
         scrollPane.setPreferredSize( new Dimension( 600, getHeight() ) );
         UserTableModel model = new UserTableModel( userList );
