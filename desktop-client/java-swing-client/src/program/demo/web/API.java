@@ -38,7 +38,7 @@ public class API {
                 .build();
     }
 
-    public boolean login(String username, String password) throws IOException, InterruptedException {
+    public User login(String username, String password) throws IOException, InterruptedException {
         String json = String.format("{\"userName\":\"%s\",\"password\":\"%s\"}", username, password);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/user/login"))
@@ -50,9 +50,9 @@ public class API {
 
         if (response.statusCode() == 200) {
             LoginResponse loginResponse = JSONUtils.toObject(response.body(), LoginResponse.class);
-            return loginResponse.getUser().getIsAdmin();
+            return loginResponse.getUser();
         } else {
-            return false;
+            return null;
         }
     }
 
