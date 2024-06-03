@@ -54,12 +54,28 @@ CREATE TABLE like(
 );
 
 -- Insert mock data
-INSERT INTO user (userName, password, email, firstName, lastName, dateOfBirth, avatar, isAdmin) VALUES
-('john_doe', '$2b$12$Yv/Cb6.FKpK6CNZRvKrCBeTNjFK1pvyHMdcaCvXQBBmp1xZSxDpei', 'john.doe@example.com', 'John', 'Doe', '1985-06-15', '/images/userDefaultIcon1.png', FALSE),
-('jane_smith', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', '/images/userDefaultIcon2.png', TRUE),
-('alice_jones', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'alice.jones@example.com', 'Alice', 'Jones', '1978-12-05', '/images/userDefaultIcon3.png', FALSE),
-('bob_brown', '$2b$12$9yuOvONQDqm5.YeITAd.L.FsyDhIblipXrl3vddN.BzjM1CWCsgIm', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', '/images/userDefaultIcon4.png', FALSE),
-('john_snow', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'john.jones@example.com', 'John', 'Snow', '1978-12-05', '/images/userDefaultIcon5.png', FALSE);
+INSERT INTO user (userName, password, email, firstName, lastName, dateOfBirth, avatar, isAdmin,description) VALUES
+('test01', '$2b$12$JVap/opFunBoaqN77vhcdO1k3o3MffTjKUYt5CZNHN6L7eR5r2xee', 'test01@example.com', 'Chandler', 'Bing', '1967-01-1', '/images/chandler.jpeg', TRUE,"This blog is fxxking awesome! So it seems like this internet thing is here to stay, huh?"),
+('test02', '$2b$12$LFtIv9f.9azNHPUxx7aUnuVBxfSywBS1LVklZn.IoMNjPh8BGp0Re', 'test02@example.com', 'Jon', 'Snow', '283-12-31', '/images/jon_snow.png', TRUE,"Winter is Coming! My Watch Is Ended!"),
+('test03', '$2b$12$7OnYYy8fB1O14Pfo/Lap4uIKvcN/MOBw40m5/ch6lac4B3.HZi4ge', 'test03@example.com', 'WALL-E', 'Unkown', '1-1-1', '/images/wall-e.png', FALSE,"EVE: EVE! EVE !WALL.E: Eeeee... va?"),
+('jane_smith', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'jane.smith@example.com', 'Jane', 'Smith', '1990-08-22', '/images/userDefaultIcon2.png', TRUE,"I know myself so well."),
+('john_titor', '$2b$12$6Sdre8XSkFpHCp2sso/gLuKx7.ctyXkZc7PP546VlnCg4rCmGRVuq', 'john_titor@example.com', 'john', 'Titor', '2000-01-01', '/images/userDefaultIcon3.png', FALSE,"I come from the future!"),
+('bob_brown', '$2b$12$9yuOvONQDqm5.YeITAd.L.FsyDhIblipXrl3vddN.BzjM1CWCsgIm', 'bob.brown@example.com', 'Bob', 'Brown', '1995-03-30', '/images/userDefaultIcon4.png', FALSE,"I know myself so well."),
+('homer_simpson', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'homer.simpson@example.com', 'Homer', 'Simpson', '1956-05-12', '/images/homer.png', FALSE, "D'oh! Time to grab a donut."),
+('sherlock_holmes', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'sherlock.holmes@example.com', 'Sherlock', 'Holmes', '1854-01-06', '/images/sherlock.png', FALSE, "Elementary, my dear Watson."),
+('tony_stark', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'tony.stark@example.com', 'Tony', 'Stark', '1970-05-29', '/images/tony_stark.png', FALSE, "I am Iron Man."),
+('frodo_baggins', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'frodo.baggins@example.com', 'Frodo', 'Baggins', '2980-09-22', '/images/frodo.png', FALSE, "I will take the ring to Mordor."),
+('walter_white', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'walter.white@example.com', 'Walter', 'White', '1958-09-07', '/images/walter_white.png', FALSE, "I am the one who knocks."),
+('bruce_wayne', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'bruce.wayne@example.com', 'Bruce', 'Wayne', '1939-05-27', '/images/bruce_wayne.jpeg', FALSE, "I am Batman."),
+('harry_potter', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'harry.potter@example.com', 'Harry', 'Potter', '1980-07-31', '/images/harry_potter.png', FALSE, "I solemnly swear that I am up to no good."),
+('luke_skywalker', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'luke.skywalker@example.com', 'Luke', 'Skywalker', '19BBY-05-24', '/images/luke_skywalker.png', FALSE, "May the Force be with you."),
+('hermione_granger', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'hermione.granger@example.com', 'Hermione', 'Granger', '1979-09-19', '/images/hermione_granger.png', FALSE, "It's Leviosa, not Leviosar."),
+('gandalf_grey', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'gandalf.grey@example.com', 'Gandalf', 'TheGrey', '2019-07-10', '/images/gandalf.png', FALSE, "You shall not pass."),
+('katniss_everdeen', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'katniss.everdeen@example.com', 'Katniss', 'Everdeen', '2010-05-08', '/images/katniss.png', FALSE, "I volunteer as tribute."),
+('elsa_frozen', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'elsa.frozen@example.com', 'Elsa', 'Frozen', '2005-12-01', '/images/elsa.jpeg', FALSE, "Let it go."),
+('peter_parker', '$2b$12$CtT/UF/YyKgcbYw7DUq8o.15a.etd7RlLHM2AJ.yFEl1G7uuXaPkW', 'peter.parker@example.com', 'Peter', 'Parker', '2001-08-10', '/images/peter_parker.jpeg', FALSE, "With great power comes great responsibility.");
+
+
 
 
 -- Insert mock data(long article) into article table
