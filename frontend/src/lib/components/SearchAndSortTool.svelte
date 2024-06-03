@@ -297,9 +297,11 @@
   }
   .search-by-value {
     color: white;
+    font-size: 0.9em;
   }
   .sort-by-value {
     color: white;
+    font-size: 0.9em;
   }
 
   .list-value {
@@ -318,7 +320,7 @@
   }
 
   .sort-by {
-    width: 100px;
+    width: 120px;
     text-align: center;
   }
 

@@ -129,9 +129,9 @@
   {/if}
 </nav>
 
-<div class="search-menu-container">
+<!-- <div class="search-menu-container">
   <SearchBar />
-</div>
+</div> -->
 
 <style>
   .navBar {
