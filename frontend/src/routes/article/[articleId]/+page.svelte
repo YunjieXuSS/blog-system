@@ -120,35 +120,33 @@
   }
 
   .edit {
-    width: 22px;
-    height: 22px;
+    width: 5px;
     padding: 0;
     background: none;
     border: none;
     cursor: pointer;
     position: absolute;
-    right: 0;
+    right: -15px;
     top: 60px;
 
     & img {
-      width: 100%;
-      height: 100%;
+      width: 40%;
+      height: 50%;
     }
   }
 
   .delete {
-    width: 30px;
-    height: 30px;
+    width: 15px;
     padding: 0;
     background: none;
     border: none;
     cursor: pointer;
     position: absolute;
     top: 120px;
-    right: 0;
+    right: -10px;
 
     & img {
-      width: 100%;
+      width: 50%;
       height: 100%;
     }
   }
