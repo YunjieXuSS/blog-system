@@ -33,6 +33,8 @@
     min-width: 20px;
     position: relative;
     text-align: center;
+    font-weight: 400;
+    font-size: 0.9em;
   }
 
   button:hover {

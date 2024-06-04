@@ -48,6 +48,9 @@
     }
   }
 </script>
+<svelte:head>
+  <title>Chars</title>
+</svelte:head>
 
 <div class="titleDiv">
   <div class="logos-container">

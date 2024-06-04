@@ -43,7 +43,7 @@
       return;
     }
 
-    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
       loadingFlag = true;
       setTimeout(async () => {
         const previousLength = get(articleStore).length;
@@ -92,6 +92,7 @@
     right: 40px;
     width: 50px;
     height: 50px;
+    min-width: 50px;
     background-color: #CCD3CA;
     color: white;
     border: none;

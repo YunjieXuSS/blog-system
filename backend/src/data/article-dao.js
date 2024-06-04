@@ -166,11 +166,9 @@ export async function getArticlesByUserName(userName,userId) {
     const article = articles[i];
     const likes = await getLikes(article.articleId);
     article.likes = likes.likesCount;
-    const {userId} = await db.get("SELECT userId FROM user WHERE userName = ?", userName);
     if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
     else article.isLiked = false;
   }
-  console.log(articles);
   return articles;
 }
 
