@@ -3,7 +3,7 @@ import { ARTICLES_URL, USER_URL } from "$lib/js/apiUrls";
 export async function load({ params, fetch }) {
     const userName  = params.userName;
     async function getUserInfo() {
-      const res = await fetch(`${USER_URL}/${userName}/info`);
+      const res = await fetch(`${USER_URL}/${userName}/info`,{credentials: "include"});
 
       if (res.status === 200) {
         const data = await res.json();
@@ -14,11 +14,10 @@ export async function load({ params, fetch }) {
     }
     
     async function getArticles() {
-      const res = await fetch(`${ARTICLES_URL}/search?userName=${userName}`);
+      const res = await fetch(`${ARTICLES_URL}/search?userName=${userName}`, {credentials: "include"});
       if (res.status === 200) {
         const data = await res.json();
         return data;
-        
       } else {
         throw Error("Failed to fetch articles by username.");
       }
