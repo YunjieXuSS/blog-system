@@ -227,7 +227,7 @@
     </div>
   </div>
   <div class="button_div">
-    <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
+    <!-- <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button> -->
     <!-- <button
       class="submitButton"
       class:valid={buttonEnabled}
@@ -237,11 +237,11 @@
       Update Info
     </button> -->
 
-    <!-- <ButtonText
+    <ButtonText
       buttonFunction={handleConfirmPopupBox}
       buttonLabel="Delete Account"
       buttonClass="deleteButton"
-    /> -->
+    />
 
     <ButtonText
       buttonFunction={handleUpdate}
