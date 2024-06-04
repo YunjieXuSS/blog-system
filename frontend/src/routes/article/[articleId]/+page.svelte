@@ -20,6 +20,7 @@
 
   const articleDetail = data.article;
   const isLoggedIn = data.isLoggedIn;
+  const articleNotFound = JSON.stringify(articleDetail) === "{}";
 
   let loginUser = {};
   let numComments = 0;
@@ -74,7 +75,9 @@
 </script>
 
 <PostArticleButton {data} />
-
+{#if articleNotFound}
+  <div class="not-fount-hint">Not found</div>
+{:else}
 <main>
   <div class="articleDiv">
     {#if loginUser.userId === articleDetail.userId}
@@ -107,7 +110,7 @@
     <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
   </div>
 </main>
-
+{/if}
 <style>
   main {
     padding: 16px;
@@ -161,5 +164,10 @@
       width: 50%;
       height: 100%;
     }
+  }
+  .not-fount-hint{
+    font-size: 2rem;
+    margin-top: 20px;
+    text-align: center;
   }
 </style>

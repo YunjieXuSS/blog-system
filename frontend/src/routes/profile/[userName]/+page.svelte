@@ -17,6 +17,8 @@
     <ArticleList {data} articles={data.articlesOfUser} />
     <PostArticleButton {data} />
   </div>
+{:else}
+<div class="not-fount-hint">Not found</div>
 {/if}
 
 <style>
@@ -24,5 +26,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .not-fount-hint{
+    font-size: 2rem;
+    margin-top: 20px;
+    text-align: center;
   }
 </style>
