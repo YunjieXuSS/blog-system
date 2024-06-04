@@ -61,16 +61,16 @@ router.get("/search",getUserIdByCookie, async (req, res) => {
   }
 });
 
-//get all articles
-router.get("/", async (req, res) => {
-  try {
-    const articles = await getArticles();
-    return res.status(200).json(articles);
-  } catch (error) {
-    console.error(error);
-    return res.status(404).json({ error: "Can't find articles." });
-  }
-});
+// //get all articles
+// router.get("/", async (req, res) => {
+//   try {
+//     const articles = await getArticles();
+//     return res.status(200).json(articles);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(404).json({ error: "Can't find articles." });
+//   }
+// });
 
 // get articles by articleId
 router.get("/:articleId", async (req, res) => {
