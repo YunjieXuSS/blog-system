@@ -57,7 +57,7 @@
   }
   /* hide the button css */
   .image-item {
-    padding: 0;
+    padding: 5px;
     border: none;
     background: none;
     cursor: pointer;

@@ -176,6 +176,7 @@
   }
   main {
     width: 900px;
+    margin: 0 auto;
 
     & form {
       width: 100%;

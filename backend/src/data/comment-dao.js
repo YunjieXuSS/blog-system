@@ -92,5 +92,6 @@ export async function getNumComments(articleId) {
     "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ? AND isDeleted = FALSE",
     articleId
   );
+  console.log(comments)
   return comments;
 }

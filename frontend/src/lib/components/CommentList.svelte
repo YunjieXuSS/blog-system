@@ -9,6 +9,7 @@
   let showPopupBox = false;
 
   export let numComments = 0;
+  $: numComments = comments?.filter((element)=>!element.isDeleted)?.length;
 
   export let authorId;
   export let loginUserId = 0;
@@ -46,7 +47,6 @@
   onMount(async () => {
     try {
       comments = await getComments({ articleId });
-      numComments = comments.length;
       // comments = removeParentCommentId(comments);
       loadedComment = true;
     } catch (error) {
@@ -65,7 +65,6 @@
     try {
       await postComment({ content: commentToArticle, articleId });
       comments = await getComments({ articleId });
-      numComments = comments.length;
       // comments = removeParentCommentId(comments);
       clearTextarea();
       setTimeout(() => {
@@ -84,7 +83,6 @@
 
   async function refreshComments() {
     comments = await getComments({ articleId });
-    numComments = comments.length;
     // comments = removeParentCommentId(comments);
   }
 </script>

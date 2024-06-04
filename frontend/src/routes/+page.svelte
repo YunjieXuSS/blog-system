@@ -16,6 +16,18 @@
 
   let isVisible = false;
   let hintShown = false;
+  let queryIsChanging = false;
+
+  $: {
+    if (!$queryStore.pageSize && $articleStore.length >= 12) {
+      hintShown = false;
+      queryIsChanging = true;
+      count = 2;
+      setTimeout(() => {
+        queryIsChanging = false;
+      }, 50);
+    }
+  }
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -39,7 +51,7 @@
   });
 
   loadMore = () => {
-    if (loadingFlag || hintShown) {
+    if (loadingFlag || hintShown || queryIsChanging) {
       return;
     }
 
