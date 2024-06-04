@@ -71,39 +71,40 @@
 {#if articleNotFound}
   <div class="not-fount-hint">Not found</div>
 {:else}
-<main>
-  <div class="articleDiv">
-    {#if loginUser.userId === articleDetail.userId}
-      <button class="edit" on:click={editArticle}>
-        <img src="/icons/pencil-icon.png" alt="pencil" />
-      </button>
-      <button class="delete" on:click={handleConfirmPopupBox}>
-        <img src="/icons/delete-icon.png" alt="trash-can" />
-      </button>
-    {/if}
-  </div>
+  <main>
+    <div class="articleDiv">
+      {#if loginUser.userId === articleDetail.userId}
+        <button class="edit" on:click={editArticle}>
+          <img src="/icons/pencil-icon.png" alt="pencil" />
+        </button>
+        <button class="delete" on:click={handleConfirmPopupBox}>
+          <img src="/icons/delete-icon.png" alt="trash-can" />
+        </button>
+      {/if}
+    </div>
 
-  <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
+    <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
-  <ConfirmPopupBox {ConfirmPopupMessage} {confirmFunction} bind:showConfirmPopupBox />
+    <ConfirmPopupBox {ConfirmPopupMessage} {confirmFunction} bind:showConfirmPopupBox />
 
-  <ArticleView {articleDetail} />
+    <ArticleView {articleDetail} />
 
-  <div class="like-comment-buttons-container">
-    <LikeCommentButtons
-      {data}
-      articleId={articleDetail.articleId}
-      isLiked={data.isLiked}
-      {numComments}
-      commentButtonFunction={goToComments}
-    />
-  </div>
+    <div class="like-comment-buttons-container">
+      <LikeCommentButtons
+        {data}
+        articleId={articleDetail.articleId}
+        isLiked={data.isLiked}
+        {numComments}
+        commentButtonFunction={goToComments}
+      />
+    </div>
 
-  <div class="commentsDiv">
-    <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
-  </div>
-</main>
+    <div class="commentsDiv">
+      <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
+    </div>
+  </main>
 {/if}
+
 <style>
   main {
     padding: 16px;
@@ -165,7 +166,7 @@
       height: 100%;
     }
   }
-  .not-fount-hint{
+  .not-fount-hint {
     font-size: 2rem;
     margin-top: 20px;
     text-align: center;

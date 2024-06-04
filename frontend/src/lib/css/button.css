@@ -1,99 +1,98 @@
- 
-  button {
-    font-family: 'Nunito', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 9px 20px 8px;
-    max-width: 200px;
-    min-height: 35px;
-    min-width: 70px;
-    text-align: center;
-    font-size: 17px;
-    font-weight: 800;
-    line-height: 1.5;
-    cursor: pointer;
-    border-style: none;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  button:hover:not(:disabled) {
-    transform: translateY(-3px);
-    transition: 0.3s;
-  }
-  
-  button:hover:not(:disabled)::before {
-    content: "";
-    top: 0;
-    position: absolute;
+button {
+  font-family: "Nunito", sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 9px 20px 8px;
+  max-width: 200px;
+  min-height: 35px;
+  min-width: 70px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.5;
+  cursor: pointer;
+  border-style: none;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  transition: 0.3s;
+}
+
+button:hover:not(:disabled)::before {
+  content: "";
+  top: 0;
+  position: absolute;
+  left: -70%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skew(-20deg);
+  animation: shine 0.85s forwards;
+}
+
+@keyframes shine {
+  0% {
     left: -70%;
-    width: 50%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.4);
-    transform: skew(-20deg);
-    animation: shine 0.85s forwards;
-  }
-  
-  @keyframes shine {
-    0% {
-      left: -70%;
-    }
-  
-    100% {
-      left: 130%;
-    }
-  }
-  
-  .disabledButton {
-    color: white;
-    background-color: var(--disabledGrey);
-    width: 150px;
-    height: 45px;
-    border-radius: 8px;
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-  
-  .confirmButton {
-    color: white;
-    background-color: var(--darkGreen);
-    width: 150px;
-    height: 45px;
-    border-radius: 8px;
   }
 
-  .deleteButton {
-    color: white;
-    background-color: var(--deleteRed);
-    width: 230px;
-    height: 45px;
-    border-radius: 8px;
+  100% {
+    left: 130%;
   }
+}
 
-  .cancelButton {
-    color: white;
-    background-color: var(--lightGreen);
-    width: 100px;
-    height: 45px;
-    border-radius: 8px;
-  }
+.disabledButton {
+  color: white;
+  background-color: var(--disabledGrey);
+  width: 150px;
+  height: 45px;
+  border-radius: 8px;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 
-  .createAccountButton {
-    color: var(--darkGreen);
-    background-color: white;
-    width: 165px;
-    height: 45px;
-    border-radius: 8px;
-  }
+.confirmButton {
+  color: white;
+  background-color: var(--darkGreen);
+  width: 150px;
+  height: 45px;
+  border-radius: 8px;
+}
 
-  .postButton {
-    color: white;
-    background-color: var(--lightGreen);
-    width: 160px;
-    height: 55px;
-    border-radius: 8px 0 0 8px;
-  }
+.deleteButton {
+  color: white;
+  background-color: var(--deleteRed);
+  width: 230px;
+  height: 45px;
+  border-radius: 8px;
+}
+
+.cancelButton {
+  color: white;
+  background-color: var(--lightGreen);
+  width: 100px;
+  height: 45px;
+  border-radius: 8px;
+}
+
+.createAccountButton {
+  color: var(--darkGreen);
+  background-color: white;
+  width: 165px;
+  height: 45px;
+  border-radius: 8px;
+}
+
+.postButton {
+  color: white;
+  background-color: var(--lightGreen);
+  width: 160px;
+  height: 55px;
+  border-radius: 8px 0 0 8px;
+}

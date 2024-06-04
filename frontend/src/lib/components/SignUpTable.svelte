@@ -9,7 +9,7 @@
     validateRegisterDate
   } from "$lib/js/validation.js";
 
-  export let userNamehasChanges=false;
+  export let userNamehasChanges = false;
   export let isUpdateMode = false;
   export let firstName, lastName, userName;
   export let email;
@@ -24,24 +24,23 @@
 
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
-  let label=""
-  import { createEventDispatcher } from 'svelte';
+  let label = "";
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   function handleValidation(event) {
-    const { variableName,validateResult } = event.detail;
-    dispatch('validation', { variableName,validateResult });
+    const { variableName, validateResult } = event.detail;
+    dispatch("validation", { variableName, validateResult });
   }
 
-  function handleUserNameValidation(){
-   if(isUpdateMode&&userNamehasChanges){
-   return validateRegisterUserName(userName);
-   }else if(!isUpdateMode){
-   return validateRegisterUserName(userName);
-   }else if(isUpdateMode&&!userNamehasChanges){
-    return { result: true, errorMsg: "user hasn't been changed" };
-  }}
-
-
+  function handleUserNameValidation() {
+    if (isUpdateMode && userNamehasChanges) {
+      return validateRegisterUserName(userName);
+    } else if (!isUpdateMode) {
+      return validateRegisterUserName(userName);
+    } else if (isUpdateMode && !userNamehasChanges) {
+      return { result: true, errorMsg: "user hasn't been changed" };
+    }
+  }
 </script>
 
 <div class="table-container">
@@ -119,7 +118,13 @@
   />
 
   <label for="description">DESCRIPTION:</label>
-  <textarea class="description-textarea" name="description" rows="4" cols="50" bind:value={description}></textarea>
+  <textarea
+    class="description-textarea"
+    name="description"
+    rows="4"
+    cols="50"
+    bind:value={description}
+  />
 </div>
 
 <style>

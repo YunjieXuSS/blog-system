@@ -4,5 +4,3 @@ export const BASE_URL = PUBLIC_API_BASE_URL;
 export const ARTICLES_URL = `${BASE_URL}/articles`;
 export const USER_URL = `${BASE_URL}/user`;
 export const SERVER_URL = PUBLIC_SERVER_URL;
-
-

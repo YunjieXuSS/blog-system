@@ -75,7 +75,6 @@
       // console.log("ssss",numComments)
       return numComments;
     }
-
   }
 </script>
 

@@ -82,11 +82,17 @@ export async function getUserById(userId) {
 export async function getUserWithUserName(userName) {
   const db = await getDatabase();
   let user = await db.get("SELECT * from user WHERE userName = ?", userName);
-  if(user){
-  const numOfPosts = await db.get("SELECT COUNT(*) as numOfPosts FROM article WHERE userId = ?", user.userId);
-  const numOfLikes = await db.get("SELECT COUNT(*) as numOfLikes FROM like WHERE articleId IN (SELECT articleId FROM article WHERE userId =?)", user.userId);
-  user = {...user, ...numOfPosts, ...numOfLikes};
-}
+  if (user) {
+    const numOfPosts = await db.get(
+      "SELECT COUNT(*) as numOfPosts FROM article WHERE userId = ?",
+      user.userId
+    );
+    const numOfLikes = await db.get(
+      "SELECT COUNT(*) as numOfLikes FROM like WHERE articleId IN (SELECT articleId FROM article WHERE userId =?)",
+      user.userId
+    );
+    user = { ...user, ...numOfPosts, ...numOfLikes };
+  }
   if (user) delete user.password;
   return user;
 }
@@ -129,10 +135,11 @@ export async function updateUser(userId, udpateData) {
     abortEarly: false,
     stripUnknown: true
   });
-  if(parsedUpdateData.password) parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
+  if (parsedUpdateData.password)
+    parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
 
   // Do the update
-  if(!parsedUpdateData) return;
+  if (!parsedUpdateData) return;
   const setStatement = Object.keys(parsedUpdateData)
     .map((key) => `${key} = ?`)
     .join(", ");

@@ -9,8 +9,16 @@ const getArticleSchema = yup
   .object({
     title: yup.string().optional(),
     userName: yup.string().optional(),
-    startDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date(0)).optional(), // Unix epoch start date (0 milliseconds)
-    endDate: yup.date().transform((value, originalValue) => (originalValue === '' ? undefined : value)).default(() => new Date()).optional(), 
+    startDate: yup
+      .date()
+      .transform((value, originalValue) => (originalValue === "" ? undefined : value))
+      .default(() => new Date(0))
+      .optional(), // Unix epoch start date (0 milliseconds)
+    endDate: yup
+      .date()
+      .transform((value, originalValue) => (originalValue === "" ? undefined : value))
+      .default(() => new Date())
+      .optional(),
     sortBy: yup
       .string()
       .oneOf(["title", "userName", "createDate"])
@@ -27,7 +35,8 @@ export async function getArticlesByKeywords(query, userId) {
     stripUnknown: true
   });
 
-  const { title, userName, startDate, endDate, sortBy, sortOrder, pageNumber, pageSize } = validatedQuery;
+  const { title, userName, startDate, endDate, sortBy, sortOrder, pageNumber, pageSize } =
+    validatedQuery;
   const values = [];
   let sql = "SELECT a.*, u.userName, u.avatar FROM article a JOIN user u WHERE a.userId = u.userId";
   if (title) {
@@ -35,7 +44,7 @@ export async function getArticlesByKeywords(query, userId) {
     values.push(`%${title}%`);
   }
 
-  if (userName) {  
+  if (userName) {
     sql += " AND a.userId in (SELECT userId FROM user WHERE userName LIKE ?)";
     values.push(`%${userName}%`);
   }
@@ -54,19 +63,18 @@ export async function getArticlesByKeywords(query, userId) {
   const offset = (pageNumber - 1) * pageSize;
   values.push(pageSize, offset);
 
-
   const db = await getDatabase();
-  const articles = await db.all(sql, values)
-  articles.forEach((article) => {  
-    article.createDateFormatted = dayjs(article.createDate).format('YYYY/MM/DD HH:mm:ss');
-    article.updateDateFormatted = dayjs(article.updateDate).format('YYYY/MM/DD HH:mm:ss');
+  const articles = await db.all(sql, values);
+  articles.forEach((article) => {
+    article.createDateFormatted = dayjs(article.createDate).format("YYYY/MM/DD HH:mm:ss");
+    article.updateDateFormatted = dayjs(article.updateDate).format("YYYY/MM/DD HH:mm:ss");
   });
 
-  for(let i = 0; i < articles.length; i++) {
+  for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
     const likes = await getLikes(article.articleId);
     article.likes = likes.likesCount;
-    if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
+    if (userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
     else article.isLiked = false;
   }
 
@@ -156,17 +164,18 @@ export async function getArticleById(articleId) {
   return article;
 }
 
-export async function getArticlesByUserName(userName,userId) {
+export async function getArticlesByUserName(userName, userId) {
   const db = await getDatabase();
   // SQL query to join user and article tables and fetch articles by userName
   const articles = await db.all(
-    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE u.userName= ? ORDER BY a.createDate DESC`,userName
+    `SELECT a.*, u.userName, u.userId FROM article a JOIN user u ON a.userId = u.userId WHERE u.userName= ? ORDER BY a.createDate DESC`,
+    userName
   );
-  for(let i = 0; i < articles.length; i++) {
+  for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
     const likes = await getLikes(article.articleId);
     article.likes = likes.likesCount;
-    if(userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
+    if (userId) article.isLiked = await checkLikeStatus(article.articleId, userId);
     else article.isLiked = false;
   }
   return articles;
@@ -260,15 +269,15 @@ export async function updateArticle(articleId, updateData) {
   // that updates all three, if all three aren't used. We must consider each one one-by-one.
   const updateOperations = [];
   const updateParams = [];
-  if (validatedUpdateData.title!==undefined) {
+  if (validatedUpdateData.title !== undefined) {
     updateOperations.push("title = ?");
     updateParams.push(validatedUpdateData.title);
   }
-  if (validatedUpdateData.content!==undefined) {
+  if (validatedUpdateData.content !== undefined) {
     updateOperations.push("content = ?");
     updateParams.push(validatedUpdateData.content);
   }
-  if (validatedUpdateData.imgUrl!==undefined) {
+  if (validatedUpdateData.imgUrl !== undefined) {
     updateOperations.push("imgUrl = ?");
     updateParams.push(validatedUpdateData.imgUrl);
   }
@@ -335,11 +344,12 @@ export async function getLikes(articleId) {
 }
 
 //Check if article is liked by user
-export async function checkLikeStatus(articleId, userId){
+export async function checkLikeStatus(articleId, userId) {
   const db = await getDatabase();
   const isLiked = await db.get(
     "SELECT * FROM like WHERE articleId = ? AND userId = ?",
-    articleId, userId
+    articleId,
+    userId
   );
   return !!isLiked;
 }

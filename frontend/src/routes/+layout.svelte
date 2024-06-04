@@ -9,7 +9,7 @@
   import { browser } from "$app/environment";
 
   export let data;
-  
+
   $: path = $page.url.pathname;
   $: isLoggedIn = data.isLoggedIn;
 
@@ -39,6 +39,7 @@
     }
   }
 </script>
+
 <svelte:head>
   <title>Chars</title>
 </svelte:head>
@@ -53,7 +54,7 @@
     <div class="userNameLogoutDiv">
       <button class="login-button" on:click={userLogin}
         ><img class="login" src="/icons/login.png" alt="userDefaultIcon" />
-        </button>
+      </button>
     </div>
   {/if}
 

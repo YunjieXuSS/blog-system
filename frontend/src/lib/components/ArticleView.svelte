@@ -18,14 +18,14 @@
     <p class="date">{dayjs(articleDetail.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
   </div>
   {#if browser}
-  <img
-    src={SERVER_URL + articleDetail.imgUrl}
-    alt=""
-    class="article-image"
-    on:error={(e) => {
-      e.target.style.display = "none";
-    }}
-  />{/if}
+    <img
+      src={SERVER_URL + articleDetail.imgUrl}
+      alt=""
+      class="article-image"
+      on:error={(e) => {
+        e.target.style.display = "none";
+      }}
+    />{/if}
   <p class="article-content">{@html articleDetail.content}</p>
 </article>
 
@@ -40,7 +40,7 @@
     padding: 20px;
     background-color: #fff;
     box-sizing: border-box;
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
 
   .article-image {
@@ -90,7 +90,7 @@
     text-align: justify;
     width: 100%;
   }
-  
+
   .author-button {
     text-decoration: none;
     background-color: transparent;

@@ -111,21 +111,20 @@
   </ul>
 
   {#if path === "/"}
-  <div class="search-menu-container">
-    <SearchAndSortTool
-      bind:selectedCategory
-      bind:searchTerm
-      bind:sortByCategory
-      bind:searchTermStart
-      bind:searchTermEnd
-    />
-  </div>
-{/if}
-
+    <div class="search-menu-container">
+      <SearchAndSortTool
+        bind:selectedCategory
+        bind:searchTerm
+        bind:sortByCategory
+        bind:searchTermStart
+        bind:searchTermEnd
+      />
+    </div>
+  {/if}
 </nav>
 
 <style>
-.search-menu-container {
+  .search-menu-container {
     position: sticky;
     top: 65px;
     display: flex;

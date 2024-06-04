@@ -1,6 +1,5 @@
 <script>
   export let searchTerm;
-
 </script>
 
 <div id="search-input-cont">
@@ -33,7 +32,7 @@
     height: 80%;
     border-radius: 5px;
     border: transparent;
-    font-family: 'Nunito', sans-serif;
+    font-family: "Nunito", sans-serif;
     font-size: 1rem;
     font-weight: 400;
     color: gray;

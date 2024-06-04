@@ -193,7 +193,6 @@
     redirectUrl = "/profile/edit/";
     showPopupBox = true;
   }
-
 </script>
 
 <div class="page-container">
@@ -236,11 +235,7 @@
       buttonClass="deleteButton"
     />
 
-    <ButtonText
-      buttonFunction={cancelUpdate}
-      buttonLabel="Cancel"
-      buttonClass="cancelButton"
-    />
+    <ButtonText buttonFunction={cancelUpdate} buttonLabel="Cancel" buttonClass="cancelButton" />
 
     <ButtonText
       buttonFunction={handleUpdate}

@@ -14,7 +14,7 @@
     <PostArticleButton {data} />
   </div>
 {:else}
-<div class="not-fount-hint">Not found</div>
+  <div class="not-fount-hint">Not found</div>
 {/if}
 
 <style>
@@ -23,7 +23,7 @@
     flex-direction: column;
     align-items: center;
   }
-  .not-fount-hint{
+  .not-fount-hint {
     font-size: 2rem;
     margin-top: 20px;
     text-align: center;
