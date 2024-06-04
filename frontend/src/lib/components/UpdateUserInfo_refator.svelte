@@ -2,6 +2,7 @@
   import UploadAvatar from "./UploadAvatar.svelte";
   import SignUpTable from "./SignUpTable.svelte";
   import { USER_URL } from "$lib/js/apiUrls.js";
+  import { goto } from "$app/navigation";
   import AvatarChooser from "./AvatarChooser.svelte";
   import PopupBox from "./PopupBox.svelte";
   import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
@@ -185,6 +186,10 @@
     showPopupBox = true;
   }
 
+  function cancelUpdate() {
+    goto(`/`);
+  }
+
   function handleFailDeletePopupBox() {
     popupMessage = `User can not be found. Please contact us by email.`;
     redirectUrl = "/profile/edit/";
@@ -244,6 +249,12 @@
     />
 
     <ButtonText
+      buttonFunction={cancelUpdate}
+      buttonLabel="Cancel"
+      buttonClass="cancelButton"
+    />
+
+    <ButtonText
       buttonFunction={handleUpdate}
       buttonLabel="Update Info"
       buttonClass="confirmButton"
@@ -265,6 +276,7 @@
     width: 60em;
     gap: 30px;
     color: #505050;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
 
     & .page-title {
@@ -278,25 +290,14 @@
     & > .content-container {
       display: flex;
       align-content: center;
-      gap: 40px;
+      gap: 30px;
 
       & > .avatar-container {
         width: 20em;
-        margin: 0 30px;
+        margin: 1em 0;
+        padding: 40px 20px;
+        background-color: #f0f8ffa9;
       }
-    }
-
-    & .submitButton {
-      width: 200px;
-      height: 80px;
-      margin-top: 20px;
-      background-color: grey;
-      border-radius: 15px;
-      color: white;
-      font-size: 1.5em;
-    }
-    & .submitButton.valid {
-      background-color: green;
     }
   }
 
@@ -305,16 +306,6 @@
     flex-direction: row;
     align-content: center;
     gap: 50px;
-  }
-
-  .deleteButton {
-    width: 200px;
-    height: 80px;
-    margin-top: 20px;
-    background-color: rgb(183, 2, 2);
-    border-radius: 15px;
-    color: white;
-    font-size: 1.5em;
   }
 
   @media (max-width: 1000px) {
@@ -334,7 +325,13 @@
       gap: 0;
     }
 
-    @media (max-width: 600px) {
+    .button_div {
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+
+  /* @media (max-width: 600px) {
       .page-container {
         width: 100%;
       }
@@ -344,6 +341,5 @@
         flex-direction: column;
         gap: 0;
       }
-    }
-  }
+    } */
 </style>

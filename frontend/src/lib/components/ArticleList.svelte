@@ -2,6 +2,7 @@
   import ArticleCard from "./ArticleCard.svelte";
   import SortingSection from "$lib/components/SortingSection.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
@@ -38,8 +39,8 @@
 
   function getColumnCount() {
     const width = window.innerWidth;
-    if (width < 800) return 1;
-    if (width < 1100) return 2;
+    if (width < 790) return 1;
+    if (width < 1200) return 2;
     return 3;
   }
 
@@ -64,7 +65,7 @@
       <p class="article-p">Articles by everyone</p>
     {:else}
       <p class="article-p">
-        Articles <strong
+        Articles by <strong
           >@{path.substring(9).includes("/")
             ? path.substring(9, path.length - 1)
             : path.substring(9)}</strong
@@ -156,13 +157,15 @@
     text-align: center;
     font-size: 1.5em;
     color: #555;
+    margin: 0 auto;
   }
 
   .sort-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
+    flex-direction: column;
+    margin: 40px auto 20px auto;
     max-width: 1260px;
     width: 100%;
   }
@@ -170,6 +173,8 @@
   .article-p {
     font-size: 1.5em;
     color: #555;
+    min-width: 225px;
+    margin: 0;
   }
 
   @media (max-width: 1200px) {

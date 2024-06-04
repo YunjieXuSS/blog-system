@@ -139,7 +139,7 @@
 
 <style>
   .comments {
-    min-height: 400px;
+    min-height: 200px;
     flex: 1;
     margin:50px;
 

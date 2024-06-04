@@ -67,7 +67,7 @@ $: hoster = data.userInfo;
   .container {
     display: flex;
     justify-content: center;
-    margin: 50px;
+    margin: 100px 0 50px 0;
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
@@ -114,7 +114,7 @@ $: hoster = data.userInfo;
   .userDetailContainer {
     margin-top: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     gap: 100px;
   }
 
@@ -139,7 +139,7 @@ $: hoster = data.userInfo;
     .container {
       max-width: 25em;
       width: 100%;
-      padding: 16px;
+      padding: 20px;
       box-sizing: border-box;
       flex-direction: column;
       justify-content: center;
@@ -160,6 +160,7 @@ $: hoster = data.userInfo;
     .userDetailContainer {
       gap: 50px;
       margin-bottom: 30px;
+      justify-content: center;
     }
 
     .settings {

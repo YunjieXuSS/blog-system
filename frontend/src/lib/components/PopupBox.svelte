@@ -1,5 +1,7 @@
 <script>
   import { goto } from "$app/navigation";
+  import ButtonText from "$lib/components/ButtonText.svelte";
+
   export let popupMessage = "Mission Completed!";
   export let redirectUrl = "/";
   export let countdown = 5;
@@ -45,7 +47,7 @@
     <div class="content_container">
       <p>{popupMessage}</p>
       <div class="countdown_container">{countdownTime}</div>
-      <button on:click={closePopupBox}>OK</button>
+      <ButtonText buttonFunction={closePopupBox} buttonLabel="OK" buttonClass="cancelButton" />
     </div>
   </div>
 {/if}
@@ -63,27 +65,21 @@
     align-items: center;
     z-index: 1000;
   }
+
   .content_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px #2d2d2d;
-    text-align: center;
     width: 400px;
     height: 150px;
   }
-  .content_container button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border: none;
-    background-color: #268600;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    height: 40px;
-    width: 100px;
-  }
-  .content_container button:hover {
-    background-color: #0056b3;
+
+  .countdown_container {
+    margin: 0 0 20px 0;
   }
 </style>
