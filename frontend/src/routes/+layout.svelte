@@ -50,14 +50,17 @@
 </script>
 
 <div class="titleDiv">
-  <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
+  <div class="logos-container">
+    <img class="logo-sushi" src="/images/sushi-logo.png" alt="mascot" />
+    <img class="logo" src="/images/logo.png" alt="chars" />
+  </div>
 
   <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
       <button class="login-button" on:click={userLogin}
-        ><img class="login" src="/icons/login.png" alt="userDefaultIcon" /></button
-      >
+        ><img class="login" src="/icons/login.png" alt="userDefaultIcon" />
+        </button>
     </div>
   {/if}
 
@@ -105,18 +108,31 @@
 
   .titleDiv {
     margin: 0;
-    height: 100px;
+    height: 80px;
     background-color: white;
     opacity: 0.9;
-    padding: 0 50px 0 45px;
+    padding: 0 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
+  .logos-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
   .logo {
     max-width: 140px;
     min-width: 80px;
+    width: 100%;
+  }
+
+  .logo-sushi {
+    max-width: 40px;
+    min-width: 10px;
     width: 100%;
   }
 

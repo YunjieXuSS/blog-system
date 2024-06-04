@@ -39,8 +39,8 @@
 
   function getColumnCount() {
     const width = window.innerWidth;
-    if (width < 600) return 1;
-    if (width < 900) return 2;
+    if (width < 790) return 1;
+    if (width < 1200) return 2;
     return 3;
   }
 
@@ -174,7 +174,7 @@
     font-size: 1.5em;
     color: #555;
     min-width: 225px;
-    margin: 20px 0;
+    margin: 0;
   }
 
   @media (max-width: 1200px) {

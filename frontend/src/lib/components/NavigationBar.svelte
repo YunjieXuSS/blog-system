@@ -137,7 +137,7 @@
     display: flex;
     justify-content: center;
     margin: 0;
-    height: 80px;
+    height: 70px;
     background-color: rgb(255, 255, 255);
     z-index: 1000;
     max-width: 100%;

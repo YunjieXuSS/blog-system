@@ -39,9 +39,8 @@
     margin: auto;
     padding: 20px;
     background-color: #fff;
-    box-sizing: border-box; /* Ensure padding is included in the width */
+    box-sizing: border-box;
     margin-bottom:10px;
-    /* box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46); */
   }
 
   .article-image {
@@ -63,24 +62,25 @@
 
   .authorInfo {
     display: flex;
-    flex-direction: row;
-    margin: 0;
-    width: 100%;
-    justify-content: flex-end;
+    flex-direction: column;
     align-items: center;
+    margin: 0;
     padding: 0;
+    width: 100%;
   }
 
   .user {
     font-size: 1em;
     color: #555;
     margin-right: 20px;
+    display: flex;
   }
 
   .date {
     font-size: 0.8em;
     font-style: italic;
     color: #999;
+    margin: 0 0 40px 0;
   }
 
   .article-content {
@@ -104,5 +104,10 @@
       cursor: pointer;
       text-decoration: underline;
     }
+  }
+
+  .author-button > p {
+    text-align: center;
+    margin: 0;
   }
 </style>

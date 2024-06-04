@@ -115,7 +115,7 @@
   .userDetailContainer {
     margin-top: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     gap: 100px;
   }
 
@@ -140,7 +140,7 @@
     .container {
       max-width: 25em;
       width: 100%;
-      padding: 16px;
+      padding: 20px;
       box-sizing: border-box;
       flex-direction: column;
       justify-content: center;
@@ -161,6 +161,7 @@
     .userDetailContainer {
       gap: 50px;
       margin-bottom: 30px;
+      justify-content: center;
     }
 
     .settings {
