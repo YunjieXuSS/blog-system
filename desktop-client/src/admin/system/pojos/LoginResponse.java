@@ -1,4 +1,4 @@
-package program.demo.pojos;
+package admin.system.pojos;
 public class LoginResponse {
 
     private User user;

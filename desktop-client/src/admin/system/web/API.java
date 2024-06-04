@@ -1,9 +1,9 @@
-package program.demo.web;
+package admin.system.web;
 
-import program.demo.pojos.User;
-import program.demo.pojos.LoginResponse;
-import program.demo.pojos.UserList;
-import program.demo.util.JSONUtils;
+import admin.system.pojos.LoginResponse;
+import admin.system.pojos.User;
+import admin.system.util.JSONUtils;
+
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.HttpCookie;

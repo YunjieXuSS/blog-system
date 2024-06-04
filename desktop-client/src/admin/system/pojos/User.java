@@ -1,4 +1,4 @@
-package program.demo.pojos;
+package admin.system.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

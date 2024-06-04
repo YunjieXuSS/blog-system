@@ -1,4 +1,4 @@
-package program.demo.pojos;
+package admin.system.pojos;
 
 import java.util.ArrayList;
 import java.util.List;

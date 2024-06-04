@@ -1,8 +1,8 @@
-package program.demo.ui;
+package admin.system.ui;
 
-import program.demo.pojos.User;
-import program.demo.pojos.UserList;
-import program.demo.web.API;
+import admin.system.pojos.User;
+import admin.system.pojos.UserList;
+import admin.system.web.API;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +42,7 @@ public class AdministratorApp extends JFrame {
     }
 
     private void initUI() {
-        setTitle("Admin Panel");
+        setTitle("Admin System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
