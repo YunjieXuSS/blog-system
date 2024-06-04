@@ -9,14 +9,14 @@ Your team should update this README to include the information required, as pres
 - b. Are there any special setup instructions, beyond initialising the database and running your project?<br>
 - c. Test Account:<br>
     <ol>
-     <li> username:<bold>test01</bold><br>
-        password:Ab123456<br>
+     <li> username:<strong>test01</strong><br>
+        password:<strong>Ab123456</strong><br>
            isAdmin:Yes<br>
-    <li>username:test02<br>
-        password:Ab123456<br>
+    <li>username:<strong>test02</strong><br>
+        password:<strong>Ab123456</strong><br>
           isAdmin:Yes<br>
-    <li> username:test03<br>
-        password:Ab123456<br>
+    <li> username:<strong>test03</strong><br>
+        password:<strong>Ab123456</strong><br>
           isAdmin:No<br>
     </ol>
 - d. Any other instructions / comments you wish to make to your markers
