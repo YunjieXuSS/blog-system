@@ -48,6 +48,9 @@
     }
   }
 </script>
+<svelte:head>
+  <title>Chars</title>
+</svelte:head>
 
 <div class="background" style="--background-color: {backgroundColor}">
   <div class="shape" />
