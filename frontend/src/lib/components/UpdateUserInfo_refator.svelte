@@ -114,7 +114,8 @@
         handleImagePopupBox();
         imgInput.value = "";
       } else {
-        console.error(`Failed to update user. StatusCode: ${response.status}`);
+        handleUniPopupBox("delete");
+        // console.error(`Failed to update user. StatusCode: ${response.status}`);
       }
     } catch (error) {
       console.error(`Failed to update user. ${error}`);
@@ -132,7 +133,8 @@
         } else if (response.status === 404) {
           handleFailDeletePopupBox();
         } else {
-          console.error(`Failed to delete user.${response.error}.Status code:${response.status}`);
+          // console.error(`Failed to delete user.${response.error}.Status code:${response.status}`);
+          handleUniPopupBox("delete");
         }
       })
       .catch((error) => {
@@ -148,6 +150,12 @@
     popupMessage = `User info updated. Redirecting to homepage...`;
     console.log(" redirectUrl = `/profile/${userName}`", `/profile/${userName}`);
     redirectUrl = `/profile/${userName}`;
+    showPopupBox = true;
+  }
+
+  function handleUniPopupBox(operation) {
+    popupMessage = `Fail to ${operation} user. please try it later ...`;
+    redirectUrl = "/profile/edit";
     showPopupBox = true;
   }
 
@@ -176,6 +184,13 @@
     redirectUrl = "/";
     showPopupBox = true;
   }
+
+  function handleFailDeletePopupBox() {
+    popupMessage = `User can not be found. Please contact us by email.`;
+    redirectUrl = "/profile/edit/";
+    showPopupBox = true;
+  }
+
 </script>
 
 <div class="page-container">
@@ -212,8 +227,8 @@
     </div>
   </div>
   <div class="button_div">
-    <!-- <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
-    <button
+    <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button>
+    <!-- <button
       class="submitButton"
       class:valid={buttonEnabled}
       on:click={handleUpdate}
@@ -222,11 +237,11 @@
       Update Info
     </button> -->
 
-    <ButtonText
+    <!-- <ButtonText
       buttonFunction={handleConfirmPopupBox}
       buttonLabel="Delete Account"
       buttonClass="deleteButton"
-    />
+    /> -->
 
     <ButtonText
       buttonFunction={handleUpdate}
