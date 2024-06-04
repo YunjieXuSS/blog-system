@@ -11,10 +11,13 @@ Your team should update this README to include the information required, as pres
     <ol>
      <li> username:test01<br>
         password:Ab123456<br>
+           isAdmin:Yes<br>
     <li>username:test02<br>
         password:Ab123456<br>
+          isAdmin:Yes<br>
     <li> username:test03<br>
         password:Ab123456<br>
+          isAdmin:No<br>
     </ol>
 - d. Any other instructions / comments you wish to make to your markers
 
