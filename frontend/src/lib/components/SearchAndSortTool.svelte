@@ -110,6 +110,18 @@
       searchTermEnd = 0;
     }
   }
+  import { browser } from "$app/environment";
+  import { queryStore } from "../js/store.js";
+  const resetPageSize = () => {
+    delete $queryStore.pageSize;
+    if (browser) window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  $: searchTerm, resetPageSize();
+  $: searchTermStart, resetPageSize();
+  $: searchTermEnd, resetPageSize();
+  $: searchedBy, resetPageSize();
+
 
   onMount(() => {
     const hideList = (e) => {
