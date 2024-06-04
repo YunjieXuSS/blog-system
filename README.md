@@ -6,7 +6,7 @@ Your team should update this README to include the information required, as pres
 
 ## Initialising Setting
 - a. Team name : Code Charizards<br>
-- b. Are there any special setup instructions, beyond initialising the database and running your project?<br>
+- b. Are there any special setup instructions, beyond initialising the database and running your project? NO<br>
 - c. Test Account:<br>
     <ol>
      <li> username:<strong>test01</strong><br>
@@ -19,7 +19,7 @@ Your team should update this README to include the information required, as pres
         password:<strong>Ab123456</strong><br>
           isAdmin:No<br>
     </ol>
-- d. Any other instructions / comments you wish to make to your markers
+- d. Any other instructions / comments you wish to make to your markers： Have fun !
 
 
 ## Development Environment Setup & Commit Guidelines
