@@ -1,9 +1,9 @@
-<!-- A component for the area right of the log in component. Contains a button that takes the user to the create account page -->
 <script>
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { goto } from "$app/navigation";
 
   function openSignUpPage() {
-    window.location = "/signup";
+    goto("/signup", { replaceState: false });
   }
 </script>
 

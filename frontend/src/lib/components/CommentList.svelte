@@ -1,10 +1,11 @@
 <script>
-  import CommentCard from "./CommentCard.svelte";
+  import CommentCard from "$lib/components/CommentCard.svelte";
   import { page } from "$app/stores";
-  import { getComments, postComment } from "../js/comments";
+  import { getComments, postComment } from "$lib/js/comments";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import Modal from "./Modal.svelte";
+  import Modal from "$lib/components/Modal.svelte";
+
   let redirectUrl = "/login";
   let showPopupBox = false;
 
@@ -37,17 +38,10 @@
     return currentComments;
   }
 
-  // function removeParentCommentId(comments) {
-  //   return comments.map(comment => {
-  //       delete comment.parentCommentId;
-  //       return comment;
-  //     });
-  // }
   onMount(async () => {
     try {
       comments = await getComments({ articleId });
       numComments = comments.length;
-      // comments = removeParentCommentId(comments);
       loadedComment = true;
     } catch (error) {
       console.error(error);
@@ -85,15 +79,12 @@
   async function refreshComments() {
     comments = await getComments({ articleId });
     numComments = comments.length;
-    // comments = removeParentCommentId(comments);
   }
 </script>
 
 <section class="comments">
   <div class="title-area">
     <h2>Comments</h2>
-    <!-- <button class="title-button" on:click={toggleComments}>
-      <h2>{showComments ? "Hide Comments" : "Show Comments"}</h2></button> -->
       <button class="title-button" on:click={toggleComments}>
         <img class="comment-view-control" src = {showComments ? "/icons/up-arrow.png" : "/icons/down-arrow.png"} alt=""></button>
   </div>
@@ -134,7 +125,6 @@
     }
   ]}
 />
-<!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
 {/if}
 
 <style>

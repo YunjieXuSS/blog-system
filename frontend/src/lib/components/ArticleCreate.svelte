@@ -1,9 +1,9 @@
 <script>
   import { goto } from "$app/navigation";
-  import { ARTICLES_URL, SERVER_URL } from "../js/apiUrls.js";
-  import Modal from "./Modal.svelte";
+  import { ARTICLES_URL, SERVER_URL } from "$lib/js/apiUrls.js";
+  import Modal from "$lib/components/Modal.svelte";
   import Editor from "@tinymce/tinymce-svelte";
-  import PopupBox from "./PopupBox.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
 
   let showPopupBox = false;
@@ -58,7 +58,6 @@
       showPopupBox = true;
       redirectUrl = `/article/${newArticle.articleId}`;
       invalidate(ARTICLES_URL);
-      // goto(`/article/${newArticle.articleId}`, { invalidateAll: true });
     } else {
       isSubmitError = true;
       const resBody = await res.json();
@@ -75,7 +74,6 @@
     history.back();
   }
 
-  // /** @type {import('tinymce').RawEditorOptions} */
   const conf = {
     plugins: ["lists"],
     toolbar:
@@ -229,7 +227,6 @@
 
   .upload-image {
     display: block;
-    /* background: #9eb384; */
     padding: 16px 0;
     color: #252525;
   }

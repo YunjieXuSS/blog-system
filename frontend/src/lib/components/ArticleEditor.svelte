@@ -1,9 +1,9 @@
 <script>
   import { goto } from "$app/navigation";
-  import { ARTICLES_URL, SERVER_URL } from "./../js/apiUrls.js";
+  import { ARTICLES_URL, SERVER_URL } from "$lib/js/apiUrls.js";
   import Editor from "@tinymce/tinymce-svelte";
-  import PopupBox from "./PopupBox.svelte";
-  import Modal from "./Modal.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
+  import Modal from "$lib/components/Modal.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
 
   let showPopupBox = false;
@@ -59,7 +59,6 @@
     if (res.ok) {
       handleUpdatePopupBox();
       invalidate(ARTICLES_URL);
-      // goto(`/article/${articleId}`, { invalidateAll: true });
     } else {
       isSubmitError = true;
       const resBody = await res.json();
@@ -72,7 +71,6 @@
     fileToUpload = [];
   }
 
-  // /** @type {import('tinymce').RawEditorOptions} */
   const conf = {
     plugins: ["lists"],
     toolbar:

@@ -17,7 +17,6 @@
 
   import {createEventDispatcher} from "svelte";
   const dispatch = createEventDispatcher();
-  //update the path of images
   function selectImage(image) {
     selectedImage = image;
     isSelectedDefaultImg = true;
@@ -25,7 +24,6 @@
   }
 
   if (onMountTriggered) {
-    //default image when the page is loaded
     onMount(() => {
       if (images.length > 0 && !selectedImage) {
         selectImage(images[0]);
@@ -55,7 +53,6 @@
     gap: 10px;
     width: 100%;
   }
-  /* hide the button css */
   .image-item {
     padding: 0;
     border: none;

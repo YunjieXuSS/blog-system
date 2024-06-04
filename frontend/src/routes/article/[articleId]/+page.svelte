@@ -53,14 +53,7 @@
       method: "DELETE"
     });
     if (response.status === 204) {
-      // Invalidating this URL will cause our +page.js load() function to rerun, because that load() function
-      // depends on this URL.
-      /**
-       * This function will let us "invalidate" any page load functions which depend on a given URL, which will cause
-       * them to be reloaded.
-       */
       invalidate(ARTICLES_URL);
-      console.log("Article deleted successfully.");
       handleDeletePopupBox();
     } else {
       alert(`Unexpected status code received: ${response.status}`);

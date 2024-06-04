@@ -11,6 +11,7 @@
 
   let countdownInterval;
   let timeLeft = countdown;
+  
   if (countdown !== undefined && countdown > 0) {
     countdownInterval = setInterval(() => {
       timeLeft = timeLeft - 1;

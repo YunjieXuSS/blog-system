@@ -1,10 +1,12 @@
 <script>
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+
   export let ConfirmPopupMessage = "Mission Completed!";
-  $: path = $page.url.pathname;
   export let confirmFunction = async () => {};
   export let showConfirmPopupBox = true;
+
+  $: path = $page.url.pathname;
 
   async function confirmAction() {
     await confirmFunction();

@@ -1,13 +1,10 @@
 <script>
-  import { user } from "./../js/store.js";
-  // import userDefaultIcon from "../images/userDefaultIcon.png";
-  import { deleteComment, postComment } from "../js/comments";
+  import { deleteComment, postComment } from "$lib/js/comments";
   import { SERVER_URL } from "$lib/js/apiUrls";
   import { browser } from "$app/environment";
   import dayjs from "dayjs";
-  import PopupBox from "./PopupBox.svelte";
   import { goto } from "$app/navigation";
-  import Modal from "./Modal.svelte";
+  import Modal from "$lib/components/Modal.svelte";
 
   let redirectUrl = "/";
   let showPopupBox = false;

@@ -1,7 +1,7 @@
 <script>
   import { goto } from "$app/navigation";
-  import { USER_URL } from "../js/apiUrls.js";
-  import InputBar from "./InputBar.svelte";
+  import { USER_URL } from "$lib/js/apiUrls.js";
+  import InputBar from "$lib/components/InputBar.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
 
   let userName;

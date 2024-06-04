@@ -1,5 +1,5 @@
-import { ARTICLES_URL } from "../../../lib/js/apiUrls";
-// pre-load article data
+import { ARTICLES_URL } from "$lib/js/apiUrls";
+
 export async function load({ params, fetch }) {
   const articleId  = params.articleId;
   const response = await fetch(`${ARTICLES_URL}/${articleId}/likeStatus`, { credentials: "include" });

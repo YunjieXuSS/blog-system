@@ -1,8 +1,6 @@
-<!-- Displays the user's information (username, name, avatar, description) on their profile. -->
-
 <script>
   import { goto } from "$app/navigation";
-  import { SERVER_URL } from "../js/apiUrls";
+  import { SERVER_URL } from "$lib/js/apiUrls";
   import { browser } from "$app/environment";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import "$lib/css/button.css";
@@ -10,7 +8,7 @@
   export let data;
 
   let hoster = {};
-$: hoster = data.userInfo;
+  $: hoster = data.userInfo;
 
   $: avatarUrl = SERVER_URL + hoster.avatar;
   function settingsButton() {

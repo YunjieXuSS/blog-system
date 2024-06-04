@@ -1,23 +1,18 @@
 <script>
-  // ---/routes/+layout.svelte
   import "$lib/css/app.css";
   import NavigationBar from "$lib/components/NavigationBar.svelte";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
-  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { invalidate } from "$app/navigation";
   import { USER_URL, SERVER_URL, ARTICLES_URL } from "$lib/js/apiUrls.js";
   import { browser } from "$app/environment";
 
-  $: path = $page.url.pathname;
-
   export let data;
-
-  let backgroundColor = "#f0fff0";
-
-  //test
+  
+  $: path = $page.url.pathname;
   $: isLoggedIn = data.isLoggedIn;
+
   let loginUser;
   $: if (isLoggedIn) {
     loginUser = data.user;
@@ -29,17 +24,13 @@
 
   async function userLogout() {
     try {
-      // Make the logout request to the server
       const response = await fetch(`${USER_URL}/logout`, {
         method: "POST",
         credentials: "include"
       });
-
-      // Check if the logout was successful
       if (response.status === 204) {
         await invalidate(ARTICLES_URL);
         await goto("/", { replaceState: true, invalidateAll: true });
-        // window.location.reload();
       } else {
         console.error("Logout failed with status:", response.status);
       }
@@ -58,7 +49,6 @@
     <img class="logo" src="/images/logo.png" alt="chars" />
   </div>
 
-  <!-- show different content depends on the status of user -->
   {#if isLoggedIn == false}
     <div class="userNameLogoutDiv">
       <button class="login-button" on:click={userLogin}
@@ -69,7 +59,6 @@
 
   {#if isLoggedIn == true}
     <div class="userNameLogoutDiv">
-      <!-- <span class="userName"><strong>@{loginUser.userName}</strong></span> -->
       <a href="/profile/edit">
         {#if browser}
           <img

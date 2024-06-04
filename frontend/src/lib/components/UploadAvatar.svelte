@@ -1,5 +1,5 @@
 <script>
-  import { SERVER_URL } from "../js/apiUrls";
+  import { SERVER_URL } from "$lib/js/apiUrls";
   import { browser } from "$app/environment";
   export let filesToUpload = "";
   export let selectedImage = "";
@@ -14,7 +14,6 @@
     if (filesToUpload && filesToUpload.length > 0) {
       isImgSizeLarge = filesToUpload[0].size > 2097152 ? true : false;
       const [file] = imgInp.files;
-      // userIcon.src = URL.createObjectURL(file);
       showImage = URL.createObjectURL(file);
       selectedImage = "";
       warnMessage = isImgSizeLarge
@@ -29,8 +28,6 @@
 
   $: {
     if (filesToUpload.length == 0) {
-      //default image when the page is loaded
-      // selectedImage = "/images/userDefaultIcon2.png";
       isImgSizeLarge = false;
     }
   }
