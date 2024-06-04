@@ -1,9 +1,8 @@
-package program.demo.web;
+package admin.system.web;
 
-import program.demo.pojos.User;
-import program.demo.pojos.LoginResponse;
-import program.demo.pojos.UserList;
-import program.demo.util.JSONUtils;
+import admin.system.pojos.LoginResponse;
+import admin.system.pojos.User;
+import admin.system.util.JSONUtils;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -40,7 +39,7 @@ public class API {
     }
 
     public User login(String username, String password) throws IOException, InterruptedException {
-        String json = String.format( "{\"userName\":\"%s\",\"password\":\"%s\"}", username, password );
+        String json = String.format("{\"userName\":\"%s\",\"password\":\"%s\"}", username, password);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri( URI.create( BASE_URL + "/user/login" ) )
                 .header( "Content-Type", "application/json" )
@@ -50,42 +49,11 @@ public class API {
         HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
 
         if (response.statusCode() == 200) {
-            LoginResponse loginResponse = JSONUtils.toObject( response.body(), LoginResponse.class );
+            LoginResponse loginResponse = JSONUtils.toObject(response.body(), LoginResponse.class);
             return loginResponse.getUser();
         } else {
             return null;
         }
-    }
-
-    public LoginResponse loginReturnResponse(String username, String password) throws IOException, InterruptedException {
-        String json = String.format( "{\"userName\":\"%s\",\"password\":\"%s\"}", username, password );
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri( URI.create( BASE_URL + "/users/" ) )
-                .header( "Content-Type", "application/json" )
-                .POST( BodyPublishers.ofString( json ) )
-                .build();
-
-        HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
-        LoginResponse loginResponse = JSONUtils.toObject( response.body(), LoginResponse.class );
-//        System.out.println( "loginResponse = " + loginResponse );
-        return loginResponse;
-
-    }
-
-    public int loginReturnStatusCode(String username, String password) throws IOException, InterruptedException {
-        String json = String.format( "{\"userName\":\"%s\",\"password\":\"%s\"}", username, password );
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri( URI.create( BASE_URL + "/user/login" ) )
-                .header( "Content-Type", "application/json" )
-                .POST( BodyPublishers.ofString( json ) )
-                .build();
-
-        HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
-        int statusCode = response.statusCode();
-//        System.out.println( "loginResponse111 = " + statusCode );
-//        System.out.println( "loginResponse.body = " + response.body() );
-        return statusCode;
-
     }
 
     public void logout() throws IOException, InterruptedException {

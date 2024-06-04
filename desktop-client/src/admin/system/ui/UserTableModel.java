@@ -1,9 +1,9 @@
-package program.demo.ui;
+package admin.system.ui;
 
 //import program.demo.pojos.Admin;
-import program.demo.pojos.User;
-import program.demo.pojos.UserList;
-import program.demo.pojos.UserListener;
+import admin.system.pojos.User;
+import admin.system.pojos.UserList;
+import admin.system.pojos.UserListener;
 
 import javax.swing.table.AbstractTableModel;
 

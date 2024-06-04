@@ -38,8 +38,8 @@
 
   function getColumnCount() {
     const width = window.innerWidth;
-    if (width < 600) return 1;
-    if (width < 900) return 2;
+    if (width < 800) return 1;
+    if (width < 1100) return 2;
     return 3;
   }
 

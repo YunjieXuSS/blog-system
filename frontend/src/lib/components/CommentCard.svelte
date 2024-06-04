@@ -111,13 +111,13 @@
 >
   <a class="author-info" href={authorLink}>
     {#if browser}
-    <img
-      class="avatar"
-      src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL + "/" + avatar}
-      alt=""
-      bind:this={avatarImage}
-      on:error={useFallbackAvatar}
-    />
+      <img
+        class="avatar"
+        src={isDeleted ? "/userDefaultIcon.png" : SERVER_URL + "/" + avatar}
+        alt=""
+        bind:this={avatarImage}
+        on:error={useFallbackAvatar}
+      />
     {/if}
     {#if !isDeleted}
       <div class="author">{userName}</div>
@@ -127,18 +127,25 @@
 
   <div class="main-content">
     <p class="content {isDeleted ? 'deleted' : ''}">{content}</p>
-    {#if deep < 5 && !replying && !isDeleted}
-      <button class="edit-button" on:click={startReply}>reply</button>
-    {/if}
-    {#if allowDelete}
-      <button on:click={()=>{showDeletePopupBox=true}} class="edit-button">delete</button>
-    {/if}
+    <div class="reply-delete-button">
+      {#if deep < 5 && !replying && !isDeleted}
+        <button class="edit-button" on:click={startReply}>reply</button>
+      {/if}
+      {#if allowDelete}
+        <button
+          on:click={() => {
+            showDeletePopupBox = true;
+          }}
+          class="edit-button">delete</button
+        >
+      {/if}
+    </div>
     <div class="edit">
       {#if replying}
         <textarea
           disabled={sending}
           class="reply-input"
-          rows = "4"
+          rows="4"
           maxlength="300"
           bind:value={reply}
           placeholder="Please be nice and kind."
@@ -146,8 +153,10 @@
         {#if errorMessage}
           <p class="error">{errorMessage}</p>
         {/if}
-        <button on:click={postReply} disabled={sending}>post</button>
-        <button on:click={endReply}>cancel</button>
+        <div class="reply-post-button">
+          <button on:click={postReply} disabled={sending}>post</button>
+          <button on:click={endReply}>cancel</button>
+        </div>
       {/if}
       {#if showPopupBox}
         <Modal
@@ -164,17 +173,17 @@
         />
       {/if}
       {#if showDeletePopupBox}
-      <Modal
-        bind:showPopupBox={showDeletePopupBox}
-        description={"Are you sure you want to delete this comment?"}
-        buttons={[
-          {
-            text: "Confirm",
-            onClick: deleteReply
-          }
-        ]}
-      />
-    {/if}
+        <Modal
+          bind:showPopupBox={showDeletePopupBox}
+          description={"Are you sure you want to delete this comment?"}
+          buttons={[
+            {
+              text: "Confirm",
+              onClick: deleteReply
+            }
+          ]}
+        />
+      {/if}
     </div>
 
     {#each children as child (child.commentId)}
@@ -232,7 +241,6 @@
     }
 
     & button.edit-button {
-      margin: 0;
       background: transparent;
       border: none;
       outline: none;
@@ -259,5 +267,20 @@
       margin-top: 16px;
       margin-left: 24px;
     }
+  }
+  .reply-post-button {
+    display: flex;
+    & button {
+      margin-right: 8px;
+    }
+  }
+  .reply-delete-button {
+    display: flex;
+    & button {
+      margin-right: 8px;
+    }
+  }
+  button{
+    min-width: 30px;
   }
 </style>

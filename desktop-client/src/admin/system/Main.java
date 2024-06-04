@@ -1,6 +1,6 @@
-package program.demo;
+package admin.system;
 
-import program.demo.ui.AdministratorApp;
+import admin.system.ui.AdministratorApp;
 
 import javax.swing.*;
 

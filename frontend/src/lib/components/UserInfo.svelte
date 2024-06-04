@@ -10,7 +10,7 @@
   export let data;
 
   let hoster = {};
-  hoster = data.userInfo;
+$: hoster = data.userInfo;
 
   $: avatarUrl = SERVER_URL + hoster.avatar;
   function settingsButton() {
@@ -88,9 +88,8 @@
   }
 
   .userAvatar {
-    max-width: 150px;
-    height: 150px;
     width: 150px;
+    height: 150px;
     margin-bottom: 10px;
     border-radius: 50%;
     object-fit: cover;
