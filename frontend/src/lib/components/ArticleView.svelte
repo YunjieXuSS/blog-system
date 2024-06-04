@@ -48,7 +48,7 @@
     margin-bottom: 5px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     .article-image {
       width: 100%;
     }

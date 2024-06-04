@@ -261,6 +261,11 @@
       width: 400px;
       box-sizing: border-box;
       padding: 8px;
+
+      @media (max-width: 700px) {
+        width: 95%;
+        box-sizing: border-box;
+      }
     }
 
     & .edit {
@@ -280,7 +285,7 @@
       margin-right: 8px;
     }
   }
-  button{
+  button {
     min-width: 30px;
   }
 </style>

@@ -116,9 +116,16 @@
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 1000px) {
     main {
-      width: 100%;
+      width: 90%;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (max-width: 700px) {
+    main {
+      width: 80%;
       box-sizing: border-box;
     }
   }
