@@ -2,11 +2,11 @@
   import { page } from "$app/stores";
   import { searchArticles } from "../js/utils.js";
   import { queryStore } from "../js/store.js";
+  import { articleInfo } from "../js/store.js";
   import { browser } from "$app/environment";
-  import SearchAndSortTool from "./SearchAndSortTool.svelte";
+  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
   import ButtonImage from "$lib/components/ButtonImage.svelte";
   import "$lib/css/button.css";
-  import SearchBar from "$lib/components/SearchBar.svelte";
 
   export let data;
   let searchTimeout;
@@ -49,7 +49,6 @@
     }
     const sortQuery = getSortQuery(sortByCategory) || {};
     query = { ...query, ...sortQuery };
-    // console.log(query);
     queryStore.update((current) => ({ ...current, ...query }));
     handleSearch();
   }
@@ -69,8 +68,6 @@
       isSearching = false;
     }, 500);
   }
-
-  import { articleInfo } from "../js/store.js";
 
   let showArticleLink = false;
   let articleId = null;
@@ -118,7 +115,9 @@
     <!-- browsing here to see the default Svelte 404 page. -->
     <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
+
   {#if path === "/"}
+  <div class="search-menu-container">
     <SearchAndSortTool
       bind:selectedCategory
       bind:searchTerm
@@ -126,21 +125,30 @@
       bind:searchTermStart
       bind:searchTermEnd
     />
-  {/if}
+  </div>
+{/if}
+
 </nav>
 
-<!-- <div class="search-menu-container">
-  <SearchBar />
-</div> -->
-
 <style>
+.search-menu-container {
+    position: sticky;
+    top: 65px;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    height: 70px;
+    background-color: rgb(255, 255, 255);
+    z-index: 1000;
+    max-width: 100%;
+  }
+
   .navBar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 100%;
+    justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
+    flex-direction: column;
     position: sticky;
 
     & > ul {
@@ -165,7 +173,6 @@
         display: block;
         height: 5px;
         background-color: #cedebd;
-        /* background-color: #fad094; */
         bottom: 0;
         width: 100%;
       }

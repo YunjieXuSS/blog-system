@@ -1,5 +1,6 @@
 <script>
   import { onDestroy, onMount } from "svelte";
+  import "$lib/css/app.css";
   const searchByValues = [
     { name: "Title", value: "title" },
     { name: "Author", value: "userName" },
@@ -139,51 +140,6 @@
 </script>
 
 <div class="search-sort">
-  <div class="loadingAnimate">
-    {#if isSearching}
-      <svg
-        class="loader"
-        version="1.1"
-        id="L4"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        enable-background="new 0 0 0 0"
-        xml:space="preserve"
-      >
-        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
-          <animate
-            attributeName="opacity"
-            dur="1s"
-            values="0;1;0"
-            repeatCount="indefinite"
-            begin="0.1"
-          />
-        </circle>
-        <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
-          <animate
-            attributeName="opacity"
-            dur="1s"
-            values="0;1;0"
-            repeatCount="indefinite"
-            begin="0.2"
-          />
-        </circle>
-        <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
-          <animate
-            attributeName="opacity"
-            dur="1s"
-            values="0;1;0"
-            repeatCount="indefinite"
-            begin="0.3"
-          />
-        </circle>
-      </svg>
-    {/if}
-  </div>
-
   <div class="select search-by select-toggle keep-list">
     <button class="keep-list" on:click={showSearchByList}>
       <div class="search-by-name keep-list">
@@ -223,9 +179,71 @@
         type="text"
         class="keyword"
         on:input={debouncedSetSearchTerm}
-        placeholder="Search keywords..."
+        placeholder="Search..."
       />
     {/if}
+    <div class="search-icons-container">
+      <div class="loadingAnimate">
+        {#if isSearching}
+          <svg
+            class="loader"
+            version="1.1"
+            id="L4"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 100 100"
+            enable-background="new 0 0 0 0"
+            xml:space="preserve"
+          >
+            <circle fill="#555" stroke="none" cx="6" cy="50" r="6">
+              <animate
+                attributeName="opacity"
+                dur="1s"
+                values="0;1;0"
+                repeatCount="indefinite"
+                begin="0.1"
+              />
+            </circle>
+            <circle fill="#555" stroke="none" cx="26" cy="50" r="6">
+              <animate
+                attributeName="opacity"
+                dur="1s"
+                values="0;1;0"
+                repeatCount="indefinite"
+                begin="0.2"
+              />
+            </circle>
+            <circle fill="#555" stroke="none" cx="46" cy="50" r="6">
+              <animate
+                attributeName="opacity"
+                dur="1s"
+                values="0;1;0"
+                repeatCount="indefinite"
+                begin="0.3"
+              />
+            </circle>
+          </svg>
+        {/if}
+      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-search"
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="#9e9e9e"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+        <path d="M21 21l-6 -6" />
+      </svg>
+    </div>
   </div>
 
   <div class="select sort-by keep-list">
@@ -265,18 +283,15 @@
 
   .search-sort {
     display: flex;
-    background: #435334;
     justify-content: center;
     align-items: center;
-    width: 600px;
-    min-height: 100%;
-
-    @media screen and (max: 600px) {
-      width: 100%;
-    }
+    width: 900px;
+    height: 70px;
+    padding: 0 10px;
+    position: sticky;
   }
 
-  .search-sort .search-by,
+  .search-by,
   .sort-by {
     width: 80px;
     position: relative;
@@ -289,31 +304,33 @@
   }
 
   .search-by-value,
-  .search-by-values,
-  .sort-by-value,
-  .sort-by-values {
-    font-size: 1.2em;
+  .sort-by-value {
+    font-size: 0.8em;
     text-align: left;
     text-align: center;
     border-radius: 0 0 8px 8px;
     font-family: Nunito, sans-serif;
+    font-weight: 500;
   }
 
   .search-by-values,
   .sort-by-values {
+    font-size: 1.3em;
+    font-weight: 400;
     width: 100%;
     position: absolute;
     background: #435334;
     top: 45px;
     left: 0;
+    z-index: 9999;
   }
+
   .search-by-value {
-    color: white;
-    font-size: 0.9em;
+    color: var(--darkGrey);
   }
+
   .sort-by-value {
-    color: white;
-    font-size: 0.9em;
+    color: var(--darkGrey);
   }
 
   .list-value {
@@ -326,9 +343,23 @@
   }
 
   input.keyword {
-    width: 100%;
+    width: 80%;
     padding: 4px 6px;
     height: 28px;
+    border: transparent;
+    border-radius: 30px;
+
+    @media (max-width: 850px) {
+      width: 50%;
+    }
+
+    @media (max-width: 500px) {
+      width: 20%;
+    }
+  }
+
+  input.keyword:focus {
+    outline: none;
   }
 
   .sort-by {
@@ -339,11 +370,18 @@
   .input-area {
     display: flex;
     align-items: center;
-    flex: 1;
-    box-sizing: border-box;
-    margin: 0 4px;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: row;
     flex-wrap: wrap;
+    flex: 1;
+    margin: 0 4px;
+    padding: 0 10px;
+    border: 1px solid gray;
+    border-radius: 30px;
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    gap: 0;
   }
 
   .to {
@@ -362,11 +400,22 @@
   }
 
   .loadingAnimate {
+    align-content: center;
     width: 5%;
-    height: 100%;
+    height: 45px;
   }
+
   .loader {
     width: 45x;
     height: 45px;
+  }
+
+  .search-icons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    width: 100px;
+    gap: 30px;
   }
 </style>

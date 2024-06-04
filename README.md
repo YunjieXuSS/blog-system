@@ -5,16 +5,21 @@ This repository contains a starting point for your team's final project.
 Your team should update this README to include the information required, as presented in the project handout available on Canvas.
 
 ## Initialising Setting
-a. Team name : Code Charizards
-b. Are there any special setup instructions, beyond initialising the database and running your project?
-c. Test Account:
-    c.1 username:test01
-        password:Ab123456
-    c.2 username:test02
-        password:Ab123456
-    c.3 username:test03
-        password:Ab123456
-d. Any other instructions / comments you wish to make to your markers
+- a. Team name : Code Charizards<br>
+- b. Are there any special setup instructions, beyond initialising the database and running your project?<br>
+- c. Test Account:<br>
+    <ol>
+     <li> username:<strong>test01</strong><br>
+        password:<strong>Ab123456</strong><br>
+           isAdmin:Yes<br>
+    <li>username:<strong>test02</strong><br>
+        password:<strong>Ab123456</strong><br>
+          isAdmin:Yes<br>
+    <li> username:<strong>test03</strong><br>
+        password:<strong>Ab123456</strong><br>
+          isAdmin:No<br>
+    </ol>
+- d. Any other instructions / comments you wish to make to your markers
 
 
 ## Development Environment Setup & Commit Guidelines

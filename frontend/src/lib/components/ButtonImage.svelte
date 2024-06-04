@@ -46,6 +46,7 @@
     display: flex;
     align-items: center;
     margin: 0 0 0 10px;
-    font-size: 1.4em;
+    font-size: 1.1em;
+    font-weight: 400;
   }
 </style>
