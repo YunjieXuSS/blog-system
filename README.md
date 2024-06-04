@@ -4,6 +4,19 @@ This repository contains a starting point for your team's final project.
 
 Your team should update this README to include the information required, as presented in the project handout available on Canvas.
 
+## Initialising Setting
+a. Team name : Code Charizards
+b. Are there any special setup instructions, beyond initialising the database and running your project?
+c. Test Account:
+    c.1 username:test01
+        password:Ab123456
+    c.2 username:test02
+        password:Ab123456
+    c.3 username:test03
+        password:Ab123456
+d. Any other instructions / comments you wish to make to your markers
+
+
 ## Development Environment Setup & Commit Guidelines
 
 It is important each team member has the right development environment setup on their computer.
@@ -38,3 +51,5 @@ If team-members don't need to use PR, then they should be working on feature bra
 > Consider a branch naming convention `feature/<some-meaningful-feature-name>`
 
 Correct and **timely** execution of the PR process with evidence of good code review can contribute **significantly** to a better codebase and team member collaboration.
+
+
