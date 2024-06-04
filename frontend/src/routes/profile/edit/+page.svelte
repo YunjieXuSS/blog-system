@@ -11,6 +11,15 @@
   });
 </script>
 
+<div class="update-user-container">
 {#if data.user}
   <UpdateUserInfoPage user={data.user} />
 {/if}
+</div>
+
+<style>
+  .update-user-container {
+    display: flex;
+    justify-content: center;
+  }
+</style>

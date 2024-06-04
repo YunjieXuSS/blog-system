@@ -1,13 +1,15 @@
 <script>
-  import CommentList from "../../../lib/components/CommentList.svelte";
-  import ArticleView from "../../../lib/components/ArticleView.svelte";
   import { goto } from "$app/navigation";
-  import { ARTICLES_URL } from "../../../lib/js/apiUrls.js";
-  import PostArticleButton from "../../../lib/components/PostArticleButton.svelte";
-  import PopupBox from "../../../lib/components/PopupBox.svelte";
-  import ConfirmPopupBox from "../../../lib/components/ConfirmPopupBox.svelte";
+  import { ARTICLES_URL } from "$lib/js/apiUrls.js";
+  import CommentList from "$lib/components/CommentList.svelte";
+  import ArticleView from "$lib/components/ArticleView.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
+  import ConfirmPopupBox from "$lib/components/ConfirmPopupBox.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
+
   export let data;
+
   let showPopupBox = false;
   let ConfirmPopupMessage = "";
   let resultMsg = "";
@@ -18,10 +20,14 @@
 
   const articleDetail = data.article;
   const isLoggedIn = data.isLoggedIn;
+
   let loginUser = {};
+  let numComments = 0;
+
   if (isLoggedIn) {
     loginUser = data.user;
   }
+
   const authorId = articleDetail.userId;
   import { invalidate } from "$app/navigation";
 
@@ -60,12 +66,10 @@
       alert(`Unexpected status code received: ${response.status}`);
     }
   }
-  
-  let numComments = 0;
 
   function goToComments() {
     const comments = document.querySelector(".commentsDiv");
-    comments.scrollIntoView({ behavior: 'smooth'});
+    comments.scrollIntoView({ behavior: "smooth" });
   }
 </script>
 
@@ -85,16 +89,19 @@
 
   <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
-  <ConfirmPopupBox
-    {ConfirmPopupMessage}
-    {confirmFunction}
-    bind:showConfirmPopupBox
-  />
+  <ConfirmPopupBox {ConfirmPopupMessage} {confirmFunction} bind:showConfirmPopupBox />
 
   <ArticleView {articleDetail} />
 
-  <LikeCommentButtons {data} articleId={articleDetail.articleId} isLiked={data.isLiked} {numComments} commentButtonFunction={goToComments} />
-
+  <div class="like-comment-buttons-container">
+    <LikeCommentButtons
+      {data}
+      articleId={articleDetail.articleId}
+      isLiked={data.isLiked}
+      {numComments}
+      commentButtonFunction={goToComments}
+    />
+  </div>
 
   <div class="commentsDiv">
     <CommentList {authorId} loginUserId={loginUser.userId} bind:numComments />
@@ -105,7 +112,8 @@
   main {
     padding: 16px;
     width: 900px;
-    margin: 0 auto;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46);
   }
 
   @media (max-width: 600px) {
@@ -117,6 +125,10 @@
 
   .articleDiv {
     position: relative;
+  }
+
+  .like-comment-buttons-container {
+    margin-right: 40px;
   }
 
   .edit {

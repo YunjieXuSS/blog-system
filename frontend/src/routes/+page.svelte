@@ -1,10 +1,10 @@
 <script>
   import { articleStore, searchArticles } from "../lib/js/utils.js";
-  import ArticleList from "../lib/components/ArticleList.svelte";
-  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
   import { queryStore } from "../lib/js/store.js";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
+  import ArticleList from "../lib/components/ArticleList.svelte";
+  import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
   export let data;
   $:articleStore.set(data.articles);
@@ -85,6 +85,7 @@
 <button class="back-to-top" on:click={scrollToTop} class:isVisible> ↑ </button>
 
 <style>
+
   .back-to-top {
     position: fixed;
     bottom: 40px;

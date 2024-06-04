@@ -1,7 +1,7 @@
 <script>
   import { onDestroy, onMount } from "svelte";
   import "$lib/css/app.css";
-    const searchByValues = [
+  const searchByValues = [
     { name: "Title", value: "title" },
     { name: "Author", value: "userName" },
     { name: "Date", value: "date" }
@@ -142,7 +142,7 @@
         enable-background="new 0 0 0 0"
         xml:space="preserve"
       >
-        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+        <circle fill="#555" stroke="none" cx="6" cy="50" r="6">
           <animate
             attributeName="opacity"
             dur="1s"
@@ -151,7 +151,7 @@
             begin="0.1"
           />
         </circle>
-        <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
+        <circle fill="#555" stroke="none" cx="26" cy="50" r="6">
           <animate
             attributeName="opacity"
             dur="1s"
@@ -160,7 +160,7 @@
             begin="0.2"
           />
         </circle>
-        <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
+        <circle fill="#555" stroke="none" cx="46" cy="50" r="6">
           <animate
             attributeName="opacity"
             dur="1s"
@@ -216,21 +216,21 @@
       />
     {/if}
     <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon icon-tabler icon-tabler-search"
-    width="28"
-    height="28"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="#9e9e9e"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-    <path d="M21 21l-6 -6" />
-  </svg>
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon icon-tabler icon-tabler-search"
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="#9e9e9e"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+      <path d="M21 21l-6 -6" />
+    </svg>
   </div>
 
   <div class="select sort-by keep-list">
@@ -273,14 +273,12 @@
     justify-content: center;
     align-items: center;
     width: 900px;
-    min-height: 100%;
-
-    @media screen and (max: 600px) {
-      width: 100%;
-    }
+    height: 80px;
+    padding: 0 10px;
+    position: sticky;
   }
 
-  .search-sort .search-by,
+  .search-by,
   .sort-by {
     width: 80px;
     position: relative;
@@ -330,7 +328,7 @@
   }
 
   input.keyword {
-    /* width: 100%; */
+    width: 80%;
     padding: 4px 6px;
     height: 28px;
     border: transparent;
@@ -354,10 +352,12 @@
     margin: 0 4px;
     padding: 0 10px;
     justify-content: space-between;
+    flex-direction: row;
     flex-wrap: wrap;
     border: 1px solid gray;
     border-radius: 30px;
     background-color: white;
+    width: 70%;
   }
 
   .to {
@@ -376,8 +376,10 @@
   }
 
   .loadingAnimate {
+    align-content: center;
     width: 5%;
     height: 100%;
+    padding-left: 10px;
   }
   .loader {
     width: 45x;

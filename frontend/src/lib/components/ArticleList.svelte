@@ -12,16 +12,6 @@
   export let data;
   export let articles;
 
-
-
-  let selectedCategory = "title"; // menu selection
-  let searchTerm = "";
-  let sortByCategory = "titleAsc";
-  let searchTermStart = "";
-  let searchTermEnd = "";
-
-
-
   let sortingCategory = "dateDesc";
   $: path = $page.url.pathname;
 
@@ -82,13 +72,6 @@
         >
       </p>
     {/if}
-    <SearchAndSortTool
-    bind:selectedCategory
-    bind:searchTerm
-    bind:sortByCategory
-    bind:searchTermStart
-    bind:searchTermEnd
-  />
   </div>
   {#if articles.length === 0}
     <p class="none-article">No articles found</p>
@@ -174,6 +157,7 @@
     text-align: center;
     font-size: 1.5em;
     color: #555;
+    margin: 0 auto;
   }
 
   .sort-bar {

@@ -10,9 +10,9 @@
 </div> -->
 
 
-<!-- <div class="search-sort-container">
+<!-- <div class="search-sort-container"> -->
   <SearchAndSortTool />
-</div> -->
+<!-- </div> -->
 
 <style>
   /* .search-bar-container {
@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
+    height: 100%;
   } */
 </style>

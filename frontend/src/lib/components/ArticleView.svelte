@@ -41,6 +41,7 @@
     background-color: #fff;
     box-sizing: border-box; /* Ensure padding is included in the width */
     margin-bottom:10px;
+    /* box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.46); */
   }
 
   .article-image {
