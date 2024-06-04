@@ -1,8 +1,7 @@
 <script>
   export let article;
   import dayjs from "dayjs";
-  import { SERVER_URL } from "../js/apiUrls.js";
-  import { onMount } from "svelte";
+  import { SERVER_URL } from "$lib/js/apiUrls.js";
   import { browser } from "$app/environment";
 
   function stripHtml(html) {
@@ -94,10 +93,10 @@
     width: 100%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 7; /* number of lines */
+    -webkit-line-clamp: 7;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.5;
-    max-height: calc(1.5em * 7); /* calculate from line-height */
+    max-height: calc(1.5em * 7);
   }
 </style>

@@ -1,9 +1,11 @@
 <script>
   import { goto } from "$app/navigation";
-  import { ARTICLES_URL, SERVER_URL } from "./../js/apiUrls.js";
+  import { ARTICLES_URL, SERVER_URL } from "$lib/js/apiUrls.js";
   import Editor from "@tinymce/tinymce-svelte";
-  import PopupBox from "./PopupBox.svelte";
-  import Modal from "./Modal.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
+  import Modal from "$lib/components/Modal.svelte";
+  import ButtonText from "$lib/components/ButtonText.svelte";
+
   let showPopupBox = false;
   let showEditPopupBox = false;
   let popupMessage = "";
@@ -57,7 +59,6 @@
     if (res.ok) {
       handleUpdatePopupBox();
       invalidate(ARTICLES_URL);
-      // goto(`/article/${articleId}`, { invalidateAll: true });
     } else {
       isSubmitError = true;
       const resBody = await res.json();
@@ -70,7 +71,6 @@
     fileToUpload = [];
   }
 
-  // /** @type {import('tinymce').RawEditorOptions} */
   const conf = {
     plugins: ["lists"],
     toolbar:
@@ -103,7 +103,13 @@
         />
       {/if}
       {#if imgSrc || fileToUpload.length}
-        <button class="remove" on:click={removeImage}>Remove Image</button>
+        <div class="remove-img-button">
+          <ButtonText
+            buttonFunction={removeImage}
+            buttonLabel="Remove image"
+            buttonClass="deleteButton"
+          />
+        </div>
       {:else}
         <div>
           <input
@@ -142,10 +148,13 @@
     </div>
     <br />
     <div class="submit-controller">
-      <button class="submit" disabled={onValueError || onTitleError} on:click={handleSubmit}
-        >Submit</button
-      >
       <button class="cancel-edit" on:click={() => (showEditPopupBox = true)}>Cancel</button>
+      <ButtonText
+        buttonFunction={handleSubmit}
+        disabled={onValueError || onTitleError}
+        buttonLabel="Submit"
+        buttonClass="confirmButton"
+      />
     </div>
   </form>
   <div class="error" style="display:{isSubmitError ? '' : 'none'}">{errorMsg}</div>
@@ -171,11 +180,15 @@
 <PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
 <style>
+  .remove-img-button {
+    margin-top: 10px;
+  }
   .hidden {
     display: none;
   }
   main {
     width: 900px;
+    margin: 0 auto;
 
     & form {
       width: 100%;
@@ -206,37 +219,10 @@
     outline: none;
   }
 
-  button.submit {
-    display: block;
-    font-size: 1.5em;
-    width: 200px;
-    margin: 16px 20px;
-    padding: 8px;
-    border-radius: 10px;
-    background: #435334;
-    color: #eee;
-    border: none;
-  }
-
   .upload-image {
     display: block;
-    /* background: #9eb384; */
     padding: 16px 0;
     color: #252525;
-  }
-
-  button.remove {
-    margin: 30px auto;
-    padding: 8px;
-    border-radius: 4px;
-    background: lightcoral;
-    color: #eee;
-    border: none;
-    display: block;
-  }
-  button.submit:disabled {
-    background: #909090;
-    color: white;
   }
 
   .edit-area {
@@ -265,6 +251,11 @@
   .error {
     color: red;
     text-align: center;
+  }
+  @media screen and (max-width: 950px) {
+    main {
+      width: 500px;
+    }
   }
   @media screen and (max-width: 600px) {
     main {

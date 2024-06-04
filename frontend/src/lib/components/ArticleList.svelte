@@ -1,8 +1,6 @@
 <script>
-  import ArticleCard from "./ArticleCard.svelte";
-  import SortingSection from "$lib/components/SortingSection.svelte";
+  import ArticleCard from "$lib/components/ArticleCard.svelte";
   import LikeCommentButtons from "$lib/components/LikeCommentButtons.svelte";
-  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { articleInfo } from "$lib/js/store.js";
@@ -12,7 +10,6 @@
   export let data;
   export let articles;
 
-  let sortingCategory = "dateDesc";
   $: path = $page.url.pathname;
 
   function handleClick(articleId) {
@@ -104,16 +101,6 @@
 </div>
 
 <style>
-  /* .search-menu-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #fff;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px 20px;
-  } */
-
   .home-articles {
     padding: 0 20px;
     width: 90vw;

@@ -1,7 +1,7 @@
 <script>
   export let articleDetail;
   import dayjs from "dayjs";
-  import { SERVER_URL } from "../js/apiUrls.js";
+  import { SERVER_URL } from "$lib/js/apiUrls.js";
   import { browser } from "$app/environment";
 
   function goToAuthorPage() {
@@ -48,7 +48,7 @@
     margin-bottom: 5px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     .article-image {
       width: 100%;
     }
@@ -89,13 +89,8 @@
     color: #333;
     text-align: justify;
     width: 100%;
-    /* display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.5;
-      max-height: calc(1.5em * 7);  */
   }
+  
   .author-button {
     text-decoration: none;
     background-color: transparent;

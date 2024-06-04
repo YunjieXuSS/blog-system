@@ -1,12 +1,13 @@
 <script>
-  import { articleStore, searchArticles } from "../lib/js/utils.js";
-  import { queryStore } from "../lib/js/store.js";
+  import { articleStore, searchArticles } from "$lib/js/utils.js";
+  import { queryStore } from "$lib/js/store.js";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import ArticleList from "../lib/components/ArticleList.svelte";
+  import ArticleList from "$lib/components/ArticleList.svelte";
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
   export let data;
+  
   $:articleStore.set(data.articles);
 
   let count = 2;

@@ -1,9 +1,8 @@
-<!-- Button to post new articles -->
-
 <script>
   import "$lib/css/button.css";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
+
   export let data;
 
   async function handlePostNewArticle() {

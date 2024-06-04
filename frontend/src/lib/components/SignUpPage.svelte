@@ -1,10 +1,10 @@
 <script>
-  import UploadAvatar from "./UploadAvatar.svelte";
-  import SignUpTable from "./SignUpTable.svelte";
+  import UploadAvatar from "$lib/components/UploadAvatar.svelte";
+  import SignUpTable from "$lib/components/SignUpTable.svelte";
   import ButtonText from "$lib/components/ButtonText.svelte";
   import { USER_URL } from "$lib/js/apiUrls.js";
-  import AvatarChooser from "./AvatarChooser.svelte";
-  import PopupBox from "./PopupBox.svelte";
+  import AvatarChooser from "$lib/components/AvatarChooser.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
   import "$lib/css/button.css";
 
   let firstName, lastName, userName;
@@ -30,16 +30,10 @@
     confirmPassword: false
   };
 
-  //get all the validation results from the SignUpTable dispatch event
   function handleValidation(event) {
-    //create a new array to store the validation results
     validationResults[event.detail.variableName] = event.detail.validateResult;
   }
 
-  //check if all the values are valid
-  //add a new property to the object to store the result
-  //Object.values(validationResults) means put all the values of the object into an array
-  //every(Boolean) means check if all the values are true
   $: allValid = Object.values(validationResults).every(Boolean) && imageIsLegal;
 
   function createFormData() {
@@ -55,8 +49,6 @@
       avatar: userRegisterImage
     };
 
-    //refactor the code to use the createAccount function
-    // Create a FormData object to send, rather than sending JSON as usual.
     const body = new FormData();
     Object.entries(userRegisterData).forEach(([key, value]) => {
       if (key == "avatar" && filesToUpload.length > 0 && value !== undefined) {
@@ -75,9 +67,6 @@
   async function handleRegister() {
     try {
       const body = createFormData();
-      // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
-      // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
-      // by the multer middleware on our server.
       const response = await fetch(`${USER_URL}/register`, {
         method: "POST",
         credentials: "include",
@@ -85,7 +74,6 @@
       });
 
       if (response.status === 201) {
-        // Redirect to the login page if successful.
         handlePopupBox();
       } else if (response.status === 413) {
         handleImagePopupBox();
@@ -95,8 +83,6 @@
         imgInput.value = "";
       }else {
         handleUniPopupBox();
-        // If there was an error, log the error to the console.
-        // console.error(`Failed to register user.StatusCode: ${response.status}`);
       }
     } catch (error) {
       console.error(`Failed to register user.${error}`);
@@ -233,18 +219,5 @@
       flex-direction: column;
       gap: 0;
     }
-
-    /* @media (max-width: 600px) {
-      .page-container {
-        width: 100%;
-      }
-
-      .content-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-      }
-    } */
   }
 </style>

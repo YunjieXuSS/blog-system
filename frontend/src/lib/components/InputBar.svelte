@@ -1,7 +1,6 @@
 <script>
-  /** This component is for the input bar that is used to input the text for username, password, etc.
-   * It defines the layout of the input bar. It is used in the login page and signup page.
-   **/
+  import { createEventDispatcher } from "svelte";
+
   export let variableName = "";
   export let label = "";
   export let type = "text";
@@ -11,18 +10,18 @@
   export let validate = async (value) => {
     return { result: true, errorMsg: "" };
   };
-  //create a dispatcher to send the validation result to the SignUpTable.svelte
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
-
   export let validateResult = true;
+
+  const dispatch = createEventDispatcher();
   let errorMsg = "";
+
   async function checkValue() {
     const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
     dispatch("validation", { variableName, validateResult });
   }
+
   function clearError() {
     errorMsg = "";
     validateResult = true;
@@ -78,11 +77,7 @@
       />
     {/if}
     {#if !validateResult}
-      <!-- {#if (type === "password")}
-        <p class="errorPassword">{errorMsg}</p>
-      {:else} -->
       <p class="error">{errorMsg}</p>
-      <!-- {/if} -->
     {/if}
   </div>
 </div>
@@ -113,14 +108,6 @@
     white-space: normal;
   }
 
-  /* .errorPassword {
-    color: rgba(255, 0, 0, 0.837);
-    position:absolute;
-    top: +5.2em;
-    right: 0px;
-    font-size: 0.8em;
-    white-space: normal;
-  } */
   label {
     display: block;
     color: #808080;

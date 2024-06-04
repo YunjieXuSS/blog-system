@@ -1,11 +1,11 @@
 <script>
-  import UploadAvatar from "./UploadAvatar.svelte";
-  import SignUpTable from "./SignUpTable.svelte";
+  import UploadAvatar from "$lib/components/UploadAvatar.svelte";
+  import SignUpTable from "$lib/components/SignUpTable.svelte";
   import { USER_URL } from "$lib/js/apiUrls.js";
   import { goto } from "$app/navigation";
-  import AvatarChooser from "./AvatarChooser.svelte";
-  import PopupBox from "./PopupBox.svelte";
-  import ConfirmPopupBox from "./ConfirmPopupBox.svelte";
+  import AvatarChooser from "$lib/components/AvatarChooser.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
+  import ConfirmPopupBox from "$lib/components/ConfirmPopupBox.svelte";
   import Dayjs from "dayjs";
   import "$lib/css/button.css";
   import ButtonText from "$lib/components/ButtonText.svelte";
@@ -26,7 +26,6 @@
   let imgInput;
   let isSelectedDefaultImg = true;
   let imageIsLegal = false;
-  // let hasChanges;
   let userNamehasChanges = false;
   let isUpdateMode = true;
   let ConfirmPopupMessage = "";
@@ -149,7 +148,6 @@
 
   function handlePopupBox() {
     popupMessage = `User info updated. Redirecting to homepage...`;
-    console.log(" redirectUrl = `/profile/${userName}`", `/profile/${userName}`);
     redirectUrl = `/profile/${userName}`;
     showPopupBox = true;
   }
@@ -232,16 +230,6 @@
     </div>
   </div>
   <div class="button_div">
-    <!-- <button class="deleteButton" on:click={handleConfirmPopupBox}> Delete Account </button> -->
-    <!-- <button
-      class="submitButton"
-      class:valid={buttonEnabled}
-      on:click={handleUpdate}
-      disabled={!buttonEnabled}
-    >
-      Update Info
-    </button> -->
-
     <ButtonText
       buttonFunction={handleConfirmPopupBox}
       buttonLabel="Delete Account"
@@ -330,16 +318,4 @@
       flex-direction: column;
     }
   }
-
-  /* @media (max-width: 600px) {
-      .page-container {
-        width: 100%;
-      }
-
-      .content-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-      }
-    } */
 </style>
