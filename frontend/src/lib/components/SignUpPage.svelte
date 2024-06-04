@@ -90,9 +90,13 @@
       } else if (response.status === 413) {
         handleImagePopupBox();
         imgInput.value = "";
-      } else {
+      } else if (response.status === 409) {
+        handleUserExistPopupBox();
+        imgInput.value = "";
+      }else {
+        handleUniPopupBox();
         // If there was an error, log the error to the console.
-        console.error(`Failed to register user.StatusCode: ${response.status}`);
+        // console.error(`Failed to register user.StatusCode: ${response.status}`);
       }
     } catch (error) {
       console.error(`Failed to register user.${error}`);
@@ -103,11 +107,25 @@
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
 
+
   function handlePopupBox() {
     popupMessage = `User has registered. Redirecting ...`;
     redirectUrl = "/";
     showPopupBox = true;
   }
+
+  function handleUniPopupBox() {
+    popupMessage = `Fail to regiser user. please try it again ...`;
+    redirectUrl = "/signup";
+    showPopupBox = true;
+  }
+
+  function handleUserExistPopupBox() {
+    popupMessage = `Username has existed. Please choose a new name ...`;
+    redirectUrl = "/signup";
+    showPopupBox = true;
+  }
+
 
   function handleImagePopupBox() {
     popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
