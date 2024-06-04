@@ -8,12 +8,14 @@ Your team should update this README to include the information required, as pres
 - a. Team name : Code Charizards<br>
 - b. Are there any special setup instructions, beyond initialising the database and running your project?<br>
 - c. Test Account:<br>
-    c.1 username:test01<br>
+    <ol>
+     <li> username:test01<br>
         password:Ab123456<br>
-    c.2 username:test02<br>
+    <li>username:test02<br>
         password:Ab123456<br>
-    c.3 username:test03<br>
+    <li> username:test03<br>
         password:Ab123456<br>
+    </ol>
 - d. Any other instructions / comments you wish to make to your markers
 
 
