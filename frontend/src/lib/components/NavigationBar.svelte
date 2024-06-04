@@ -1,11 +1,9 @@
 <script>
   import { page } from "$app/stores";
-  import { searchArticles } from "../js/utils.js";
-  import { queryStore } from "../js/store.js";
-  import { articleInfo } from "../js/store.js";
-  import { browser } from "$app/environment";
+  import { searchArticles } from "$lib/js/utils.js";
+  import { queryStore } from "$lib/js/store.js";
+  import { articleInfo } from "$lib/js/store.js";
   import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
-  import ButtonImage from "$lib/components/ButtonImage.svelte";
   import "$lib/css/button.css";
 
   export let data;
@@ -13,7 +11,7 @@
   let isSearching = false;
 
   let query = {};
-  let selectedCategory = "title"; // menu selection
+  let selectedCategory = "title";
   let searchTerm = "";
   let sortByCategory = "titleAsc";
   let searchTermStart = "";
@@ -89,7 +87,6 @@
 
 <nav class="navBar darkGreen">
   <ul>
-    <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
     {#if isLoggedIn}
       <li>
@@ -111,9 +108,6 @@
         </a>
       </li>
     {/if}
-
-    <!-- browsing here to see the default Svelte 404 page. -->
-    <!-- <li><a href="/notfound">Not Found</a></li> -->
   </ul>
 
   {#if path === "/"}

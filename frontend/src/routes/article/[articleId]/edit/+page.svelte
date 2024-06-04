@@ -2,6 +2,7 @@
   import ArticleEditor from "$lib/components/ArticleEditor.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  
   export let data;
 
   onMount(async () => {

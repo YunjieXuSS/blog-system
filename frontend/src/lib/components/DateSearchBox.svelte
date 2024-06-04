@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from "svelte";
   export let searchTerm;
 
 </script>

@@ -63,7 +63,6 @@
     }
   }
 
-  // let numComments;
   $: getNumComments().then((res) => (numComments = res));
 
   async function getNumComments() {
@@ -114,7 +113,6 @@
         }
       ]}
     />
-    <!-- <PopupBox {popupMessage} {redirectUrl} countdown={10} bind:showPopupBox /> -->
   {/if}
 </div>
 

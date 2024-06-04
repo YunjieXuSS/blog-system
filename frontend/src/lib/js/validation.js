@@ -1,6 +1,5 @@
 
-import { checkUserIsRegisterd } from "../js/utils.js";
-
+import { checkUserIsRegisterd } from "$lib/js/utils.js";
 
 export function validateRegisterPassword(password) {
   if (password.length < 8) {
@@ -12,16 +11,8 @@ export function validateRegisterPassword(password) {
   } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
     return { result: false, errorMsg: "Min. 8 characters, 1 uppercase, 1 lowercase, 1 number. ONLY the following special characters are allowed: @$!%*?&." };
   }
-  // else if (!/[!@#$%^&*_-]/.test(password)) {
-  //   return { result: false, errorMsg: "Password must contain at least one special character." };
-  // } else if (!/[0-9]/.test(password)) {
-  //   return { result: false, errorMsg: "Password must contain at least one number." };
-  // } else if (!/[A-Za-z]/.test(password)) {
-  //   return { result: false, errorMsg: "Password must contain at least one letter." };
-  // }
   return { result: true, errorMsg: "" };
 }
-
 
 export async function validateRegisterName(name) {
   if (name.length < 1 || name.length > 30) {
@@ -48,7 +39,6 @@ export async function validateRegisterUserName(userName) {
   return { result: true, errorMsg: "" };
 }
 
-
 export async function validateUpdateUserName(userName) {
   const userIsExisted = await checkUserIsRegisterd(userName);
   if (userName.length < 3 || userName.length > 20) {
@@ -61,10 +51,7 @@ export async function validateUpdateUserName(userName) {
     return { result: false, errorMsg: "Username already exists." };
   }
   return { result: true, errorMsg: "" };
-  // }
 }
-
-
 
 export function validateRegisterEmail(email) {
   if (!email) {
@@ -82,14 +69,11 @@ export function validateRegisterDate(date) {
     return { result: false, errorMsg: "Date cannot be empty." };
   } else if (date.length > 20) {
     return { result: false, errorMsg: "Date must be less than 20 characters." };
-    // } else if (!/^\d{4}$[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])/.test(date)) {
-    //   return { result: false, errorMsg: "Invalid date format." };
   }
   return { result: true, errorMsg: "" };
 }
 
 export function validateConfirmPassword(getPassword) {
-
   return function (value) {
     const password = getPassword();
     if (!value) return { result: false, errorMsg: "Password cannot be empty" };

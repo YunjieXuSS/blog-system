@@ -1,5 +1,5 @@
-import { ARTICLES_URL } from "../../../lib/js/apiUrls";
-// pre-load article data
+import { ARTICLES_URL } from "$lib/js/apiUrls";
+
 export async function load({ params, fetch }) {
   const articleId  = params.articleId;
   async function getArticle() {
@@ -12,7 +12,6 @@ export async function load({ params, fetch }) {
       throw Error("Failed to fetch article");
     }
   }
-
   let article = {};
   try {
     article = await getArticle();

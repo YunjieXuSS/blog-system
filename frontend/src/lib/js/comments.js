@@ -1,4 +1,4 @@
-import { ARTICLES_URL, BASE_URL } from "./apiUrls";
+import { ARTICLES_URL, BASE_URL } from "$lib/js/apiUrls.js";
 
 export async function postComment({ content, parentId, articleId }) {
   const res = await fetch(`${ARTICLES_URL}/${articleId}/comment`, {

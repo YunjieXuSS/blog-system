@@ -1,5 +1,5 @@
 <script>
-  import InputBar from "./InputBar.svelte";
+  import InputBar from "$lib/components/InputBar.svelte";
   import {
     validateRegisterName,
     validateRegisterUserName,
@@ -7,31 +7,26 @@
     validateConfirmPassword,
     validateRegisterEmail,
     validateRegisterDate
-  } from "../js/validation.js";
+  } from "$lib/js/validation.js";
+
   export let userNamehasChanges=false;
   export let isUpdateMode = false;
   export let firstName, lastName, userName;
   export let email;
   export let dateOfBirth;
   export let password;
-  
   export let description = "I know myself so well.";
-  // export let validateResult;
   export let confirmPassword;
-  // define a function to get the first password.
+
   const getPassword = function () {
     return password;
   };
-  // create closure function to validate two passwords.
-  const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
+  const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
   let label=""
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
-  //create a dispatcher to send the validation result to the SignUpPage.svelte
-  //Get validateResult, label from the event.detail (CustomEvent)
-  //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
     const { variableName,validateResult } = event.detail;
     dispatch('validation', { variableName,validateResult });
@@ -39,7 +34,6 @@
 
   function handleUserNameValidation(){
    if(isUpdateMode&&userNamehasChanges){
-    console.log("reach here2222~~~`")//why this line is not printed out?
    return validateRegisterUserName(userName);
    }else if(!isUpdateMode){
    return validateRegisterUserName(userName);
