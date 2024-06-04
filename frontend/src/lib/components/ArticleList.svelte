@@ -20,6 +20,8 @@
     });
   }
 
+  let numComments = 0;
+
   async function handleCommentButton(articleId) {
     await goto(`/article/${articleId}`);
     const comments = document.querySelector(".commentsDiv");
@@ -36,8 +38,8 @@
 
   function getColumnCount() {
     const width = window.innerWidth;
-    if (width < 600) return 1;
-    if (width < 900) return 2;
+    if (width < 800) return 1;
+    if (width < 1100) return 2;
     return 3;
   }
 
@@ -51,7 +53,7 @@
     return () => window.removeEventListener("resize", handleResize);
   });
 
-  afterUpdate(() => { 
+  afterUpdate(() => {
     handleResize();
   });
 </script>
@@ -63,7 +65,9 @@
     {:else}
       <p class="article-p">
         Articles <strong
-          >@{path.substring(9).includes("/") ? path.substring(9,path.length-1) : path.substring(9)}</strong
+          >@{path.substring(9).includes("/")
+            ? path.substring(9, path.length - 1)
+            : path.substring(9)}</strong
         >
       </p>
     {/if}
@@ -80,7 +84,7 @@
                 href="/article/{article.articleId}"
                 on:click={() => handleClick(article.articleId)}
               >
-                <ArticleCard  {article} />
+                <ArticleCard {article} />
               </a>
               <LikeCommentButtons
                 {data}
@@ -99,6 +103,16 @@
 </div>
 
 <style>
+  /* .search-menu-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+  } */
+
   .home-articles {
     padding: 0 20px;
     width: 90vw;

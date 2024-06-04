@@ -253,12 +253,11 @@
 
   .search-sort {
     display: flex;
-    padding: 8px;
     background: #435334;
     justify-content: center;
     align-items: center;
     width: 600px;
-    min-height: 60px;
+    min-height: 100%;
 
     @media screen and (max: 600px) {
       width: 100%;
@@ -298,9 +297,11 @@
   }
   .search-by-value {
     color: white;
+    font-size: 0.9em;
   }
   .sort-by-value {
     color: white;
+    font-size: 0.9em;
   }
 
   .list-value {
@@ -319,7 +320,7 @@
   }
 
   .sort-by {
-    width: 100px;
+    width: 120px;
     text-align: center;
   }
 

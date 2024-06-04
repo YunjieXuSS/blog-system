@@ -1,15 +1,16 @@
 <!-- Displays the user's information (username, name, avatar, description) on their profile. -->
 
 <script>
-  import ButtonText from "$lib/components/ButtonText.svelte";
   import { goto } from "$app/navigation";
   import { SERVER_URL } from "../js/apiUrls";
   import { browser } from "$app/environment";
+  import ButtonText from "$lib/components/ButtonText.svelte";
+  import "$lib/css/button.css";
 
   export let data;
 
   let hoster = {};
-  $:hoster = data.userInfo;
+$: hoster = data.userInfo;
 
   $: avatarUrl = SERVER_URL + hoster.avatar;
   function settingsButton() {
@@ -37,9 +38,7 @@
         <ButtonText
           buttonLabel="Settings"
           buttonFunction={settingsButton}
-          bckgColour="#9EB384"
-          txtColour="white"
-          buttonWidth="110px"
+          buttonClass="cancelButton"
         />
       {/if}
     </div>
@@ -49,10 +48,17 @@
     <h1>{hoster.userName}</h1>
     <h3>{hoster.firstName} {hoster.lastName}</h3>
     <p>{hoster.description}</p>
-    <div class="user-detail">
-      <strong>{hoster.numOfLikes}</strong><strong>{hoster.numOfPosts}</strong><span>Likes</span><span
-        >Posts</span
-      >
+
+    <div class="userDetailContainer">
+      <div class="userDetail">
+        <span><strong>{hoster.numOfLikes}</strong></span>
+        <span>Likes</span>
+      </div>
+
+      <div class="userDetail">
+        <span><strong>{hoster.numOfPosts}</strong></span>
+        <span>Posts</span>
+      </div>
     </div>
   </div>
 </div>
@@ -65,21 +71,13 @@
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
-    max-width: 50em;
-    width: 100%;
+    background-color: white;
+    max-width: 60em;
     gap: 30px;
   }
 
-  @media (max-width: 600px) {
-    .container {
-      width: 100%;
-      padding: 16px;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-    }
-  }
-
   .settingsAndAvatar {
+    min-width: 9.3em;
     align-content: center;
     justify-content: center;
   }
@@ -90,9 +88,8 @@
   }
 
   .userAvatar {
-    max-width: 150px;
-    height: 150px;
     width: 150px;
+    height: 150px;
     margin-bottom: 10px;
     border-radius: 50%;
     object-fit: cover;
@@ -102,32 +99,75 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    & h1,
-    h3 {
-      margin: 0 0 10px 0;
-    }
-
-    & p {
-      margin: 15px 0 0 0;
-    }
+    padding-right: 20px;
   }
-  .user-detail {
-    margin-top:40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+
+  .profileInfo > h1,
+  h3 {
+    margin: 0 0 10px 0;
+  }
+
+  .profileInfo > p {
+    margin: 15px 0 0 0;
+  }
+
+  .userDetailContainer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+  }
+
+  .userDetail {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 40px;
   }
 
-  @media (max-width: 950px) {
+  span {
+    max-width: 200px;
+  }
+
+  @media (max-width: 1200px) {
     .container {
-      max-width: 35em;
+      max-width: 40em;
     }
   }
 
-  @media (max-width: 690px) {
+  @media (max-width: 790px) {
     .container {
       max-width: 25em;
+      width: 100%;
+      padding: 16px;
+      box-sizing: border-box;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+    }
+
+    .profileInfo {
+      padding-right: 0;
+    }
+
+    .profileInfo > h1,
+    h3,
+    p {
+      text-align: center;
+    }
+
+    .userDetailContainer {
+      gap: 50px;
+      margin-bottom: 30px;
+    }
+
+    .settings {
+      margin-bottom: 40px;
+    }
+
+    .userAvatar {
+      margin-top: 30px;
     }
   }
 </style>

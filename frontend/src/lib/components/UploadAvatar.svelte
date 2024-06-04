@@ -1,5 +1,6 @@
 <script>
   import { SERVER_URL } from "../js/apiUrls";
+  import { browser } from "$app/environment";
   export let filesToUpload = "";
   export let selectedImage = "";
   export let isSelectedDefaultImg = true;
@@ -15,7 +16,7 @@
       const [file] = imgInp.files;
       // userIcon.src = URL.createObjectURL(file);
       showImage = URL.createObjectURL(file);
-      selectedImage="";
+      selectedImage = "";
       warnMessage = isImgSizeLarge
         ? "The image size is Larger than 2MB. Please choose a smaller image."
         : "The image size is right.";
@@ -45,7 +46,16 @@
 <form>
   <div class="img-container">
     <div class="img-bg-container">
-      <img id="userIcon" src={showImage} alt="userDefaultIcon" />
+      {#if browser}
+        <img
+          id="userIcon"
+          src={showImage}
+          alt="userDefaultIcon"
+          on:error={(e) => {
+            e.target.src = "/userDefaultIcon.png";
+          }}
+        />
+      {/if}
     </div>
   </div>
   <div class="upload">
@@ -72,10 +82,8 @@
   form {
     display: block;
     align-items: center;
-    padding-top: 45px;
 
-  & .img-container {
-      
+    & .img-container {
       width: 100%;
       height: 100%;
       display: block;
@@ -128,7 +136,14 @@
     color: red;
   }
 
-  @media (max-width: 600px) {
+  .upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 40px 0;
+  }
+
+  @media (max-width: 800px) {
     #userIcon {
       display: flex;
       justify-content: center;
@@ -137,20 +152,5 @@
       margin: 0 auto;
       display: block;
     }
-  }
-
-  .upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  @media (max-width: 800px) {
-    /* .img-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-    } */
   }
 </style>
