@@ -1,15 +1,32 @@
 <script>
   export let article;
+  import dayjs from "dayjs";
+  import { SERVER_URL } from "$lib/js/apiUrls.js";
+  import { browser } from "$app/environment";
+
+  function stripHtml(html) {
+    if (browser) {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.textContent || "";
+    }
+  }
+  function imgOnError(event) {
+    event.target.style.display = "none";
+  }
 </script>
 
 <article class="article-container">
-  {#if article.isImgExist===true}
-    <img src={`http://localhost:3000/images/${article.imgUrl}`} alt="" class="article-image"/>
-  {/if}
+  <div class="image-container">
+    {#if browser}
+      <img src={SERVER_URL + article.imgUrl} alt="" class="article-image" on:error={imgOnError} />
+    {/if}
+  </div>
   <h1 class="article-title">{article.title}</h1>
-  <p class="user"><strong>@Author: </strong>{article.userName}</p>
-  <p class="date">{article.createDate}</p>
-  <p class="article-content">{article.content}</p>
+  <div class="authorInfo">
+    <p class="user"><strong>@ </strong>{article.userName}</p>
+    <p class="date">{dayjs(article.createDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+  </div>
+  <p class="article-content">{stripHtml(article.content)}</p>
 </article>
 
 <style>
@@ -20,34 +37,52 @@
     width: 100%;
     max-width: 800px;
     margin: auto;
-    padding: 20px;
+    padding: 20px 20px 0;
     background-color: #fff;
-    box-sizing: border-box; /* Ensure padding is included in the width */
+    box-sizing: border-box;
+  }
+
+  .image-container {
+    width: 100%;
+    max-width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
   }
 
   .article-image {
-    height: 150px;
-    width:200px;
-    margin-bottom: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .article-title {
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 5px;
     text-align: center;
+  }
+
+  .authorInfo {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
   }
 
   .user {
     font-size: 1em;
     color: #555;
-    margin-bottom: 5px;
+    margin-right: 20px;
   }
 
   .date {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-style: italic;
     color: #999;
-    margin-bottom: 10px;
   }
 
   .article-content {
@@ -55,6 +90,13 @@
     line-height: 1.6;
     color: #333;
     text-align: justify;
-    width: 100%; /* Ensure content takes full width of container */
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    max-height: calc(1.5em * 7);
   }
 </style>

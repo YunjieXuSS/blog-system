@@ -3,44 +3,52 @@
 <script>
   export let imgSrc;
   export let imgAlt;
-  export let buttonFunction = () => {};
+  export let buttonFunction = async () => {};
   export let bckgColour = "transparent";
-  export let txtColour = "white";
   export let buttonWidth = "100%";
   export let borderRadius = "4px";
+  export let imgButtonLabel = "";
+  export let imgWidth = "50px";
 </script>
 
 <button
   on:click={buttonFunction}
-  style="background-color:{bckgColour}; color:{txtColour}; border-radius:{borderRadius}; width:{buttonWidth};">
-  <img src="{imgSrc}" alt="{imgAlt}" height="50px"/>
+  style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};"
+>
+  <img src={imgSrc} alt={imgAlt} height={imgWidth} />
+  <p>{imgButtonLabel}</p>
 </button>
 
 <style>
-  * {
-    /* border: black solid 1px; */
-  }
-
   button {
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
     border-style: none;
     box-sizing: border-box;
-    font-family: "Nunito", sans-serif;
-    font-size: 17px;
-    font-weight: 800;
     cursor: pointer;
-    line-height: 1.5;
     margin: 0;
+    padding: 0;
     max-width: 200px;
-    min-height: 45px;
-    min-width: 50px;
-    padding: 9px 20px 8px;
+    min-height: 20px;
+    min-width: 20px;
     position: relative;
     text-align: center;
+    font-weight: 400;
+    font-size: 0.9em;
   }
 
   button:hover {
-    opacity: 0.75;
+    transform: translateY(-3px);
+    transition: 0.3s;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 10px;
+    font-size: 1.1em;
+    font-weight: 400;
   }
 </style>

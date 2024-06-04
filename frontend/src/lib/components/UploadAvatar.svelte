@@ -1,53 +1,86 @@
 <script>
-  import { PUBLIC_API_BASE_URL, PUBLIC_SERVER_URL } from "$env/static/public";
-
+  import { SERVER_URL } from "$lib/js/apiUrls";
+  import { browser } from "$app/environment";
   export let filesToUpload = "";
-  let messageToSend;
+  export let selectedImage = "";
+  export let isSelectedDefaultImg = true;
+  export let imgInput;
+  let showImage;
+  export let isImgSizeLarge = false;
+  let warnMessage = "";
+  export let imageIsLegal = false;
 
-  let serverResponse = null;
-
-
-  function previewImage(event) {
-    const [file] = imgInp.files;
-    if (file) {
-      userIcon.src = URL.createObjectURL(file);
+  $: {
+    if (filesToUpload && filesToUpload.length > 0) {
+      isImgSizeLarge = filesToUpload[0].size > 2097152 ? true : false;
+      const [file] = imgInp.files;
+      showImage = URL.createObjectURL(file);
+      selectedImage = "";
+      warnMessage = isImgSizeLarge
+        ? "The image size is Larger than 2MB. Please choose a smaller image."
+        : "The image size is right.";
+      isSelectedDefaultImg = false;
     } else {
-      userIcon.src = "userDefaultIcon.png";
+      showImage = SERVER_URL + selectedImage;
+      isImgSizeLarge = false;
     }
   }
-</script>
 
+  $: {
+    if (filesToUpload.length == 0) {
+      isImgSizeLarge = false;
+    }
+  }
+
+  $: imageIsLegal = (!isImgSizeLarge && filesToUpload.length > 0) || isSelectedDefaultImg == true;
+  $: filesToUpload.length > 0 ? (isSelectedDefaultImg = false) : (isSelectedDefaultImg = true);
+  $: isSelectedDefaultImg ? (warnMessage = "The image size should be less than 2MB") : "";
+  $: imageIsLegal
+    ? ""
+    : (warnMessage = "The image size is Larger than 2MB. Please choose a smaller image.");
+</script>
 
 <form>
   <div class="img-container">
-    <div class="img-bg-container"> 
-      <img id="userIcon" src="userDefaultIcon.png" alt="userDefaultIcon" />   
+    <div class="img-bg-container">
+      {#if browser}
+        <img
+          id="userIcon"
+          src={showImage}
+          alt="userDefaultIcon"
+          on:error={(e) => {
+            e.target.src = "/userDefaultIcon.png";
+          }}
+        />
+      {/if}
     </div>
-  
   </div>
-  <label for="imageFile">Choose a PNG or JPG to upload:</label>
-  <input
-    id="imgInp"
-    type="file"
-    multiple={false}
-    name="image-file"
-    accept="image/png, image/jpeg"
-    bind:files={filesToUpload}
-    on:change={previewImage}
-    required
-  />
-
+  <div class="upload">
+    <label for="imageFile">Choose a PNG or JPG to upload:</label>
+    <div>
+      <p class="LargePicWarn" class:active={!imageIsLegal}>{warnMessage}</p>
+      <div>
+        <input
+          id="imgInp"
+          type="file"
+          multiple={false}
+          name="image-file"
+          accept="image/png, image/jpeg"
+          bind:files={filesToUpload}
+          bind:this={imgInput}
+          required
+        />
+      </div>
+    </div>
+  </div>
 </form>
 
 <style>
   form {
     display: block;
     align-items: center;
-    padding-left: 50x;
-    padding-top: 45px;
 
     & .img-container {
-      
       width: 100%;
       height: 100%;
       display: block;
@@ -56,20 +89,13 @@
       & .img-bg-container {
         width: 300px;
         height: 300px;
-        background-color: rgb(155, 155, 155);
+        background-color: transparent;
         display: flex;
         justify-items: center;
         align-items: center;
         margin: 0 auto;
         margin-bottom: 10px;
-        border-radius: 10px;
-      }
-
-      & #userIcon {
-        width: 95%;
-        height: 95%;
-        margin: 0 auto;
-        display: block;
+        border-radius: 50%;
       }
     }
 
@@ -77,13 +103,51 @@
       display: block;
       float: left;
       margin-bottom: 10px;
-      margin-left: 20%;
     }
+
     & input {
       display: block;
       float: left;
-      margin-bottom: 10px;
-      margin-left: 20%;
+      margin: 0 0 10px 0;
+    }
+  }
+
+  #imgInp {
+    width: 13.5em;
+  }
+
+  #userIcon {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .LargePicWarn {
+    white-space: normal;
+    width: 100%;
+  }
+  .active {
+    color: red;
+  }
+
+  .upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 40px 0;
+  }
+
+  @media (max-width: 800px) {
+    #userIcon {
+      display: flex;
+      justify-content: center;
+      width: 250px;
+      height: 250px;
+      margin: 0 auto;
+      display: block;
     }
   }
 </style>

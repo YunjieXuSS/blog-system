@@ -1,11 +1,27 @@
-<!-- Button to post new articles -->
-
 <script>
+  import "$lib/css/button.css";
   import ButtonText from "$lib/components/ButtonText.svelte";
+  import { goto } from "$app/navigation";
+
+  export let data;
+
+  async function handlePostNewArticle() {
+    const isLoggedIn = data.isLoggedIn;
+
+    if (isLoggedIn) {
+      goto("/article/create", { replaceState: true });
+    } else {
+      goto("/login", { replaceState: true });
+    }
+  }
 </script>
 
 <div class="button-container">
-  <ButtonText buttonLabel="✚ New article" buttonPath="/articles/create" bckgColour="#F5E8DD" txtColour="#B5C0D0" borderRadius="4px 0 0 4px"/>
+  <ButtonText
+    buttonFunction={handlePostNewArticle}
+    buttonLabel="✚ New article"
+    buttonClass="postButton"
+  />
 </div>
 
 <style>

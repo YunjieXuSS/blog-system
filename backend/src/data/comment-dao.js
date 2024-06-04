@@ -51,6 +51,7 @@ export async function getCommentById(commentId) {
   return comment;
 }
 
+//Get comments
 export async function getComments(articleId) {
   const db = await getDatabase();
   const comments = await db.all(
@@ -72,14 +73,28 @@ export async function deleteComment(commentId, userId) {
     throw "You are not authorized to delete this comment.";
   }
   let dbResult;
-    const isParentComment = await db.get("SELECT * FROM comment WHERE parentCommentId = ?", commentId);
-    if (isParentComment) {
-      dbResult = await db.run(
-        "UPDATE comment SET content = 'This message has been deleted', isDeleted = TRUE WHERE commentId = ? AND isDeleted = FALSE",
-        commentId
-      );
-    } else {
+  const isParentComment = await db.get(
+    "SELECT * FROM comment WHERE parentCommentId = ?",
+    commentId
+  );
+  if (isParentComment) {
+    dbResult = await db.run(
+      "UPDATE comment SET content = 'This message has been deleted', isDeleted = TRUE WHERE commentId = ? AND isDeleted = FALSE",
+      commentId
+    );
+  } else {
     dbResult = await db.run("DELETE FROM comment WHERE commentId = ?", commentId);
   }
   return dbResult.changes > 0;
+}
+
+//Get num of comments on a given article
+export async function getNumComments(articleId) {
+  const db = await getDatabase();
+  const comments = await db.get(
+    "SELECT COUNT(*) as commentsCount FROM comment WHERE articleId = ? AND isDeleted = FALSE",
+    articleId
+  );
+  console.log(comments);
+  return comments;
 }

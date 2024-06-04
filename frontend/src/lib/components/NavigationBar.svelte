@@ -1,116 +1,148 @@
 <script>
-  // import "$lib/css/app.css";
   import { page } from "$app/stores";
-  import { invalidateAll } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
-  import SearchMenu from "$lib/components/SearchMenu.svelte";
-  import SearchBox from "./SearchBox.svelte";
-  import { articleStore } from "../js/utils.js";
-  import { searchArticles, refreshPage } from "../js/utils.js";
-  import { onMount } from "svelte";
-  import ButtonText from "$lib/components/ButtonText.svelte";
+  import { searchArticles } from "$lib/js/utils.js";
+  import { queryStore } from "$lib/js/store.js";
+  import { articleInfo } from "$lib/js/store.js";
+  import SearchAndSortTool from "$lib/components/SearchAndSortTool.svelte";
+  import "$lib/css/button.css";
 
   export let data;
+  let searchTimeout;
+  let isSearching = false;
 
+  let query = {};
+  let selectedCategory = "title";
+  let searchTerm = "";
+  let sortByCategory = "titleAsc";
+  let searchTermStart = "";
+  let searchTermEnd = "";
+
+  function getSortQuery(sortingCategory) {
+    if (sortingCategory == "titleAsc") {
+      return { sortBy: "title", sortOrder: 0 };
+    } else if (sortingCategory == "titleDesc") {
+      return { sortBy: "title", sortOrder: 1 };
+    } else if (sortingCategory == "userNameAsc") {
+      return { sortBy: "userName", sortOrder: 0 };
+    } else if (sortingCategory == "userNameDesc") {
+      return { sortBy: "userName", sortOrder: 1 };
+    } else if (sortingCategory == "dateAsc") {
+      return { sortBy: "createDate", sortOrder: 0 };
+    } else if (sortingCategory == "dateDesc") {
+      return { sortBy: "createDate", sortOrder: 1 };
+    }
+  }
+
+  $: {
+    delete $queryStore.title;
+    delete $queryStore.userName;
+    delete $queryStore.startDate;
+    delete $queryStore.endDate;
+    if (selectedCategory !== "date") {
+      searchTermStart = "";
+      searchTermEnd = "";
+      query = selectedCategory === "title" ? { title: searchTerm } : { userName: searchTerm };
+    } else {
+      query = { startDate: searchTermStart, endDate: searchTermEnd };
+    }
+    const sortQuery = getSortQuery(sortByCategory) || {};
+    query = { ...query, ...sortQuery };
+    queryStore.update((current) => ({ ...current, ...query }));
+    handleSearch();
+  }
 
   $: path = $page.url.pathname;
-  $: console.log($page.url.pathname);
-  //The status of user
-  $: isLoggined = false;
-  // $:isLoggined = data.isLoggined;
-  //testing code
-
-  let userName = "userName";
-  let selectedCategory = "title"; //  menu selection
-
-  let searchTerm = "";
-
-  function userLogout() {
-    //..
-    console.log("User logout Successfully!");
+  $: isLoggedIn = data.isLoggedIn;
+  let loginUser;
+  $: if (isLoggedIn) {
+    loginUser = data.user;
   }
 
   async function handleSearch() {
-    await searchArticles(articleStore, selectedCategory, searchTerm);
+    clearTimeout(searchTimeout);
+    isSearching = true;
+    searchTimeout = setTimeout(async () => {
+      await searchArticles();
+      isSearching = false;
+    }, 500);
   }
 
-  function loginButton() {
-    window.location = "/login";
-  }
+  let showArticleLink = false;
+  let articleId = null;
+  let articlePath = "/article";
+  let onArticlePage = false;
+
+  articleInfo.subscribe((value) => {
+    showArticleLink = value.id !== null;
+    articleId = value.id;
+    articlePath = value.path;
+    onArticlePage = value.onArticlePage;
+  });
+  $: onArticlePage = path.startsWith(`/article/${articleId}`);
+  $: articleInfo.update((value) => {
+    value.onArticlePage = onArticlePage;
+    return value;
+  });
 </script>
 
-<div class="titleDiv">
-  <div><img class="logo" src="/images/logo.png" alt="chars" /></div>
-
-  <!-- show different content depends on the status of user -->
-  {#if isLoggined == false}
-    <div class="userNameLogoutDiv">
-      <img class="userIcon" src="/userDefaultIcon.png" alt="userDefaultIcon" />
-      <ButtonText buttonLabel="Login" buttonFunction="{loginButton}" bckgColour="#F5E8DD" txtColour="#B5C0D0" />
-    </div>
-  {/if}
-
-  {#if isLoggined == true}
-    <div class="userNameLogoutDiv">
-      <span class="userName"> Hi {userName}!</span>
-      <img class="userIcon" src="/userDefaultIcon.png" alt="userIcon" />
-      <button on:click={userLogout}>Logout</button>
-    </div>
-  {/if}
-</div>
-<nav class="navBar">
+<nav class="navBar darkGreen">
   <ul>
-    <!-- The class:active syntax here applies the "active" CSS class if the given condition is true. -->
     <li><a href="/" class:active={path === "/"}>Home</a></li>
-    <li>
-      <a href="/profile/{data.userName}" class:active={path === "/profile/{data.userName}"}
-        >Profile</a
-      >
-    </li>
-    <!-- browsing here to see the default Svelte 404 page. -->
-    <!-- <li><a href="/notfound">Not Found</a></li> -->
+    {#if isLoggedIn}
+      <li>
+        <a
+          href="/profile/{data.user.userName}"
+          class:active={path.startsWith(`/profile/${data.user.userName}`)}>My Blog</a
+        >
+      </li>
+    {/if}
+
+    {#if showArticleLink && articleId}
+      <li>
+        <a href="/article/{articleId}" class:active={path.startsWith(`/article/${articleId}`)}>
+          {#if onArticlePage}
+            Current
+          {:else}
+            Previous
+          {/if}
+        </a>
+      </li>
+    {/if}
   </ul>
+
   {#if path === "/"}
-    <div class="searchSection">
-      <SearchMenu bind:selectedCategory />
-      <SearchBox bind:searchTerm on:input={handleSearch} />
+    <div class="search-menu-container">
+      <SearchAndSortTool
+        bind:selectedCategory
+        bind:searchTerm
+        bind:sortByCategory
+        bind:searchTermStart
+        bind:searchTermEnd
+      />
     </div>
   {/if}
 </nav>
 
 <style>
-  .titleDiv {
-    margin: 0 30px 0 25px;
-    height: 100px;
-    background-color: white;
-    padding: 0 20px 0 20px;
+  .search-menu-container {
+    position: sticky;
+    top: 65px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & .logo {
-      max-width: 140px;
-      width: 100%;
-    }
-
-    & .userNameLogoutDiv {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    & .userIcon {
-      width: 50px;
-    }
+    justify-content: center;
+    margin: 0;
+    height: 70px;
+    background-color: rgb(255, 255, 255);
+    z-index: 1000;
+    max-width: 100%;
   }
 
   .navBar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #b5c0d0;
-    box-shadow: 0 5px 3px lightgray;
-    height: 60px;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    flex-direction: column;
+    position: sticky;
 
     & > ul {
       list-style: none;
@@ -133,8 +165,7 @@
         content: "";
         display: block;
         height: 5px;
-        background-color: #f5e8dd;
-
+        background-color: #cedebd;
         bottom: 0;
         width: 100%;
       }
@@ -144,7 +175,7 @@
       content: "";
       display: block;
       height: 5px;
-      background-color: #f5e8dd;
+      background-color: #cedebd;
 
       bottom: 0;
       width: 0%;
@@ -158,9 +189,7 @@
 
     & .searchSection {
       margin: 0;
-      width: 400px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 8px;
 

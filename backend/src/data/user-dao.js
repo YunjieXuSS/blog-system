@@ -19,9 +19,8 @@ export async function getUserWithCredentials(username, password) {
   const db = await getDatabase();
   const user = await db.get("SELECT * from user WHERE username = ?", username);
   if (!user) return;
-  console.log("user: ", user);
+  user.isAdmin = !!user.isAdmin;
   const isValid = await bcrypt.compare(password, user.password);
-  console.log("isValid: ", isValid);
   return isValid ? user : undefined;
 }
 
@@ -80,9 +79,22 @@ export async function getUserById(userId) {
  * @param {string} userName the username to search
  * @returns the user with the matching username, or undefined.
  */
-export async function getUserWithUserName(username) {
+export async function getUserWithUserName(userName) {
   const db = await getDatabase();
-  return await db.get("SELECT * from user WHERE userName = ?", username);
+  let user = await db.get("SELECT * from user WHERE userName = ?", userName);
+  if (user) {
+    const numOfPosts = await db.get(
+      "SELECT COUNT(*) as numOfPosts FROM article WHERE userId = ?",
+      user.userId
+    );
+    const numOfLikes = await db.get(
+      "SELECT COUNT(*) as numOfLikes FROM like WHERE articleId IN (SELECT articleId FROM article WHERE userId =?)",
+      user.userId
+    );
+    user = { ...user, ...numOfPosts, ...numOfLikes };
+  }
+  if (user) delete user.password;
+  return user;
 }
 
 /**
@@ -93,6 +105,9 @@ export async function getUserWithUserName(username) {
 export async function getUsers() {
   const db = await getDatabase();
   const users = await db.all("SELECT * FROM user");
+  users.forEach((user) => {
+    user.isAdmin = !!user.isAdmin;
+  });
   return users;
 }
 
@@ -120,9 +135,11 @@ export async function updateUser(userId, udpateData) {
     abortEarly: false,
     stripUnknown: true
   });
-  if(parsedUpdateData.password) parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
+  if (parsedUpdateData.password)
+    parsedUpdateData.password = await createPasswordHashSalt(parsedUpdateData.password);
 
   // Do the update
+  if (!parsedUpdateData) return;
   const setStatement = Object.keys(parsedUpdateData)
     .map((key) => `${key} = ?`)
     .join(", ");

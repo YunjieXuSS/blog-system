@@ -1,68 +1,43 @@
 <script>
-  import InputBar from "./InputBar.svelte";
-  import AvatarUpload from "./UploadAvatar.svelte";
-  import SignUpTable from "./SignUpTable.svelte";
-  import { createAccount } from "../js/utils.js";
-  import {
-    validateRegisterUserName,
-    validateRegisterPassword,
-    validateConfirmPassword,
-    validateRegisterEmail,
-    validateRegisterDate
-  } from "../js/validation.js";
-  import SignUpSection from "./SignUpSection.svelte";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import UploadAvatar from "$lib/components/UploadAvatar.svelte";
+  import SignUpTable from "$lib/components/SignUpTable.svelte";
+  import ButtonText from "$lib/components/ButtonText.svelte";
+  import { USER_URL } from "$lib/js/apiUrls.js";
+  import AvatarChooser from "$lib/components/AvatarChooser.svelte";
+  import PopupBox from "$lib/components/PopupBox.svelte";
+  import "$lib/css/button.css";
 
   let firstName, lastName, userName;
   let password;
+  let confirmPassword;
   let email;
   let dateOfBirth;
   let description;
   let filesToUpload;
-  
-  // define a function to get the first password.
-  const getPassword = function () {
-    return password;
-  };
-  // create closure function to validate two passwords.
-  const confirmPasswordValidator = validateConfirmPassword(getPassword);
-
-
+  let selectedImage = "";
+  let onMountTriggered = true;
+  let imgInput;
+  let isSelectedDefaultImg = true;
+  let imageIsLegal = false;
 
   let validationResults = {
-    firstName: true,
-    lastName: true,
-    email: true,
-    dateOfBirth: true,
-    userName: true,
-    password: true,
-    confirmPassword: true
+    firstName: false,
+    lastName: false,
+    email: false,
+    dateOfBirth: false,
+    userName: false,
+    password: false,
+    confirmPassword: false
   };
 
-  
-
   function handleValidation(event) {
-    //create a new array to store the validation results
-    validationResults[event.detail.label] = event.detail.validateResult;
+    validationResults[event.detail.variableName] = event.detail.validateResult;
   }
 
-  //check if all the values are valid
-  //add a new property to the object to store the result
-  //Object.values(validationResults) means put all the values of the object into an array
-  //every(Boolean) means check if all the values are true
-  $: allValid = Object.values(validationResults).every(Boolean);
+  $: allValid = Object.values(validationResults).every(Boolean) && imageIsLegal;
 
-
-  async function handleRegister(
-    firstName,
-    lastName,
-    email,
-    dateOfBirth,
-    userName,
-    password,
-    description,
-    filesToUpload
-  ) {
+  function createFormData() {
+    const userRegisterImage = filesToUpload[0];
     const userRegisterData = {
       firstName,
       lastName,
@@ -70,38 +45,82 @@
       dateOfBirth,
       userName,
       password,
-      description
+      description,
+      avatar: userRegisterImage
     };
-    const userRegisterImage = filesToUpload[0];
-    // const userRegisterImage =events.target.files[0];
 
-    // Create a FormData object to send, rather than sending JSON as usual.
-    const formData = new FormData();
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("email", email);
-    formData.append("dateOfBirth", dateOfBirth);
-    formData.append("userName", userName);
-    formData.append("password", password);
-    if (userRegisterImage && filesToUpload.length > 0 && userRegisterImage !== undefined) {
-      formData.append("avatar", userRegisterImage);
-    } else {
-      //if no image is uploaded, use the default image
-      formData.append("avatar", "/images/avatar-default.png");
-    }
-
-
-    // We can send a FormData object directly in the body. Send a POST to our API route, with this data.
-    // REMEMBER that this is not JSON we're sending - we're sending multipart form data which is handled
-    // by the multer middleware on our server.
-    const response = await fetch(`${PUBLIC_API_BASE_URL}/users/register`, {
-      method: "POST",
-      body: formData
+    const body = new FormData();
+    Object.entries(userRegisterData).forEach(([key, value]) => {
+      if (key == "avatar" && filesToUpload.length > 0 && value !== undefined) {
+        body.set(key, value);
+      } else if (key == "avatar" && value == undefined) {
+        body.set(key, `/images${selectedImage.substring(7)}`);
+      } else if (key == "") {
+      } else {
+        body.set(key, value);
+      }
     });
 
-    const serverResponse = await response.json();
+    return body;
+  }
 
+  async function handleRegister() {
+    try {
+      const body = createFormData();
+      const response = await fetch(`${USER_URL}/register`, {
+        method: "POST",
+        credentials: "include",
+        body
+      });
 
+      if (response.status === 201) {
+        handlePopupBox();
+      } else if (response.status === 413) {
+        handleImagePopupBox();
+        imgInput.value = "";
+      } else if (response.status === 409) {
+        handleUserExistPopupBox();
+        imgInput.value = "";
+      } else {
+        handleUniPopupBox();
+      }
+    } catch (error) {
+      console.error(`Failed to register user.${error}`);
+    }
+  }
+
+  let showPopupBox = false;
+  let popupMessage = "Mission Completed!";
+  let redirectUrl = "/";
+
+  function handlePopupBox() {
+    popupMessage = `User has registered. Redirecting ...`;
+    redirectUrl = "/";
+    showPopupBox = true;
+  }
+
+  function handleUniPopupBox() {
+    popupMessage = `Fail to regiser user. please try it again ...`;
+    redirectUrl = "/signup";
+    showPopupBox = true;
+  }
+
+  function handleUserExistPopupBox() {
+    popupMessage = `Username has existed. Please choose a new name ...`;
+    redirectUrl = "/signup";
+    showPopupBox = true;
+  }
+
+  function handleImagePopupBox() {
+    popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
+    redirectUrl = "/signup";
+    imageIsLegal = false;
+    showPopupBox = true;
+  }
+
+  function handleSelectDefaultImg() {
+    imgInput.value = "";
+    isSelectedDefaultImg = true;
   }
 </script>
 
@@ -109,7 +128,18 @@
   <div class="page-title"><h2>Create account</h2></div>
   <div class="content-container">
     <div class="avatar-container">
-      <AvatarUpload bind:filesToUpload />
+      <UploadAvatar
+        bind:filesToUpload
+        bind:selectedImage
+        bind:imgInput
+        bind:isSelectedDefaultImg
+        bind:imageIsLegal
+      />
+      <AvatarChooser
+        bind:selectedImage
+        {onMountTriggered}
+        on:selectedImage={handleSelectDefaultImg}
+      />
     </div>
     <div>
       <SignUpTable
@@ -120,67 +150,72 @@
         bind:userName
         bind:password
         bind:description
+        bind:confirmPassword
         on:validation={handleValidation}
       />
     </div>
   </div>
 
-  <button
-  class="submitButton"
-  class:valid={allValid}
-    on:click={handleRegister(
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      userName,
-      password,
-      description,
-      filesToUpload
-    )}
-  >
-    Create account
-  </button>
+  <ButtonText
+    buttonFunction={handleRegister}
+    buttonLabel="Sign up"
+    buttonClass="confirmButton"
+    buttonDisabled={!allValid}
+  />
 </div>
+
+<PopupBox {popupMessage} {redirectUrl} countdown={3} bind:showPopupBox />
 
 <style>
   .page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    margin: 50px 0;
+    padding: 50px 0;
+    width: 60em;
+    gap: 30px;
+    color: #505050;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(4, 0, 37, 0.2), 0 6px 20px 0 rgba(39, 15, 118, 0.19);
 
     & .page-title {
-      & > h2 {
-        font-size: 2em;
-        margin: 5px 0 0 0;
+      & h2 {
+        font-size: 3em;
+        font-weight: 800;
+        margin: 0;
       }
     }
 
     & > .content-container {
       display: flex;
-      flex-direction: row;
       align-content: center;
-      gap: 10px;
+      gap: 30px;
 
       & > .avatar-container {
-        width: 50%;
-      }
-      & .table-container {
-        width: 48%;
+        width: 20em;
+        margin: 1em 0;
+        padding: 40px 20px;
+        background-color: #f0f8ffa9;
       }
     }
-    & .submitButton {
-      width: 200px;
-      height: 80px;
-      margin-top: 20px;
-      background-color: grey;
-      border-radius: 15px;
-      color: white;
-      font-size: 1.5em;
+  }
+
+  @media (max-width: 1000px) {
+    .page-container {
+      width: 48em;
     }
-    & .submitButton.valid {
-      background-color: green;
+  }
+
+  @media (max-width: 800px) {
+    .page-container {
+      width: 30em;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
   }
 </style>

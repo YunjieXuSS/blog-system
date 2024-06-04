@@ -26,7 +26,13 @@ router.post("/register", avatarUploader, async (req, res) => {
     if (req.file) {
       await fsExtra.copy(req.file.path, "public" + newUser.avatar);
     }
-    return res.status(201).json(newUser);
+    return res
+      .status(201)
+      .cookie("authToken", createUserJWT(newUser.userName), {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        httpOnly: true
+      })
+      .json(newUser);
   } catch (err) {
     console.log(err);
     if (err.errors) return res.status(422).json({ error: err.errors });
@@ -55,7 +61,10 @@ router.post("/login", async (req, res) => {
 
 // User logout
 router.post("/logout", (_, res) => {
-  return res.clearCookie("authToken").sendStatus(204);
+  return res
+    .cookie("authToken", "", { expires: new Date(0), path: "/" })
+    .status(204)
+    .send();
 });
 
 // Get user by username ---- Not used
@@ -70,7 +79,7 @@ router.post("/logout", (_, res) => {
   }
 }); */
 
-// Get user Info
+// Get user Info by cookie
 router.get("/", authenticateUser, async (req, res) => {
   const userId = req.user.userId;
   const user = await getUserById(userId);
@@ -87,9 +96,20 @@ router.get("/:userName", async (req, res) => {
   const userName = req.params.userName;
   const user = await getUserWithUserName(userName);
   if (user) {
-    return res.status(200).json({ exists: true});
+    return res.status(200).json({ exists: true });
   } else {
     return res.status(200).json({ exists: false });
+  }
+});
+
+// Get user Info by username
+router.get("/:userName/info", async (req, res) => {
+  const userName = req.params.userName;
+  const user = await getUserWithUserName(userName);
+  if (user) {
+    return res.json(user);
+  } else {
+    return res.status(404).json({ error: "User not found." });
   }
 });
 
@@ -97,16 +117,24 @@ router.get("/:userName", async (req, res) => {
 router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   try {
     const userId = req.user.userId;
+    const userNameExists = req.body.userName;
     if (req.file) {
       req.body.avatar = "/images/" + req.file.filename;
     }
     const newUser = await updateUser(userId, req.body);
-    if (!newUser) return res.status(404).json({ error: "User not found." });
+    if (!newUser) return res.status(400).json({ error: "User not found Or No updates" });
     delete newUser.password;
     if (req.file) {
       await fsExtra.copy(req.file.path, "public" + newUser.avatar);
     }
-    res.status(200).json(newUser);
+    if (userNameExists)
+      return res
+        .cookie("authToken", createUserJWT(newUser.userName), {
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          httpOnly: true
+        })
+        .json({ newUser });
+    return res.json(newUser);
   } catch (err) {
     console.log(err);
     if (err.errors) return res.status(422).json(err.erros);
@@ -116,22 +144,12 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
   }
 });
 
-// Get users
-router.get("/all", authenticateAdmin, async (req, res) => {
-  const users = await getUsers();
-  if (!users) return res.status(404).json({ error: "No users found." });
-  users.forEach((user) => {
-    delete user.password;
-  });
-  return res.status(200).json(users);
-});
-
 // Delete user
 router.delete("/", authenticateUser, async (req, res) => {
   try {
     const result = await deleteUser(req.user.userId);
     if (result) return res.sendStatus(204);
-    return res.status(404).json({ error: "User not found." });
+    return res.status(404).json({ error: "User not found or is an admin." });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -144,7 +162,7 @@ router.delete("/:userId", authenticateAdmin, async (req, res) => {
     if (result) return res.sendStatus(204);
     return res.status(404).json({ error: "User not found." });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(403).json({ error: "You can not delete a ADMIN!!!" });
   }
 });
 

@@ -1,6 +1,5 @@
 <script>
-  import InputBar from "./InputBar.svelte";
-  import { createAccount } from "../js/utils.js";
+  import InputBar from "$lib/components/InputBar.svelte";
   import {
     validateRegisterName,
     validateRegisterUserName,
@@ -8,113 +7,129 @@
     validateConfirmPassword,
     validateRegisterEmail,
     validateRegisterDate
-  } from "../js/validation.js";
-  import ArticleCard from "./ArticleCard.svelte";
+  } from "$lib/js/validation.js";
 
+  export let userNamehasChanges = false;
+  export let isUpdateMode = false;
   export let firstName, lastName, userName;
   export let email;
   export let dateOfBirth;
   export let password;
   export let description = "I know myself so well.";
-  // export let validateResult;
-  let confirmPassword;
-  // define a function to get the first password.
+  export let confirmPassword;
+
   const getPassword = function () {
     return password;
   };
-  // create closure function to validate two passwords.
+
   const confirmPasswordValidator = validateConfirmPassword(getPassword);
 
-
-  
-  let label=""
-  import { createEventDispatcher } from 'svelte';
+  let label = "";
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  //create a dispatcher to send the validation result to the SignUpPage.svelte
-  //Get validateResult, label from the event.detail (CustomEvent)
-  //validation event is dispatched from the InputBar.svelte's checkValue function
   function handleValidation(event) {
-    const { validateResult, label } = event.detail;
-    dispatch('validation', { validateResult, label });
+    const { variableName, validateResult } = event.detail;
+    dispatch("validation", { variableName, validateResult });
   }
 
-
+  function handleUserNameValidation() {
+    if (isUpdateMode && userNamehasChanges) {
+      return validateRegisterUserName(userName);
+    } else if (!isUpdateMode) {
+      return validateRegisterUserName(userName);
+    } else if (isUpdateMode && !userNamehasChanges) {
+      return { result: true, errorMsg: "user hasn't been changed" };
+    }
+  }
 </script>
 
 <div class="table-container">
   <InputBar
-    label="FIRTST NAME:"
+    label="FIRST NAME:"
     type="text"
     placeholder="Enter your first name"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={firstName}
     on:validation={handleValidation}
+    variableName="firstName"
   />
   <InputBar
     label="LAST NAME:"
     type="text"
-    placeholder="Enter your second name"
+    placeholder="Enter your surname"
     validate={validateRegisterName}
-    maxlength="20"
+    maxlength="30"
     bind:value={lastName}
     on:validation={handleValidation}
+    variableName="lastName"
   />
   <InputBar
-    label="EMAIL:"x
+    label="EMAIL:"
     type="email"
-    placeholder="Enter your user email"
+    placeholder="Enter your email"
     validate={validateRegisterEmail}
-    maxlength="20"
+    maxlength="64"
     bind:value={email}
     on:validation={handleValidation}
+    variableName="email"
   />
 
   <InputBar
-    label="DAY OF BIRTH:"
+    label="DATE OF BIRTH:"
     type="date"
-    placeholder="Enter your user birthday"
+    placeholder="Enter your date of birth"
     validate={validateRegisterDate}
     maxlength="20"
     bind:value={dateOfBirth}
     on:validation={handleValidation}
+    variableName="dateOfBirth"
   />
 
   <InputBar
     label="USERNAME:"
     type="text"
-    placeholder="Enter your user name"
-    validate={validateRegisterUserName}
+    placeholder="Enter your username"
+    validate={handleUserNameValidation}
     maxlength="20"
     bind:value={userName}
     on:validation={handleValidation}
+    variableName="userName"
   />
   <InputBar
     label="PASSWORD:"
     type="password"
     placeholder="Enter your password"
     validate={validateRegisterPassword}
-    maxlength="20"
+    maxlength="30"
     bind:value={password}
     on:validation={handleValidation}
+    variableName="password"
   />
   <InputBar
     label="CONFIRM PASSWORD:"
     type="password"
     placeholder="Re-enter your password"
     validate={confirmPasswordValidator}
-    maxlength="20"
+    maxlength="30"
     bind:value={confirmPassword}
     on:validation={handleValidation}
+    variableName="confirmPassword"
   />
 
   <label for="description">DESCRIPTION:</label>
-  <textarea class="description-textarea" name="description" rows="4" cols="50" bind:value={description}></textarea>
+  <textarea
+    class="description-textarea"
+    name="description"
+    rows="4"
+    cols="50"
+    bind:value={description}
+  />
 </div>
 
 <style>
   .table-container {
-    width: 48%;
+    width: 22em;
 
     & label {
       display: block;

@@ -1,39 +1,37 @@
 <script>
-  /** This component is for the input bar that is used to input the text for username, password, etc.
-   * It defines the layout of the input bar. It is used in the login page and signup page.
-   **/
+  import { createEventDispatcher } from "svelte";
+
+  export let variableName = "";
   export let label = "";
   export let type = "text";
   export let value = "";
   export let placeholder = "";
   export let maxlength = "100";
-  export let validate = async(value) => {
+  export let validate = async (value) => {
     return { result: true, errorMsg: "" };
   };
   export let validateResult = true;
+
+  const dispatch = createEventDispatcher();
   let errorMsg = "";
+
   async function checkValue() {
     const validation = await validate(value);
     errorMsg = validation.errorMsg;
     validateResult = validation.result;
-    dispatch('validation', { validateResult, label });
+    dispatch("validation", { variableName, validateResult });
   }
+
   function clearError() {
     errorMsg = "";
     validateResult = true;
   }
-//create a dispatcher to send the validation result to the SignUpTable.svelte
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
 </script>
-
-
 
 <div class="input-bar">
   <label for={label}>{label}</label>
   <div class="input-section">
     {#if type === "password"}
-    
       <input
         class:active={!validateResult}
         id={label}
@@ -41,7 +39,7 @@
         {placeholder}
         {maxlength}
         bind:value
-        on:blur={checkValue}
+        on:input={checkValue}
         on:focus={clearError}
       />
     {:else if type === "email"}
@@ -92,6 +90,11 @@
     display: flex;
     align-items: center;
   }
+
+  .input-section > * {
+    margin: 0 0 15px 0;
+  }
+
   .input-bar {
     width: 350px;
     position: relative;
@@ -99,14 +102,15 @@
   .error {
     color: rgba(255, 0, 0, 0.837);
     position: absolute;
-    bottom: -1.3em;
+    top: +5.1em;
     right: 0px;
     font-size: 0.8em;
+    white-space: normal;
   }
+
   label {
     display: block;
-    margin-top: 1em;
-    color:#808080;
+    color: #808080;
   }
   input {
     outline: none;
@@ -115,7 +119,7 @@
     margin-top: 0.5em;
     margin-bottom: 1em;
     border: 1px solid #ddd;
-    background-color: #ddd;
+    background-color: "white";
     color: #606060;
     &::placeholder {
       color: #909090;
@@ -129,8 +133,8 @@
     input {
       width: 100%;
     }
-    .error{
-      bottom:-2.2em;
+    .error {
+      bottom: -2.2em;
     }
   }
 </style>
