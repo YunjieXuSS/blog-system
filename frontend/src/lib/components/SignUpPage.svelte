@@ -81,7 +81,7 @@
       } else if (response.status === 409) {
         handleUserExistPopupBox();
         imgInput.value = "";
-      }else {
+      } else {
         handleUniPopupBox();
       }
     } catch (error) {
@@ -92,7 +92,6 @@
   let showPopupBox = false;
   let popupMessage = "Mission Completed!";
   let redirectUrl = "/";
-
 
   function handlePopupBox() {
     popupMessage = `User has registered. Redirecting ...`;
@@ -111,7 +110,6 @@
     redirectUrl = "/signup";
     showPopupBox = true;
   }
-
 
   function handleImagePopupBox() {
     popupMessage = "The image size is Larger than 2MB. Please choose a smaller image.";
@@ -157,7 +155,7 @@
       />
     </div>
   </div>
-  
+
   <ButtonText
     buttonFunction={handleRegister}
     buttonLabel="Sign up"

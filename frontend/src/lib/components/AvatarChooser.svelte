@@ -12,15 +12,15 @@
     "/images/userDefaultIcon6.png",
     "/images/userDefaultIcon7.png",
     "/images/userDefaultIcon8.png",
-    "/images/userDefaultIcon9.png",
+    "/images/userDefaultIcon9.png"
   ];
 
-  import {createEventDispatcher} from "svelte";
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   function selectImage(image) {
     selectedImage = image;
     isSelectedDefaultImg = true;
-    dispatch("selectedImage", { isSelectedDefaultImg : true});
+    dispatch("selectedImage", { isSelectedDefaultImg: true });
   }
 
   if (onMountTriggered) {
@@ -54,7 +54,7 @@
     width: 100%;
   }
   .image-item {
-    padding: 0;
+    padding: 5px;
     border: none;
     background: none;
     cursor: pointer;
@@ -68,7 +68,7 @@
   }
   .image-item img.selected {
     border-width: 3px;
-    border-color: #9EB384;
+    border-color: #9eb384;
     border-radius: 50%;
   }
 </style>

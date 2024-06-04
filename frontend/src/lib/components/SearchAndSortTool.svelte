@@ -123,7 +123,6 @@
   $: searchTermEnd, resetPageSize();
   $: searchedBy, resetPageSize();
 
-
   onMount(() => {
     const hideList = (e) => {
       if (![...e.target.classList].includes("keep-list")) {

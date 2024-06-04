@@ -10,6 +10,7 @@
   let showPopupBox = false;
 
   export let numComments = 0;
+  $: numComments = comments?.filter((element) => !element.isDeleted)?.length;
 
   export let authorId;
   export let loginUserId = 0;
@@ -51,15 +52,14 @@
   $: commentProps = generateCommentProps(comments);
 
   async function postCommentToArticle() {
-    if (loginUserId === 0) { 
-      showPopupBox=true;
+    if (loginUserId === 0) {
+      showPopupBox = true;
       return;
     }
     sending = true;
     try {
       await postComment({ content: commentToArticle, articleId });
       comments = await getComments({ articleId });
-      numComments = comments.length;
       // comments = removeParentCommentId(comments);
       clearTextarea();
       setTimeout(() => {
@@ -78,15 +78,20 @@
 
   async function refreshComments() {
     comments = await getComments({ articleId });
-    numComments = comments.length;
+    // comments = removeParentCommentId(comments);
   }
 </script>
 
 <section class="comments">
   <div class="title-area">
     <h2>Comments</h2>
-      <button class="title-button" on:click={toggleComments}>
-        <img class="comment-view-control" src = {showComments ? "/icons/up-arrow.png" : "/icons/down-arrow.png"} alt=""></button>
+    <button class="title-button" on:click={toggleComments}>
+      <img
+        class="comment-view-control"
+        src={showComments ? "/icons/up-arrow.png" : "/icons/down-arrow.png"}
+        alt=""
+      /></button
+    >
   </div>
 
   <textarea
@@ -96,9 +101,9 @@
     disabled={sending}
     bind:value={commentToArticle}
   />
-  <div class= "operations" >
-  <button on:click={postCommentToArticle} disabled={sending}>post</button>
-  <button on:click={clearTextarea}>clear</button>
+  <div class="operations">
+    <button on:click={postCommentToArticle} disabled={sending}>post</button>
+    <button on:click={clearTextarea}>clear</button>
   </div>
 
   <div class="list" style="display: {showComments ? '' : 'none'};">
@@ -113,25 +118,25 @@
 </section>
 <div class="comments-container" />
 {#if showPopupBox}
-<Modal
-  bind:showPopupBox
-  description={"Login to reply :)"}
-  buttons={[
-    {
-      text: "Log in",
-      onClick: () => {
-        goto(redirectUrl);
+  <Modal
+    bind:showPopupBox
+    description={"Login to reply :)"}
+    buttons={[
+      {
+        text: "Log in",
+        onClick: () => {
+          goto(redirectUrl);
+        }
       }
-    }
-  ]}
-/>
+    ]}
+  />
 {/if}
 
 <style>
   .comments {
     min-height: 200px;
     flex: 1;
-    margin:50px;
+    margin: 50px;
 
     & .title-area {
       display: flex;
@@ -148,7 +153,7 @@
       width: 100%;
       height: 100px;
       box-sizing: border-box;
-      margin:0;
+      margin: 0;
       padding: 8px;
       resize: vertical;
     }
@@ -157,7 +162,7 @@
       display: flex;
       justify-content: flex-end;
       gap: 10px;
-      margin-bottom:20px;
+      margin-bottom: 20px;
     }
 
     & button {
@@ -171,13 +176,13 @@
       padding: 2px 4px;
       &:hover {
         cursor: pointer;
-        color: #9EB384;
+        color: #9eb384;
         text-decoration: underline;
       }
     }
   }
   .comment-view-control {
     width: 20px;
-    margin-left:10px;
+    margin-left: 10px;
   }
 </style>

@@ -74,7 +74,7 @@
       />
     </div>
   </div>
-  
+
   <div class="login-error" style="display:{loginFailed ? 'block' : 'none'}">
     Invalid password or username. Try again.
   </div>

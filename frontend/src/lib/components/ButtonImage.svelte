@@ -13,8 +13,10 @@
 
 <button
   on:click={buttonFunction}
-  style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};">
-  <img src="{imgSrc}" alt="{imgAlt}" height="{imgWidth}"/><p>{imgButtonLabel}</p>
+  style="background-color:{bckgColour}; width:{buttonWidth}; border-radius:{borderRadius};"
+>
+  <img src={imgSrc} alt={imgAlt} height={imgWidth} />
+  <p>{imgButtonLabel}</p>
 </button>
 
 <style>

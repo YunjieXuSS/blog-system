@@ -7,8 +7,8 @@
   import PostArticleButton from "$lib/components/PostArticleButton.svelte";
 
   export let data;
-  
-  $:articleStore.set(data.articles);
+
+  $: articleStore.set(data.articles);
 
   let count = 2;
   let loadMore;
@@ -17,6 +17,18 @@
 
   let isVisible = false;
   let hintShown = false;
+  let queryIsChanging = false;
+
+  $: {
+    if (!$queryStore.pageSize && $articleStore.length >= 12) {
+      hintShown = false;
+      queryIsChanging = true;
+      count = 2;
+      setTimeout(() => {
+        queryIsChanging = false;
+      }, 50);
+    }
+  }
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -40,7 +52,7 @@
   });
 
   loadMore = () => {
-    if (loadingFlag || hintShown) {
+    if (loadingFlag || hintShown || queryIsChanging) {
       return;
     }
 
@@ -49,7 +61,7 @@
       setTimeout(async () => {
         const previousLength = get(articleStore).length;
 
-        queryStore.update(current => ({ ...current, pageSize: 12 * count }));
+        queryStore.update((current) => ({ ...current, pageSize: 12 * count }));
         await searchArticles();
 
         const newLength = get(articleStore).length;
@@ -66,7 +78,7 @@
   };
 </script>
 
-<PostArticleButton data={data} />
+<PostArticleButton {data} />
 
 <div class="mainBodyDiv">
   <div class="articleDiv">
@@ -86,7 +98,6 @@
 <button class="back-to-top" on:click={scrollToTop} class:isVisible> ↑ </button>
 
 <style>
-
   .back-to-top {
     position: fixed;
     bottom: 40px;
@@ -94,7 +105,7 @@
     width: 50px;
     height: 50px;
     min-width: 50px;
-    background-color: #CCD3CA;
+    background-color: #ccd3ca;
     color: white;
     border: none;
     border-radius: 50%;
@@ -109,7 +120,7 @@
   }
 
   .back-to-top:hover {
-    background-color: #AAB3A4;
+    background-color: #aab3a4;
   }
 
   .back-to-top.isVisible {
@@ -133,9 +144,9 @@
     margin: 50px auto;
   }
 
-  .hint-container{
+  .hint-container {
     text-align: center;
-    color:#AAB3A4;
+    color: #aab3a4;
     font-size: 1.3em;
   }
 

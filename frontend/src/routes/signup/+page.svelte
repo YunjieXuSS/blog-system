@@ -1,5 +1,5 @@
 <script>
-import SignUpPage from "$lib/components/SignUpPage.svelte";
+  import SignUpPage from "$lib/components/SignUpPage.svelte";
 </script>
 
 <div class="signup">

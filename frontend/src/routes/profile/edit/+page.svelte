@@ -11,9 +11,9 @@
 </script>
 
 <div class="update-user-container">
-{#if data.user}
-  <UpdateUserInfoPage user={data.user} />
-{/if}
+  {#if data.user}
+    <UpdateUserInfoPage user={data.user} />
+  {/if}
 </div>
 
 <style>

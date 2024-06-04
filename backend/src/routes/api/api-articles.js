@@ -26,9 +26,9 @@ const router = express.Router();
 // Articles' API
 router.get("/", getUserIdByCookie, async (req, res) => {
   let userId;
-  if(req.user) userId = req.user.userId;
+  if (req.user) userId = req.user.userId;
   try {
-    const articles = await getArticlesByKeywords(req.query,userId);
+    const articles = await getArticlesByKeywords(req.query, userId);
     return res.json(articles);
   } catch (err) {
     console.error(err);
@@ -36,9 +36,9 @@ router.get("/", getUserIdByCookie, async (req, res) => {
   }
 });
 
-router.get("/search",getUserIdByCookie, async (req, res) => {
+router.get("/search", getUserIdByCookie, async (req, res) => {
   let userId;
-  if(req.user) userId = req.user.userId;
+  if (req.user) userId = req.user.userId;
   try {
     if (req.query.userId) {
       const articlesOfUser = await getArticlesByUserId(req.query.userId);
@@ -53,7 +53,7 @@ router.get("/search",getUserIdByCookie, async (req, res) => {
       const articlesOfDate = await getArticlesByDate(req.query.updateDate);
       return res.status(200).json(articlesOfDate);
     } else if (req.query.userName) {
-      const articlesOfUser = await getArticlesByUserName(req.query.userName,userId);
+      const articlesOfUser = await getArticlesByUserName(req.query.userName, userId);
       return res.status(200).json(articlesOfUser);
     }
   } catch (error) {
@@ -61,16 +61,16 @@ router.get("/search",getUserIdByCookie, async (req, res) => {
   }
 });
 
-//get all articles
-router.get("/", async (req, res) => {
-  try {
-    const articles = await getArticles();
-    return res.status(200).json(articles);
-  } catch (error) {
-    console.error(error);
-    return res.status(404).json({ error: "Can't find articles." });
-  }
-});
+// //get all articles
+// router.get("/", async (req, res) => {
+//   try {
+//     const articles = await getArticles();
+//     return res.status(200).json(articles);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(404).json({ error: "Can't find articles." });
+//   }
+// });
 
 // get articles by articleId
 router.get("/:articleId", async (req, res) => {
@@ -163,7 +163,7 @@ router.post("/:articleId/comment", authenticateUser, async (req, res) => {
     if (err.errors) return res.status(422).json(err.errors);
     return res.status(500).json({ error: err.message });
   }
-})
+});
 router.post("/:articleId/comment", authenticateUser, async (req, res) => {
   const comment = req.body;
   comment.articleId = req.params.articleId;
@@ -228,6 +228,5 @@ router.get("/:articleId/like", async (req, res) => {
     return res.status(404).json({ error: "Article does not exist." });
   }
 });
-
 
 export default router;

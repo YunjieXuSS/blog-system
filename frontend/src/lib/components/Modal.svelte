@@ -11,7 +11,7 @@
 
   let countdownInterval;
   let timeLeft = countdown;
-  
+
   if (countdown !== undefined && countdown > 0) {
     countdownInterval = setInterval(() => {
       timeLeft = timeLeft - 1;
@@ -85,10 +85,10 @@
     & .modal-button {
       margin: 0 8px;
       padding: 8px 16px;
-      background: #9EB384;
+      background: #9eb384;
       cursor: pointer;
       color: #fff;
-      border: 1px solid #9EB384;
+      border: 1px solid #9eb384;
       border-radius: 10px;
       &:hover {
         background: #435334;
@@ -97,8 +97,8 @@
 
     & .cancel-button {
       background: #fff;
-      color: #9EB384;
-      border: 1px solid #9EB384;
+      color: #9eb384;
+      border: 1px solid #9eb384;
       border-radius: 10px;
       &:hover {
         background: #9eb3847e;
@@ -107,13 +107,13 @@
     }
   }
 
-  .redirect-text{
+  .redirect-text {
     font-size: 0.8rem;
     color: #3e3e3e;
     margin: 8px;
   }
 
-  p{
+  p {
     margin: 5px;
     padding: 0;
   }

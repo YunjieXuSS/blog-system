@@ -11,6 +11,7 @@
   export let isLiked;
   export let commentButtonFunction = async () => {};
   export let numComments = 0;
+  $: numComments;
 
   const heartEmpty = "/heartEmpty.png";
   const heartFull = "/heartFull.png";
@@ -71,6 +72,7 @@
     if (response.status === 200) {
       const body = await response.json();
       const numComments = await body.commentsCount;
+      // console.log("ssss",numComments)
       return numComments;
     }
   }

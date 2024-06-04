@@ -61,7 +61,10 @@ router.post("/login", async (req, res) => {
 
 // User logout
 router.post("/logout", (_, res) => {
-  return res.cookie('authToken', '', { expires: new Date(0), path: '/' }).status(204).send();
+  return res
+    .cookie("authToken", "", { expires: new Date(0), path: "/" })
+    .status(204)
+    .send();
 });
 
 // Get user by username ---- Not used
@@ -140,7 +143,6 @@ router.patch("/", authenticateUser, avatarUploader, async (req, res) => {
     await fsExtra.emptyDir("temp");
   }
 });
-
 
 // Delete user
 router.delete("/", authenticateUser, async (req, res) => {
