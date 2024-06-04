@@ -151,6 +151,6 @@ export async function updateUser(userId, udpateData) {
  */
 export async function deleteUser(userId) {
   const db = await getDatabase();
-  const dbResult = await db.run("DELETE FROM user WHERE userId = ? AND isAdmin = FALSE", parseInt(userId));
+  const dbResult = await db.run("DELETE FROM user WHERE userId = ?", parseInt(userId));
   return dbResult.changes > 0;
 }
