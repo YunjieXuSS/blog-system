@@ -9,7 +9,7 @@ Your team should update this README to include the information required, as pres
 - b. Are there any special setup instructions, beyond initialising the database and running your project?<br>
 - c. Test Account:<br>
     <ol>
-     <li> username:test01<br>
+     <li> username:<i>test01</i><br>
         password:Ab123456<br>
            isAdmin:Yes<br>
     <li>username:test02<br>
